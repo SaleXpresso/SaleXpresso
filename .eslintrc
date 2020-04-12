@@ -1,0 +1,33 @@
+{
+  "root": true,
+  "env": {
+	"browser": true,
+	"es6": true,
+	"node": true
+  },
+  "extends": [ "plugin:@wordpress/eslint-plugin/esnext" ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+	"ecmaVersion": 8,
+	"sourceType": "module",
+	"ecmaFeatures": {
+	  "modules": true,
+	  "experimentalObjectRestSpread": true,
+	  "jsx": true
+	}
+  },
+  "globals": {
+	"wp": true,
+	"wpApiSettings": true,
+	"page": true,
+	"browser": true,
+	"context": true,
+	"jQuery": "writable",
+	"$": "writable",
+	"SaleXpresso": "writable"
+  },
+  "rules": {
+	"eqeqeq": "warn",
+	"semi": "error"
+  }
+}

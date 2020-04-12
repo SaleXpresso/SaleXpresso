@@ -1,0 +1,51 @@
+{
+  "name": "salexpresso/salexpresso",
+  "description": "SaleXpresso is a flexible, open-source eCommerce accelerator built on WooCommerce. Organize, sales data, build campaign, dynamic discount, custom user group and many more.",
+  "homepage": "https://salexpresso.com/",
+  "keywords": [
+	"woocommerce",
+	"woo commerce",
+	"erp",
+	"crm",
+	"sales accelerator",
+	"marketing",
+	"e-commerce",
+	"store",
+	"sales",
+	"sell",
+	"sale"
+  ],
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+	{
+	  "name": "SaleXpresso",
+	  "email": "support@salexpresso.com",
+	  "homepage": "https://salexpresso.com/"
+	},
+	{
+	  "name": "Contributors",
+	  "homepage": "https://github.com/salexpresso/salexpresso/contributors"
+	}
+  ],
+  "autoload": {
+	"files": [
+	  "includes/helper.php",
+	  "includes/deprecated-functions.php",
+	  "includes/hooks.php"
+	]
+  },
+  "autoload-dev": {
+	"files": [
+	  "includes/dev.php"
+	]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+	"php": ">=7.0"
+  },
+  "require-dev": {
+	"symfony/var-dumper": "^5.0"
+  }
+}

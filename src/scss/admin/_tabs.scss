@@ -1,0 +1,40 @@
+.sxp-tabs {
+	&-nav {
+		position: relative;
+		display: block;
+		list-style: none;
+		width: 100%;
+		margin: 20px auto;
+		.tab {
+			&-item {
+				position: relative;
+				display: inline-block;
+				list-style: none;
+				&.is-active {
+					font-weight: 700;
+				}
+				&-link {
+					font-weight: inherit;
+					text-decoration: none;
+					padding: 10px;
+				}
+			}
+		}
+	}
+	&-content {
+		.tab {
+			&-content {
+				position: relative;
+				display: none;
+				width: 100%;
+				margin: 20px auto;
+				padding: 20px;
+				background: #aed4dd;
+				border-top: 1px solid #0f0f0f;
+				&.is-active {
+					display: block;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,101 @@
+# Copyright (C) 2020 SaleXpresso
+# This file is distributed under the same license as the SaleXpresso package.
+msgid ""
+msgstr ""
+"Project-Id-Version: SaleXpresso\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: support@salexpresso.com\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/salexpresso/\n"
+"X-Domain: salexpresso\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/class-salexpresso.php:63
+msgid "Cloning is forbidden."
+msgstr ""
+
+#: includes/class-salexpresso.php:72
+msgid "Unserializing instances of this class is forbidden."
+msgstr ""
+
+#. translators: 1: opening code tag 3: closing code tag
+#: includes/class-salexpresso.php:332
+msgid "You have installed a development version of SaleXpresso which requires files to be built and minified. From the plugin directory, run %1$sgulp build%2$s to build and minify assets."
+msgstr ""
+
+#. translators: 1: is a link to WordPress.org Repository 2: is a link to the GitHub Repository release page. 3: closing link
+#: includes/class-salexpresso.php:338
+msgid "Or you can download a pre-built version of the plugin from the %1$sWordPress.org repository%3$s or by visiting %2$sthe releases page in the GitHub repository%3$s."
+msgstr ""
+
+#: includes/abstracts/class-sxp-admin-page.php:83
+msgid "Add New"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:108, includes/classes/class-sxp-admin-menus.php:108
+msgid "SaleXpresso"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:109, includes/classes/class-sxp-admin-menus.php:109
+msgid "Dashboard"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:116, includes/classes/class-sxp-admin-menus.php:116
+msgid "Customer"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:123
+msgid "SaleXpresso Settings"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:123
+msgid "Settings"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:153
+msgid "SaleXpresso status"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-menus.php:153
+msgid "Status"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-notices.php:145
+msgid "Action failed. Please refresh the page and retry."
+msgstr ""
+
+#: includes/classes/class-sxp-admin-notices.php:149
+msgid "You don&#8217;t have permission to do this."
+msgstr ""
+
+#: includes/classes/class-sxp-admin-notices.php:219, includes/classes/class-sxp-admin-notices.php:299, includes/classes/class-sxp-admin-notices.php:365
+msgid "Dismiss"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-notices.php:236
+msgid "<strong>Welcome to SaleXpresso</strong> &#8211; You&lsquo;re setup is almost ready :)"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-notices.php:237
+msgid "Run the Setup Wizard"
+msgstr ""
+
+#: includes/classes/class-sxp-admin-notices.php:237
+msgid "Skip setup"
+msgstr ""
+
+#. translators: 1: Minimum PHP version 2: Minimum WordPress version
+#: includes/classes/class-sxp-admin-notices.php:278
+msgid "Update required: SaleXpresso will soon require PHP version %1$s and WordPress version %2$s or newer."
+msgstr ""
+
+#. translators: 1: Required WooCommerce Version. 2: Opening tag for installation link 3: Closing tag.
+#: includes/classes/class-sxp-admin-notices.php:347
+msgid "SaleXpresso requires WooCommerce version %1$s to be installed and active. You WooCommerce installed/activate %2$shere%3$s."
+msgstr ""
+
+#: includes/classes/customer/class-sxp-customer-list.php:51, includes/classes/customer/class-sxp-customer-list.php:55
+msgid "All Customers"
+msgstr ""
