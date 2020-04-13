@@ -79,6 +79,7 @@ final class SaleXpresso {
 	 * @return mixed
 	 */
 	public function __get( $key ) {
+		return null;
 	}
 	
 	/**
@@ -133,7 +134,7 @@ final class SaleXpresso {
 		$this->load_plugin_textdomain();
 		
 		SXP_Admin_Notices::init();
-		SXP_Admin_Notices::reset_admin_notices( true );
+		SXP_Admin_Notices::reset_admin_notices();
 		
 		// Init action.
 		do_action( 'salexpresso_init' );
@@ -267,6 +268,7 @@ final class SaleXpresso {
 			case 'frontend':
 				return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! $this->is_rest_api_request();
 		}
+		return false;
 	}
 	
 	/**
@@ -419,8 +421,10 @@ final class SaleXpresso {
 			}
 		}
 		if ( ! $once ) {
+			/** @noinspection PhpIncludeInspection */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			return ! $required ? include $file : require $file;
 		} else {
+			/** @noinspection PhpIncludeInspection */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			return ! $required ? include_once $file : require_once $file;
 		}
 	}
