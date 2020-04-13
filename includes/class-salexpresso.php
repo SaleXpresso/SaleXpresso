@@ -144,12 +144,15 @@ final class SaleXpresso {
 	 *
 	 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
 	 *
-	 * Locales found in:
-	 *      - WP_LANG_DIR/woocommerce/woocommerce-LOCALE.mo
-	 *      - WP_LANG_DIR/plugins/woocommerce-LOCALE.mo
+	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		$locale = determine_locale();
+		if ( function_exists( 'determine_locale' ) ) {
+			$locale = determine_locale();
+		} else {
+			// @todo Remove when start supporting WP 5.0 or later.
+			$locale = is_admin() ? get_user_locale() : get_locale();
+		}
 		
 		$locale = apply_filters( 'plugin_locale', $locale, 'salexpresso' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		
