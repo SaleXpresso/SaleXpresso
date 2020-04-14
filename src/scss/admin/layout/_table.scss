@@ -1,0 +1,120 @@
+.sxp{
+    &-table {
+        border: none !important;
+        border-collapse: collapse;
+        border-radius: 4px;
+        border-style: hidden; /* hide standard table (collapsed) border */
+        box-shadow: 0 0 0 1px transparent;
+        thead {
+            th {
+                padding: 18px;
+                font-weight: 700;
+                color: $table-header-color !important;
+                border-bottom: $border-width solid $border-color;
+
+                &:last-child {
+                    text-align: right;
+                }
+
+                a {
+                    color: $table-header-color !important;
+                    padding: 18px;
+                }
+            }
+            td {
+                border-bottom: $border-width solid $border-color;
+
+            }
+            td.check-column {
+                padding: 4px 0 0 10px;
+            }
+        }
+        tbody {
+            th.check-column {
+                padding: 18px 0 0 10px;
+                border-bottom: 1px solid $border-color;
+            }
+            td {
+                font-size: 0.875rem;
+                color: $paragraph-color;
+                padding: 17px;
+                border-bottom: 1px solid $border-color;
+                a {
+                    color: $paragraph-color;
+                }
+
+                &:last-child {
+                    text-align: right;
+                }
+            }
+        }
+        input[type=checkbox] {
+            border: $table-checkbox-input-width solid $table-checkbox-input;
+            border-radius: 0;
+        }
+        input[type=checkbox]:checked {
+            border: none;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+        input[type=checkbox]:checked::before {
+            content: url('../images/check-square.svg');
+            margin: -.1875rem 0 0 -.25rem;
+            height: 1.3125rem;
+            width: 1.3125rem;
+            margin-top: 0;
+        }
+    }
+    &-customer-campaign-list {
+        margin: 0;
+        li {
+            display: inline-block;
+            margin: 0;
+            a {
+                font-size: 0.875rem;
+                color: $paragraph-color;
+                padding: 3px 8px;
+                border-radius: 2rem;
+                border: $table-campaign-border-width solid $table-campaign-border;
+            }
+        }
+    }
+    &-customer-type-name {
+        a {
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+    }
+    &-customer-type-vip {
+        a {
+            background: $customer-type-vip;
+        }
+    }
+    &-customer-type-wholeseller {
+        a {
+            background: $customer-type-wholeseller;
+        }
+    }
+    &-customer-type-b2b {
+        a {
+            background: $customer-type-b2b;
+        }
+    }
+    &-customer-type-general {
+        a {
+            background: $customer-type-general;
+        }
+    }
+    &-customer-type-distributor {
+        a {
+            background: $customer-type-distributor;
+        }
+    }
+    &-customer-type-new {
+        a {
+            background: $customer-type-new;
+        }
+    }
+}

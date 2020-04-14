@@ -101,6 +101,7 @@ class SXP_Assets {
 			[],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.css' )
 		);
+		wp_enqueue_style('sxp-google-font', '//fonts.googleapis.com/css?family=Public+Sans:400,700&display=swap');
 	}
 	
 	/**

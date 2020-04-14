@@ -54,7 +54,7 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 			],
 			'customer-type'  => [
 				'label'   => __( 'Customer Types', 'salexpresso' ),
-				'content' => 'Customer Types List Table',
+				'content' => [ $this, 'render_customer_type'] ,
 			],
 			'customer-group' => [
 				'label'   => __( 'Customer Groups', 'salexpresso' ),
@@ -71,6 +71,13 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	protected function render_customer_list() {
 		$list = new SXP_Customer_List_Table();
+	}
+
+	/**
+	 * Render the customer type
+	 */
+	protected function render_customer_type() {
+		$list = new SXP_Customer_Type_Table();
 	}
 	
 	/**

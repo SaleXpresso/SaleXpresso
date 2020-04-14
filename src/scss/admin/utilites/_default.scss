@@ -1,0 +1,17 @@
+.sxp-wrapper,
+.sxp-wrapper * {
+  box-sizing: border-box;
+}
+
+.sxp {
+  &-wrapper {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.875rem;
+    position: relative;
+    display: block;
+    width: 100%;
+    float: left;
+    margin: 0 auto;
+    padding: 0;
+  }
+}
