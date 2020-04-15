@@ -1,9 +1,13 @@
 // Colors
-$paragraph-color:       #16163D;
-$table-header-color:    #7D7DB3;
-$table-checkbox-input:  #D0CFE5;
-$table-campaign-border: #D4D4EB;
-$border-color:          #F2F4FC;
+$light-purple:             #D0CFE5;
+$paragraph-color:          #16163D;
+$table-header-color:       #7D7DB3;
+$table-checkbox-input:     $light-purple;
+$table-campaign-border:    #D4D4EB;
+$border-color:             #F2F4FC;
+$customer-type-heading:    #7D7DB2;
+$customer-type-heading-bg: #F4F3FC;
+$customer-type-rule-border: $light-purple;
 
 // Customer Type
 $customer-type-vip:         #FFD0D0;

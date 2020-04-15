@@ -81,20 +81,20 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/scss/admin.scss");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/scss/styles.scss");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/scss/admin.scss":
-/*!*****************************!*\
-  !*** ./src/scss/admin.scss ***!
-  \*****************************/
+/***/ "./src/scss/styles.scss":
+/*!******************************!*\
+  !*** ./src/scss/styles.scss ***!
+  \******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"./assets/css/admin.css\");\n\n//# sourceURL=webpack:///./src/scss/admin.scss?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"./assets/css/styles.css\");\n\n//# sourceURL=webpack:///./src/scss/styles.scss?");
 
 /***/ })
 

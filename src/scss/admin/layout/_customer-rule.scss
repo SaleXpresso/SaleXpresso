@@ -1,0 +1,53 @@
+.sxp {
+    &-customer-type-section-header {
+        color: $paragraph-color;
+        font-weight: 700;
+        position: relative;
+        line-height: 20px;
+        &:after {
+            content: url('../images/header-info.svg');
+            position: absolute;
+            height: 16px;
+            top: 2px;
+            margin-left: 8px;
+        }
+    }
+    &-customer-type-section-title-container {
+        color: $customer-type-heading;
+        background: $customer-type-heading-bg;
+        padding: 14px 16px;
+        border-radius: 4px;
+        line-height: 20px;
+    }
+    &-customer-type-rule-wrapper {
+        background: white;
+        padding: 32px;
+        border-radius: 8px;
+    }
+    &-custom-select, &-custom-number {
+        border: 1px solid $table-checkbox-input;
+        height: 40px;
+    }
+    &-customer-type-single-rule {
+        padding: 12px 0;
+        border-bottom: 1px dashed $customer-type-rule-border;
+    }
+    &-customer-type-rule-add-btn {
+        a {
+            text-decoration: none;
+            color: $customer-type-heading;
+            font-weight: 700;
+            line-height: 20px;
+            position: relative;
+            margin-left: 16px;
+            &:before {
+                content: url('../images/plus.svg');
+                height: 16px;
+                width: 16px;
+                position: absolute;
+                top: 0;
+                left: -16px;
+            }
+        }
+    }
+}

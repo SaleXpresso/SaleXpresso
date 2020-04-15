@@ -1,21 +1,13 @@
-!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=4)}([
+!function(e){var n={};function _(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,_),t.l=!0,t.exports}_.m=e,_.c=n,_.d=function(e,n,r){_.o(e,n)||Object.defineProperty(e,n,{enumerable:!0,get:r})},_.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},_.t=function(e,n){if(1&n&&(e=_(e)),8&n)return e;if(4&n&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(_.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&n&&"string"!=typeof e)for(var t in e)_.d(r,t,function(n){return e[n]}.bind(null,t));return r},_.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return _.d(n,"a",n),n},_.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},_.p="",_(_.s="./src/js/admin.js")}({"./src/js/admin.js":
+/*!*************************!*\
+  !*** ./src/js/admin.js ***!
+  \*************************/
+/*! no exports provided */function(module,__webpack_exports__,__webpack_require__){"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_tabs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/_tabs.js */ \"./src/js/components/_tabs.js\");\n/**!\r\n * SaleXpresso Admin Scripts\r\n *\r\n * @author SaleXpresso <support@salexpresso.com>\r\n * @package SaleXpresso\r\n * @version 1.0.0\r\n * @since 1.0.0\r\n */\n // import $ from 'jquery';\n// import { sprintf, _n } from '@wordpress/i18n';\n\n(function ($, window, document, wp, pagenow, SaleXpresso) {\n  // const sxp_page = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? pagenow.replace( 'salexpresso_page_', '' ) : false;\n  $(window).on('load', function () {\n    var sxhWrapper = $('.sxp-wrapper');\n    $(document).on('change', '.selector', function (event) {\n      event.preventDefault();\n    });\n\n    if (sxhWrapper.hasClass('sxp-has-tabs')) {\n      Object(_components_tabs_js__WEBPACK_IMPORTED_MODULE_0__[\"tabs\"])();\n    }\n  });\n})(jQuery, window, document, wp, pagenow, SaleXpresso);\n\n//# sourceURL=webpack:///./src/js/admin.js?")},"./src/js/components/_tabs.js":
+/*!************************************!*\
+  !*** ./src/js/components/_tabs.js ***!
+  \************************************/
+/*! exports provided: tabs */function(module,__webpack_exports__,__webpack_require__){"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"tabs\", function() { return tabs; });\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ \"jquery\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);\n\n\nfunction tabs() {\n  return jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '[data-target]', function (event) {\n    var self = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),\n        tab = self.closest('.tab-item'),\n        target = jquery__WEBPACK_IMPORTED_MODULE_0___default()(\"#\".concat(self.data('target')));\n\n    if (target.length) {\n      // Switch to the tab.\n      event.preventDefault();\n\n      if (!tab.hasClass('is-active')) {\n        jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tab-item').removeClass('is-active');\n        tab.addClass('is-active');\n        jquery__WEBPACK_IMPORTED_MODULE_0___default()('.tab-content').removeClass('is-active');\n        target.addClass('is-active');\n      }\n\n      self.trigger('shown');\n    }\n  });\n}\n\n\n\n//# sourceURL=webpack:///./src/js/components/_tabs.js?")},jquery:
 /*!*************************!*\
   !*** external "jQuery" ***!
   \*************************/
-/*! no static exports found */
-/*! exports used: default */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */function(e,t){e.exports=jQuery},,,
-/*!*************************************!*\
-  !*** ./src/js/admin.js + 1 modules ***!
-  \*************************************/
-/*! no exports provided */
-/*! all exports used */
-/*! ModuleConcatenation bailout: Cannot concat with external "jQuery" (<- Module is not an ECMAScript module) */,function(e,t,n){"use strict";n.r(t);var r=n(0),o=n.n(r);function a(){return o()(document).on("click","[data-target]",(function(e){var t=o()(this),n=t.closest(".tab-item"),r=o()("#".concat(t.data("target")));r.length&&(e.preventDefault(),n.hasClass("is-active")||(o()(".tab-item").removeClass("is-active"),n.addClass("is-active"),o()(".tab-content").removeClass("is-active"),r.addClass("is-active")),t.trigger("shown"))}))}
-/**!
- * SaleXpresso Admin Scripts
- *
- * @author SaleXpresso <support@salexpresso.com>
- * @package SaleXpresso
- * @version 1.0.0
- * @since 1.0.0
- */!function(e,t,n,r,o,i){e(t).on("load",(function(){var t=e(".sxp-wrapper");e(n).on("change",".selector",(function(e){e.preventDefault()})),t.hasClass("sxp-has-tabs")&&a()}))}(jQuery,window,document,wp,pagenow,SaleXpresso)}]);
+/*! no static exports found */function(module,exports){eval("module.exports = jQuery;\n\n//# sourceURL=webpack:///external_%22jQuery%22?")}});
