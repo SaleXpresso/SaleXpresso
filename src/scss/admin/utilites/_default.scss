@@ -9,9 +9,26 @@
     font-size: 0.875rem;
     position: relative;
     display: block;
-    width: 100%;
-    float: left;
-    margin: 0 auto;
-    padding: 0;
+  }
+  &-btn {
+    padding: 16px 24px;
+    line-height: 20px;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  &-btn-primary {
+    background: $primary;
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+  }
+  &-btn-muted {
+    background: $light-purple-2;
+    color: $dark-purple;
+    &:hover {
+      color: $dark-purple;
+    }
   }
 }

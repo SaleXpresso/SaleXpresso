@@ -1,11 +1,16 @@
 // Colors
 $light-purple:             #D0CFE5;
-$paragraph-color:          #16163D;
+$light-purple-2:           #E7E6F5;
+$dark-purple:              #7D7DB2;
+$primary:                  #3355FF;
+$white:                    #ffffff;
+$text-color:               #16163D;
 $table-header-color:       #7D7DB3;
+$paragraph-color:          $text-color;
 $table-checkbox-input:     $light-purple;
 $table-campaign-border:    #D4D4EB;
 $border-color:             #F2F4FC;
-$customer-type-heading:    #7D7DB2;
+$customer-type-heading:    $dark-purple;
 $customer-type-heading-bg: #F4F3FC;
 $customer-type-rule-border: $light-purple;
 

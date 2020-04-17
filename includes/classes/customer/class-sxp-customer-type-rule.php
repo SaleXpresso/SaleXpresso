@@ -87,11 +87,11 @@ class SXP_Customer_Type_Rule {
 								</select>
 								<div class="sxp-form-group">
 									<label for="min-quantity">min</label>
-									<input type="number" name="min-quantity" value="50">
+									<input type="number" name="min-quantity" id="min-quantity" value="50">
 								</div><!-- sxp-form-group -->
 								<div class="sxp-form-group">
 									<label for="max-quantity">max</label>
-									<input type="number" name="max-quantity" value="2000">
+									<input type="number" name="max-quantity" id="max-quantity" value="2000">
 								</div><!-- sxp-form-group -->
 							</div><!-- end .sxp-customer-type-single-rule -->
 
@@ -183,14 +183,16 @@ class SXP_Customer_Type_Rule {
 							</div><!-- end .sxp-customer-type-single-rule -->
 						</div><!-- end .sxp-customer-type-rules -->
 					</div><!-- end .sxp-customer-type-rules-wrapper -->
+				</div><!-- end .sxp-customer-type-rule-container -->
+				<div class="sxp-customer-type-rule-botttom">
 					<div class="sxp-customer-type-rule-add-btn">
 						<a href="#">Add Condition</a>
-					</div>
-				</div><!-- end .sxp-customer-type-rule-container -->
-				<div class="sxp-customer-type-rule-save-wrapper">
-					<a href="#">Cancel</a>
-					<a href="#">Save New Customer Type</a>
-				</div>
+					</div><!-- end .sxp-customer-type-rule-add-btn -->
+					<div class="sxp-customer-type-rule-save-wrapper">
+						<a class="sxp-customer-type-rule-cancel-btn" href="#">Cancel</a>
+						<a class="sxp-btn sxp-btn-muted sxp-customer-type-rule-save-btn" href="#">Save New Customer Type</a>
+					</div><!-- end .sxp-customer-type-rule-save-wrapper -->
+				</div><!-- end .sxp-customer-type-rule-bottom -->
 			</div><!-- end .sxp-customer-type-rule-wrapper -->
 		<?php
 	}
