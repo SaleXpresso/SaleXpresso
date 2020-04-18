@@ -2,10 +2,11 @@
 $light-purple:             #D0CFE5;
 $light-purple-2:           #E7E6F5;
 $dark-purple:              #7D7DB2;
+$dark-purple-2:            #7D7DB3;
 $primary:                  #3355FF;
 $white:                    #ffffff;
 $text-color:               #16163D;
-$table-header-color:       #7D7DB3;
+$table-header-color:       $dark-purple;
 $paragraph-color:          $text-color;
 $table-checkbox-input:     $light-purple;
 $table-campaign-border:    #D4D4EB;
@@ -14,13 +15,14 @@ $customer-type-heading:    $dark-purple;
 $customer-type-heading-bg: #F4F3FC;
 $customer-type-rule-border: $light-purple;
 
-// Customer Type
-$customer-type-vip:         #FFD0D0;
-$customer-type-wholeseller: #E3FFDA;
-$customer-type-b2b:         #FFCFB5;
-$customer-type-general:     #DAE4FF;
-$customer-type-distributor: #CFFFF4;
-$customer-type-new:         #FFFCB5;
+//
+// Customer List Badge
+//
+$badgeColors: #FFD0D0, #E3FFDA, #FFCFB5, #DAE4FF, #CFFFF4, #FFFCB5;
+$badgeColorsLength: length($badgeColors);
+
+//colors
+$customer-list-location-color: $dark-purple-2;
 
 // Default
 $input-width: 1px;
@@ -31,3 +33,9 @@ $border-width: 1px;
 //
 $table-checkbox-input-width:  $input-width * 2;
 $table-campaign-border-width: $input-width;
+
+//
+// Pagination
+//
+$pagination-color:        $dark-purple-2;
+$pagination-active-color: $text-color;

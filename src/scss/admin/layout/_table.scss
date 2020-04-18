@@ -7,8 +7,10 @@
         box-shadow: 0 0 0 1px transparent;
         thead {
             th {
-                padding: 18px;
+                padding: 0 1rem;
                 font-weight: 700;
+                height: 56px;
+                vertical-align: middle;
                 color: $table-header-color !important;
                 border-bottom: $border-width solid $border-color;
 
@@ -37,7 +39,9 @@
             td {
                 font-size: 0.875rem;
                 color: $paragraph-color;
-                padding: 17px;
+                padding: 0 1rem;
+                height: 56px;
+                vertical-align: middle;
                 border-bottom: 1px solid $border-color;
                 a {
                     color: $paragraph-color;
@@ -51,6 +55,7 @@
         input[type=checkbox] {
             border: $table-checkbox-input-width solid $table-checkbox-input;
             border-radius: 0;
+            box-shadow: none;
         }
         input[type=checkbox]:checked {
             border: none;
@@ -67,6 +72,28 @@
             margin-top: 0;
         }
     }
+    &-customer-desc {
+        &-thumbnail {
+            float: left;
+            height: 40px;
+            img {
+                border-radius: 20px;
+            }
+        }
+        &-details {
+            float: left;
+            margin-left: 8px;
+
+            &-name {
+                color: $text-color !important;
+                margin: 0 !important;
+            }
+            &-location {
+                margin: 0 !important;
+                color: $customer-list-location-color !important;
+            }
+        }
+    }
     &-customer-campaign-list {
         margin: 0;
         li {
@@ -81,40 +108,19 @@
             }
         }
     }
+    &-customer-tag-list {
+        @extend .sxp-customer-campaign-list;
+    }
     &-customer-type-name {
         a {
             padding: 4px 6px;
             border-radius: 4px;
         }
     }
-    &-customer-type-vip {
-        a {
-            background: $customer-type-vip;
-        }
-    }
-    &-customer-type-wholeseller {
-        a {
-            background: $customer-type-wholeseller;
-        }
-    }
-    &-customer-type-b2b {
-        a {
-            background: $customer-type-b2b;
-        }
-    }
-    &-customer-type-general {
-        a {
-            background: $customer-type-general;
-        }
-    }
-    &-customer-type-distributor {
-        a {
-            background: $customer-type-distributor;
-        }
-    }
-    &-customer-type-new {
-        a {
-            background: $customer-type-new;
-        }
+}
+
+@for $i from 1 through $badgeColorsLength {
+    .sxp-customer-type-list:nth-of-type(#{$badgeColorsLength}n+#{$i}) .sxp-customer-type-name a {
+        background: nth($badgeColors, $i);
     }
 }

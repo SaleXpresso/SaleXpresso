@@ -1,0 +1,25 @@
+.sxp {
+    &-customer-pagination-wrapper {
+        text-align: center;
+    }
+    &-pagination {
+        margin: 2rem 0 1.5rem;
+        li {
+            display: inline-block;
+            margin: 0;
+            padding: 0 .75rem;
+
+            a {
+                text-decoration: none;
+                color: $pagination-color;
+                line-height: 1.25rem;
+                vertical-align: middle;
+
+                &:hover, &:active, &:focus {
+                    color: $pagination-active-color;
+                }
+            }
+        }
+
+    }
+}
