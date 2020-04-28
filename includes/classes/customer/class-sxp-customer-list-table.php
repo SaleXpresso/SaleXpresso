@@ -30,6 +30,15 @@ class SXP_Customer_List_Table {
 
         ?>
 		<div class="sxp-customer-list-wrapper">
+            <div class="sxp-customer-top-wrapper">
+				<div class="sxp-customer-search">
+					<input type="text" placeholder="Search Customers">
+				</div><!-- end .sxp-customer-search -->
+	            <div class="sxp-customer-btn-wrapper">
+		            <a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default">Customer Type Rules</a>
+		            <a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary">Add New Customer</a>
+	            </div>
+            </div><!-- end .sxp-customer-top-wrapper -->
 			<table class="wp-list-table widefat sxp-table sxp-customer-table">
 				<thead>
 					<tr>

@@ -4,6 +4,9 @@
 }
 
 .sxp {
+  &-clearfix {
+    clear: both;
+  }
   &-wrapper {
     font-family: 'Public Sans', sans-serif;
     font-size: 0.875rem;
@@ -29,6 +32,15 @@
 
     &:hover {
       color: $white;
+    }
+  }
+  &-btn-default {
+    padding: 1rem 1.5rem;
+    background: $white;
+    color: $dark-purple;
+
+    &:hover {
+      color: $dark-purple
     }
   }
   &-btn-secondary {

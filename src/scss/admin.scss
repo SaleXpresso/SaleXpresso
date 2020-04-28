@@ -14,7 +14,9 @@
 // Header
 @import "admin/layout/header";
 // Content
+@import "admin/layout/filter";
 @import "admin/layout/content";
+@import "admin/layout/daterangepicker";
 @import "admin/layout/table";
 @import "admin/layout/customer";
 @import "admin/layout/pagination";

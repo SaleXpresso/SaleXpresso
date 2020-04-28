@@ -93,6 +93,8 @@ class SXP_Assets {
 		);
 		
 		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [] );
+		wp_enqueue_script('moment-js', '//cdn.jsdelivr.net/momentjs/latest/moment.min.js', 'jquery', '3.4', 'true');
+		wp_enqueue_script('daterange-js', '//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'jquery', '3.4', 'true');
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
 		wp_enqueue_style(
