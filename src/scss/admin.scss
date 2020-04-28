@@ -9,13 +9,14 @@
 
 // Utilites
 @import "admin/utilites/variables";
+@import "admin/utilites/mixins";
 @import "admin/utilites/default";
 // Header
 @import "admin/layout/header";
 // Content
 @import "admin/layout/content";
 @import "admin/layout/table";
-@import "admin/layout/customer-rule";
+@import "admin/layout/customer";
 @import "admin/layout/pagination";
 // Admin Tabs
 @import "admin/layout/tabs";

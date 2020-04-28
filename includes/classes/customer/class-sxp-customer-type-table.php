@@ -28,15 +28,15 @@ class SXP_Customer_Type_Table {
 	public function __construct() {
 		// @TODO Extend WP_List_Table.
 		?>
-        <div class="sxp-customer-type-wrapper">
-	        <table class="wp-list-table widefat sxp-table sxp-customer-type-table">
+        <div class="sxp-customer-wrapper">
+	        <table class="wp-list-table widefat sxp-table sxp-customer-table">
 		        <thead>
 			        <tr>
 				        <td id="cb" class="manage-column column-cb check-column">
 					        <label class="screen-reader-text" for="cb-select-all-1">Select All</label>
 					        <input id="cb-select-all-1" type="checkbox">
 				        </td>
-				        <th scope="col" id="sxp-customer-type" class="manage-column column-title column-primary sortable desc"><a href="#"><span>Customer Type</span><span class="sorting-indicator"></span></a></th>
+				        <th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc"><a href="#"><span>Customer Type</span><span class="sorting-indicator"></span></a></th>
 				        <th scope="col" id="sxp-customer-campaign" class="manage-column column-author">Campaign Running</th>
 				        <th scope="col" id="sxp-customer-assigned" class="manage-column column-categories">Assigned</th>
 
@@ -44,7 +44,7 @@ class SXP_Customer_Type_Table {
 		        </thead>
 
 		        <tbody id="the-list">
-			        <tr id="sxp-customer-type-list-1" class="sxp-customer-type-list">
+			        <tr id="sxp-customer-list-1" class="sxp-customer-list">
 				        <th scope="row" class="check-column">
 					        <label class="screen-reader-text" for="cb-select-1">
 						        Select Hello world! </label>
@@ -56,7 +56,7 @@ class SXP_Customer_Type_Table {
 						        </span>
 					        </div>
 				        </th>
-				        <td class="sxp-customer-type-name sxp-customer-type-vip" data-colname="sxp-customer-type"><a href="#">VIP</a></td>
+				        <td class="sxp-customer-name sxp-customer-vip" data-colname="sxp-customer"><a href="#">VIP</a></td>
 				        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 					        <div class="sxp-customer-compaign-container">
 						        <ul class="sxp-customer-campaign-list">
@@ -67,9 +67,9 @@ class SXP_Customer_Type_Table {
 					        </div><!-- end .sxp-customer-compaign-container -->
 				        </td>
 				        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">799</td>
-			        </tr><!-- end .sxp-customer-type-list -->
+			        </tr><!-- end .sxp-customer-list -->
 
-			        <tr id="sxp-customer-type-list-2" class="sxp-customer-type-list">
+			        <tr id="sxp-customer-list-2" class="sxp-customer-list">
 				        <th scope="row" class="check-column">
 					        <label class="screen-reader-text" for="cb-select-1">
 						        Select Hello world! </label>
@@ -81,7 +81,7 @@ class SXP_Customer_Type_Table {
 						        </span>
 					        </div>
 				        </th>
-				        <td class="sxp-customer-type-name sxp-customer-type-wholeseller" data-colname="sxp-customer-type"><a href="#">wholeseller</a></td>
+				        <td class="sxp-customer-name sxp-customer-wholeseller" data-colname="sxp-customer"><a href="#">wholeseller</a></td>
 				        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 					        <div class="sxp-customer-compaign-container">
 						        <ul class="sxp-customer-campaign-list">
@@ -91,9 +91,9 @@ class SXP_Customer_Type_Table {
 					        </div><!-- end .sxp-customer-compaign-container -->
 				        </td>
 				        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-			        </tr><!-- end .sxp-customer-type-list -->
+			        </tr><!-- end .sxp-customer-list -->
 
-			        <tr id="sxp-customer-type-list-3" class="sxp-customer-type-list">
+			        <tr id="sxp-customer-list-3" class="sxp-customer-list">
 				        <th scope="row" class="check-column">
 					        <label class="screen-reader-text" for="cb-select-1">
 						        Select Hello world! </label>
@@ -105,7 +105,7 @@ class SXP_Customer_Type_Table {
 						        </span>
 					        </div>
 				        </th>
-				        <td class="sxp-customer-type-name sxp-customer-type-b2b" data-colname="sxp-customer-type"><a href="#">B2B</a></td>
+				        <td class="sxp-customer-name sxp-customer-b2b" data-colname="sxp-customer"><a href="#">B2B</a></td>
 				        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 					        <div class="sxp-customer-compaign-container">
 						        <ul class="sxp-customer-campaign-list">
@@ -117,9 +117,9 @@ class SXP_Customer_Type_Table {
 					        </div><!-- end .sxp-customer-compaign-container -->
 				        </td>
 				        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-			        </tr><!-- end .sxp-customer-type-list -->
+			        </tr><!-- end .sxp-customer-list -->
 
-                    <tr id="sxp-customer-type-list-4" class="sxp-customer-type-list">
+                    <tr id="sxp-customer-list-4" class="sxp-customer-list">
                         <th scope="row" class="check-column">
                             <label class="screen-reader-text" for="cb-select-1">
                                 Select Hello world! </label>
@@ -131,7 +131,7 @@ class SXP_Customer_Type_Table {
 						        </span>
                             </div>
                         </th>
-                        <td class="sxp-customer-type-name sxp-customer-type-general" data-colname="sxp-customer-type"><a href="#">General</a></td>
+                        <td class="sxp-customer-name sxp-customer-general" data-colname="sxp-customer"><a href="#">General</a></td>
                         <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
                             <div class="sxp-customer-compaign-container">
                                 <ul class="sxp-customer-campaign-list">
@@ -143,9 +143,9 @@ class SXP_Customer_Type_Table {
                             </div><!-- end .sxp-customer-compaign-container -->
                         </td>
                         <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-                    </tr><!-- end .sxp-customer-type-list -->
+                    </tr><!-- end .sxp-customer-list -->
 
-                    <tr id="sxp-customer-type-list-5" class="sxp-customer-type-list">
+                    <tr id="sxp-customer-list-5" class="sxp-customer-list">
                         <th scope="row" class="check-column">
                             <label class="screen-reader-text" for="cb-select-1">
                                 Select Hello world! </label>
@@ -157,7 +157,7 @@ class SXP_Customer_Type_Table {
 						        </span>
                             </div>
                         </th>
-                        <td class="sxp-customer-type-name sxp-customer-type-distributor" data-colname="sxp-customer-type"><a href="#">Distributor</a></td>
+                        <td class="sxp-customer-name sxp-customer-distributor" data-colname="sxp-customer"><a href="#">Distributor</a></td>
                         <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
                             <div class="sxp-customer-compaign-container">
                                 <ul class="sxp-customer-campaign-list">
@@ -167,9 +167,9 @@ class SXP_Customer_Type_Table {
                             </div><!-- end .sxp-customer-compaign-container -->
                         </td>
                         <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-                    </tr><!-- end .sxp-customer-type-list -->
+                    </tr><!-- end .sxp-customer-list -->
 
-                    <tr id="sxp-customer-type-list-6" class="sxp-customer-type-list">
+                    <tr id="sxp-customer-list-6" class="sxp-customer-list">
                         <th scope="row" class="check-column">
                             <label class="screen-reader-text" for="cb-select-1">
                                 Select Hello world! </label>
@@ -181,7 +181,7 @@ class SXP_Customer_Type_Table {
 						        </span>
                             </div>
                         </th>
-                        <td class="sxp-customer-type-name sxp-customer-type-new" data-colname="sxp-customer-type"><a href="#">New</a></td>
+                        <td class="sxp-customer-name sxp-customer-new" data-colname="sxp-customer"><a href="#">New</a></td>
                         <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
                             <div class="sxp-customer-compaign-container">
                                 <ul class="sxp-customer-campaign-list">
@@ -191,11 +191,11 @@ class SXP_Customer_Type_Table {
                             </div><!-- end .sxp-customer-compaign-container -->
                         </td>
                         <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-                    </tr><!-- end .sxp-customer-type-list -->
+                    </tr><!-- end .sxp-customer-list -->
 		        </tbody>
 
-	        </table><!-- end .sxp-customer-type-table -->
-        </div><!-- end .sxp-customer-type-wrapper -->
+	        </table><!-- end .sxp-customer-table -->
+        </div><!-- end .sxp-customer-wrapper -->
 		<?php
 	}
 }

@@ -17,18 +17,22 @@
     }
   }
   &-btn {
-    padding: 16px 24px;
-    line-height: 20px;
-    border-radius: 4px;
+    line-height: 1.25rem;
+    border-radius: .25rem;
     text-decoration: none;
+    display: inline-block;
   }
   &-btn-primary {
+    padding: 1rem 1.5rem;
     background: $primary;
     color: $white;
 
     &:hover {
       color: $white;
     }
+  }
+  &-btn-secondary {
+    padding: .5rem 1rem;
   }
   &-btn-muted {
     background: $light-purple-2;

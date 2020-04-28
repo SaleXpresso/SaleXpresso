@@ -30,7 +30,7 @@ class SXP_Customer_List_Table {
 
         ?>
 		<div class="sxp-customer-list-wrapper">
-			<table class="wp-list-table widefat sxp-table sxp-customer-type-table">
+			<table class="wp-list-table widefat sxp-table sxp-customer-table">
 				<thead>
 					<tr>
 						<td id="cb" class="manage-column column-cb check-column">
@@ -38,7 +38,7 @@ class SXP_Customer_List_Table {
 							<input id="cb-select-all-1" type="checkbox">
 						</td>
 						<th scope="col" id="sxp-customer-customers" class="manage-column column-categories">Customers</th>
-						<th scope="col" id="sxp-customer-type" class="manage-column column-title column-primary sortable desc"><a href="#"><span>Customer Type</span><span class="sorting-indicator"></span></a></th>
+						<th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc"><a href="#"><span>Customer Type</span><span class="sorting-indicator"></span></a></th>
 						<th scope="col" id="sxp-customer-tag" class="manage-column column-author">Customer Tag</th>
 						<th scope="col" id="sxp-customer-order" class="manage-column column-categories">Orders</th>
 						<th scope="col" id="sxp-customer-revenue" class="manage-column column-categories">Revenue</th>
@@ -47,7 +47,7 @@ class SXP_Customer_List_Table {
 				</thead>
 
 				<tbody id="the-list">
-                    <tr id="sxp-customer-type-list-1" class="sxp-customer-type-list">
+                    <tr id="sxp-customer-list-1" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 	                        <label class="screen-reader-text" for="cb-select-1"></label>
 	                        <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -63,7 +63,7 @@ class SXP_Customer_List_Table {
 	                            </div><!-- end .sxp-customer-desc-detaisl -->
 	                        </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">VIP</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">VIP</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 	                        <div class="sxp-customer-tag-container">
 	                            <ul class="sxp-customer-tag-list">
@@ -75,8 +75,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">799</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$6910.60</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-	                </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-2" class="sxp-customer-type-list">
+	                </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-2" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -92,7 +92,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -104,8 +104,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-3" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-3" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -121,7 +121,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -133,8 +133,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-4" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-4" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -150,7 +150,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -162,8 +162,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-5" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-5" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -179,7 +179,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -191,8 +191,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-6" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-6" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -208,7 +208,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -220,8 +220,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-7" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-7" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -237,7 +237,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -249,8 +249,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-8" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-8" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -266,7 +266,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -278,8 +278,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-9" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-9" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -295,7 +295,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -307,8 +307,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-10" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-10" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -324,7 +324,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -336,8 +336,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-11" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-11" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -353,7 +353,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -365,8 +365,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-12" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-12" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -382,7 +382,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -394,8 +394,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-13" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-13" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -411,7 +411,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -423,8 +423,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-14" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-14" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -440,7 +440,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -452,8 +452,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-15" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-15" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -469,7 +469,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -481,8 +481,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-16" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-16" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -498,7 +498,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -510,8 +510,8 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
-                    <tr id="sxp-customer-type-list-17" class="sxp-customer-type-list">
+                    </tr><!-- end .sxp-customer-list -->
+                    <tr id="sxp-customer-list-17" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
@@ -527,7 +527,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-type-name" data-colname="sxp-customer-type"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -539,10 +539,10 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-type-list -->
+                    </tr><!-- end .sxp-customer-list -->
 				</tbody>
 
-			</table><!-- end .sxp-customer-type-table -->
+			</table><!-- end .sxp-customer-table -->
 
 			<div class="sxp-customer-pagination-wrapper">
 				<ul class="sxp-pagination">
@@ -558,8 +558,19 @@ class SXP_Customer_List_Table {
 					<li><a href="#">8</a></li>
 					<li><a href="#"><img alt="arrow-right.svg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIgOEwxMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMCA0TDE0IDhMMTAgMTIiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/></a></li>
 				</ul>
-
 			</div><!-- end .sxp-customer-paginaation-wrapper -->
+
+			<div class="sxp-customer-bottom-wrapper">
+				<div class="sxp-customer-selected-container">
+					<div class="sxp-customer-row-select">
+                        <a href="#" class="sxp-customer-remove-select"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="Remove selection"></a>
+						<a href="#" class="sxp-customer-selected">2 Rows Selected</a>
+					</div>
+					<div class="sxp-customer-remove-customer">
+						<a href="#">Delete</a>
+					</div>
+				</div><!-- end .sxp-customer-selected-container -->
+			</div><!-- end .sxp-customer-bottom-wrapper -->
 
 		</div><!-- end .sxp-customer-list-wrapper -->
 		<?php

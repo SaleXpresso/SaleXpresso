@@ -111,7 +111,7 @@
     &-customer-tag-list {
         @extend .sxp-customer-campaign-list;
     }
-    &-customer-type-name {
+    &-customer-name {
         a {
             padding: 4px 6px;
             border-radius: 4px;
@@ -120,7 +120,7 @@
 }
 
 @for $i from 1 through $badgeColorsLength {
-    .sxp-customer-type-list:nth-of-type(#{$badgeColorsLength}n+#{$i}) .sxp-customer-type-name a {
+    .sxp-customer-list:nth-of-type(#{$badgeColorsLength}n+#{$i}) .sxp-customer-name a {
         background: nth($badgeColors, $i);
     }
 }

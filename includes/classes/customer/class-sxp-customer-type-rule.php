@@ -27,19 +27,19 @@ class SXP_Customer_Type_Rule {
 	 */
 	public function __construct() {
 		?>
-			<div class="sxp-customer-type-rule-wrapper">
-				<div class="sxp-customer-type-name">
-					<h4 class="sxp-customer-type-section-header">Customer Type Name</h4>
-					<div class="sxp-customer-type-section-title-container">
+			<div class="sxp-customer-rule-wrapper">
+				<div class="sxp-customer-name">
+					<h4 class="sxp-customer-section-header">Customer Type Name</h4>
+					<div class="sxp-customer-section-title-container">
 						Distributor
 					</div>
-				</div><!-- end .sxp-customer-type-name -->
-				<div class="sxp-customer-type-rule-container">
-					<h4 class="sxp-customer-type-section-header">Create Rule</h4>
+				</div><!-- end .sxp-customer-name -->
+				<div class="sxp-customer-rule-container">
+					<h4 class="sxp-customer-section-header">Create Rule</h4>
 
-					<div class="sxp-customer-type-rules-wrapper">
-						<div class="sxp-customer-type-rules">
-							<div class="sxp-customer-type-single-rule">
+					<div class="sxp-customer-rules-wrapper">
+						<div class="sxp-customer-rules">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -49,9 +49,9 @@ class SXP_Customer_Type_Rule {
 									<option value="product-bought">Product Bought</option>
 									<option value="tagged-width">Tagged width</option>
 								</select>
-							</div><!-- end .sxp-customer-type-single-rule -->
+							</div><!-- end .sxp-customer-single-rule -->
 
-							<div class="sxp-customer-type-single-rule">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount" selected>Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -70,9 +70,9 @@ class SXP_Customer_Type_Rule {
 									<option value="less-than-or-equal"><=</option>
 								</select>
 								<input type="number" value="5000" class="sxp-custom-number">
-							</div><!-- end .sxp-customer-type-single-rule -->
+							</div><!-- end .sxp-customer-single-rule -->
 
-							<div class="sxp-customer-type-single-rule">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity" selected>Purchase Quantity</option>
@@ -93,9 +93,9 @@ class SXP_Customer_Type_Rule {
 									<label for="max-quantity">max</label>
 									<input type="number" name="max-quantity" id="max-quantity" value="2000">
 								</div><!-- sxp-form-group -->
-							</div><!-- end .sxp-customer-type-single-rule -->
+							</div><!-- end .sxp-customer-single-rule -->
 
-							<div class="sxp-customer-type-single-rule">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -114,8 +114,8 @@ class SXP_Customer_Type_Rule {
 									<option value="less-than-or-equal"><=</option>
 								</select>
 								<input type="number" value="600" class="sxp-custom-number">
-							</div><!-- end .sxp-customer-type-single-rule -->
-							<div class="sxp-customer-type-single-rule">
+							</div><!-- end .sxp-customer-single-rule -->
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -125,9 +125,9 @@ class SXP_Customer_Type_Rule {
 									<option value="product-bought">Product Bought</option>
 									<option value="tagged-width">Tagged width</option>
 								</select>
-							</div><!-- end .sxp-customer-type-single-rule -->
+							</div><!-- end .sxp-customer-single-rule -->
 
-							<div class="sxp-customer-type-single-rule">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -143,9 +143,9 @@ class SXP_Customer_Type_Rule {
 									<Option class="">9798KJLJ</Option>
 									<Option class="">JIGCL586</Option>
 								</select>
-							</div><!-- end .sxp-customer-type-single-rule -->
+							</div><!-- end .sxp-customer-single-rule -->
 
-							<div class="sxp-customer-type-single-rule">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -155,9 +155,9 @@ class SXP_Customer_Type_Rule {
 									<option value="product-bought" selected>Product Bought</option>
 									<option value="tagged-width">Tagged width</option>
 								</select>
-							</div><!-- end .sxp-customer-type-single-rule -->
+							</div><!-- end .sxp-customer-single-rule -->
 
-							<div class="sxp-customer-type-single-rule">
+							<div class="sxp-customer-single-rule">
 								<select class="sxp-custom-select">
 									<option value="purchase-ammount">Purchase Amount</option>
 									<option value="purchase-quantity">Purchase Quantity</option>
@@ -180,20 +180,20 @@ class SXP_Customer_Type_Rule {
 									<option value="no-tag">tag 1</option>
 									<option value="no-tag">tag 2</option>
 								</select>
-							</div><!-- end .sxp-customer-type-single-rule -->
-						</div><!-- end .sxp-customer-type-rules -->
-					</div><!-- end .sxp-customer-type-rules-wrapper -->
-				</div><!-- end .sxp-customer-type-rule-container -->
-				<div class="sxp-customer-type-rule-botttom">
-					<div class="sxp-customer-type-rule-add-btn">
+							</div><!-- end .sxp-customer-single-rule -->
+						</div><!-- end .sxp-customer-rules -->
+					</div><!-- end .sxp-customer-rules-wrapper -->
+				</div><!-- end .sxp-customer-rule-container -->
+				<div class="sxp-customer-rule-botttom">
+					<div class="sxp-customer-rule-add-btn">
 						<a href="#">Add Condition</a>
-					</div><!-- end .sxp-customer-type-rule-add-btn -->
-					<div class="sxp-customer-type-rule-save-wrapper">
-						<a class="sxp-customer-type-rule-cancel-btn" href="#">Cancel</a>
-						<a class="sxp-btn sxp-btn-muted sxp-customer-type-rule-save-btn" href="#">Save New Customer Type</a>
-					</div><!-- end .sxp-customer-type-rule-save-wrapper -->
-				</div><!-- end .sxp-customer-type-rule-bottom -->
-			</div><!-- end .sxp-customer-type-rule-wrapper -->
+					</div><!-- end .sxp-customer-rule-add-btn -->
+					<div class="sxp-customer-rule-save-wrapper">
+						<a class="sxp-customer-rule-cancel-btn" href="#">Cancel</a>
+						<a class="sxp-btn sxp-btn-muted sxp-customer-rule-save-btn" href="#">Save New Customer Type</a>
+					</div><!-- end .sxp-customer-rule-save-wrapper -->
+				</div><!-- end .sxp-customer-rule-bottom -->
+			</div><!-- end .sxp-customer-rule-wrapper -->
 		<?php
 	}
 }
