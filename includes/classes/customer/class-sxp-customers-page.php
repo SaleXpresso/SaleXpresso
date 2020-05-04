@@ -64,6 +64,10 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 				'label'   => __( 'Customer Groups', 'salexpresso' ),
 				'content' => 'Customer Groups List Table',
 			],
+			'customer-profile' => [
+				'label'   => __( 'Customer Profile', 'salexpresso' ),
+				'content' => [$this, 'render_customer_profile_rule'],
+			],
 		];
 		
 		// This filter documented in  includes/abstracts/class-sxp-admin-page.php.
@@ -89,6 +93,13 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	protected function render_customer_type_rule() {
 		$list = new SXP_Customer_Type_Rule();
+	}
+
+	/**
+	 * Render the customer Profile
+	 */
+	protected function render_customer_profile_rule() {
+		$list = new SXP_Customer_Profile_Table();
 	}
 
 	
