@@ -35,8 +35,8 @@ class SXP_Customer_List_Table {
 					<input type="text" placeholder="Search Customers">
 				</div><!-- end .sxp-customer-search -->
 	            <div class="sxp-customer-btn-wrapper">
-		            <a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default">Customer Type Rules</a>
-		            <a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary">Add New Customer</a>
+		            <a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i class="fa fa-plus"></i> Customer Type Rules</a>
+		            <a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
 	            </div>
             </div><!-- end .sxp-customer-top-wrapper -->
 			<table class="wp-list-table widefat sxp-table sxp-customer-table">
@@ -47,7 +47,7 @@ class SXP_Customer_List_Table {
 							<input id="cb-select-all-1" type="checkbox">
 						</td>
 						<th scope="col" id="sxp-customer-customers" class="manage-column column-categories">Customers</th>
-						<th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc"><a href="#"><span>Customer Type</span><span class="sorting-indicator"></span></a></th>
+						<th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc">Customer Type</th>
 						<th scope="col" id="sxp-customer-tag" class="manage-column column-author">Customer Tag</th>
 						<th scope="col" id="sxp-customer-order" class="manage-column column-categories">Orders</th>
 						<th scope="col" id="sxp-customer-revenue" class="manage-column column-categories">Revenue</th>

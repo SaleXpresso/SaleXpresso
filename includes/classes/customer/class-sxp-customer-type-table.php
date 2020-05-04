@@ -36,9 +36,9 @@ class SXP_Customer_Type_Table {
 					        <label class="screen-reader-text" for="cb-select-all-1">Select All</label>
 					        <input id="cb-select-all-1" type="checkbox">
 				        </td>
-				        <th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc"><a href="#"><span>Customer Type</span><span class="sorting-indicator"></span></a></th>
-				        <th scope="col" id="sxp-customer-campaign" class="manage-column column-author">Campaign Running</th>
-				        <th scope="col" id="sxp-customer-assigned" class="manage-column column-categories">Assigned</th>
+				        <th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc"><a href="#">Customer Type</a></th>
+				        <th scope="col" id="sxp-customer-campaign" class="manage-column column-author"><a href="#">Campaign Running</a></th>
+				        <th scope="col" id="sxp-customer-assigned" class="manage-column column-categories"><a href="#">Assigned</a></th>
 
 			        </tr>
 		        </thead>
