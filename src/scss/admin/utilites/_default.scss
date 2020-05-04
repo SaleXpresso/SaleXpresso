@@ -13,6 +13,10 @@
     position: relative;
     display: block;
 
+    i.fa {
+      font-family: 'FontAwesome';
+    }
+
     table *, table thead *, table tbody * {
       font-family: 'Public Sans', sans-serif;
       font-size: 0.875rem;

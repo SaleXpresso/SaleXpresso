@@ -51,6 +51,35 @@
                     text-align: right;
                 }
             }
+            // has-fold segment
+            > tr.has-fold {
+                transition: all .3s ease;
+                td, th {cursor: pointer;}
+                td:first-child,
+                th:first-child {
+                    position: relative;
+                    &:before {
+                        position: absolute;
+                        top:50%; left:5px;
+                        width: 9px; height: 16px;
+                        margin-top: -8px;
+                        transition: all .3s ease;
+                    }
+                }
+                &.open {
+                    td:first-child, th:first-child {
+                        &:before {
+                            transform: rotate(-180deg);
+                        }
+                    }
+                }
+            }
+
+            // fold segment
+            > tr.fold {
+                display: none;
+                &.open { display:table-row; }
+            }
         }
         input[type=checkbox] {
             border: $table-checkbox-input-width solid $table-checkbox-input;
@@ -122,5 +151,100 @@
 @for $i from 1 through $badgeColorsLength {
     .sxp-customer-list:nth-of-type(#{$badgeColorsLength}n+#{$i}) .sxp-customer-name a {
         background: nth($badgeColors, $i);
+    }
+}
+
+// fold content
+.sxp-fold-content {
+    display: flex;
+    border-bottom: $border-width solid $border-color;
+    vertical-align: middle;
+    line-height: 20px;
+    height: 40px;
+    margin: 0;
+    padding: 10px 20px;
+
+    &:last-child {
+        border-bottom: none;
+    }
+    div {
+        &:first-child {
+            flex: 1;
+            align-content: flex-start;
+            text-align: left;
+            display: inherit;
+        }
+        &:last-child {
+            flex: 1;
+            align-content: flex-end;
+        }
+        i {
+            font-size: 1rem;
+            color: $dark-purple;
+        }
+        .serial {
+            margin: 0 .25rem 0 .5rem;
+            color: $dark-purple;
+        }
+        .product {
+            color: $primary;
+            padding: 0 .25rem;
+        }
+
+    }
+}
+.sxp-customer-list.fold {
+    td {
+        padding: 0;
+    }
+}
+
+/* Credits:
+    This bit of code: Exis | exisweb.net/responsive-tables-in-wordpress
+    Original idea: Dudley Storey | codepen.io/dudleystorey/pen/Geprd */
+
+@media screen and (max-width: 782px) {
+    .sxp{
+        &-table {
+            width:100%;
+
+            thead {
+                display: none;
+            }
+            tr:nth-of-type(2n) {
+                background-color: inherit;
+            }
+            tr td:first-child {
+                background: #f0f0f0;
+                font-weight:bold;
+                font-size:1.3em;
+            }
+            tbody td {
+                display: block;
+                text-align:center;
+                height: initial;
+                padding: 20px 0;
+                text-align: center;
+
+                &:last-child {
+                    text-align: center;
+                }
+                &:before {
+                    content: "" !important;
+                }
+            }
+            tbody td:before {
+                content: attr(data-th);
+                display: block;
+                text-align:center;
+            }
+        }
+        &-customer-desc-thumbnail {
+            float: none;
+        }
+        &-customer-desc-details {
+             float: none;
+             margin: 10px auto 0;
+        }
     }
 }
