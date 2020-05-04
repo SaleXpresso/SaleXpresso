@@ -39,6 +39,9 @@ final class SXP_Admin_Menus {
 	private $renderer_map = [
 		'sxp-customer'  => 'SaleXpresso\Customer\SXP_Customers_Page',
 		'sxp-dashboard' => 'SaleXpresso\Dashboard\SXP_Dashboard_Page',
+		'sxp-product'   => 'SaleXpresso\Product\SXP_Product_Page',
+		'sxp-order'     => 'SaleXpresso\Order\SXP_Order_Page',
+		'sxp-campaign'  => 'SaleXpresso\Campaign\SXP_Campaign_Page',
 		'sxp-settings'  => 'SaleXpresso\Settings\SXP_Settings_Page',
 		'sxp-status'    => 'SaleXpresso\Settings\SXP_Status_Page',
 	];
@@ -119,7 +122,10 @@ final class SXP_Admin_Menus {
 		add_menu_page( __( 'SaleXpresso', 'salexpresso' ), __( 'SaleXpresso', 'salexpresso' ), 'manage_woocommerce', 'salexpresso', null, null, '55.5' );
 		add_submenu_page( 'salexpresso', __( 'Dashboard', 'salexpresso' ), __( 'Dashboard', 'salexpresso' ), 'manage_woocommerce', 'sxp-dashboard', array( $this, 'render_page' ) );
 		add_submenu_page( 'salexpresso', __( 'Customer List', 'salexpresso' ), __( 'Customer', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer', array( $this, 'render_page' ) );
-		
+		add_submenu_page( 'salexpresso', __( 'Products', 'salexpresso' ), __( 'Products', 'salexpresso' ), 'manage_woocommerce', 'sxp-product', array( $this, 'render_page' ) );
+		add_submenu_page( 'salexpresso', __( 'Orders', 'salexpresso' ), __( 'Orders', 'salexpresso' ), 'manage_woocommerce', 'sxp-order', array( $this, 'render_page' ) );
+		add_submenu_page( 'salexpresso', __( 'Campaign', 'salexpresso' ), __( 'Campaign', 'salexpresso' ), 'manage_woocommerce', 'sxp-campaign', array( $this, 'render_page' ) );
+
 		$settings_page = add_submenu_page( 'salexpresso', __( 'SaleXpresso Settings', 'salexpresso' ), __( 'Settings', 'salexpresso' ), 'manage_woocommerce', 'sxp-settings', [ $this, 'render_page' ] );
 		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
 		
