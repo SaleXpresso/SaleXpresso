@@ -61,7 +61,7 @@ class SXP_Customer_List_Table {
 	                        <label class="screen-reader-text" for="cb-select-1"></label>
 	                        <input id="cb-select-1" type="checkbox" name="post[]" value="1">
 	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
+	                    <td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 	                        <div class="sxp-customer-desc">
 	                            <div class="sxp-customer-desc-thumbnail">
 	                                <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer1.png' ); ?>" alt="Customer Thumbnail">
@@ -71,7 +71,8 @@ class SXP_Customer_List_Table {
 	                                <p class="sxp-customer-desc-details-location">Vermont</p>
 	                            </div><!-- end .sxp-customer-desc-detaisl -->
 	                        </div><!-- end .sxp-customer-desc -->
-	                    </td>
+                            <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                        </td>
 	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">VIP</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 	                        <div class="sxp-customer-tag-container">
@@ -90,7 +91,7 @@ class SXP_Customer_List_Table {
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
 	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
+	                    <td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 		                    <div class="sxp-customer-desc">
 			                    <div class="sxp-customer-desc-thumbnail">
 				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer2.png' ); ?>" alt="Customer Thumbnail">
@@ -100,7 +101,8 @@ class SXP_Customer_List_Table {
 				                    <p class="sxp-customer-desc-details-location">Vermont</p>
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
+                            <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                        </td>
                         <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #E3FFDA">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
@@ -119,7 +121,7 @@ class SXP_Customer_List_Table {
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
 	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
+	                    <td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 		                    <div class="sxp-customer-desc">
 			                    <div class="sxp-customer-desc-thumbnail">
 				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer3.png' ); ?>" alt="Customer Thumbnail">
@@ -129,7 +131,8 @@ class SXP_Customer_List_Table {
 				                    <p class="sxp-customer-desc-details-location">Vermont</p>
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
+                            <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                        </td>
 	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
@@ -148,7 +151,7 @@ class SXP_Customer_List_Table {
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
 	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
+	                    <td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 		                    <div class="sxp-customer-desc">
 			                    <div class="sxp-customer-desc-thumbnail">
 				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer4.png' ); ?>" alt="Customer Thumbnail">
@@ -158,7 +161,8 @@ class SXP_Customer_List_Table {
 				                    <p class="sxp-customer-desc-details-location">Vermont</p>
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
+                            <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                        </td>
 	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background:  #FFCFB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
@@ -177,7 +181,7 @@ class SXP_Customer_List_Table {
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
 	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
+	                    <td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 		                    <div class="sxp-customer-desc">
 			                    <div class="sxp-customer-desc-thumbnail">
 				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer5.png' ); ?>" alt="Customer Thumbnail">
@@ -187,7 +191,8 @@ class SXP_Customer_List_Table {
 				                    <p class="sxp-customer-desc-details-location">Vermont</p>
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
+                            <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                        </td>
 	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
@@ -206,7 +211,7 @@ class SXP_Customer_List_Table {
 		                    <label class="screen-reader-text" for="cb-select-1"></label>
 		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
 	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
+	                    <td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 		                    <div class="sxp-customer-desc">
 			                    <div class="sxp-customer-desc-thumbnail">
 				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer6.png' ); ?>" alt="Customer Thumbnail">
@@ -216,7 +221,8 @@ class SXP_Customer_List_Table {
 				                    <p class="sxp-customer-desc-details-location">Vermont</p>
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
+                            <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                        </td>
 	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
@@ -230,375 +236,7 @@ class SXP_Customer_List_Table {
 	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
 	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
                     </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-7" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer7.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-8" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer8.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-9" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer9.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #E3FFDA">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-10" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer10.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-11" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer11.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-12" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer12.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-13" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer13.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-14" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer14.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-15" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer15.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-16" class="sxp-customer-list">
-	                    <th scope="row" class="check-column">
-		                    <label class="screen-reader-text" for="cb-select-1"></label>
-		                    <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-	                    </th>
-	                    <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-		                    <div class="sxp-customer-desc">
-			                    <div class="sxp-customer-desc-thumbnail">
-				                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer16.png' ); ?>" alt="Customer Thumbnail">
-			                    </div><!-- end .sxp-customer-desc-thumbnail -->
-			                    <div class="sxp-customer-desc-details">
-				                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-				                    <p class="sxp-customer-desc-details-location">Vermont</p>
-			                    </div><!-- end .sxp-customer-desc-detaisl -->
-		                    </div><!-- end .sxp-customer-desc -->
-	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-		                    <div class="sxp-customer-tag-container">
-			                    <ul class="sxp-customer-tag-list">
-				                    <li><a href="#">New Year</a></li>
-				                    <li><a href="">+2</a></li>
-			                    </ul>
-		                    </div><!-- end .sxp-customer-compaign-container -->
-	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-17" class="sxp-customer-list">
-                        <th scope="row" class="check-column">
-                            <label class="screen-reader-text" for="cb-select-1"></label>
-                            <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-                        </th>
-                        <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-                            <div class="sxp-customer-desc">
-                                <div class="sxp-customer-desc-thumbnail">
-                                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer17.png' ); ?>" alt="Customer Thumbnail">
-                                </div><!-- end .sxp-customer-desc-thumbnail -->
-                                <div class="sxp-customer-desc-details">
-                                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-                                    <p class="sxp-customer-desc-details-location">Vermont</p>
-                                </div><!-- end .sxp-customer-desc-detaisl -->
-                            </div><!-- end .sxp-customer-desc -->
-                        </td>
-                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">Gold</a></td>
-                        <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-                            <div class="sxp-customer-tag-container">
-                                <ul class="sxp-customer-tag-list">
-                                    <li><a href="#">New Year</a></li>
-                                    <li><a href="">+2</a></li>
-                                </ul>
-                            </div><!-- end .sxp-customer-compaign-container -->
-                        </td>
-                        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-                        <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-                        <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-18" class="sxp-customer-list has-fold">
-                        <th scope="row" class="check-column">
-                            <label class="screen-reader-text" for="cb-select-1"></label>
-                            <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-                        </th>
-                        <td class="sxp-customers-column" data-colname="sxp-customer-customers">
-                            <div class="sxp-customer-desc">
-                                <div class="sxp-customer-desc-thumbnail">
-                                    <img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )). 'SaleXpresso/assets/images/customers/customer17.png' ); ?>" alt="Customer Thumbnail">
-                                </div><!-- end .sxp-customer-desc-thumbnail -->
-                                <div class="sxp-customer-desc-details">
-                                    <p class="sxp-customer-desc-details-name">Jane Nguyen</p>
-                                    <p class="sxp-customer-desc-details-location">Vermont</p>
-                                </div><!-- end .sxp-customer-desc-detaisl -->
-                            </div><!-- end .sxp-customer-desc -->
-                        </td>
-                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
-                        <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
-                            <div class="sxp-customer-tag-container">
-                                <ul class="sxp-customer-tag-list">
-                                    <li><a href="#">New Year</a></li>
-                                    <li><a href="">+2</a></li>
-                                </ul>
-                            </div><!-- end .sxp-customer-compaign-container -->
-                        </td>
-                        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-                        <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-                        <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
-                    </tr><!-- end .sxp-customer-list -->
-                    <tr id="sxp-customer-list-18" class="sxp-customer-list fold">
-                        <td colspan="8">
-                            <div class="sxp-fold-content">
-                                <div class="sxp-table-viewed">
-                                    <i class="fa fa-eye"></i>
-                                    <span class="serial">1.</span>Viewed Fresh
-                                    <a href="#" class="product">Refined Sugar</a> Product
-                                </div>
-                                <div>5s later</div>
-                            </div><!-- end .sxp-fold-content -->
-	                        <div class="sxp-fold-content">
-		                        <div class="sxp-table-viewed">
-			                        <i class="fa fa-eye"></i>
-			                        <span class="serial">1.</span>Viewed Fresh
-			                        <a href="#" class="product">Refined Sugar</a> Product
-		                        </div>
-		                        <div>5s later</div>
-	                        </div><!-- end .sxp-fold-content -->
-                        </td>
 
-                    </tr><!-- end .sxp-customer-list -->
 				</tbody>
 
 			</table><!-- end .sxp-customer-table -->

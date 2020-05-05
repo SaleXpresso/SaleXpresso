@@ -60,7 +60,10 @@ class SXP_Customer_Group_Table {
 							</label>
 							<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 						</th>
-						<td class="sxp-customer-name sxp-customer-vip" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">B2C</a></td>
+						<td class="title column-title has-row-actions column-primary page-title sxp-customer-name" data-colname="sxp-customer">
+							<a href="#" style="background: #FFD0D0">B2C</a>
+							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+						</td>
 						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
@@ -80,7 +83,10 @@ class SXP_Customer_Group_Table {
 							</label>
 							<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 						</th>
-						<td class="sxp-customer-name sxp-customer-wholeseller" data-colname="sxp-customer"><a href="#" style="background: #E3FFDA">wholeseller</a></td>
+						<td class="title column-title has-row-actions column-primary page-title sxp-customer-name" data-colname="sxp-customer">
+							<a href="#" style="background: #E3FFDA">wholeseller</a>
+							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+						</td>
 						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
@@ -99,7 +105,10 @@ class SXP_Customer_Group_Table {
 							</label>
 							<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 						</th>
-						<td class="sxp-customer-name sxp-customer-b2b" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">B2B</a></td>
+						<td class="title column-title has-row-actions column-primary page-title sxp-customer-name" data-colname="sxp-customer">
+							<a href="#" style="background: #FFCFB5">B2B</a>
+							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+						</td>
 						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
@@ -120,7 +129,10 @@ class SXP_Customer_Group_Table {
 							</label>
 							<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 						</th>
-						<td class="sxp-customer-name sxp-customer-distributor" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">Distributor</a></td>
+						<td class="title column-title has-row-actions column-primary page-title sxp-customer-name" data-colname="sxp-customer">
+							<a href="#" style="background: #DAE4FF">Distributor</a>
+							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+						</td>
 						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
