@@ -1,8 +1,8 @@
 .sxp {
-    &-customer-pagination-wrapper {
-        text-align: center;
-    }
     &-pagination {
+        &-wrapper {
+            text-align: center;
+        }
         margin: 2rem 0 1.5rem;
         li {
             display: inline-block;

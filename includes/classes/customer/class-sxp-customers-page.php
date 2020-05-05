@@ -62,11 +62,11 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 			],
 			'customer-group' => [
 				'label'   => __( 'Customer Groups', 'salexpresso' ),
-				'content' => 'Customer Groups List Table',
+				'content' => [$this, 'render_customer_group'],
 			],
 			'customer-profile' => [
 				'label'   => __( 'Customer Profile', 'salexpresso' ),
-				'content' => [$this, 'render_customer_profile_rule'],
+				'content' => [$this, 'render_customer_profile'],
 			],
 		];
 		
@@ -89,6 +89,13 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	}
 
 	/**
+	 * Render the customer Group
+	 */
+	protected function render_customer_group() {
+		$list = new SXP_Customer_Group_Table();
+	}
+
+	/**
 	 * Render the customer type
 	 */
 	protected function render_customer_type_rule() {
@@ -98,7 +105,7 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	/**
 	 * Render the customer Profile
 	 */
-	protected function render_customer_profile_rule() {
+	protected function render_customer_profile() {
 		$list = new SXP_Customer_Profile_Table();
 	}
 

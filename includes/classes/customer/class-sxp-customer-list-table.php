@@ -46,16 +46,16 @@ class SXP_Customer_List_Table {
 							<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
 							<input id="cb-select-all-1" type="checkbox">
 						</td>
-						<th scope="col" id="sxp-customer-customers" class="manage-column column-categories">Customers</th>
-						<th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc">Customer Type</th>
-						<th scope="col" id="sxp-customer-tag" class="manage-column column-author">Customer Tag</th>
-						<th scope="col" id="sxp-customer-order" class="manage-column column-categories">Orders</th>
-						<th scope="col" id="sxp-customer-revenue" class="manage-column column-categories">Revenue</th>
-						<th scope="col" id="sxp-customer-last-order" class="manage-column column-categories">Last Order</th>
+						<th scope="col" id="sxp-customer-customers" class="manage-column column-categories"><a href="#">Customers</a></th>
+						<th scope="col" id="sxp-customer" class="manage-column column-title column-primary sortable desc"><a href="#">Customer Type</a></th>
+						<th scope="col" id="sxp-customer-tag" class="manage-column column-author"><a href="#">Customer Tag</a></th>
+						<th scope="col" id="sxp-customer-order" class="manage-column column-categories"><a href="#">Orders</a></th>
+						<th scope="col" id="sxp-customer-revenue" class="manage-column column-categories"><a href="#">Revenue</a></th>
+						<th scope="col" id="sxp-customer-last-order" class="manage-column column-categories"><a href="#">Last Order</a></th>
 					</tr>
 				</thead>
 
-				<tbody id="the-list">
+                <tbody id="the-list">
                     <tr id="sxp-customer-list-1" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
 	                        <label class="screen-reader-text" for="cb-select-1"></label>
@@ -72,7 +72,7 @@ class SXP_Customer_List_Table {
 	                            </div><!-- end .sxp-customer-desc-detaisl -->
 	                        </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">VIP</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">VIP</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 	                        <div class="sxp-customer-tag-container">
 	                            <ul class="sxp-customer-tag-list">
@@ -101,7 +101,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #E3FFDA">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -130,7 +130,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -159,7 +159,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background:  #FFCFB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -188,7 +188,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -217,7 +217,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -246,7 +246,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -275,7 +275,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -304,7 +304,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #E3FFDA">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -333,7 +333,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -362,7 +362,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -391,7 +391,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -420,7 +420,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -449,7 +449,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -478,7 +478,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -507,7 +507,7 @@ class SXP_Customer_List_Table {
 			                    </div><!-- end .sxp-customer-desc-detaisl -->
 		                    </div><!-- end .sxp-customer-desc -->
 	                    </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
 	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
@@ -536,7 +536,7 @@ class SXP_Customer_List_Table {
                                 </div><!-- end .sxp-customer-desc-detaisl -->
                             </div><!-- end .sxp-customer-desc -->
                         </td>
-                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">Gold</a></td>
                         <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
                             <div class="sxp-customer-tag-container">
                                 <ul class="sxp-customer-tag-list">
@@ -565,7 +565,7 @@ class SXP_Customer_List_Table {
                                 </div><!-- end .sxp-customer-desc-detaisl -->
                             </div><!-- end .sxp-customer-desc -->
                         </td>
-                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#">Gold</a></td>
+                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
                         <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
                             <div class="sxp-customer-tag-container">
                                 <ul class="sxp-customer-tag-list">
@@ -603,7 +603,7 @@ class SXP_Customer_List_Table {
 
 			</table><!-- end .sxp-customer-table -->
 
-			<div class="sxp-customer-pagination-wrapper">
+			<div class="sxp-pagination-wrapper">
 				<ul class="sxp-pagination">
 					<li><a href="#"><img alt="arrow-left.svg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0IDhMMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02IDEyTDIgOEw2IDQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/></a></li>
 					<li><a href="#">1</a></li>
@@ -617,7 +617,7 @@ class SXP_Customer_List_Table {
 					<li><a href="#">8</a></li>
 					<li><a href="#"><img alt="arrow-right.svg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIgOEwxMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMCA0TDE0IDhMMTAgMTIiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/></a></li>
 				</ul>
-			</div><!-- end .sxp-customer-paginaation-wrapper -->
+			</div><!-- end .sxp-paginaation-wrapper -->
 
 			<div class="sxp-customer-bottom-wrapper">
 				<div class="sxp-customer-selected-container">

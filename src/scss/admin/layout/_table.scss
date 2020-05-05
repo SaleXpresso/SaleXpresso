@@ -160,12 +160,6 @@
     }
 }
 
-@for $i from 1 through $badgeColorsLength {
-    .sxp-customer-list:nth-of-type(#{$badgeColorsLength}n+#{$i}) .sxp-customer-name a {
-        background: nth($badgeColors, $i);
-    }
-}
-
 // fold content
 .sxp-fold-content {
     display: flex;

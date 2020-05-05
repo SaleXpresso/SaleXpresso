@@ -29,6 +29,15 @@ class SXP_Customer_Type_Table {
 		// @TODO Extend WP_List_Table.
 		?>
         <div class="sxp-customer-wrapper">
+            <div class="sxp-customer-top-wrapper">
+                <div class="sxp-customer-search">
+                    <input type="text" placeholder="Search Customers">
+                </div><!-- end .sxp-customer-search -->
+                <div class="sxp-customer-btn-wrapper">
+                    <a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i class="fa fa-plus"></i> Customer Type Rules</a>
+                    <a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
+                </div>
+            </div><!-- end .sxp-customer-top-wrapper -->
 	        <table class="wp-list-table widefat sxp-table sxp-customer-table">
 		        <thead>
 			        <tr>
@@ -47,16 +56,11 @@ class SXP_Customer_Type_Table {
 			        <tr id="sxp-customer-list-1" class="sxp-customer-list">
 				        <th scope="row" class="check-column">
 					        <label class="screen-reader-text" for="cb-select-1">
-						        Select Hello world! </label>
+						        Customer Type
+                            </label>
 					        <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-					        <div class="locked-indicator">
-						        <span class="locked-indicator-icon" aria-hidden="true"></span>
-						        <span class="screen-reader-text">
-									“Hello world!” is locked
-						        </span>
-					        </div>
 				        </th>
-				        <td class="sxp-customer-name sxp-customer-vip" data-colname="sxp-customer"><a href="#">VIP</a></td>
+				        <td class="sxp-customer-name sxp-customer-vip" data-colname="sxp-customer"><a href="#" style="background: #FFFCB5">VIP</a></td>
 				        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
 					        <div class="sxp-customer-compaign-container">
 						        <ul class="sxp-customer-campaign-list">
@@ -69,69 +73,14 @@ class SXP_Customer_Type_Table {
 				        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">799</td>
 			        </tr><!-- end .sxp-customer-list -->
 
-			        <tr id="sxp-customer-list-2" class="sxp-customer-list">
-				        <th scope="row" class="check-column">
-					        <label class="screen-reader-text" for="cb-select-1">
-						        Select Hello world! </label>
-					        <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-					        <div class="locked-indicator">
-						        <span class="locked-indicator-icon" aria-hidden="true"></span>
-						        <span class="screen-reader-text">
-									“Hello world!” is locked
-						        </span>
-					        </div>
-				        </th>
-				        <td class="sxp-customer-name sxp-customer-wholeseller" data-colname="sxp-customer"><a href="#">wholeseller</a></td>
-				        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
-					        <div class="sxp-customer-compaign-container">
-						        <ul class="sxp-customer-campaign-list">
-							        <li><a href="#">New Year</a></li>
-							        <li><a href="">+3</a></li>
-						        </ul>
-					        </div><!-- end .sxp-customer-compaign-container -->
-				        </td>
-				        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-			        </tr><!-- end .sxp-customer-list -->
-
-			        <tr id="sxp-customer-list-3" class="sxp-customer-list">
-				        <th scope="row" class="check-column">
-					        <label class="screen-reader-text" for="cb-select-1">
-						        Select Hello world! </label>
-					        <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-					        <div class="locked-indicator">
-						        <span class="locked-indicator-icon" aria-hidden="true"></span>
-						        <span class="screen-reader-text">
-									“Hello world!” is locked
-						        </span>
-					        </div>
-				        </th>
-				        <td class="sxp-customer-name sxp-customer-b2b" data-colname="sxp-customer"><a href="#">B2B</a></td>
-				        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
-					        <div class="sxp-customer-compaign-container">
-						        <ul class="sxp-customer-campaign-list">
-							        <li><a href="#">Sports lover</a></li>
-							        <li><a href="#">Creative People Campaign</a></li>
-                                    <li><a href="#">Special Day Events</a></li>
-							        <li><a href="">+2</a></li>
-						        </ul>
-					        </div><!-- end .sxp-customer-compaign-container -->
-				        </td>
-				        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-			        </tr><!-- end .sxp-customer-list -->
-
                     <tr id="sxp-customer-list-4" class="sxp-customer-list">
                         <th scope="row" class="check-column">
                             <label class="screen-reader-text" for="cb-select-1">
-                                Select Hello world! </label>
+                                Customer Type
+                            </label>
                             <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-                            <div class="locked-indicator">
-                                <span class="locked-indicator-icon" aria-hidden="true"></span>
-                                <span class="screen-reader-text">
-									“Hello world!” is locked
-						        </span>
-                            </div>
                         </th>
-                        <td class="sxp-customer-name sxp-customer-general" data-colname="sxp-customer"><a href="#">General</a></td>
+                        <td class="sxp-customer-name sxp-customer-general" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">General</a></td>
                         <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
                             <div class="sxp-customer-compaign-container">
                                 <ul class="sxp-customer-campaign-list">
@@ -145,43 +94,15 @@ class SXP_Customer_Type_Table {
                         <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
                     </tr><!-- end .sxp-customer-list -->
 
-                    <tr id="sxp-customer-list-5" class="sxp-customer-list">
-                        <th scope="row" class="check-column">
-                            <label class="screen-reader-text" for="cb-select-1">
-                                Select Hello world! </label>
-                            <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-                            <div class="locked-indicator">
-                                <span class="locked-indicator-icon" aria-hidden="true"></span>
-                                <span class="screen-reader-text">
-									“Hello world!” is locked
-						        </span>
-                            </div>
-                        </th>
-                        <td class="sxp-customer-name sxp-customer-distributor" data-colname="sxp-customer"><a href="#">Distributor</a></td>
-                        <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
-                            <div class="sxp-customer-compaign-container">
-                                <ul class="sxp-customer-campaign-list">
-                                    <li><a href="#">Doctor</a></li>
-                                    <li><a href="">+5</a></li>
-                                </ul>
-                            </div><!-- end .sxp-customer-compaign-container -->
-                        </td>
-                        <td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
-                    </tr><!-- end .sxp-customer-list -->
 
                     <tr id="sxp-customer-list-6" class="sxp-customer-list">
                         <th scope="row" class="check-column">
                             <label class="screen-reader-text" for="cb-select-1">
-                                Select Hello world! </label>
+                                Customer Type
+                            </label>
                             <input id="cb-select-1" type="checkbox" name="post[]" value="1">
-                            <div class="locked-indicator">
-                                <span class="locked-indicator-icon" aria-hidden="true"></span>
-                                <span class="screen-reader-text">
-									“Hello world!” is locked
-						        </span>
-                            </div>
                         </th>
-                        <td class="sxp-customer-name sxp-customer-new" data-colname="sxp-customer"><a href="#">New</a></td>
+                        <td class="sxp-customer-name sxp-customer-new" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">New</a></td>
                         <td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
                             <div class="sxp-customer-compaign-container">
                                 <ul class="sxp-customer-campaign-list">
