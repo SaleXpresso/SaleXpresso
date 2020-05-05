@@ -206,56 +206,6 @@
     }
 }
 
-/* Credits:
-    This bit of code: Exis | exisweb.net/responsive-tables-in-wordpress
-    Original idea: Dudley Storey | codepen.io/dudleystorey/pen/Geprd */
-
-/*@media screen and (max-width: 782px) {
-    .sxp{
-        &-table {
-            width:100%;
-
-            thead {
-                display: none;
-            }
-            tr:nth-of-type(2n) {
-                background-color: inherit;
-            }
-            tr td:first-child {
-                background: #f0f0f0;
-                font-weight:bold;
-                font-size:1.3em;
-            }
-            tbody td {
-                display: block;
-                text-align:center;
-                height: initial;
-                padding: 20px 0;
-                text-align: center;
-
-                &:last-child {
-                    text-align: center;
-                }
-                &:before {
-                    content: "" !important;
-                }
-            }
-            tbody td:before {
-                content: attr(data-th);
-                display: block;
-                text-align:center;
-            }
-        }
-        &-customer-desc-thumbnail {
-            float: none;
-        }
-        &-customer-desc-details {
-             float: none;
-             margin: 10px auto 0;
-        }
-    }
-}*/
-
 @media screen and (max-width: 782px) {
     .sxp {
         &-table {
@@ -268,11 +218,12 @@
                 height: 16px;
             }
             &.wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before{
-                display: none;
+                left: 20px;
             }
             &.wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary~td:not(.check-column) {
-                padding: 17px 0 17px 50px;
                 margin-left: -34px;
+                padding-top: 17px;
+                padding-bottom: 17px;
             }
             .sxp-customers-column {
                 height: 74px;

@@ -64,7 +64,7 @@ class SXP_Customer_Group_Table {
 							<a href="#" style="background: #FFD0D0">B2C</a>
 							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 						</td>
-						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
+						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
 									<li><a href="#">Holiday Campaign</a></li>
@@ -73,7 +73,7 @@ class SXP_Customer_Group_Table {
 								</ul>
 							</div><!-- end .sxp-customer-compaign-container -->
 						</td>
-						<td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">799</td>
+						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">799</td>
 					</tr><!-- end .sxp-customer-list -->
 
 					<tr id="sxp-customer-list-2" class="sxp-customer-list">
@@ -87,7 +87,7 @@ class SXP_Customer_Group_Table {
 							<a href="#" style="background: #E3FFDA">wholeseller</a>
 							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 						</td>
-						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
+						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
 									<li><a href="#">New Year</a></li>
@@ -95,7 +95,7 @@ class SXP_Customer_Group_Table {
 								</ul>
 							</div><!-- end .sxp-customer-compaign-container -->
 						</td>
-						<td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
+						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">27</td>
 					</tr><!-- end .sxp-customer-list -->
 
 					<tr id="sxp-customer-list-3" class="sxp-customer-list">
@@ -109,7 +109,7 @@ class SXP_Customer_Group_Table {
 							<a href="#" style="background: #FFCFB5">B2B</a>
 							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 						</td>
-						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
+						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
 									<li><a href="#">Sports lover</a></li>
@@ -119,7 +119,7 @@ class SXP_Customer_Group_Table {
 								</ul>
 							</div><!-- end .sxp-customer-compaign-container -->
 						</td>
-						<td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
+						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">27</td>
 					</tr><!-- end .sxp-customer-list -->
 
 					<tr id="sxp-customer-list-5" class="sxp-customer-list">
@@ -133,7 +133,7 @@ class SXP_Customer_Group_Table {
 							<a href="#" style="background: #DAE4FF">Distributor</a>
 							<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 						</td>
-						<td class="sxp-customer-campaign-column" data-colname="sxp-customer-campaign">
+						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
 								<ul class="sxp-customer-campaign-list">
 									<li><a href="#">Doctor</a></li>
@@ -141,7 +141,7 @@ class SXP_Customer_Group_Table {
 								</ul>
 							</div><!-- end .sxp-customer-compaign-container -->
 						</td>
-						<td class="sxp-customer-assigned-column" data-colname="sxp-customer-assigned">27</td>
+						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">27</td>
 					</tr><!-- end .sxp-customer-list -->
 
 				</tbody>

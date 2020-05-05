@@ -73,8 +73,8 @@ class SXP_Customer_List_Table {
 	                        </div><!-- end .sxp-customer-desc -->
                             <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
                         </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFD0D0">VIP</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
+	                    <td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #FFD0D0">VIP</a></td>
+	                    <td class="sxp-customer-tag-column" data-colname="Customer Tag">
 	                        <div class="sxp-customer-tag-container">
 	                            <ul class="sxp-customer-tag-list">
 	                                <li><a href="#">Holiday Campaign</a></li>
@@ -82,9 +82,9 @@ class SXP_Customer_List_Table {
 	                            </ul>
 	                        </div><!-- end .sxp-customer-compaign-container -->
 	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">799</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$6910.60</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
+	                    <td class="sxp-customer-assigned-column" data-colname="Customer Order">799</td>
+	                    <td class="sxp-customer-revenue-column" data-colname="Customer Revenue">$6910.60</td>
+	                    <td class="sxp-customer-last-order-column" data-colname="Last Order">23 days ago</td>
 	                </tr><!-- end .sxp-customer-list -->
                     <tr id="sxp-customer-list-2" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
@@ -103,8 +103,8 @@ class SXP_Customer_List_Table {
 		                    </div><!-- end .sxp-customer-desc -->
                             <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
                         </td>
-                        <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #E3FFDA">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
+                        <td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #E3FFDA">Gold</a></td>
+	                    <td class="sxp-customer-tag-column" data-colname="Customer Tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
 				                    <li><a href="#">New Year</a></li>
@@ -112,9 +112,9 @@ class SXP_Customer_List_Table {
 			                    </ul>
 		                    </div><!-- end .sxp-customer-compaign-container -->
 	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
+	                    <td class="sxp-customer-assigned-column" data-colname="Customer Order">727</td>
+	                    <td class="sxp-customer-revenue-column" data-colname="Customer Revenue">$3535.92</td>
+	                    <td class="sxp-customer-last-order-column" data-colname="Last Order">23 days ago</td>
                     </tr><!-- end .sxp-customer-list -->
                     <tr id="sxp-customer-list-3" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
@@ -133,8 +133,8 @@ class SXP_Customer_List_Table {
 		                    </div><!-- end .sxp-customer-desc -->
                             <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
                         </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #FFCFB5">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
+	                    <td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #FFCFB5">Gold</a></td>
+	                    <td class="sxp-customer-tag-column" data-colname="Customer Tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
 				                    <li><a href="#">Sports Lover</a></li>
@@ -142,9 +142,9 @@ class SXP_Customer_List_Table {
 			                    </ul>
 		                    </div><!-- end .sxp-customer-compaign-container -->
 	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
+	                    <td class="sxp-customer-assigned-column" data-colname="Customer Order">727</td>
+	                    <td class="sxp-customer-revenue-column" data-colname="Customer Revenue">$3535.92</td>
+	                    <td class="sxp-customer-last-order-column" data-colname="Last Order">23 days ago</td>
                     </tr><!-- end .sxp-customer-list -->
                     <tr id="sxp-customer-list-4" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
@@ -163,8 +163,8 @@ class SXP_Customer_List_Table {
 		                    </div><!-- end .sxp-customer-desc -->
                             <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
                         </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background:  #FFCFB5">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
+	                    <td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background:  #FFCFB5">Gold</a></td>
+	                    <td class="sxp-customer-tag-column" data-colname="Customer Tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
 				                    <li><a href="#">Birthday</a></li>
@@ -172,9 +172,9 @@ class SXP_Customer_List_Table {
 			                    </ul>
 		                    </div><!-- end .sxp-customer-compaign-container -->
 	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
+	                    <td class="sxp-customer-assigned-column" data-colname="Customer Order">727</td>
+	                    <td class="sxp-customer-revenue-column" data-colname="Customer Revenue">$3535.92</td>
+	                    <td class="sxp-customer-last-order-column" data-colname="Last Order">23 days ago</td>
                     </tr><!-- end .sxp-customer-list -->
                     <tr id="sxp-customer-list-5" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
@@ -193,8 +193,8 @@ class SXP_Customer_List_Table {
 		                    </div><!-- end .sxp-customer-desc -->
                             <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
                         </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #DAE4FF">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
+	                    <td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #DAE4FF">Gold</a></td>
+	                    <td class="sxp-customer-tag-column" data-colname="Customer Tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
 				                    <li><a href="#">Doctor</a></li>
@@ -202,9 +202,9 @@ class SXP_Customer_List_Table {
 			                    </ul>
 		                    </div><!-- end .sxp-customer-compaign-container -->
 	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
+	                    <td class="sxp-customer-assigned-column" data-colname="Customer Order">727</td>
+	                    <td class="sxp-customer-revenue-column" data-colname="Customer Revenue">$3535.92</td>
+	                    <td class="sxp-customer-last-order-column" data-colname="Last Order">23 days ago</td>
                     </tr><!-- end .sxp-customer-list -->
                     <tr id="sxp-customer-list-6" class="sxp-customer-list">
 	                    <th scope="row" class="check-column">
@@ -223,8 +223,8 @@ class SXP_Customer_List_Table {
 		                    </div><!-- end .sxp-customer-desc -->
                             <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
                         </td>
-	                    <td class="sxp-customer-name" data-colname="sxp-customer"><a href="#" style="background: #CFFFF4">Gold</a></td>
-	                    <td class="sxp-customer-tag-column" data-colname="sxp-customer-tag">
+	                    <td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #CFFFF4">Gold</a></td>
+	                    <td class="sxp-customer-tag-column" data-colname="Customer Tag">
 		                    <div class="sxp-customer-tag-container">
 			                    <ul class="sxp-customer-tag-list">
 				                    <li><a href="#">New Year</a></li>
@@ -232,9 +232,9 @@ class SXP_Customer_List_Table {
 			                    </ul>
 		                    </div><!-- end .sxp-customer-compaign-container -->
 	                    </td>
-	                    <td class="sxp-customer-assigned-column" data-colname="sxp-customer-order">727</td>
-	                    <td class="sxp-customer-revenue-column" data-colname="sxp-customer-revenue">$3535.92</td>
-	                    <td class="sxp-customer-last-order-column" data-colname="sxp-customer-last-order">23 days ago</td>
+	                    <td class="sxp-customer-assigned-column" data-colname="Customer Order">727</td>
+	                    <td class="sxp-customer-revenue-column" data-colname="Customer Revenue">$3535.92</td>
+	                    <td class="sxp-customer-last-order-column" data-colname="Last Order">23 days ago</td>
                     </tr><!-- end .sxp-customer-list -->
 
 				</tbody>
