@@ -4,3 +4,71 @@
     -moz-box-shadow:$top $left $blur $color #{$inset};
     box-shadow:$top $left $blur $color #{$inset};
 }
+//
+// For backward compatibility, we've kept these mixins and updated them to
+// always return their regular pseudo-classes instead of a shimmed media query.
+//
+// Issue: https://github.com/twbs/bootstrap/issues/25195
+
+@mixin hover {
+    &:hover { @content; }
+}
+
+@mixin hover-focus {
+    &:hover,
+    &:focus {
+        @content;
+    }
+}
+
+@mixin plain-hover-focus {
+    &,
+    &:hover,
+    &:focus {
+        @content;
+    }
+}
+
+@mixin hover-focus-active {
+    &:hover,
+    &:focus,
+    &:active {
+        @content;
+    }
+}
+// Single side border-radius
+
+@mixin border-radius($radius: $border-radius) {
+    @if $enable-rounded {
+        border-radius: $radius;
+    }
+}
+
+@mixin border-top-radius($radius) {
+    @if $enable-rounded {
+        border-top-left-radius: $radius;
+        border-top-right-radius: $radius;
+    }
+}
+
+@mixin border-right-radius($radius) {
+    @if $enable-rounded {
+        border-top-right-radius: $radius;
+        border-bottom-right-radius: $radius;
+    }
+}
+
+@mixin border-bottom-radius($radius) {
+    @if $enable-rounded {
+        border-bottom-right-radius: $radius;
+        border-bottom-left-radius: $radius;
+    }
+}
+
+@mixin border-left-radius($radius) {
+    @if $enable-rounded {
+        border-top-left-radius: $radius;
+        border-bottom-left-radius: $radius;
+    }
+}
+
