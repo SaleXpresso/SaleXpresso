@@ -11,11 +11,13 @@ yarn-debug.log*
 yarn-error.log*
 phpcs.*
 !phpcs.xml
-logs
+
+# Logs directory
+logs/*
 !logs/.gitkeep
 
 # Dist directory
-dist
+dist/*
 !dist/.gitkeep
 
 # Editor directories and files
