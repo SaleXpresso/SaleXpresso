@@ -93,6 +93,8 @@ class SXP_Assets {
 		);
 		
 		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [] );
+		wp_enqueue_script('moment-js', '//cdn.jsdelivr.net/momentjs/latest/moment.min.js', 'jquery', '3.4', 'true');
+		wp_enqueue_script('daterange-js', '//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'jquery', '3.4', 'true');
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
 		wp_enqueue_style(
@@ -101,6 +103,8 @@ class SXP_Assets {
 			[],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.css' )
 		);
+		wp_enqueue_style('sxp-google-font', '//fonts.googleapis.com/css?family=Public+Sans:400,700&display=swap');
+		wp_enqueue_style('sxp-fontawesome', '//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 	}
 	
 	/**

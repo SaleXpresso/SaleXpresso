@@ -1,0 +1,61 @@
+.sxp-wrapper,
+.sxp-wrapper * {
+  box-sizing: border-box;
+}
+
+.sxp {
+  &-clearfix {
+    clear: both;
+  }
+  &-wrapper {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.875rem;
+    position: relative;
+    display: block;
+
+    i.fa {
+      font-family: 'FontAwesome';
+    }
+
+    table *, table thead *, table tbody * {
+      font-family: 'Public Sans', sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
+  &-btn {
+    line-height: 1.25rem;
+    border-radius: .25rem;
+    text-decoration: none;
+    display: inline-block;
+  }
+  &-btn-primary {
+    padding: 1rem 1.5rem;
+    background: $primary;
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+  }
+  &-btn-default {
+    padding: 1rem 1.5rem;
+    background: $white;
+    color: $dark-purple;
+
+    &:hover {
+      color: $dark-purple
+    }
+  }
+  &-btn-secondary {
+    padding: .5rem 1rem;
+  }
+  &-btn-muted {
+    padding: 1rem 1.5rem;
+    background: $light-purple-2;
+    color: $dark-purple;
+    &:hover {
+      color: $dark-purple;
+    }
+  }
+}

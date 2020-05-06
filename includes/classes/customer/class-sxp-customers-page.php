@@ -54,11 +54,19 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 			],
 			'customer-type'  => [
 				'label'   => __( 'Customer Types', 'salexpresso' ),
-				'content' => 'Customer Types List Table',
+				'content' => [ $this, 'render_customer_type'] ,
+			],
+			'customer-rule' => [
+				'label'   => __( 'Customer Type Rules', 'salexpresso' ),
+				'content' => [$this, 'render_customer_type_rule'],
 			],
 			'customer-group' => [
 				'label'   => __( 'Customer Groups', 'salexpresso' ),
-				'content' => 'Customer Groups List Table',
+				'content' => [$this, 'render_customer_group'],
+			],
+			'customer-profile' => [
+				'label'   => __( 'Customer Profile', 'salexpresso' ),
+				'content' => [$this, 'render_customer_profile'],
 			],
 		];
 		
@@ -72,6 +80,35 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	protected function render_customer_list() {
 		$list = new SXP_Customer_List_Table();
 	}
+
+	/**
+	 * Render the customer type
+	 */
+	protected function render_customer_type() {
+		$list = new SXP_Customer_Type_Table();
+	}
+
+	/**
+	 * Render the customer Group
+	 */
+	protected function render_customer_group() {
+		$list = new SXP_Customer_Group_Table();
+	}
+
+	/**
+	 * Render the customer type
+	 */
+	protected function render_customer_type_rule() {
+		$list = new SXP_Customer_Type_Rule();
+	}
+
+	/**
+	 * Render the customer Profile
+	 */
+	protected function render_customer_profile() {
+		$list = new SXP_Customer_Profile_Table();
+	}
+
 	
 	/**
 	 * Get Customers.

@@ -7,25 +7,18 @@
  * @since 1.0.0
  */
 
-.sxp-wrapper,
-.sxp-wrapper * {
-	box-sizing: border-box;
-}
-
-.sxp {
-	&-wrapper {
-		position: relative;
-		display: block;
-		width: 100%;
-		float: left;
-		margin: 0 auto;
-		padding: 0;
-	}
-}
-
+// Utilites
+@import "admin/utilites/variables";
+@import "admin/utilites/mixins";
+@import "admin/utilites/default";
 // Header
-@import "admin/header";
+@import "admin/layout/header";
 // Content
-@import "admin/content";
+@import "admin/layout/filter";
+@import "admin/layout/content";
+@import "admin/layout/daterangepicker";
+@import "admin/layout/table";
+@import "admin/layout/customer";
+@import "admin/layout/pagination";
 // Admin Tabs
-@import "admin/tabs";
+@import "admin/layout/tabs";

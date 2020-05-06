@@ -1,0 +1,42 @@
+// Colors
+$light-purple:             #D0CFE5;
+$light-purple-2:           #E7E6F5;
+$dark-purple:              #7D7DB2;
+$dark-purple-2:            #7D7DB3;
+$primary:                  #3355FF;
+$white:                    #ffffff;
+$text-color:               #16163D;
+$table-header-color:       $dark-purple;
+$paragraph-color:          $text-color;
+$table-checkbox-input:     $light-purple;
+$table-campaign-border:    #D4D4EB;
+$border-color:             #F2F4FC;
+$customer-heading:         $dark-purple;
+$customer-heading-bg:      #F4F3FC;
+$customer-rule-border:     $light-purple;
+$box-shadow-color:         #0D004D;
+
+//
+// Customer List Badge
+//
+$badgeColors: #FFD0D0, #E3FFDA, #FFCFB5, #DAE4FF, #CFFFF4, #FFFCB5;
+$badgeColorsLength: length($badgeColors);
+
+//colors
+$customer-list-location-color: $dark-purple-2;
+
+// Default
+$input-width: 1px;
+$border-width: 1px;
+
+//
+// Customer Table
+//
+$table-checkbox-input-width:  $input-width * 2;
+$table-campaign-border-width: $input-width;
+
+//
+// Pagination
+//
+$pagination-color:        $dark-purple-2;
+$pagination-active-color: $text-color;
