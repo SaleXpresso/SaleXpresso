@@ -56,9 +56,6 @@ class SXP_Admin_Notices {
 			add_action( 'shutdown', array( __CLASS__, 'store_notices' ) );
 		}
 		
-//		var_dump( self::is_plugin_active( 'salexpresso/salexpresso.php' ) );
-//		var_dump( self::is_plugin_active( 'woocommerce/woocommerce.php' ) );
-		
 		if ( current_user_can( 'manage_woocommerce' ) ) {
 			add_action( 'admin_print_styles', array( __CLASS__, 'add_notices' ) );
 		}
@@ -175,11 +172,14 @@ class SXP_Admin_Notices {
 		if ( ! in_array( $screen_id, sxp_get_screen_ids_for_admin_notice(), true ) && ! in_array( $screen_id, $show_on_screens, true ) ) {
 			return;
 		}
+		// phpcs:disable
 		
-//		wp_enqueue_style( 'salexpresso-activation', plugins_url( '/assets/css/activation.css', WC_PLUGIN_FILE ), array(), Constants::get_constant( 'WC_VERSION' ) );
-//
-//		// Add RTL support.
-//		wp_style_add_data( 'salexpresso-activation', 'rtl', 'replace' );
+		// wp_enqueue_style( 'salexpresso-activation', plugins_url( '/assets/css/activation.css', WC_PLUGIN_FILE ), array(), Constants::get_constant( 'WC_VERSION' ) );
+		//
+		// Add RTL support.
+		// wp_style_add_data( 'salexpresso-activation', 'rtl', 'replace' );
+
+		// phpcs:enable
 		
 		foreach ( $notices as $notice ) {
 			if ( ! empty( self::$core_notices[ $notice ] ) && apply_filters( 'salexpresso_show_admin_notice', true, $notice ) ) {

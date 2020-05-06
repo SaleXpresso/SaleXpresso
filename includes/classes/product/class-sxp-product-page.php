@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package SaleXpresso\Product
  */
-class SXP_Product_page  extends SXP_Admin_Page{
+class SXP_Product_page  extends SXP_Admin_Page {
 
 	/**
 	 * Add new button url for current page.
@@ -47,13 +47,13 @@ class SXP_Product_page  extends SXP_Admin_Page{
 	 */
 	protected function set_tabs() {
 		$tabs = [
-			'products-lists' => [
+			'products-lists'  => [
 				'label'   => __( 'Products', 'salexpresso' ),
-				'content' => [$this, 'render_product_list'],
+				'content' => [ $this, 'render_product_list' ],
 			],
 			'product-profile' => [
 				'label'   => __( 'Product Profile', 'salexpresso' ),
-				'content' => [$this, 'render_product_profile'],
+				'content' => [ $this, 'render_product_profile' ],
 			],
 		];
 

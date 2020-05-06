@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package SaleXpresso\Order
  */
-class SXP_Order_page  extends SXP_Admin_Page{
+class SXP_Order_page  extends SXP_Admin_Page {
 
 	/**
 	 * Add new button url for current page.
@@ -47,13 +47,13 @@ class SXP_Order_page  extends SXP_Admin_Page{
 	 */
 	protected function set_tabs() {
 		$tabs = [
-			'orders-lists' => [
+			'orders-lists'  => [
 				'label'   => __( 'Orders', 'salexpresso' ),
-				'content' => [$this, 'render_order_list'],
+				'content' => [ $this, 'render_order_list' ],
 			],
 			'orders-single' => [
 				'label'   => __( 'Single Order', 'salexpresso' ),
-				'content' => [$this, 'render_order_single'],
+				'content' => [ $this, 'render_order_single' ],
 			],
 		];
 

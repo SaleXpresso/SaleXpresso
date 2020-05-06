@@ -20,7 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package SaleXpresso\Customer
  */
-
 class SXP_Customer_Type_Rule {
 	/**
 	 * SXP_Customer_Type_Rule constructor.

@@ -373,36 +373,36 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	/**
 	 * Render Filter section
 	 */
-
 	protected function render_page_filter() {
-	    ?>
-            <div class="sxp-filter-wrapper">
-                <div class="sxp-filter-default">
-                    <select name="sxp-filter-default" id="sxp-filter-default">
-                        <option value="sort-by-name">Sort by Name</option>
-                        <option value="location">Location</option>
-                        <option value="customer-type">Customer Type</option>
-                        <option value="customer-tag">Customer Tag</option>
-                        <option value="orders">Orders</option>
-                        <option value="revenue">Revenue</option>
-                        <option value="last-order">Last Order</option>
-                    </select>
-                </div><!-- end .sxp-filter-default -->
-                <div class="sxp-filter-date-range">
-                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 6px 10px; width: 100%">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        <span></span> <i class="fa fa-caret-down"></i>
-                    </div>
-                </div><!-- end .sxp-filter-date-range-->
-                <div class="sxp-screen-options">
-                    <a href="#">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDEzQzEyLjU1MjMgMTMgMTMgMTIuNTUyMyAxMyAxMkMxMyAxMS40NDc3IDEyLjU1MjMgMTEgMTIgMTFDMTEuNDQ3NyAxMSAxMSAxMS40NDc3IDExIDEyQzExIDEyLjU1MjMgMTEuNDQ3NyAxMyAxMiAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5IDEzQzE5LjU1MjMgMTMgMjAgMTIuNTUyMyAyMCAxMkMyMCAxMS40NDc3IDE5LjU1MjMgMTEgMTkgMTFDMTguNDQ3NyAxMSAxOCAxMS40NDc3IDE4IDEyQzE4IDEyLjU1MjMgMTguNDQ3NyAxMyAxOSAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTUgMTNDNS41NTIyOCAxMyA2IDEyLjU1MjMgNiAxMkM2IDExLjQ0NzcgNS41NTIyOCAxMSA1IDExQzQuNDQ3NzIgMTEgNCAxMS40NDc3IDQgMTJDNCAxMi41NTIzIDQuNDQ3NzIgMTMgNSAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="more">
-                    </a>
-                </div>
-            </div><!-- end .sxp-filter-wrapper-->
-            <div class="sxp-clearfix"></div>
-        <?php
-    }
+		?>
+			<div class="sxp-filter-wrapper">
+				<div class="sxp-filter-default">
+					<label for="sxp-filter-default" class="screen-reader-text">Filter</label>
+					<select name="sxp-filter-default" id="sxp-filter-default">
+						<option value="sort-by-name">Sort by Name</option>
+						<option value="location">Location</option>
+						<option value="customer-type">Customer Type</option>
+						<option value="customer-tag">Customer Tag</option>
+						<option value="orders">Orders</option>
+						<option value="revenue">Revenue</option>
+						<option value="last-order">Last Order</option>
+					</select>
+				</div><!-- end .sxp-filter-default -->
+				<div class="sxp-filter-date-range">
+					<div id="reportrange" aria-label="filter by date" style="background: #fff; cursor: pointer; padding: 6px 10px; width: 100%">
+						<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+						<span></span> <i class="fa fa-caret-down"></i>
+					</div>
+				</div><!-- end .sxp-filter-date-range-->
+				<div class="sxp-screen-options">
+					<a href="#">
+						<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDEzQzEyLjU1MjMgMTMgMTMgMTIuNTUyMyAxMyAxMkMxMyAxMS40NDc3IDEyLjU1MjMgMTEgMTIgMTFDMTEuNDQ3NyAxMSAxMSAxMS40NDc3IDExIDEyQzExIDEyLjU1MjMgMTEuNDQ3NyAxMyAxMiAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5IDEzQzE5LjU1MjMgMTMgMjAgMTIuNTUyMyAyMCAxMkMyMCAxMS40NDc3IDE5LjU1MjMgMTEgMTkgMTFDMTguNDQ3NyAxMSAxOCAxMS40NDc3IDE4IDEyQzE4IDEyLjU1MjMgMTguNDQ3NyAxMyAxOSAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTUgMTNDNS41NTIyOCAxMyA2IDEyLjU1MjMgNiAxMkM2IDExLjQ0NzcgNS41NTIyOCAxMSA1IDExQzQuNDQ3NzIgMTEgNCAxMS40NDc3IDQgMTJDNCAxMi41NTIzIDQuNDQ3NzIgMTMgNSAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="more">
+					</a>
+				</div>
+			</div><!-- end .sxp-filter-wrapper-->
+			<div class="sxp-clearfix"></div>
+		<?php
+	}
 	/**
 	 * Render Page Content Area
 	 */

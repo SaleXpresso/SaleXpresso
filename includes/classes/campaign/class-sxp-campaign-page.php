@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package SaleXpresso\Campaign
  */
-class SXP_Campaign_page  extends SXP_Admin_Page{
+class SXP_Campaign_page  extends SXP_Admin_Page {
 
 	/**
 	 * Add new button url for current page.
@@ -49,11 +49,11 @@ class SXP_Campaign_page  extends SXP_Admin_Page{
 		$tabs = [
 			'campaigns-lists' => [
 				'label'   => __( 'Campaigns', 'salexpresso' ),
-				'content' => [$this, 'render_campaign_list'],
+				'content' => [ $this, 'render_campaign_list' ],
 			],
-			'campaigns-new' => [
+			'campaigns-new'   => [
 				'label'   => __( 'New Campaign', 'salexpresso' ),
-				'content' => [$this, 'render_campaign_new'],
+				'content' => [ $this, 'render_campaign_new' ],
 			],
 		];
 

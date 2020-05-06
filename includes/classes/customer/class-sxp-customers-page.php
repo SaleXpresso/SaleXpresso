@@ -48,25 +48,25 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	protected function set_tabs() {
 		$tabs = [
-			'customer-list'  => [
+			'customer-list'    => [
 				'label'   => __( 'Customers', 'salexpresso' ),
 				'content' => [ $this, 'render_customer_list' ],
 			],
-			'customer-type'  => [
+			'customer-type'    => [
 				'label'   => __( 'Customer Types', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_type'] ,
+				'content' => [ $this, 'render_customer_type' ],
 			],
-			'customer-rule' => [
+			'customer-rule'    => [
 				'label'   => __( 'Customer Type Rules', 'salexpresso' ),
-				'content' => [$this, 'render_customer_type_rule'],
+				'content' => [ $this, 'render_customer_type_rule' ],
 			],
-			'customer-group' => [
+			'customer-group'   => [
 				'label'   => __( 'Customer Groups', 'salexpresso' ),
-				'content' => [$this, 'render_customer_group'],
+				'content' => [ $this, 'render_customer_group' ],
 			],
 			'customer-profile' => [
 				'label'   => __( 'Customer Profile', 'salexpresso' ),
-				'content' => [$this, 'render_customer_profile'],
+				'content' => [ $this, 'render_customer_profile' ],
 			],
 		];
 		
