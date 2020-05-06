@@ -1,0 +1,27 @@
+# Autodetect text files
+* text=auto
+
+# Definitively text files 
+*.txt text
+*.php text
+*.css text
+*.scss text
+*.js text
+*.html text
+*.xml text
+*.svg text
+*.json
+*.sql
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svgz binary
+*.zip binary
+*.eot binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+
