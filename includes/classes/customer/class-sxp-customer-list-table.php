@@ -258,17 +258,17 @@ class SXP_Customer_List_Table {
 				</ul>
 			</div><!-- end .sxp-paginaation-wrapper -->
 
-			<div class="sxp-customer-bottom-wrapper">
-				<div class="sxp-customer-selected-container">
-					<div class="sxp-customer-row-select">
-						<a href="#" class="sxp-customer-remove-select"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="Remove selection"></a>
-						<a href="#" class="sxp-customer-selected">2 Rows Selected</a>
+			<div class="sxp-bottom-wrapper">
+				<div class="sxp-selected-container">
+					<div class="sxp-row-select">
+						<a href="#" class="sxp-remove-select"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="Remove selection"></a>
+						<a href="#" class="sxp-selected">2 Rows Selected</a>
 					</div>
-					<div class="sxp-customer-remove-customer">
+					<div class="sxp-remove-customer">
 						<a href="#">Delete</a>
 					</div>
-				</div><!-- end .sxp-customer-selected-container -->
-			</div><!-- end .sxp-customer-bottom-wrapper -->
+				</div><!-- end .sxp-selected-container -->
+			</div><!-- end .sxp-bottom-wrapper -->
 
 		</div><!-- end .sxp-customer-list-wrapper -->
 		<?php

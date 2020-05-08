@@ -64,6 +64,7 @@ import { tabs } from './components/_tabs.js';
 
 	// Initiate Feather Icon
 	feather.replace({
+		'stroke-width': 2,
 		'width' : 16,
 		'height' : 16
 		}

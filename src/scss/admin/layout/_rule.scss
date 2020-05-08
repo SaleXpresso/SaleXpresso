@@ -43,16 +43,6 @@
 			border-radius: 4px;
 			line-height: 20px;
 		}
-		&-selected-container {
-			max-width: 685px;
-			background: $white;
-			margin: 0 auto;
-			@include box-shadow(0px, 4px, 16px, rgba($box-shadow-color, .06));
-			border-top-left-radius: 4px;
-			border-top-right-radius: 4px;
-			padding: 1rem;
-			overflow: hidden;
-		}
 		&-add-btn {
 			a {
 				/*position: relative;
@@ -67,10 +57,6 @@
 					left: -16px;
 				}*/
 			}
-		}
-		&-bottom {
-			margin-top: 12px;
-			clear: both;
 		}
 		&-save-wrapper {
 			float: right;
