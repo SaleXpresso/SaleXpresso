@@ -28,6 +28,9 @@
     border-radius: .25rem;
     text-decoration: none;
     display: inline-block;
+    &:hover {
+      color: inherit;
+    }
   }
   &-btn-primary {
     padding: 1rem 1.5rem;
@@ -58,4 +61,27 @@
       color: $dark-purple;
     }
   }
+  &-btn-link {
+    text-decoration: none;
+    color: $customer-heading;
+    font-weight: 700;
+    line-height: 20px;
+    &:hover {
+      color: $customer-heading;
+    }
+  }
+  &-btn-cancel {
+    color: $text-color;
+    line-height: $btn-line-height;
+    text-decoration: none;
+    &:hover {
+      color: $text-color;
+    }
+  }
+}
+
+// feather icon
+svg.feather {
+  top: 3px;
+  position: relative;
 }

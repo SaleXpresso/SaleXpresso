@@ -62,4 +62,11 @@ import { tabs } from './components/_tabs.js';
 		});
 	});
 
+	// Initiate Feather Icon
+	feather.replace({
+		'width' : 16,
+		'height' : 16
+		}
+	)
+
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );
