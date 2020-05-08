@@ -1,0 +1,84 @@
+.sxp {
+	&-profile {
+		&-wrapper {
+			display: flex;
+			position: relative;
+			> div {
+				padding: 1.5rem;
+				background: $white;
+			}
+		}
+		&-info {
+			flex: 0 0 23%;
+			max-width: 23%;
+			margin-right: 1rem;
+			border-radius: .5rem;
+
+			h3, p {
+				margin: 0;
+				color: $text-color;
+			}
+
+			&-wrapper {
+				text-align: center;
+				h3 {
+					font-size: 1rem;
+					line-height: 1.5rem;
+					font-weight: 700;
+					color: black;
+					margin: 10px auto 0;
+				}
+				p {
+					color: $dark-purple;
+					font-size: 0.875rem;
+					line-height: 1.25rem;
+					margin-top: 2px;
+				}
+			}
+			&-history {
+				margin-top: 2rem;
+
+				.history {
+					display: flex;
+					clear: both;
+					margin-top: .5rem;
+
+					p {
+						font-size: 0.875rem;
+						line-height: 1.25rem;
+						flex: 0 0 50%;
+						max-width: 50%;
+
+						&:last-child {
+							text-align: right;
+						}
+					}
+					.history-bold {
+						font-weight: 700;
+					}
+				}
+			}
+		}
+		&-details {
+			flex: 0 0 74%;
+			max-width: 74%;
+			margin-left: 1rem;
+			border-radius: .25rem;
+		}
+		&-type {
+			position: absolute;
+			padding: 4px 6px;
+			border-radius: 4px;
+			display: inline-block;
+			color: $text-color;
+			top: 1rem;
+			left: 1rem;
+		}
+		&-thumb {
+			img {
+				width: 4.5rem;
+				height: 4.5rem;
+			}
+		}
+	}
+}

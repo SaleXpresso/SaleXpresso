@@ -29,26 +29,26 @@ class SXP_Customer_Profile_Table {
 		// @TODO Extend WP_List_Table.
 
 		?>
-			<div class="sxp-customer-wrapper">
-				<div class="sxp-customer-info">
-					<div class="sxp-customer-profile">
-						<div class="customer-type">General</div>
-						<div class="customer-info-wrapper">
-							<div class="customer-thumnb">
-								<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer6.png' ); ?>" alt="Customer Thumbnail">
+			<div class="sxp-profile-wrapper">
+				<div class="sxp-profile-info">
+					<div class="sxp-profile-profile">
+						<div class="sxp-profile-type" style="background: #DAE4FF;">General</div>
+						<div class="sxp-profile-info-wrapper">
+							<div class="sxp-profile-thumb">
+								<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/profile.png' ); ?>" alt="Customer Thumbnail">
 							</div>
 							<h3>Norman Howard</h3>
 							<p>normaflores@info.com</p>
 							<p>Cairo, Egypt</p>
-						</div><!-- end .customer-info-wrapper -->
-						<div class="customer-info-history">
+						</div><!-- end .sxp-profile-info-wrapper -->
+						<div class="sxp-profile-info-history">
 							<div class="history">
 								<p>Acquired via</p>
-								<p>Google</p>
+								<p><span class="history-bold">Google</span></p>
 							</div><!-- end .history -->
 							<div class="history">
 								<p>Revenue</p>
-								<p>$70.75</p>
+								<p><span class="history-bold">$70.75</span></p>
 							</div><!-- end .history -->
 							<div class="history">
 								<p>Sessions</p>
@@ -74,10 +74,10 @@ class SXP_Customer_Profile_Table {
 								<p>Last Active</p>
 								<p>2 Apr, 2020</p>
 							</div><!-- end .history -->
-						</div><!-- end .customer-info-history -->
+						</div><!-- end .profile-info-history -->
 					</div>
-				</div><!-- end .sxp-customer-info -->
-				<div class="sxp-customer-details">
+				</div><!-- end .sxp-profile-info -->
+				<div class="sxp-profile-details">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#">Activity</a></li>
 						<li><a href="#">Orders</a></li>
@@ -127,11 +127,11 @@ class SXP_Customer_Profile_Table {
 							campaign tab
 						</div>
 					</div>
-				</div><!-- end .sxp-customer-details -->
-			</div><!-- end .sxp-customer-wrapper -->
+				</div><!-- end .sxp-profile-details -->
+			</div><!-- end .sxp-profile-wrapper -->
 		<?php
 	}
 
 }
 
-// End of file class-sxp-customer-list-table.php.
+// End of file class-sxp-profile-list-table.php.
