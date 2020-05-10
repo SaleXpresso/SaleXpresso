@@ -68,6 +68,6 @@ import { tabs } from './components/_tabs.js';
 		'width' : 16,
 		'height' : 16
 		}
-	)
+	);
 
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );

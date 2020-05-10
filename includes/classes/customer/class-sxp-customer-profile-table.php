@@ -78,16 +78,6 @@ class SXP_Customer_Profile_Table {
 					</div>
 				</div><!-- end .sxp-profile-info -->
 				<div class="sxp-profile-details">
-					<ul class="nav nav-tabs">
-						<li class="active"><a href="#">Activity</a></li>
-						<li><a href="#">Orders</a></li>
-						<li><a href="#">Products</a></li>
-						<li><a href="#">Active Cart</a></li>
-						<li><a href="#">Searches</a></li>
-						<li><a href="#">Recommendation</a></li>
-						<li><a href="#">Discount</a></li>
-						<li><a href="#">Campaign</a></li>
-					</ul>
 					<nav>
 						<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 							<a class="nav-item nav-link active" id="nav-activity-tab" data-toggle="tab" href="#nav-activity" role="tab" aria-controls="nav-activity" aria-selected="true">Activity</a>
