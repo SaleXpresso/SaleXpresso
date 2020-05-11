@@ -107,29 +107,113 @@ class SXP_Customer_Profile_Table {
 					</ul>
 
 					<div id="activity" class="tab-content current">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					</div>
+						<table class="sxp-table sxp-customer-profile-table">
+							<thead>
+								<tr>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">All Sessions</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Source</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Actions</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Timestamp</a></th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="Soruce">facebook</td>
+									<td data-colname="Actions">5</td>
+									<td data-colname="Timestamp">Jan 20, 2020</td>
+								</tr>
+								<tr>
+									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="Soruce">facebook</td>
+									<td data-colname="Actions">5</td>
+									<td data-colname="Timestamp">Jan 20, 2020</td>
+								</tr>
+								<tr class="has-fold">
+									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="Soruce">facebook</td>
+									<td data-colname="Actions">5</td>
+									<td data-colname="Timestamp">Jan 20, 2020</td>
+								</tr>
+								<tr class="fold">
+									<td colspan="8">
+										<div class="sxp-fold-content">
+											<div class="sxp-table-viewed">
+												<i data-feather="eye"></i>
+												<span class="serial">1.</span>Viewed
+												<a href="#" class="product">Fresh Refined Sugar</a> Product
+											</div>
+											<div>5s later</div>
+										</div><!-- end .sxp-fold-content -->
+										<div class="sxp-fold-content">
+											<div class="sxp-table-viewed">
+												<i data-feather="eye"></i>
+												<span class="serial">2.</span>Viewed
+												<a href="#" class="product">Fresh Refined Sugar</a> Product
+											</div>
+											<div>5s later</div>
+										</div><!-- end .sxp-fold-content -->
+										<div class="sxp-fold-content">
+											<div class="sxp-table-viewed">
+												<i data-feather="plus-circle"></i>
+												<span class="serial">3.</span>Added
+												<a href="#" class="product">Mum Drinking Wather</a> to cart
+											</div>
+											<div>5s later</div>
+										</div><!-- end .sxp-fold-content -->
+										<div class="sxp-fold-content">
+											<div class="sxp-table-viewed">
+												<i data-feather="x-octagon"></i>
+												<span class="serial">4.</span>Removed
+												<a href="#" class="product">Mum Drinking Wather</a> from cart
+											</div>
+											<div>5s later</div>
+										</div><!-- end .sxp-fold-content --><div class="sxp-fold-content">
+											<div class="sxp-table-viewed">
+												<i data-feather="shopping-cart"></i>
+												<span class="serial">5.</span>Completed checkout with American Express
+											</div>
+											<div>5s later</div>
+										</div><!-- end .sxp-fold-content -->
+
+									</td>
+								</tr>
+								<tr>
+									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="Soruce">facebook</td>
+									<td data-colname="Actions">5</td>
+									<td data-colname="Timestamp">Jan 20, 2020</td>
+								</tr>
+								<tr>
+									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="Soruce">facebook</td>
+									<td data-colname="Actions">5</td>
+									<td data-colname="Timestamp">Jan 20, 2020</td>
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- end .tab-content -->
 					<div id="orders" class="tab-content">
 						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</div>
+					</div><!-- end .tab-content -->
 					<div id="products" class="tab-content">
 						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-					</div>
+					</div><!-- end .tab-content -->
 					<div id="active-cart" class="tab-content">
 						Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					</div>
+					</div><!-- end .tab-content -->
 					<div id="searches" class="tab-content">
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					</div>
+					</div><!-- end .tab-content -->
 					<div id="recommendation" class="tab-content">
 						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</div>
+					</div><!-- end .tab-content -->
 					<div id="discount" class="tab-content">
 						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-					</div>
-					<div id="campaign" class="tab-content current">
+					</div><!-- end .tab-content -->
+					<div id="campaign" class="tab-content">
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					</div>
+					</div><!-- end .tab-content -->
 				</div><!-- end .sxp-profile-details -->
 			</div><!-- end .sxp-profile-wrapper -->
 		<?php

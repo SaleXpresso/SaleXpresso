@@ -5,14 +5,16 @@
         border-radius: 4px;
         border-style: hidden; /* hide standard table (collapsed) border */
         box-shadow: 0 0 0 1px transparent;
+        width: 100%;
         thead {
             th {
-                padding: 0 1rem;
                 font-weight: 700;
                 height: 56px;
                 vertical-align: middle;
                 color: $table-header-color !important;
                 border-bottom: $border-width solid $border-color;
+                text-align: left;
+                padding: 0;
 
                 &:last-child {
                     text-align: right;
@@ -22,6 +24,7 @@
                     color: $table-header-color !important;
                     padding: 18px;
                     position: relative;
+                    text-decoration: none;
 
                     /*&:after {
                         content: "";
@@ -113,6 +116,31 @@
             margin-top: 0;
         }
     }
+    &-customer-profile-table {
+        thead {
+            th {
+                a {
+                    padding: 0 1.5rem;
+                }
+            }
+        }
+        tbody {
+            td {
+                padding: 0 1.5rem;
+            }
+            tr.has-fold.open {
+                @include box-shadow(0, 2px, 4px, rgba($box-shadow-color, 0.08));
+            }
+            tr.fold {
+                td {
+                    padding: 0;
+                    a{
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
     &-customer-desc {
         &-thumbnail {
             float: left;
@@ -185,7 +213,7 @@
             flex: 1;
             align-content: flex-end;
         }
-        i {
+        i, svg {
             font-size: 1rem;
             color: $dark-purple;
         }
@@ -200,12 +228,6 @@
 
     }
 }
-.sxp-customer-list.fold {
-    td {
-        padding: 0;
-    }
-}
-
 @media screen and (max-width: 782px) {
     .sxp {
         &-table {
