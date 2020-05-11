@@ -67,7 +67,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Holiday Campaign</a></li>
 									<li><a href="">Vip Compaign</a></li>
 									<li><a href="">+2</a></li>
@@ -90,7 +90,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">New Year</a></li>
 									<li><a href="">+3</a></li>
 								</ul>
@@ -112,7 +112,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Sports lover</a></li>
 									<li><a href="#">Creative People Campaign</a></li>
 									<li><a href="#">Special Day Events</a></li>
@@ -136,7 +136,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Doctor</a></li>
 									<li><a href="">+5</a></li>
 								</ul>

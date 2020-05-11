@@ -67,7 +67,7 @@ class SXP_Customer_Type_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Holiday Campaign</a></li>
 									<li><a href="">Vip Compaign</a></li>
 									<li><a href="">+2</a></li>
@@ -90,7 +90,7 @@ class SXP_Customer_Type_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Birthday</a></li>
 									<li><a href="#">Please Come Back</a></li>
 									<li><a href="#">Frequent Shpper</a></li>
@@ -115,7 +115,7 @@ class SXP_Customer_Type_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">New Year Happiness</a></li>
 									<li><a href="">+2</a></li>
 								</ul>

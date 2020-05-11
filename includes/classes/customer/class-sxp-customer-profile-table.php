@@ -118,19 +118,34 @@ class SXP_Customer_Profile_Table {
 							</thead>
 							<tbody id="the-list">
 								<tr>
-									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="All Sessions">
+										<div class="session-name">Session no. 13</div>
+										<ul class="sxp-tag-list">
+											<li><a href="#">Did added anything to cart</a></li>
+										</ul>
+									</td>
 									<td data-colname="Soruce">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
 								<tr>
-									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="All Sessions">
+										<div class="session-name">Session no. 14</div>
+										<ul class="sxp-tag-list">
+											<li><a href="#">Purchased 1 item</a></li>
+										</ul>
+									</td>
 									<td data-colname="Soruce">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
 								<tr class="has-fold">
-									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="All Sessions">
+										<div class="session-name">Session no. 15</div>
+										<ul class="sxp-tag-list">
+											<li><a href="#">6 items added to cart</a></li>
+										</ul>
+									</td>
 									<td data-colname="Soruce">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
@@ -179,13 +194,23 @@ class SXP_Customer_Profile_Table {
 									</td>
 								</tr>
 								<tr>
-									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="All Sessions">
+										<div class="session-name">Session no. 16</div>
+										<ul class="sxp-tag-list">
+											<li><a href="#">Did added anything to cart</a></li>
+										</ul>
+									</td>
 									<td data-colname="Soruce">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
 								<tr>
-									<td data-colname="All Sessions">Session no. 13</td>
+									<td data-colname="All Sessions">
+										<div class="session-name">Session no. 17</div>
+										<ul class="sxp-tag-list">
+											<li><a href="#">Purchased 6 items</a></li>
+										</ul>
+									</td>
 									<td data-colname="Soruce">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>

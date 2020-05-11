@@ -127,6 +127,12 @@
         tbody {
             td {
                 padding: 0 1.5rem;
+                div, ul {
+                    display: inline-block;
+                }
+                ul {
+                    margin-left: 3rem;
+                }
             }
             tr.has-fold.open {
                 @include box-shadow(0, 2px, 4px, rgba($box-shadow-color, 0.08));
@@ -163,7 +169,7 @@
             }
         }
     }
-    &-customer-campaign-list {
+    &-campaign-list {
         margin: 0;
         li {
             display: inline-block;
@@ -175,11 +181,12 @@
                 border-radius: 2rem;
                 border: $table-campaign-border-width solid $table-campaign-border;
                 line-height: 1.8rem;
+                text-decoration: none;
             }
         }
     }
-    &-customer-tag-list {
-        @extend .sxp-customer-campaign-list;
+    &-tag-list {
+        @extend .sxp-campaign-list;
     }
     &-customer-name {
         a {
@@ -190,44 +197,51 @@
 }
 
 // fold content
-.sxp-fold-content {
-    display: flex;
-    border-bottom: $border-width solid $border-color;
-    vertical-align: middle;
-    line-height: 20px;
-    height: 40px;
-    margin: 0;
-    padding: 10px 20px;
+.sxp {
+    &-table {
+        .sxp-fold-content {
+            display: flex;
+            border-bottom: $border-width solid $border-color;
+            vertical-align: middle;
+            line-height: 20px;
+            height: 40px;
+            margin: 0;
+            padding: 10px 20px;
+            width: 100%;
 
-    &:last-child {
-        border-bottom: none;
-    }
-    div {
-        &:first-child {
-            flex: 1;
-            align-content: flex-start;
-            text-align: left;
-            display: inherit;
-        }
-        &:last-child {
-            flex: 1;
-            align-content: flex-end;
-        }
-        i, svg {
-            font-size: 1rem;
-            color: $dark-purple;
-        }
-        .serial {
-            margin: 0 .25rem 0 .5rem;
-            color: $dark-purple;
-        }
-        .product {
-            color: $primary;
-            padding: 0 .25rem;
-        }
+            &:last-child {
+                border-bottom: none;
+            }
+            div {
+                &:first-child {
+                    flex: 1;
+                    align-content: flex-start;
+                    text-align: left;
+                    display: inherit;
+                }
+                &:last-child {
+                    flex: 1;
+                    align-content: flex-end;
+                    text-align: right;
+                }
+                i, svg {
+                    font-size: 1rem;
+                    color: $dark-purple;
+                }
+                .serial {
+                    margin: 0 .25rem 0 .5rem;
+                    color: $dark-purple;
+                }
+                .product {
+                    color: $primary;
+                    padding: 0 .25rem;
+                }
 
+            }
+        }
     }
 }
+
 @media screen and (max-width: 782px) {
     .sxp {
         &-table {

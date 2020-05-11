@@ -77,7 +77,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #FFD0D0">VIP</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Holiday Campaign</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -107,7 +107,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #E3FFDA">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">New Year</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -137,7 +137,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #FFCFB5">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Sports Lover</a></li>
 									<li><a href="">+4</a></li>
 								</ul>
@@ -167,7 +167,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background:  #FFCFB5">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Birthday</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -197,7 +197,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #DAE4FF">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Doctor</a></li>
 									<li><a href="">+5</a></li>
 								</ul>
@@ -227,7 +227,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #CFFFF4">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">New Year</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
