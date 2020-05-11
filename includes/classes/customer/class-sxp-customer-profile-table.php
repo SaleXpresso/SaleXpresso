@@ -78,44 +78,40 @@ class SXP_Customer_Profile_Table {
 					</div>
 				</div><!-- end .sxp-profile-info -->
 				<div class="sxp-profile-details">
-					<nav>
-						<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-							<a class="nav-item nav-link active" id="nav-activity-tab" data-toggle="tab" href="#nav-activity" role="tab" aria-controls="nav-activity" aria-selected="true">Activity</a>
-							<a class="nav-item nav-link" id="nav-orders-tab" data-toggle="tab" href="#nav-orders" role="tab" aria-controls="nav-orders" aria-selected="false">Orders</a>
-							<a class="nav-item nav-link" id="nav-products-tab" data-toggle="tab" href="#nav-products" role="tab" aria-controls="nav-products" aria-selected="false">Products</a>
-							<a class="nav-item nav-link" id="nav-active-cart-tab" data-toggle="tab" href="#nav-active-cart" role="tab" aria-controls="nav-active-cart" aria-selected="false">Active Cart</a>
-							<a class="nav-item nav-link" id="nav-searches-tab" data-toggle="tab" href="#nav-searches" role="tab" aria-controls="nav-searches" aria-selected="false">Searches</a>
-							<a class="nav-item nav-link" id="nav-recommendation-tab" data-toggle="tab" href="#nav-recommendation" role="tab" aria-controls="nav-recommendation" aria-selected="false">Recommendation</a>
-							<a class="nav-item nav-link" id="nav-discount-tab" data-toggle="tab" href="#nav-discount" role="tab" aria-controls="nav-discount" aria-selected="false">Discount</a>
-							<a class="nav-item nav-link" id="nav-campaign-tab" data-toggle="tab" href="#nav-campaign" role="tab" aria-controls="nav-campaign" aria-selected="false">Campaign</a>
+					<ul class="tabs">
+						<li class="tab-link current" data-tab="activity">Activity</li>
+						<li class="tab-link" data-tab="orders">Orders</li>
+						<li class="tab-link" data-tab="products">Products</li>
+						<li class="tab-link" data-tab="active-cart">Active Cart</li>
+						<li class="tab-link" data-tab="searches">Searches</li>
+						<li class="tab-link" data-tab="recommendation">Recommendation</li>
+						<li class="tab-link" data-tab="discount">Discount</li>
+						<li class="tab-link" data-tab="campaign">Campaign</li>
+					</ul>
 
-						</div>
-					</nav>
-					<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-						<div class="tab-pane fade show active" id="nav-activity" role="tabpanel" aria-labelledby="nav-activity-tab">
-							activity tab
-						</div>
-						<div class="tab-pane fade" id="nav-orders" role="tabpanel" aria-labelledby="nav-orders-tab">
-							orders tab
-						</div>
-						<div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab">
-							products
-						</div>
-						<div class="tab-pane fade" id="nav-active-cart" role="tabpanel" aria-labelledby="nav-active-cart-tab">
-							active cart
-						</div>
-						<div class="tab-pane fade" id="nav-searches" role="tabpanel" aria-labelledby="nav-searches-tab">
-							searches tab
-						</div>
-						<div class="tab-pane fade" id="nav-recommendation" role="tabpanel" aria-labelledby="nav-recommendation-tab">
-							Recommendation tab
-						</div>
-						<div class="tab-pane fade" id="nav-discount" role="tabpanel" aria-labelledby="nav-discount-tab">
-							discount tab
-						</div>
-						<div class="tab-pane fade" id="nav-campaign" role="tabpanel" aria-labelledby="nav-campaign-tab">
-							campaign tab
-						</div>
+					<div id="activity" class="tab-content current">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					</div>
+					<div id="orders" class="tab-content">
+						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</div>
+					<div id="products" class="tab-content">
+						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+					</div>
+					<div id="active-cart" class="tab-content">
+						Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					</div>
+					<div id="searches" class="tab-content">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					</div>
+					<div id="recommendation" class="tab-content">
+						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</div>
+					<div id="discount" class="tab-content">
+						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+					</div>
+					<div id="campaign" class="tab-content current">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 					</div>
 				</div><!-- end .sxp-profile-details -->
 			</div><!-- end .sxp-profile-wrapper -->

@@ -64,6 +64,30 @@
 			max-width: 74%;
 			margin-left: 1rem;
 			border-radius: .25rem;
+
+			.tabs{
+				margin: 0px;
+				padding: 0px;
+				list-style: none;
+
+				li{
+					background: none;
+					color: $dark-purple;
+					display: inline-block;
+					cursor: pointer;
+
+					&.current{
+						color: $primary;
+					}
+				}
+			}
+			.tab-content{
+				display: none;
+			}
+
+			.tab-content.current{
+				display: inherit;
+			}
 		}
 		&-type {
 			position: absolute;
