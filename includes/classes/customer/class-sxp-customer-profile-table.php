@@ -79,14 +79,31 @@ class SXP_Customer_Profile_Table {
 				</div><!-- end .sxp-profile-info -->
 				<div class="sxp-profile-details">
 					<ul class="tabs">
-						<li class="tab-link current" data-tab="activity">Activity</li>
-						<li class="tab-link" data-tab="orders">Orders</li>
-						<li class="tab-link" data-tab="products">Products</li>
-						<li class="tab-link" data-tab="active-cart">Active Cart</li>
-						<li class="tab-link" data-tab="searches">Searches</li>
-						<li class="tab-link" data-tab="recommendation">Recommendation</li>
-						<li class="tab-link" data-tab="discount">Discount</li>
-						<li class="tab-link" data-tab="campaign">Campaign</li>
+						<li class="tab-link current" data-tab="activity">
+							Activity
+						</li>
+						<li class="tab-link" data-tab="orders">
+							Orders
+						</li>
+						<li class="tab-link" data-tab="products">
+							Products
+						</li>
+						<li class="tab-link" data-tab="active-cart">
+							Active Cart
+						</li>
+						<li class="tab-link" data-tab="searches">
+							Searches
+						</li>
+						<li class="tab-link" data-tab="recommendation">
+							Recommendation
+						</li>
+						<li class="tab-link" data-tab="discount">
+							Discount
+						</li>
+						<li class="tab-link" data-tab="campaign">
+							Campaign
+							<div class="number-bubble">54</div>
+						</li>
 					</ul>
 
 					<div id="activity" class="tab-content current">
