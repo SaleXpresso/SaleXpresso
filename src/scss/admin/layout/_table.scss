@@ -129,9 +129,16 @@
                 padding: 0 1.5rem;
                 div, ul {
                     display: inline-block;
+                    vertical-align: middle;
                 }
-                ul {
+                .sxp-tag-list {
                     margin-left: 3rem;
+                }
+                a{
+                    text-decoration: none;
+                }
+                .order-number {
+                    color: $primary;
                 }
             }
             tr.has-fold.open {
@@ -140,9 +147,6 @@
             tr.fold {
                 td {
                     padding: 0;
-                    a{
-                        text-decoration: none;
-                    }
                 }
             }
         }
@@ -237,6 +241,36 @@
                     padding: 0 .25rem;
                 }
 
+            }
+        }
+        .product-list {
+            max-width: 40px;
+            padding: 0;
+            margin: 0;
+            li {
+                float: left;
+                a {
+                    img {
+                        border-radius: 20px;
+                        width: 100%;
+                        border: $border-width solid $light-purple;
+                    }
+                }
+            }
+        }
+        .product-number {
+            margin-left: .75rem;
+        }
+        .product-list.multiple {
+            li {
+                width: 50%;
+                margin: 0;
+                a {
+                    padding: 0;
+                    margin: 0;
+                    line-height: 0.6;
+                    display: block;
+                }
             }
         }
     }

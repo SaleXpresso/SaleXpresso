@@ -23,6 +23,9 @@
       line-height: 1.25rem;
     }
   }
+  //
+  // Buttons
+  //
   &-btn {
     line-height: 1.25rem;
     border-radius: .25rem;
@@ -78,8 +81,38 @@
       color: $text-color;
     }
   }
-}
 
+  //
+  // Customer Status
+  //
+  &-status {
+    position: relative;
+    &:before {
+      content: "";
+      position: absolute;
+      width: .5rem;
+      height: .5rem;
+      border-radius: 0.25rem;
+      top: 0.375rem;
+      left: -1rem;
+    }
+  }
+  &-status-success {
+    &:before {
+      background: $status-success;
+    }
+  }
+  &-status-info {
+    &:before {
+      background: $status-info;
+    }
+  }
+  &-status-danger {
+    &:before {
+      background: $status-danger;
+    }
+  }
+}
 // feather icon
 svg.feather {
   top: 3px;

@@ -219,7 +219,71 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="orders" class="tab-content">
-						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<table class="sxp-table sxp-customer-profile-table">
+							<thead>
+							<tr>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Order Id</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">products</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Date</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Revenue</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Net Profit</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Status</a></th>
+							</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<td data-colname="Order Id"><a href="£" class="order-number">200083726</a></td>
+									<td data-colname="Products">
+										<ul class="product-list multiple">
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+										</ul>
+										<div class="product-number">9 Items</div>
+									</td>
+									<td data-colname="Date">Jan 20, 2020</td>
+									<td data-colname="Revenue">$5739.2</td>
+									<td data-colname="Net Profit">$87.03</td>
+									<td data-colname="status">
+										<div class="sxp-status sxp-status-success">Completed</div>
+									</td>
+								</tr>
+								<tr>
+									<td data-colname="Order Id"><a href="£" class="order-number">200083726</a></td>
+									<td data-colname="Products">
+										<ul class="product-list multiple">
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+										</ul>
+										<div class="product-number">9 Items</div>
+									</td>
+									<td data-colname="Date">Jan 20, 2020</td>
+									<td data-colname="Revenue">$5739.2</td>
+									<td data-colname="Net Profit">$87.03</td>
+									<td data-colname="status">
+										<div class="sxp-status sxp-status-info">Refunded</div>
+									</td>
+								</tr>
+								<tr>
+									<td data-colname="Order Id"><a href="£" class="order-number">200083726</a></td>
+									<td data-colname="Products">
+										<ul class="product-list">
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+										</ul>
+										<div class="product-number">9 Items</div>
+									</td>
+									<td data-colname="Date">Jan 20, 2020</td>
+									<td data-colname="Revenue">$5739.2</td>
+									<td data-colname="Net Profit">$87.03</td>
+									<td data-colname="status">
+										<div class="sxp-status sxp-status-danger">Canceled</div>
+									</td>
+								</tr>
+							</tbody>
+
+						</table>
 					</div><!-- end .tab-content -->
 					<div id="products" class="tab-content">
 						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
