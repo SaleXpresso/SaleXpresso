@@ -124,7 +124,7 @@ class SXP_Customer_Profile_Table {
 											<li><a href="#">Did added anything to cart</a></li>
 										</ul>
 									</td>
-									<td data-colname="Soruce">facebook</td>
+									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
@@ -135,7 +135,7 @@ class SXP_Customer_Profile_Table {
 											<li><a href="#">Purchased 1 item</a></li>
 										</ul>
 									</td>
-									<td data-colname="Soruce">facebook</td>
+									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
@@ -146,7 +146,7 @@ class SXP_Customer_Profile_Table {
 											<li><a href="#">6 items added to cart</a></li>
 										</ul>
 									</td>
-									<td data-colname="Soruce">facebook</td>
+									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
@@ -200,7 +200,7 @@ class SXP_Customer_Profile_Table {
 											<li><a href="#">Did added anything to cart</a></li>
 										</ul>
 									</td>
-									<td data-colname="Soruce">facebook</td>
+									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
@@ -211,7 +211,7 @@ class SXP_Customer_Profile_Table {
 											<li><a href="#">Purchased 6 items</a></li>
 										</ul>
 									</td>
-									<td data-colname="Soruce">facebook</td>
+									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
@@ -286,7 +286,63 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="products" class="tab-content">
-						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+						<table class="sxp-table sxp-customer-profile-table">
+							<thead>
+							<tr>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Products</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Quantity</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Revenue</a></th>
+								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Net Profit</a></th>
+							</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<td data-colname="Products">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="quantity">66</td>
+									<td data-colname="revenue">$806.87</td>
+									<td data-colname="net-profit">$67.34</td>
+								</tr>
+								<tr>
+									<td data-colname="Products">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="quantity">66</td>
+									<td data-colname="revenue">$806.87</td>
+									<td data-colname="net-profit">$67.34</td>
+								</tr>
+								<tr>
+									<td data-colname="Products">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="quantity">66</td>
+									<td data-colname="revenue">$806.87</td>
+									<td data-colname="net-profit">$67.34</td>
+								</tr>
+								<tr>
+									<td data-colname="Products">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="quantity">66</td>
+									<td data-colname="revenue">$806.87</td>
+									<td data-colname="net-profit">$67.34</td>
+								</tr><tr>
+									<td data-colname="Products">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="quantity">66</td>
+									<td data-colname="revenue">$806.87</td>
+									<td data-colname="net-profit">$67.34</td>
+								</tr>
+
+							</tbody>
+						</table>
 					</div><!-- end .tab-content -->
 					<div id="active-cart" class="tab-content">
 						Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
