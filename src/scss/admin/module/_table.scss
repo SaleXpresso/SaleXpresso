@@ -73,6 +73,10 @@
 				&:last-child {
 					text-align: right;
 				}
+				i,
+				svg {
+					color: $dark-purple;
+				}
 			}
 			// has-fold segment
 			> tr.has-fold {
@@ -109,6 +113,14 @@
 				display: none;
 				&.open {
 					display: table-row;
+				}
+			}
+		}
+		tfoot {
+			td {
+				i,
+				svg {
+					color: $dark-purple;
 				}
 			}
 		}

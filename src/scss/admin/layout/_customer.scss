@@ -1,3 +1,11 @@
+/**
+ * SaleXpresso Customer Page
+ *
+ * @author SaleXpresso <support@salexpresso.com>
+ * @package SaleXpresso
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 .sxp {
 	&-form-group {
 		border-radius: 4px;
@@ -164,42 +172,6 @@
 			&-location {
 				margin: 0 !important;
 				color: $customer-list-location-color !important;
-			}
-		}
-	}
-	&-customer-profile-table {
-		thead {
-			th {
-				a {
-					padding: 0 1.5rem;
-				}
-			}
-		}
-		tbody {
-			td {
-				padding: 0 1.5rem;
-				div,
-				ul {
-					display: inline-block;
-					vertical-align: middle;
-				}
-				.sxp-tag-list {
-					margin-left: 3rem;
-				}
-				a {
-					text-decoration: none;
-				}
-				.order-number {
-					color: $primary;
-				}
-			}
-			tr.has-fold.open {
-				@include box-shadow(0, 2px, 4px, rgba($box-shadow-color, 0.08));
-			}
-			tr.fold {
-				td {
-					padding: 0;
-				}
 			}
 		}
 	}
