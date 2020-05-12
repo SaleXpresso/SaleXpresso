@@ -31,11 +31,12 @@ class SXP_Customer_Group_Table {
 		<div class="sxp-customer-wrapper">
 			<div class="sxp-customer-top-wrapper">
 				<div class="sxp-customer-search">
-					<input type="text" placeholder="Search Customers">
+					<label for="sxp-customer-search" class="screen-reader-text"><?php __('Search Customer', 'salexpresso'); ?></label>
+					<input type="text" id="sxp-customer-search" placeholder="Search Customers">
 				</div><!-- end .sxp-customer-search -->
 				<div class="sxp-customer-btn-wrapper">
-					<a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i class="fa fa-plus"></i> Customer Type Rules</a>
-					<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
+					<a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i data-feather="plus"></i> Customer Type Rules</a>
+					<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i data-feather="plus"></i> Add New Customer</a>
 				</div>
 			</div><!-- end .sxp-customer-top-wrapper -->
 			<table class="wp-list-table widefat sxp-table sxp-customer-table">
@@ -66,7 +67,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Holiday Campaign</a></li>
 									<li><a href="">Vip Compaign</a></li>
 									<li><a href="">+2</a></li>
@@ -89,7 +90,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">New Year</a></li>
 									<li><a href="">+3</a></li>
 								</ul>
@@ -111,7 +112,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Sports lover</a></li>
 									<li><a href="#">Creative People Campaign</a></li>
 									<li><a href="#">Special Day Events</a></li>
@@ -135,7 +136,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-campaign-column" data-colname="Customer Campaign">
 							<div class="sxp-customer-compaign-container">
-								<ul class="sxp-customer-campaign-list">
+								<ul class="sxp-campaign-list">
 									<li><a href="#">Doctor</a></li>
 									<li><a href="">+5</a></li>
 								</ul>

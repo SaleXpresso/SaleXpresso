@@ -53,5 +53,33 @@ import './components/_accordion';
 	} );
 
 	// Accordion Table
-	$( '.sxp-table' ).tableAccordion();
+	$(function(){
+		$(".sxp-table tr.has-fold").on("click", function(){
+			if($(this).hasClass("open")) {
+				$(this).removeClass("open").next(".fold").removeClass("open");
+			} else {
+				$(".sxp-table tr.has-fold").removeClass("open").next(".fold").removeClass("open");
+				$(this).addClass("open").next(".fold").addClass("open");
+			}
+		});
+	});
+
+	// Initiate Feather Icon
+	feather.replace({
+		'stroke-width': 2,
+		'width' : 16,
+		'height' : 16
+		}
+	);
+
+	// customer profile tab
+	$('ul.tabs li').click(function(){
+		var tab_id = $(this).attr('data-tab');
+
+		$('ul.tabs li').removeClass('current');
+		$('.tab-content').removeClass('current');
+
+		$(this).addClass('current');
+		$("#"+tab_id).addClass('current');
+	});
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );

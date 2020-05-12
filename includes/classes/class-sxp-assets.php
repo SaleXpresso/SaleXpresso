@@ -94,7 +94,8 @@ class SXP_Assets {
 		
 		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [] );
 		wp_enqueue_script('moment', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', 'jquery', '3.4', 'true');
-		wp_enqueue_script('daterangepicker', '//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'jquery', '3.4', 'true');
+		wp_enqueue_script('daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'jquery', '3.4', 'true');
+		wp_enqueue_script('feather-icon', 'https://unpkg.com/feather-icons', 'jquery', '4.28.0', 'true');
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
 		wp_enqueue_style(
@@ -103,8 +104,7 @@ class SXP_Assets {
 			[],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.css' )
 		);
-		wp_enqueue_style( 'sxp-google-font', '//fonts.googleapis.com/css?family=Public+Sans:400,700&display=swap', '', '1.0.0' );
-		wp_enqueue_style( 'sxp-fontawesome', '//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', '', '4.7.0' );
+		wp_enqueue_style( 'sxp-google-font', 'https://fonts.googleapis.com/css?family=Public+Sans:400,700&display=swap', '', '1.0.0' );
 	}
 	
 	/**

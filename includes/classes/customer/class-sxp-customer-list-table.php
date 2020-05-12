@@ -32,11 +32,12 @@ class SXP_Customer_List_Table {
 		<div class="sxp-customer-list-wrapper">
 			<div class="sxp-customer-top-wrapper">
 				<div class="sxp-customer-search">
-					<input type="text" placeholder="Search Customers">
+					<label for="sxp-customer-search" class="screen-reader-text"><?php __('Search Customer', 'salexpresso'); ?></label>
+					<input type="text" id="sxp-customer-search" placeholder="Search Customers">
 				</div><!-- end .sxp-customer-search -->
 				<div class="sxp-customer-btn-wrapper">
-					<a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i class="fa fa-plus"></i> Customer Type Rules</a>
-					<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
+					<a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i data-feather="plus"></i> Customer Type Rules</a>
+					<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i data-feather="plus"></i> Add New Customer</a>
 				</div>
 			</div><!-- end .sxp-customer-top-wrapper -->
 			<table class="wp-list-table widefat sxp-table sxp-customer-table">
@@ -76,7 +77,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #FFD0D0">VIP</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Holiday Campaign</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -106,7 +107,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #E3FFDA">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">New Year</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -136,7 +137,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #FFCFB5">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Sports Lover</a></li>
 									<li><a href="">+4</a></li>
 								</ul>
@@ -166,7 +167,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background:  #FFCFB5">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Birthday</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -196,7 +197,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #DAE4FF">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">Doctor</a></li>
 									<li><a href="">+5</a></li>
 								</ul>
@@ -226,7 +227,7 @@ class SXP_Customer_List_Table {
 						<td class="sxp-customer-name" data-colname="Customer Type"><a href="#" style="background: #CFFFF4">Gold</a></td>
 						<td class="sxp-customer-tag-column" data-colname="Customer Tag">
 							<div class="sxp-customer-tag-container">
-								<ul class="sxp-customer-tag-list">
+								<ul class="sxp-tag-list">
 									<li><a href="#">New Year</a></li>
 									<li><a href="">+2</a></li>
 								</ul>
@@ -257,17 +258,17 @@ class SXP_Customer_List_Table {
 				</ul>
 			</div><!-- end .sxp-paginaation-wrapper -->
 
-			<div class="sxp-customer-bottom-wrapper">
-				<div class="sxp-customer-selected-container">
-					<div class="sxp-customer-row-select">
-						<a href="#" class="sxp-customer-remove-select"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="Remove selection"></a>
-						<a href="#" class="sxp-customer-selected">2 Rows Selected</a>
+			<div class="sxp-bottom-wrapper">
+				<div class="sxp-selected-container">
+					<div class="sxp-row-select">
+						<a href="#" class="sxp-remove-select"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="Remove selection"></a>
+						<a href="#" class="sxp-selected">2 Rows Selected</a>
 					</div>
-					<div class="sxp-customer-remove-customer">
+					<div class="sxp-remove-customer">
 						<a href="#">Delete</a>
 					</div>
-				</div><!-- end .sxp-customer-selected-container -->
-			</div><!-- end .sxp-customer-bottom-wrapper -->
+				</div><!-- end .sxp-selected-container -->
+			</div><!-- end .sxp-bottom-wrapper -->
 
 		</div><!-- end .sxp-customer-list-wrapper -->
 		<?php
