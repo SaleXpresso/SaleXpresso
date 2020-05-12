@@ -49,10 +49,10 @@ const externals = [
 
 module.exports = {
 	entry: {
-		'./assets/js/scripts.js': './src/js/scripts.js',
-		'./assets/js/admin.js': './src/js/admin.js',
-		styles: './src/scss/styles.scss',
-		admin: './src/scss/admin.scss',
+		'./assets/js/scripts.js': ['./src/js/scripts.js', './src/scss/styles.scss'],
+		'./assets/js/admin.js': ['./src/js/admin.js', './src/scss/admin.scss'],
+		// styles: './src/scss/styles.scss',
+		// admin: './src/scss/admin.scss',
 	},
 	output: {
 		// Add /* filename */ comments to generated require()s in the output.
@@ -76,7 +76,14 @@ module.exports = {
 				// Exclude the node_modules folder.
 				exclude: /node_modules/,
 				// Use babel loader to transpile the JS files.
-				loader: 'babel-loader',
+				use: {
+					loader: 'babel-loader',
+					options: {
+						"presets": [
+							["@babel/preset-env", {"modules": false}]
+						]
+					}
+				}
 			},
 			{
 				test: /\.scss$/,
@@ -99,8 +106,9 @@ module.exports = {
 	},
 	optimization: {
 		minimize: true,
+		chunkIds: 'named',
 		minimizer: [ new TerserPlugin( {
-			extractComments: false,
+			extractComments: /^\**!|@preserve|@license|@cc_on/i,
 		} ) ],
 	},
 	stats: 'verbose',
