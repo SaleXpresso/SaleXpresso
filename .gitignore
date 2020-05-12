@@ -41,6 +41,9 @@ Thumbs.db
 .orig
 .patch
 
+# WebPack js license.txt
+assets/js/*.LICENSE.txt
+
 # Composer
 vendor
 !vendor/index.php
