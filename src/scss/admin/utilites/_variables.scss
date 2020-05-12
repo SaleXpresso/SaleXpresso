@@ -1,30 +1,30 @@
 // Colors
-$light-purple:             #D0CFE5 !default;
-$light-purple-2:           #E7E6F5 !default;
-$dark-purple:              #7D7DB2 !default;
-$dark-purple-2:            #7D7DB3 !default;
-$primary:                  #3355FF !default;
-$white:                    #ffffff !default;
-$text-color:               #16163D !default;
+$light-purple:             #d0cfe5 !default;
+$light-purple-2:           #e7e6f5 !default;
+$dark-purple:              #7d7db2 !default;
+$dark-purple-2:            #7d7db3 !default;
+$primary:                  #35f !default;
+$white:                    #fff !default;
+$text-color:               #16163d !default;
 $table-header-color:       $dark-purple !default;
 $paragraph-color:          $text-color !default;
 $table-checkbox-input:     $light-purple !default;
-$table-campaign-border:    #D4D4EB !default;
-$border-color:             #F2F4FC !default;
+$table-campaign-border:    #d4d4eb !default;
+$border-color:             #f2f4fc !default;
 $heading-color:             $dark-purple !default;
-$heading-bg:                #F4F3FC !default;
+$heading-bg:                #f4f3fc !default;
 $customer-heading:         $heading-color !default;
 $customer-heading-bg:      $heading-bg !default;
 $customer-rule-border:     $light-purple !default;
-$box-shadow-color:         #0D004D !default;
-$status-success:           #009966 !default;
-$status-info:              #F48400 !default;
-$status-danger:            #B8001F !default;
+$box-shadow-color:         #0d004d !default;
+$status-success:           #096 !default;
+$status-info:              #f48400 !default;
+$status-danger:            #b8001f !default;
 
 //
 // Customer List Badge
 //
-$badgeColors: #FFD0D0, #E3FFDA, #FFCFB5, #DAE4FF, #CFFFF4, #FFFCB5;
+$badgeColors: #ffd0d0, #e3ffda, #ffcfb5, #dae4ff, #cffff4, #fffcb5;
 $badgeColorsLength: length($badgeColors);
 
 //colors

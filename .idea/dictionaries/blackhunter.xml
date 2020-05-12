@@ -4,6 +4,7 @@
       <w>abspath</w>
       <w>addon</w>
       <w>addons</w>
+      <w>ampmselect</w>
       <w>automattic</w>
       <w>autoprefixer</w>
       <w>babelrc</w>
@@ -13,17 +14,24 @@
       <w>cmder</w>
       <w>codesniffer</w>
       <w>dashicons</w>
+      <w>daterangepicker</w>
       <w>dealerdirect</w>
       <w>eslintignore</w>
       <w>gitignore</w>
       <w>hotlinking</w>
+      <w>hourselect</w>
       <w>huskyrc</w>
       <w>innovizz</w>
       <w>mamp</w>
       <w>mhamudul</w>
       <w>minifying</w>
+      <w>minuteselect</w>
+      <w>monthselect</w>
       <w>nginx</w>
       <w>niamul</w>
+      <w>openscenter</w>
+      <w>opensleft</w>
+      <w>opensright</w>
       <w>pathinfo</w>
       <w>permalinks</w>
       <w>phpcodesniffer</w>
@@ -32,6 +40,7 @@
       <w>printf</w>
       <w>salexpresso</w>
       <w>savequeries</w>
+      <w>secondselect</w>
       <w>sprintf</w>
       <w>squiz</w>
       <w>squizlabs</w>
@@ -43,11 +52,13 @@
       <w>unserializing</w>
       <w>vipwpcs</w>
       <w>wamp</w>
+      <w>widefat</w>
       <w>woocommerce</w>
       <w>wpcs</w>
       <w>wpdb</w>
       <w>xampp</w>
       <w>xpresso</w>
+      <w>yearselect</w>
     </words>
   </dictionary>
 </component>

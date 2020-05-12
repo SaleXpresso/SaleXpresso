@@ -12,9 +12,6 @@
 		font-size: 0.875rem;
 		position: relative;
 		display: block;
-		i.fa {
-			font-family: FontAwesome;
-		}
 		table *,
 		table thead *,
 		table tbody * {
@@ -84,7 +81,7 @@
 	//
 	&-status {
 		position: relative;
-		&:before {
+		&::before {
 			content: "";
 			position: absolute;
 			width: 0.5rem;
@@ -95,22 +92,23 @@
 		}
 	}
 	&-status-success {
-		&:before {
+		&::before {
 			background: $status-success;
 		}
 	}
 	&-status-info {
-		&:before {
+		&::before {
 			background: $status-info;
 		}
 	}
 	&-status-danger {
-		&:before {
+		&::before {
 			background: $status-danger;
 		}
 	}
 }
 // feather icon
+
 svg.feather {
 	top: 3px;
 	position: relative;
