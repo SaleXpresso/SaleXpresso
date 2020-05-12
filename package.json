@@ -34,7 +34,9 @@
   ],
   "author": "SaleXpresso",
   "license": "GPL-3.0-or-later",
-  "dependencies": {},
+  "dependencies": {
+    "url-search-params-polyfill": "^8.1.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",

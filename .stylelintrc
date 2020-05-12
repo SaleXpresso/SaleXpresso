@@ -5,6 +5,8 @@
 	"**/*.css"
   ],
   "rules": {
-	"rule-empty-line-before": ["always", {"ignore": ["inside-block"]}]
+	"rule-empty-line-before": ["always", {"ignore": ["inside-block"]}],
+	"declaration-property-unit-whitelist" : ["always", {"ignore": ["inside-block"] } ],
+	"scss/at-rule-no-unknown": true
   }
 }

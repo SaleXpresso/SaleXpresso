@@ -2,4 +2,4 @@
 /*!***************************!*\
   !*** ./src/js/scripts.js ***!
   \***************************/
-/*! no static exports found */function(module,exports){eval("/**!\r\n * SaleXpresso Public Scripts\r\n *\r\n * @author SaleXpresso <support@salexpresso.com>\r\n * @package SaleXpresso\r\n * @version 1.0.0\r\n * @since 1.0.0\r\n */\n(function ($, window, document, SaleXpresso) {})(jQuery, window, document, SaleXpresso);\n\n//# sourceURL=webpack:///./src/js/scripts.js?")}});
+/*! no static exports found */function(module,exports){eval("/**!\n * SaleXpresso Public Scripts\n *\n * @author SaleXpresso <support@salexpresso.com>\n * @package SaleXpresso\n * @version 1.0.0\n * @since 1.0.0\n */\n(function ($, window, document, SaleXpresso) {})(jQuery, window, document, SaleXpresso);\n\n//# sourceURL=webpack:///./src/js/scripts.js?")}});

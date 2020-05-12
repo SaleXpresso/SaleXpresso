@@ -1,25 +1,25 @@
 // Colors
-$light-purple:             #D0CFE5;
-$light-purple-2:           #E7E6F5;
-$dark-purple:              #7D7DB2;
-$dark-purple-2:            #7D7DB3;
-$primary:                  #3355FF;
-$white:                    #ffffff;
-$text-color:               #16163D;
+$light-purple:             #d0cfe5;
+$light-purple-2:           #e7e6f5;
+$dark-purple:              #7d7db2;
+$dark-purple-2:            #7d7db3;
+$primary:                  #35f;
+$white:                    #fff;
+$text-color:               #16163d;
 $table-header-color:       $dark-purple;
 $paragraph-color:          $text-color;
 $table-checkbox-input:     $light-purple;
-$table-campaign-border:    #D4D4EB;
-$border-color:             #F2F4FC;
+$table-campaign-border:    #d4d4eb;
+$border-color:             #f2f4fc;
 $customer-heading:         $dark-purple;
-$customer-heading-bg:      #F4F3FC;
+$customer-heading-bg:      #f4f3fc;
 $customer-rule-border:     $light-purple;
-$box-shadow-color:         #0D004D;
+$box-shadow-color:         #0d004d;
 
 //
 // Customer List Badge
 //
-$badgeColors: #FFD0D0, #E3FFDA, #FFCFB5, #DAE4FF, #CFFFF4, #FFFCB5;
+$badgeColors: #ffd0d0, #e3ffda, #ffcfb5, #dae4ff, #cffff4, #fffcb5;
 $badgeColorsLength: length($badgeColors);
 
 //colors
@@ -45,21 +45,21 @@ $pagination-active-color: $text-color;
 //
 // Navs
 //
-$nav-link-padding-y:                .5rem !default;
+$nav-link-padding-y:                0.5rem !default;
 $nav-link-padding-x:                1rem !default;
-$nav-link-disabled-color:           black !default; //$gray-600 !default;
+$nav-link-disabled-color:           #000 !default; //$gray-600 !default;
 
-$nav-tabs-border-color:             black !default; //$gray-300 !default;
+$nav-tabs-border-color:             #000 !default; //$gray-300 !default;
 $nav-tabs-border-width:             $border-width !default;
 $nav-tabs-border-radius:            $border-radius !default;
 $nav-tabs-link-hover-border-color:  $border-color !default; //$gray-200 $gray-200 $nav-tabs-border-color !default;
 $nav-tabs-link-active-color:        $text-color !default; //$gray-700 !default;
 $nav-tabs-link-active-bg:           $customer-heading-bg !default; //$body-bg !default;
-$nav-tabs-link-active-border-color: black !default; //$gray-300 $gray-300 $nav-tabs-link-active-bg !default;
+$nav-tabs-link-active-border-color: #000 !default; //$gray-300 $gray-300 $nav-tabs-link-active-bg !default;
 
 $nav-pills-border-radius:           $border-radius !default;
 $nav-pills-link-active-color:       $text-color !default; //$component-active-color !default;
 $nav-pills-link-active-bg:          $text-color !default; //$component-active-bg !default;
 
-$nav-divider-color:                 black !default; //$gray-200 !default;
+$nav-divider-color:                 #000 !default; //$gray-200 !default;
 $nav-divider-margin-y:              10px !default; //($spacer / 2) !default;

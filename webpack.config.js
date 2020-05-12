@@ -1,5 +1,5 @@
 const path = require( 'path' );
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require( 'terser-webpack-plugin' )
 /*eslint-disable */
 const { join } = require( 'path' );
 

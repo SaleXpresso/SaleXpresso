@@ -1,255 +1,272 @@
-.sxp{
-    &-table {
-        border: none !important;
-        border-collapse: collapse;
-        border-radius: 4px;
-        border-style: hidden; /* hide standard table (collapsed) border */
-        box-shadow: 0 0 0 1px transparent;
-        thead {
-            th {
-                padding: 0 1rem;
-                font-weight: 700;
-                height: 56px;
-                vertical-align: middle;
-                color: $table-header-color !important;
-                border-bottom: $border-width solid $border-color;
+.sxp {
+	&-table {
+		border: none !important;
+		border-collapse: collapse;
+		border-radius: 4px;
+		border-style: hidden; /* hide standard table (collapsed) border */
+		box-shadow: 0 0 0 1px transparent;
+		thead {
+			th {
+				padding: 0 1rem;
+				font-weight: 700;
+				height: 56px;
+				vertical-align: middle;
+				color: $table-header-color !important;
+				border-bottom: $border-width solid $border-color;
 
-                &:last-child {
-                    text-align: right;
-                }
+				&:last-child {
+					text-align: right;
+				}
 
-                a {
-                    color: $table-header-color !important;
-                    padding: 18px;
-                    position: relative;
+				a {
+					color: $table-header-color !important;
+					padding: 18px;
+					position: relative;
 
-                    &:after {
-                        content: "";
-                        background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 4l4 4 4-4' fill='%23D0CFE6'/%3E%3C/svg%3E");
-                        background-size: 8px 10px;
-                        position: absolute;
-                        right: 3px;
-                        top: 42%;
-                        width: 8px;
-                        height: 10px;
-                    }
-                }
-            }
-            td {
-                border-bottom: $border-width solid $border-color;
+					&::after {
+						content: "";
+						background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 4l4 4 4-4' fill='%23D0CFE6'/%3E%3C/svg%3E");
+						background-size: 8px 10px;
+						position: absolute;
+						right: 3px;
+						top: 42%;
+						width: 8px;
+						height: 10px;
+					}
+				}
+			}
+			td {
+				border-bottom: $border-width solid $border-color;
 
-            }
-            td.check-column {
-                padding: 4px 0 0 10px;
-            }
-        }
-        tbody {
-            th.check-column {
-                padding: 18px 0 0 10px;
-                border-bottom: 1px solid $border-color;
-            }
-            td {
-                font-size: 0.875rem;
-                color: $paragraph-color;
-                padding: 0 1rem;
-                height: 56px;
-                vertical-align: middle;
-                border-bottom: 1px solid $border-color;
-                a {
-                    color: $paragraph-color;
-                }
+			}
+			td.check-column {
+				padding: 4px 0 0 10px;
+			}
+		}
+		tbody {
+			th.check-column {
+				padding: 18px 0 0 10px;
+				border-bottom: 1px solid $border-color;
+			}
+			td {
+				font-size: 0.875rem;
+				color: $paragraph-color;
+				padding: 0 1rem;
+				height: 56px;
+				vertical-align: middle;
+				border-bottom: 1px solid $border-color;
+				a {
+					color: $paragraph-color;
+				}
 
-                &:last-child {
-                    text-align: right;
-                }
-            }
-            // has-fold segment
-            > tr.has-fold {
-                transition: all .3s ease;
-                td, th {cursor: pointer;}
-                td:first-child,
-                th:first-child {
-                    position: relative;
-                    &:before {
-                        position: absolute;
-                        top:50%; left:5px;
-                        width: 9px; height: 16px;
-                        margin-top: -8px;
-                        transition: all .3s ease;
-                    }
-                }
-                &.open {
-                    td:first-child, th:first-child {
-                        &:before {
-                            transform: rotate(-180deg);
-                        }
-                    }
-                }
-            }
+				&:last-child {
+					text-align: right;
+				}
+			}
+			// has-fold segment
+			> tr.has-fold {
+				transition: all 0.3s ease;
+				td,
+				th {
+					cursor: pointer;
+				}
+				td:first-child,
+				th:first-child {
+					position: relative;
+					&::before {
+						position: absolute;
+						top: 50%;
+						left: 5px;
+						width: 9px;
+						height: 16px;
+						margin-top: -8px;
+						transition: all 0.3s ease;
+					}
+				}
+				&.open {
+					td:first-child,
+					th:first-child {
+						&::before {
+							transform: rotate(-180deg);
+						}
+					}
+				}
+			}
 
-            // fold segment
-            > tr.fold {
-                display: none;
-                &.open { display:table-row; }
-            }
-        }
-        input[type=checkbox] {
-            border: $table-checkbox-input-width solid $table-checkbox-input;
-            border-radius: 0;
-            box-shadow: none;
-        }
-        input[type=checkbox]:checked {
-            border: none;
+			// fold segment
+			> tr.fold {
+				display: none;
+				&.open {
+					display: table-row;
+				}
+			}
+		}
+		input[type=checkbox] {
+			border: $table-checkbox-input-width solid $table-checkbox-input;
+			border-radius: 0;
+			box-shadow: none;
+		}
+		input[type=checkbox]:checked {
+			border: none;
 
-            &:focus {
-                outline: 0;
-            }
-        }
-        input[type=checkbox]:checked::before {
-            content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYgNy42NjY2N0w4IDkuNjY2NjdMMTQuNjY2NyAzIiBzdHJva2U9IiMzMzU1RkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNSA4VjEzLjQ0NDRDMTUgMTMuODU3IDE0LjgzNjEgMTQuMjUyNyAxNC41NDQ0IDE0LjU0NDRDMTQuMjUyNyAxNC44MzYxIDEzLjg1NyAxNSAxMy40NDQ0IDE1SDIuNTU1NTZDMi4xNDMgMTUgMS43NDczMyAxNC44MzYxIDEuNDU1NjEgMTQuNTQ0NEMxLjE2Mzg5IDE0LjI1MjcgMSAxMy44NTcgMSAxMy40NDQ0VjIuNTU1NTZDMSAyLjE0MyAxLjE2Mzg5IDEuNzQ3MzMgMS40NTU2MSAxLjQ1NTYxQzEuNzQ3MzMgMS4xNjM4OSAyLjE0MyAxIDIuNTU1NTYgMUgxMS4xMTExIiBzdHJva2U9IiMzMzU1RkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=');
-            margin: -.1875rem 0 0 -.25rem;
-            height: 1.3125rem;
-            width: 1.3125rem;
-            margin-top: 0;
-        }
-    }
-    &-customer-desc {
-        &-thumbnail {
-            float: left;
-            height: 40px;
-            img {
-                border-radius: 20px;
-            }
-        }
-        &-details {
-            float: left;
-            margin-left: 8px;
+			&:focus {
+				outline: 0;
+			}
+		}
+		input[type=checkbox]:checked::before {
+			content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYgNy42NjY2N0w4IDkuNjY2NjdMMTQuNjY2NyAzIiBzdHJva2U9IiMzMzU1RkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNSA4VjEzLjQ0NDRDMTUgMTMuODU3IDE0LjgzNjEgMTQuMjUyNyAxNC41NDQ0IDE0LjU0NDRDMTQuMjUyNyAxNC44MzYxIDEzLjg1NyAxNSAxMy40NDQ0IDE1SDIuNTU1NTZDMi4xNDMgMTUgMS43NDczMyAxNC44MzYxIDEuNDU1NjEgMTQuNTQ0NEMxLjE2Mzg5IDE0LjI1MjcgMSAxMy44NTcgMSAxMy40NDQ0VjIuNTU1NTZDMSAyLjE0MyAxLjE2Mzg5IDEuNzQ3MzMgMS40NTU2MSAxLjQ1NTYxQzEuNzQ3MzMgMS4xNjM4OSAyLjE0MyAxIDIuNTU1NTYgMUgxMS4xMTExIiBzdHJva2U9IiMzMzU1RkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=");
+			margin: -0.1875rem 0 0 -0.25rem;
+			height: 1.3125rem;
+			width: 1.3125rem;
+			margin-top: 0;
+		}
+	}
+	&-customer-desc {
+		&-thumbnail {
+			float: left;
+			height: 40px;
+			img {
+				border-radius: 20px;
+			}
+		}
+		&-details {
+			float: left;
+			margin-left: 8px;
 
-            &-name {
-                color: $text-color !important;
-                margin: 0 !important;
-            }
-            &-location {
-                margin: 0 !important;
-                color: $customer-list-location-color !important;
-            }
-        }
-    }
-    &-customer-campaign-list {
-        margin: 0;
-        li {
-            display: inline-block;
-            margin: 0;
-            a {
-                font-size: 0.875rem;
-                color: $paragraph-color;
-                padding: 3px 8px;
-                border-radius: 2rem;
-                border: $table-campaign-border-width solid $table-campaign-border;
-                line-height: 1.8rem;
-            }
-        }
-    }
-    &-customer-tag-list {
-        @extend .sxp-customer-campaign-list;
-    }
-    &-customer-name {
-        a {
-            padding: 4px 6px;
-            border-radius: 4px;
-        }
-    }
+			&-name {
+				color: $text-color !important;
+				margin: 0 !important;
+			}
+			&-location {
+				margin: 0 !important;
+				color: $customer-list-location-color !important;
+			}
+		}
+	}
+	&-customer-campaign-list {
+		margin: 0;
+		li {
+			display: inline-block;
+			margin: 0;
+			a {
+				font-size: 0.875rem;
+				color: $paragraph-color;
+				padding: 3px 8px;
+				border-radius: 2rem;
+				border: $table-campaign-border-width solid $table-campaign-border;
+				line-height: 1.8rem;
+			}
+		}
+	}
+	&-customer-tag-list {
+
+		@extend .sxp-customer-campaign-list;
+	}
+	&-customer-name {
+		a {
+			padding: 4px 6px;
+			border-radius: 4px;
+		}
+	}
 }
 
 // fold content
+
 .sxp-fold-content {
-    display: flex;
-    border-bottom: $border-width solid $border-color;
-    vertical-align: middle;
-    line-height: 20px;
-    height: 40px;
-    margin: 0;
-    padding: 10px 20px;
+	display: flex;
+	border-bottom: $border-width solid $border-color;
+	vertical-align: middle;
+	line-height: 20px;
+	height: 40px;
+	margin: 0;
+	padding: 10px 20px;
 
-    &:last-child {
-        border-bottom: none;
-    }
-    div {
-        &:first-child {
-            flex: 1;
-            align-content: flex-start;
-            text-align: left;
-            display: inherit;
-        }
-        &:last-child {
-            flex: 1;
-            align-content: flex-end;
-        }
-        i {
-            font-size: 1rem;
-            color: $dark-purple;
-        }
-        .serial {
-            margin: 0 .25rem 0 .5rem;
-            color: $dark-purple;
-        }
-        .product {
-            color: $primary;
-            padding: 0 .25rem;
-        }
+	&:last-child {
+		border-bottom: none;
+	}
+	div {
+		&:first-child {
+			flex: 1;
+			align-content: flex-start;
+			text-align: left;
+			display: inherit;
+		}
+		&:last-child {
+			flex: 1;
+			align-content: flex-end;
+		}
+		i {
+			font-size: 1rem;
+			color: $dark-purple;
+		}
+		.serial {
+			margin: 0 0.25rem 0 0.5rem;
+			color: $dark-purple;
+		}
+		.product {
+			color: $primary;
+			padding: 0 0.25rem;
+		}
 
-    }
+	}
 }
+
 .sxp-customer-list.fold {
-    td {
-        padding: 0;
-    }
+	td {
+		padding: 0;
+	}
 }
 
 @media screen and (max-width: 782px) {
-    .sxp {
-        &-table {
-            &.updates-table td input, &.widefat tfoot td input, &.widefat th input, &.widefat thead td input {
-                //margin: 0;
-            }
-            &.widefat tfoot td input[type=checkbox], &.widefat th input[type=checkbox], &.widefat thead td input[type=checkbox] {
-                margin-bottom: 0;
-                width: 16px;
-                height: 16px;
-            }
-            &.wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before{
-                left: 20px;
-            }
-            &.wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary~td:not(.check-column) {
-                margin-left: -34px;
-                padding-top: 17px;
-                padding-bottom: 17px;
-            }
-            .sxp-customers-column {
-                height: 74px;
-            }
-            thead {
-                display: none;
-            }
-            
-            tbody {
-                tr {
-                    td {
-                        padding: 17.5px 1rem;
-                        &:last-child {
-                            text-align: left;
-                        }
-                        &:nth-child(n+3) {
-                            background: #fbfbfb;
-                        }
-                    }
-                }
-            }
-        }
-    }
+	.sxp {
+		&-table {
+			&.updates-table td input,
+			&.widefat tfoot td input,
+			&.widefat th input,
+			&.widefat thead td input {
+				//margin: 0;
+			}
+			&.widefat tfoot td input[type=checkbox],
+			&.widefat th input[type=checkbox],
+			&.widefat thead td input[type=checkbox] {
+				margin-bottom: 0;
+				width: 16px;
+				height: 16px;
+			}
+			&.wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before {
+				left: 20px;
+			}
+			&.wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary ~ td:not(.check-column) {
+				margin-left: -34px;
+				padding-top: 17px;
+				padding-bottom: 17px;
+			}
+			.sxp-customers-column {
+				height: 74px;
+			}
+			thead {
+				display: none;
+			}
+
+			tbody {
+				tr {
+					td {
+						padding: 17.5px 1rem;
+						&:last-child {
+							text-align: left;
+						}
+						&:nth-child(n+3) {
+							background: #fbfbfb;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 // wordpress default styles
+
 .wp-list-table .toggle-row {
-    top: 26px;
+	top: 26px;
 }
