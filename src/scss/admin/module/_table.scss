@@ -1,3 +1,11 @@
+/**
+ * SaleXpresso Table Module
+ *
+ * @author SaleXpresso <support@salexpresso.com>
+ * @package SaleXpresso
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 .sxp {
 	&-table {
 		border: none !important;
@@ -65,6 +73,10 @@
 				&:last-child {
 					text-align: right;
 				}
+				i,
+				svg {
+					color: $dark-purple;
+				}
 			}
 			// has-fold segment
 			> tr.has-fold {
@@ -101,6 +113,14 @@
 				display: none;
 				&.open {
 					display: table-row;
+				}
+			}
+		}
+		tfoot {
+			td {
+				i,
+				svg {
+					color: $dark-purple;
 				}
 			}
 		}
@@ -161,36 +181,6 @@
 					padding: 0 0.25rem;
 				}
 				
-			}
-		}
-		.product-list {
-			max-width: 40px;
-			padding: 0;
-			margin: 0;
-			li {
-				float: left;
-				a {
-					img {
-						border-radius: 20px;
-						width: 100%;
-						border: $border-width solid $light-purple;
-					}
-				}
-			}
-		}
-		.product-number {
-			margin-left: 0.75rem;
-		}
-		.product-list.multiple {
-			li {
-				width: 50%;
-				margin: 0;
-				a {
-					padding: 0;
-					margin: 0;
-					line-height: 0.6;
-					display: block;
-				}
 			}
 		}
 	}
@@ -255,6 +245,6 @@
 
 // wordpress default styles
 
-.wp-list-table .toggle-row {
+.sxp-table.wp-list-table .toggle-row {
 	top: 26px;
 }

@@ -11,16 +11,18 @@
 @import "admin/utilites/variables";
 @import "admin/utilites/mixins";
 @import "admin/utilites/default";
+
+// Module
+@import "admin/module/tabs";
+@import "admin/module/filter";
+@import "admin/module/daterangepicker";
+@import "admin/module/table";
+@import "admin/module/rule";
+@import "admin/module/pagination";
+
 // Header
 @import "admin/layout/header";
+
 // Content
-@import "admin/layout/filter";
-@import "admin/layout/content";
-@import "admin/layout/daterangepicker";
-@import "admin/layout/table";
 @import "admin/layout/customer";
-@import "admin/layout/rule";
-@import "admin/layout/profile";
-@import "admin/layout/pagination";
-// Admin Tabs
-@import "admin/layout/tabs";
+@import "admin/layout/customer-profile";
