@@ -10,7 +10,7 @@
     "start": "npm run watch",
     "test": "npm run phpcs && npm run eslint && npm run stylish",
     "phpcs": "phpcs . --standard=./phpcs.xml --extensions=php --report-file=./logs/phpcs.log",
-    "eslint": "eslint . -o ./logs/eslint.log -f stylish --no-color || exit 0",
+    "eslint": "eslint . -o ./logs/eslint.log -f stylish --no-color",
     "stylish": "stylelint --syntax scss **/*.scss -o ./logs/stylelint.log",
     "fix": "npm run phpcbf && npm run eslint-fix && npm run stylelint-fix",
     "phpcbf": "phpcbf --standard=./phpcs.xml --extensions=php --report-file=./logs/phpcbf.log .",

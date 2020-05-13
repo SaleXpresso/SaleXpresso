@@ -15,8 +15,8 @@ import './components/_accordion';
 
 ( function( $, window, document, wp, pagenow, SaleXpresso ) {
 	const params = new URLSearchParams( location.search );
-	const sxp_page = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? params.get('page') : false;
-	const sxp_sub_page = sxp_page ? params.get('tab') : false;
+	const sxp_page = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? params.get( 'page' ) : false;
+	const sxp_sub_page = sxp_page ? params.get( 'tab' ) : false;
 	$( window ).on( 'load', function() {
 		const sxhWrapper = $( '.sxp-wrapper' );
 		$( document ).on( 'change', '.selector', function( event ) {
@@ -53,33 +53,33 @@ import './components/_accordion';
 	} );
 
 	// Accordion Table
-	$(function(){
-		$(".sxp-table tr.has-fold").on("click", function(){
-			if($(this).hasClass("open")) {
-				$(this).removeClass("open").next(".fold").removeClass("open");
+	$( function() {
+		$( '.sxp-table tr.has-fold' ).on( 'click', function() {
+			if ( $( this ).hasClass( 'open' ) ) {
+				$( this ).removeClass( 'open' ).next( '.fold' ).removeClass( 'open' );
 			} else {
-				$(".sxp-table tr.has-fold").removeClass("open").next(".fold").removeClass("open");
-				$(this).addClass("open").next(".fold").addClass("open");
+				$( '.sxp-table tr.has-fold' ).removeClass( 'open' ).next( '.fold' ).removeClass( 'open' );
+				$( this ).addClass( 'open' ).next( '.fold' ).addClass( 'open' );
 			}
-		});
-	});
+		} );
+	} );
 
 	// Initiate Feather Icon
-	feather.replace({
+	feather.replace( {
 		'stroke-width': 2,
-		'width' : 16,
-		'height' : 16
-		}
+		width: 16,
+		height: 16,
+	},
 	);
 
 	// customer profile tab
-	$('ul.tabs li').click(function(){
-		var tab_id = $(this).attr('data-tab');
+	$( 'ul.tabs li' ).click( function() {
+		const tab_id = $( this ).attr( 'data-tab' );
 
-		$('ul.tabs li').removeClass('current');
-		$('.tab-content').removeClass('current');
+		$( 'ul.tabs li' ).removeClass( 'current' );
+		$( '.tab-content' ).removeClass( 'current' );
 
-		$(this).addClass('current');
-		$("#"+tab_id).addClass('current');
-	});
+		$( this ).addClass( 'current' );
+		$( '#' + tab_id ).addClass( 'current' );
+	} );
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );
