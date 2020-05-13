@@ -112,6 +112,11 @@
 			background: $status-danger;
 		}
 	}
+	&-status-default {
+		&::before {
+			background: $light-purple;
+		}
+	}
 }
 // feather icon
 

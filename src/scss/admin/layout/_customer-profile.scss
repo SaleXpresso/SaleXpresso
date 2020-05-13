@@ -125,6 +125,9 @@
 					@extend .product-number;
 				}
 			}
+			.not-used {
+				color: $dark-purple;
+			}
 		}
 		&-details {
 			flex: 0 0 74%;
@@ -289,6 +292,11 @@
 					font-weight: 700;
 				}
 			}
+		}
+	}
+	&-discount-coupon {
+		div {
+			margin-left: 1rem;
 		}
 	}
 }
