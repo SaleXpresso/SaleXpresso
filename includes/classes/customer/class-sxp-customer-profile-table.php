@@ -535,7 +535,100 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="recommendation" class="tab-content">
-						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
+								<thead>
+								<tr>
+									<td id="cb" class="manage-column column-cb check-column">
+										<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+										<input id="cb-select-all-1" type="checkbox">
+									</td>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Product</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Regular Price</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Discount Price</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Created</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Status</a></th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Product">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="Regular Price">$61</td>
+									<td data-colname="Discount Price">$29</td>
+									<td data-colname="Created">May 2, 2019</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-success">Seen</div>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Product">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="Regular Price">$61</td>
+									<td data-colname="Discount Price">$29</td>
+									<td data-colname="Created">May 2, 2019</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-success">Seen</div>
+									</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Product">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="Regular Price">$61</td>
+									<td data-colname="Discount Price">$29</td>
+									<td data-colname="Created">May 2, 2019</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-success">Seen</div>
+									</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Product">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="Regular Price">$61</td>
+									<td data-colname="Discount Price">$29</td>
+									<td data-colname="Created">May 2, 2019</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-danger">Not Seen</div>
+									</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Product">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="Regular Price">$61</td>
+									<td data-colname="Discount Price">$29</td>
+									<td data-colname="Created">May 2, 2019</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-success">Seen</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div><!-- end .tab-content -->
 					<div id="discount" class="tab-content">
 						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
