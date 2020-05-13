@@ -204,17 +204,87 @@ final class SaleXpresso {
 	 * Define WC Constants.
 	 */
 	private function define_constants() {
-		$upload_dir = wp_upload_dir( null, false );
+		if ( ! defined( 'SXP_VERSION' ) ) {
+			/**
+			 * Plugin Version
+			 *
+			 * @var string
+			 */
+			define( 'SXP_VERSION', $this->version );
+		}
 		
-		define( 'SXP_ABSPATH', dirname( SXP_PLUGIN_FILE ) . '/' );
-		define( 'SXP_PLUGIN_BASENAME', plugin_basename( SXP_PLUGIN_FILE ) );
-		define( 'SXP_VERSION', $this->version );
-		define( 'SXP_LOG_DIR', $upload_dir['basedir'] . '/sxp-logs/' );
-		define( 'SXP_NOTICE_MIN_PHP_VERSION', '7.0' );
-		define( 'SXP_NOTICE_MIN_WP_VERSION', '5.0' );
-		define( 'SXP_NOTICE_MIN_WC_VERSION', '4.0.0' );
-		define( 'SXP_PHP_WP_MIN_REQUIREMENTS_NOTICE', 'sxp_min_wp_php_requirements_' . SXP_NOTICE_MIN_PHP_VERSION . '_' . SXP_NOTICE_MIN_WP_VERSION );
-		define( 'SXP_WC_MIN_REQUIREMENTS_NOTICE', 'sxp_min_wc_requirements_' . SXP_NOTICE_MIN_PHP_VERSION . '_' . SXP_NOTICE_MIN_WP_VERSION );
+		if ( ! defined( 'SXP_ABSPATH' ) ) {
+			/**
+			 * Plugin path with trailing slash
+			 *
+			 * @var string
+			 */
+			define( 'SXP_ABSPATH', dirname( SXP_PLUGIN_FILE ) . '/' );
+		}
+		
+		if ( ! defined( 'SXP_PLUGIN_BASENAME' ) ) {
+			/**
+			 * Plugin basename
+			 *
+			 * @var string
+			 */
+			define( 'SXP_PLUGIN_BASENAME', plugin_basename( SXP_PLUGIN_FILE ) );
+		}
+		
+		if ( ! defined( 'SXP_LOG_DIR' ) ) {
+			$sxp_upload_dir = wp_upload_dir( null, false );
+			/**
+			 * Log Directory To Use
+			 *
+			 * @var string
+			 */
+			define( 'SXP_LOG_DIR', $sxp_upload_dir['basedir'] . '/sxp-logs/' );
+		}
+		
+		if ( ! defined( 'SXP_NOTICE_MIN_PHP_VERSION' ) ) {
+			/**
+			 * Minimum PHP Version
+			 *
+			 * @var string
+			 */
+			define( 'SXP_NOTICE_MIN_PHP_VERSION', '7.0' );
+		}
+		
+		if ( ! defined( 'SXP_NOTICE_MIN_WP_VERSION' ) ) {
+			/**
+			 * Minimum WP Version
+			 *
+			 * @var string
+			 */
+			define( 'SXP_NOTICE_MIN_WP_VERSION', '5.0' );
+		}
+		
+		if ( ! defined( 'SXP_NOTICE_MIN_WC_VERSION' ) ) {
+			/**
+			 * Minimum WC Version
+			 *
+			 * @var string
+			 */
+			define( 'SXP_NOTICE_MIN_WC_VERSION', '4.0.0' );
+		}
+		
+		if ( ! defined( 'SXP_PHP_WP_MIN_REQUIREMENTS_NOTICE' ) ) {
+			/**
+			 * Min PHP WP Notice Slug
+			 *
+			 * @var string
+			 */
+			define( 'SXP_PHP_WP_MIN_REQUIREMENTS_NOTICE', 'sxp_min_wp_php_requirements_' . SXP_NOTICE_MIN_PHP_VERSION . '_' . SXP_NOTICE_MIN_WP_VERSION );
+		}
+		
+		if ( ! defined( 'SXP_WC_MIN_REQUIREMENTS_NOTICE' ) ) {
+			/**
+			 * Plugin WC Notice Slug
+			 *
+			 * @var string
+			 */
+			define( 'SXP_WC_MIN_REQUIREMENTS_NOTICE', 'sxp_min_wc_requirements_' . SXP_NOTICE_MIN_PHP_VERSION . '_' . SXP_NOTICE_MIN_WP_VERSION );
+		}
 	}
 	
 	/**
