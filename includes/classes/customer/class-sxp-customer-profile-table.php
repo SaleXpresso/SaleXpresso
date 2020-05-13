@@ -107,7 +107,7 @@ class SXP_Customer_Profile_Table {
 					</ul>
 
 					<div id="activity" class="tab-content current">
-						<table class="sxp-table sxp-customer-profile-table">
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
 							<thead>
 								<tr>
 									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">All Sessions</a></th>
@@ -219,7 +219,7 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="orders" class="tab-content">
-						<table class="sxp-table sxp-customer-profile-table">
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
 							<thead>
 							<tr>
 								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Order Id</a></th>
@@ -286,7 +286,7 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="products" class="tab-content">
-						<table class="sxp-table sxp-customer-profile-table">
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
 							<thead>
 							<tr>
 								<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Products</a></th>
@@ -345,7 +345,7 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="active-cart" class="tab-content">
-						<table class="sxp-table sxp-customer-profile-table sxp-active-cart-table">
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table sxp-active-cart-table">
 							<thead>
 								<tr>
 									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Sl.</a></th>
@@ -436,7 +436,103 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="searches" class="tab-content">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
+							<thead>
+								<tr>
+									<td id="cb" class="manage-column column-cb check-column">
+										<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+										<input id="cb-select-all-1" type="checkbox">
+									</td>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Search Queries</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">#Searhes</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Sessions</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Stock</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Lifetime Purchase</a></th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Search Queries">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="#Searches">9</td>
+									<td data-colname="#Sesssions">4</td>
+									<td data-colname="Stock">37</td>
+									<td data-colname="Lifetime Purchase">59</td>
+								</tr>
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Search Queries">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="#Searches">9</td>
+									<td data-colname="#Sesssions">4</td>
+									<td data-colname="Stock">37</td>
+									<td data-colname="Lifetime Purchase">59</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Search Queries">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="#Searches">9</td>
+									<td data-colname="#Sesssions">4</td>
+									<td data-colname="Stock">37</td>
+									<td data-colname="Lifetime Purchase">59</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Search Queries">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="#Searches">9</td>
+									<td data-colname="#Sesssions">4</td>
+									<td data-colname="Stock">37</td>
+									<td data-colname="Lifetime Purchase">59</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Search Queries">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="#Searches">9</td>
+									<td data-colname="#Sesssions">4</td>
+									<td data-colname="Stock">37</td>
+									<td data-colname="Lifetime Purchase">59</td>
+								</tr><tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Search Queries">
+										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-name">Premium Miniket Rice</div>
+									</td>
+									<td data-colname="#Searches">9</td>
+									<td data-colname="#Sesssions">4</td>
+									<td data-colname="Stock">37</td>
+									<td data-colname="Lifetime Purchase">59</td>
+								</tr>
+							</tbody>
+						</table>
 					</div><!-- end .tab-content -->
 					<div id="recommendation" class="tab-content">
 						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
