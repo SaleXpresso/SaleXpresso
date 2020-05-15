@@ -728,7 +728,47 @@ class SXP_Customer_Profile_Table {
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="campaign" class="tab-content">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
+							<thead>
+								<tr>
+									<td id="cb" class="manage-column column-cb check-column">
+										<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+										<input id="cb-select-all-1" type="checkbox">
+									</td>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Campaign Name</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Status</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Type</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Views</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Clicks</a></th>
+									<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Revenue</a></th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Switch">
+										<label class="sxp-switch">
+											<input type="sxp-checkbox" checked>
+											<span class="sxp-slider round"></span>
+										</label>
+									</td>
+									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-success">Active</div>
+									</td>
+									<td data-colname="Type">
+										<div class="sxp-type"><i data-feather="mail"></i> Email</div>
+									</td>
+									<td data-colname="Views">80</td>
+									<td data-colname="Clicks">61</td>
+									<td data-colname="Revenue">$867.12</td>
+								</tr>
+							</tbody>
+						</table>
 					</div><!-- end .tab-content -->
 				</div><!-- end .sxp-profile-details -->
 			</div><!-- end .sxp-profile-wrapper -->

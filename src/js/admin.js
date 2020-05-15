@@ -64,14 +64,6 @@ import './components/_accordion';
 		} );
 	} );
 
-	// Initiate Feather Icon
-	feather.replace( {
-		'stroke-width': 2,
-		width: 16,
-		height: 16,
-	},
-	);
-
 	// customer profile tab
 	$( 'ul.tabs li' ).click( function() {
 		const tab_id = $( this ).attr( 'data-tab' );
@@ -82,4 +74,11 @@ import './components/_accordion';
 		$( this ).addClass( 'current' );
 		$( '#' + tab_id ).addClass( 'current' );
 	} );
+
+	// Initiate Feather Icon
+	feather.replace( {
+		'stroke-width': 2,
+		width: 16,
+		height: 16,
+	});
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );
