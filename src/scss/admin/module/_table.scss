@@ -30,7 +30,7 @@
 
 				a {
 					color: $table-header-color !important;
-					padding: 18px;
+					padding: 0;
 					position: relative;
 					text-decoration: none;
 
@@ -39,24 +39,34 @@
 						content: url(data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%2210%22%20viewBox%3D%220%200%208%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204L4%208L8%204%22%20fill%3D%22%23D0CFE6%22%2F%3E%0A%3C%2Fsvg%3E%0A);
 					}
 				}
+				&:first-child {
+					a {
+						padding-left: 1.5rem;
+					}
+				}
+				&:last-child {
+					a {
+						padding-right: 1.5rem;
+					}
+				}
 			}
 			td {
 				border-bottom: $border-width solid $border-color;
 
 			}
 			td.check-column {
-				padding: 4px 0 0 10px;
+				padding: 0.25rem 1rem 0 0.625rem;
 			}
 		}
 		tbody {
 			th.check-column {
-				padding: 18px 0 0 10px;
+				padding: 1.125rem 1rem 0 0.625rem;
 				border-bottom: 1px solid $border-color;
 			}
 			td {
 				font-size: 0.875rem;
 				color: $paragraph-color;
-				padding: 0 1rem;
+				padding: 0;
 				height: 56px;
 				vertical-align: middle;
 				border-bottom: 1px solid $border-color;
@@ -70,6 +80,12 @@
 				i,
 				svg {
 					color: $dark-purple;
+				}
+				&:first-child {
+					padding-left: 1.5rem;
+				}
+				&:last-child {
+					padding-right: 1.5rem;
 				}
 			}
 			// has-fold segment

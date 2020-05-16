@@ -752,7 +752,7 @@ class SXP_Customer_Profile_Table {
 									</th>
 									<td data-colname="Switch">
 										<label class="sxp-switch">
-											<input type="sxp-checkbox" checked>
+											<input type="checkbox">
 											<span class="sxp-slider round"></span>
 										</label>
 									</td>
@@ -762,6 +762,72 @@ class SXP_Customer_Profile_Table {
 									</td>
 									<td data-colname="Type">
 										<div class="sxp-type"><i data-feather="mail"></i> Email</div>
+									</td>
+									<td data-colname="Views">80</td>
+									<td data-colname="Clicks">61</td>
+									<td data-colname="Revenue">$867.12</td>
+								</tr>
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Switch">
+										<label class="sxp-switch">
+											<input type="checkbox" checked>
+											<span class="sxp-slider round"></span>
+										</label>
+									</td>
+									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-info">Scheduled</div>
+									</td>
+									<td data-colname="Type">
+										<div class="sxp-type"><i data-feather="smartphone"></i> SMS</div>
+									</td>
+									<td data-colname="Views">-</td>
+									<td data-colname="Clicks">-</td>
+									<td data-colname="Revenue">-</td>
+								</tr>
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Switch">
+										<label class="sxp-switch">
+											<input type="checkbox">
+											<span class="sxp-slider round"></span>
+										</label>
+									</td>
+									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-primary">Completed</div>
+									</td>
+									<td data-colname="Type">
+										<div class="sxp-type"><i data-feather="mail"></i> Email</div>
+									</td>
+									<td data-colname="Views">80</td>
+									<td data-colname="Clicks">61</td>
+									<td data-colname="Revenue">$867.12</td>
+								</tr>
+								<tr>
+									<th scope="row" class="check-column">
+										<label class="screen-reader-text" for="cb-select-1"></label>
+										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
+									</th>
+									<td data-colname="Switch">
+										<label class="sxp-switch">
+											<input type="checkbox" checked>
+											<span class="sxp-slider round"></span>
+										</label>
+									</td>
+									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td data-colname="Status">
+										<div class="sxp-status sxp-status-default">Disabled</div>
+									</td>
+									<td data-colname="Type">
+										<div class="sxp-type"><i data-feather="smartphone"></i> SMS</div>
 									</td>
 									<td data-colname="Views">80</td>
 									<td data-colname="Clicks">61</td>
