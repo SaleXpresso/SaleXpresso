@@ -24,8 +24,16 @@
 				text-align: left;
 				padding: 0;
 
+				&:first-child {
+					a {
+						padding-left: 1.5rem;
+					}
+				}
 				&:last-child {
 					text-align: right;
+					a {
+						padding-right: 1.5rem;
+					}
 				}
 
 				a {
@@ -37,16 +45,6 @@
 					&::after {
 						margin-left: 0.5rem;
 						content: url(data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%2210%22%20viewBox%3D%220%200%208%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204L4%208L8%204%22%20fill%3D%22%23D0CFE6%22%2F%3E%0A%3C%2Fsvg%3E%0A);
-					}
-				}
-				&:first-child {
-					a {
-						padding-left: 1.5rem;
-					}
-				}
-				&:last-child {
-					a {
-						padding-right: 1.5rem;
 					}
 				}
 			}
@@ -73,19 +71,16 @@
 				a {
 					color: $paragraph-color;
 				}
-
-				&:last-child {
-					text-align: right;
-				}
-				i,
-				svg {
-					color: $dark-purple;
-				}
 				&:first-child {
 					padding-left: 1.5rem;
 				}
 				&:last-child {
+					text-align: right;
 					padding-right: 1.5rem;
+				}
+				i,
+				svg {
+					color: $dark-purple;
 				}
 			}
 			// has-fold segment
@@ -235,23 +230,38 @@
 			&.widefat thead td input[type="checkbox"],
 			&.widefat tfoot td input[type="checkbox"] {
 				margin-bottom: 0;
-				width: 16px;
-				height: 16px;
+				width: 1rem;
+				height: 1rem;
 			}
 			&.wp-list-table {
 				tr:not(.inline-edit-row):not(.no-items) {
 					td:not(.column-primary)::before {
 						left: 20px;
+						width: 50%;
 					}
 					td.column-primary ~ td:not(.check-column) {
-						margin-left: -34px;
-						padding-top: 17px;
-						padding-bottom: 17px;
+						margin-left: -50px;
+						padding: 17px 8px 17px 50%;
 					}
 				}
 			}
 			.sxp-customers-column {
 				height: 74px;
+			}
+		}
+	}
+}
+@media screen and (max-width: 800px) {
+	.sxp {
+		&-table {
+			thead {
+				th {
+					a {
+						&::after {
+							margin-left: 0.125rem;
+						}
+					}
+				}
 			}
 		}
 	}
