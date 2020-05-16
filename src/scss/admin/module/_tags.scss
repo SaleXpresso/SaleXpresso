@@ -1,0 +1,57 @@
+.sxp {
+	&-wrapper {
+		.sxp {
+			&-tag {
+				margin: 0;
+				&-wrapper {
+					margin: 0 0 2rem;
+					ul,
+					div {
+						display: inline-block;
+					}
+					.sxp-modal-content {
+						width: 100%;
+						h4 {
+							line-height: 1.25rem;
+							margin-bottom: 1rem;
+						}
+						select {
+							width: 100%;
+							appearance: none;
+							padding: 13px 24px;
+							display: block;
+							background: $light-purple;
+							border: none;
+
+						}
+						a {
+							margin-top: 1rem;
+						}
+					}
+				}
+				li {
+					display: inline-block;
+					margin-right: 0.5rem;
+					a {
+						padding: 0.5rem 1rem;
+						background: $white;
+						border-radius: 2rem;
+						color: $dark-purple;
+						text-decoration: none;
+					}
+					&:last-child {
+						margin-right: 0;
+					}
+				}
+				&-add {
+					a {
+						padding: 0.375rem 0.5rem;
+						color: $dark-purple;
+						text-decoration: none;
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}

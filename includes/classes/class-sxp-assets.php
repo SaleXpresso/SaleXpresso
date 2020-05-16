@@ -96,6 +96,7 @@ class SXP_Assets {
 		wp_enqueue_script('moment', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', 'jquery', '3.4', 'true');
 		wp_enqueue_script('daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'jquery', '3.4', 'true');
 		wp_enqueue_script('feather-icon', 'https://unpkg.com/feather-icons', 'jquery', '4.28.0', 'true');
+		wp_enqueue_script('jquery-modal', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js', 'jquery', '0.9.1', 'false');
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
 		wp_enqueue_style(

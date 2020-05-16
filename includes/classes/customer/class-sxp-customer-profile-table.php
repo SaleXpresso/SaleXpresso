@@ -27,8 +27,27 @@ class SXP_Customer_Profile_Table {
 	 */
 	public function __construct() {
 		// @TODO Extend WP_List_Table.
-
 		?>
+			<div class="sxp-tag-wrapper">
+				<div id="modal" class="modal">
+					<div class="sxp-modal-content">
+						<h4>Add a tag</h4>
+						<label for="sxp-tag-select" class="screen-reader-text"><?php __('Tag dropdown select', 'salexpresso'); ?></label>
+						<select name="tag" id="sxp-tag-select">
+							<option value="default-tag">Search for tags or create one</option>
+							<option value="customer">customer</option>
+							<option value="product">product</option>
+							<option value="customer-type">customer type</option>
+							<option value="sale">sale</option>
+						</select>
+						<a href="#" class="sxp-btn sxp-btn-primary">add tag</a>
+					</div>
+				</div>
+				<ul class="sxp-tag">
+					<li><a href="#">No Tag <i data-feather="x"></i></a></li>
+				</ul>
+				<div class="sxp-tag-add"><a href="#modal" rel="modal:open"><i data-feather="plus-circle"></i> Add tag</a></div>
+			</div><!-- end .sxp-profile-tag -->
 			<div class="sxp-profile-wrapper">
 				<div class="sxp-profile-info">
 					<div class="sxp-profile-profile">

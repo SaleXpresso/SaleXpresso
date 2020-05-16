@@ -81,4 +81,13 @@ import './components/_accordion';
 		width: 16,
 		height: 16,
 	});
+
+	// modal
+	$('.sxp-tag-add a').click(function(event) {
+		$(this).modal({
+			fadeDuration: 250
+		});
+		return false;
+	});
+
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );
