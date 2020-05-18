@@ -41,7 +41,7 @@ import './components/_accordion';
 			endDate: end,
 			ranges: {
 				Today: [ moment(), moment() ],
-				Yesterday: [ moment().subtract( 1, 'days' ), moment().subtract( 1, 'days' ) ],
+				Yesterday: [ moment().subtract( 0, 'days' ), moment().subtract( 0, 'days' ) ],
 				'Last 7 Days': [ moment().subtract( 6, 'days' ), moment() ],
 				'Last 30 Days': [ moment().subtract( 29, 'days' ), moment() ],
 				'This Month': [ moment().startOf( 'month' ), moment().endOf( 'month' ) ],
@@ -83,11 +83,12 @@ import './components/_accordion';
 	});
 
 	// modal
-	$('.sxp-tag-add a').click(function(event) {
-		$(this).modal({
-			fadeDuration: 250
+	$( "#sxp-tag-modal" ).hide();
+	$( ".sxp-tag-add a" ).on( "click", "tr", function() {
+		$("#sxp-tag-modal").modal({
+			fadeDuration: 100,
+			closeExisting: false,
 		});
-		return false;
 	});
 
 }( jQuery, window, document, wp, pagenow, SaleXpresso ) );

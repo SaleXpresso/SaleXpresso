@@ -29,24 +29,10 @@ class SXP_Customer_Profile_Table {
 		// @TODO Extend WP_List_Table.
 		?>
 			<div class="sxp-tag-wrapper">
-				<div id="modal" class="modal">
-					<div class="sxp-modal-content">
-						<h4>Add a tag</h4>
-						<label for="sxp-tag-select" class="screen-reader-text"><?php __('Tag dropdown select', 'salexpresso'); ?></label>
-						<select name="tag" id="sxp-tag-select">
-							<option value="default-tag">Search for tags or create one</option>
-							<option value="customer">customer</option>
-							<option value="product">product</option>
-							<option value="customer-type">customer type</option>
-							<option value="sale">sale</option>
-						</select>
-						<a href="#" class="sxp-btn sxp-btn-primary">add tag</a>
-					</div>
-				</div>
 				<ul class="sxp-tag">
 					<li><a href="#">No Tag <i data-feather="x"></i></a></li>
 				</ul>
-				<div class="sxp-tag-add"><a href="#modal" rel="modal:open"><i data-feather="plus-circle"></i> Add tag</a></div>
+				<div class="sxp-tag-add"><a href="#sxp-tag-modal" rel="modal:open"><i data-feather="plus-circle"></i> Add tag</a></div>
 			</div><!-- end .sxp-profile-tag -->
 			<div class="sxp-profile-wrapper">
 				<div class="sxp-profile-info">
@@ -124,7 +110,6 @@ class SXP_Customer_Profile_Table {
 							<div class="number-bubble">54</div>
 						</li>
 					</ul>
-
 					<div id="activity" class="tab-content current">
 						<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
 							<thead>
@@ -137,33 +122,36 @@ class SXP_Customer_Profile_Table {
 							</thead>
 							<tbody id="the-list">
 								<tr>
-									<td data-colname="All Sessions">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Sessions">
 										<div class="session-name">Session no. 13</div>
 										<ul class="sxp-tag-list">
 											<li><a href="#">Did added anything to cart</a></li>
 										</ul>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
 								<tr>
-									<td data-colname="All Sessions">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Sessions">
 										<div class="session-name">Session no. 14</div>
 										<ul class="sxp-tag-list">
 											<li><a href="#">Purchased 1 item</a></li>
 										</ul>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
 								<tr class="has-fold">
-									<td data-colname="All Sessions">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Sessions">
 										<div class="session-name">Session no. 15</div>
 										<ul class="sxp-tag-list">
 											<li><a href="#">6 items added to cart</a></li>
 										</ul>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
@@ -213,22 +201,24 @@ class SXP_Customer_Profile_Table {
 									</td>
 								</tr>
 								<tr>
-									<td data-colname="All Sessions">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Sessions">
 										<div class="session-name">Session no. 16</div>
 										<ul class="sxp-tag-list">
 											<li><a href="#">Did added anything to cart</a></li>
 										</ul>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
 									<td data-colname="Timestamp">Jan 20, 2020</td>
 								</tr>
 								<tr>
-									<td data-colname="All Sessions">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Sessions">
 										<div class="session-name">Session no. 17</div>
 										<ul class="sxp-tag-list">
 											<li><a href="#">Purchased 6 items</a></li>
 										</ul>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="source">facebook</td>
 									<td data-colname="Actions">5</td>
@@ -251,7 +241,10 @@ class SXP_Customer_Profile_Table {
 							</thead>
 							<tbody id="the-list">
 								<tr>
-									<td data-colname="Order Id"><a href="£" class="order-number">200083726</a></td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
+										<a href="#" class="order-number">200083726</a>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Products">
 										<ul class="product-list multiple">
 											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
@@ -269,7 +262,10 @@ class SXP_Customer_Profile_Table {
 									</td>
 								</tr>
 								<tr>
-									<td data-colname="Order Id"><a href="£" class="order-number">200083726</a></td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
+										<a href="#" class="order-number">200083726</a>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Products">
 										<ul class="product-list multiple">
 											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
@@ -286,7 +282,10 @@ class SXP_Customer_Profile_Table {
 									</td>
 								</tr>
 								<tr>
-									<td data-colname="Order Id"><a href="£" class="order-number">200083726</a></td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
+										<a href="#" class="order-number">200083726</a>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Products">
 										<ul class="product-list">
 											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
@@ -301,7 +300,6 @@ class SXP_Customer_Profile_Table {
 									</td>
 								</tr>
 							</tbody>
-
 						</table>
 					</div><!-- end .tab-content -->
 					<div id="products" class="tab-content">
@@ -316,50 +314,65 @@ class SXP_Customer_Profile_Table {
 							</thead>
 							<tbody id="the-list">
 								<tr>
-									<td data-colname="Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-name">Premium Miniket Rice</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-name">Premium Miniket Rice</div>
+										</div><!--product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="quantity">66</td>
 									<td data-colname="revenue">$806.87</td>
 									<td data-colname="net-profit">$67.34</td>
 								</tr>
 								<tr>
-									<td data-colname="Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-name">Premium Miniket Rice</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-name">Premium Miniket Rice</div>
+										</div><!--product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="quantity">66</td>
 									<td data-colname="revenue">$806.87</td>
 									<td data-colname="net-profit">$67.34</td>
 								</tr>
 								<tr>
-									<td data-colname="Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-name">Premium Miniket Rice</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-name">Premium Miniket Rice</div>
+										</div><!--product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="quantity">66</td>
 									<td data-colname="revenue">$806.87</td>
 									<td data-colname="net-profit">$67.34</td>
 								</tr>
 								<tr>
-									<td data-colname="Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-name">Premium Miniket Rice</div>
-									</td>
-									<td data-colname="quantity">66</td>
-									<td data-colname="revenue">$806.87</td>
-									<td data-colname="net-profit">$67.34</td>
-								</tr><tr>
-									<td data-colname="Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-name">Premium Miniket Rice</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-name">Premium Miniket Rice</div>
+										</div><!--product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="quantity">66</td>
 									<td data-colname="revenue">$806.87</td>
 									<td data-colname="net-profit">$67.34</td>
 								</tr>
-
+								<tr>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-name">Premium Miniket Rice</div>
+										</div><!--product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
+									<td data-colname="quantity">66</td>
+									<td data-colname="revenue">$806.87</td>
+									<td data-colname="net-profit">$67.34</td>
+								</tr>
 							</tbody>
 						</table>
 					</div><!-- end .tab-content -->
@@ -377,12 +390,15 @@ class SXP_Customer_Profile_Table {
 							<tbody id="the-list">
 								<tr>
 									<td>1.</td>
-									<td data-colname="All Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-details">
-											<div class="product-name">Premium Miniket Rice</div>
-											<div class="product-sku">OC063-0001</div>
-										</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-details">
+												<div class="product-name">Premium Miniket Rice</div>
+												<div class="product-sku">OC063-0001</div>
+											</div>
+										</div><!-- end .product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Unit Price">$61.87</td>
 									<td data-colname="QTY">x 2</td>
@@ -390,12 +406,15 @@ class SXP_Customer_Profile_Table {
 								</tr>
 								<tr>
 									<td>2.</td>
-									<td data-colname="All Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-details">
-											<div class="product-name">Premium Miniket Rice</div>
-											<div class="product-sku">OC063-0001</div>
-										</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-details">
+												<div class="product-name">Premium Miniket Rice</div>
+												<div class="product-sku">OC063-0001</div>
+											</div>
+										</div><!-- end .product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Unit Price">$61.87</td>
 									<td data-colname="QTY">x 2</td>
@@ -403,12 +422,15 @@ class SXP_Customer_Profile_Table {
 								</tr>
 								<tr>
 									<td>3.</td>
-									<td data-colname="All Products">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
-										<div class="product-details">
-											<div class="product-name">Premium Miniket Rice</div>
-											<div class="product-sku">OC063-0001</div>
-										</div>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
+										<div class="product-wrap">
+											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-details">
+												<div class="product-name">Premium Miniket Rice</div>
+												<div class="product-sku">OC063-0001</div>
+											</div>
+										</div><!-- end .product-wrap -->
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Unit Price">$61.87</td>
 									<td data-colname="QTY">x 2</td>
@@ -475,9 +497,10 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Search Queries">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="#Searches">9</td>
 									<td data-colname="#Sesssions">4</td>
@@ -489,61 +512,70 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Search Queries">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="#Searches">9</td>
 									<td data-colname="#Sesssions">4</td>
 									<td data-colname="Stock">37</td>
 									<td data-colname="Lifetime Purchase">59</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Search Queries">
+									<td  class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="#Searches">9</td>
 									<td data-colname="#Sesssions">4</td>
 									<td data-colname="Stock">37</td>
 									<td data-colname="Lifetime Purchase">59</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Search Queries">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="#Searches">9</td>
 									<td data-colname="#Sesssions">4</td>
 									<td data-colname="Stock">37</td>
 									<td data-colname="Lifetime Purchase">59</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Search Queries">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="#Searches">9</td>
 									<td data-colname="#Sesssions">4</td>
 									<td data-colname="Stock">37</td>
 									<td data-colname="Lifetime Purchase">59</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Search Queries">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="#Searches">9</td>
 									<td data-colname="#Sesssions">4</td>
@@ -574,9 +606,10 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Product">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Regular Price">$61</td>
 									<td data-colname="Discount Price">$29</td>
@@ -590,9 +623,10 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Product">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Regular Price">$61</td>
 									<td data-colname="Discount Price">$29</td>
@@ -600,14 +634,16 @@ class SXP_Customer_Profile_Table {
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-success">Seen</div>
 									</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Product">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Regular Price">$61</td>
 									<td data-colname="Discount Price">$29</td>
@@ -615,14 +651,16 @@ class SXP_Customer_Profile_Table {
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-success">Seen</div>
 									</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Product">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Regular Price">$61</td>
 									<td data-colname="Discount Price">$29</td>
@@ -630,14 +668,16 @@ class SXP_Customer_Profile_Table {
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-danger">Not Seen</div>
 									</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<th scope="row" class="check-column">
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Product">
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
 										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Regular Price">$61</td>
 									<td data-colname="Discount Price">$29</td>
@@ -670,8 +710,9 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Coupon Codes" class="sxp-discount-coupon">
+									<td class="title column-title has-row-actions column-primary page-title sxp-discount-coupon" data-colname="Coupon Codes">
 										<div class="sxp-status sxp-status-success">20XVJ372U</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Discount">4%</td>
 									<td data-colname="Usage">Used 1 time</td>
@@ -683,8 +724,9 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Coupon Codes" class="sxp-discount-coupon">
+									<td class="title column-title has-row-actions column-primary page-title sxp-discount-coupon" data-colname="Coupon Codes">
 										<div class="sxp-status sxp-status-default">20XVJ372U</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Discount">7%</td>
 									<td data-colname="Usage">Used 1 time</td>
@@ -696,8 +738,9 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Coupon Codes" class="sxp-discount-coupon">
+									<td class="title column-title has-row-actions column-primary page-title sxp-discount-coupon" data-colname="Coupon Codes">
 										<div class="sxp-status sxp-status-default">20XVJ372U</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Discount">Flat 10%</td>
 									<td data-colname="Usage" class="not-used">Not used yet</td>
@@ -709,8 +752,9 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Coupon Codes" class="sxp-discount-coupon">
+									<td class="title column-title has-row-actions column-primary page-title sxp-discount-coupon" data-colname="Coupon Codes">
 										<div class="sxp-status sxp-status-success">20XVJ372U</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Discount">9%</td>
 									<td data-colname="Usage" class="not-used">Not used yet</td>
@@ -722,8 +766,9 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Coupon Codes" class="sxp-discount-coupon">
+									<td class="title column-title has-row-actions column-primary page-title sxp-discount-coupon" data-colname="Coupon Codes">
 										<div class="sxp-status sxp-status-success">20XVJ372U</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Discount">12%</td>
 									<td data-colname="Usage">Used 3 times</td>
@@ -735,8 +780,9 @@ class SXP_Customer_Profile_Table {
 										<label class="screen-reader-text" for="cb-select-1"></label>
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
-									<td data-colname="Coupon Codes" class="sxp-discount-coupon">
+									<td class="title column-title has-row-actions column-primary page-title sxp-discount-coupon" data-colname="Coupon Codes">
 										<div class="sxp-status sxp-status-success">20XVJ372U</div>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
 									<td data-colname="Discount">11%</td>
 									<td data-colname="Usage">Used 5 times</td>
@@ -775,7 +821,10 @@ class SXP_Customer_Profile_Table {
 											<span class="sxp-slider round"></span>
 										</label>
 									</td>
-									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Campaign Name">
+										Best Birthday sale
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-success">Active</div>
 									</td>
@@ -797,7 +846,10 @@ class SXP_Customer_Profile_Table {
 											<span class="sxp-slider round"></span>
 										</label>
 									</td>
-									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Campaign Name">
+										Best Birthday sale
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-info">Scheduled</div>
 									</td>
@@ -819,7 +871,10 @@ class SXP_Customer_Profile_Table {
 											<span class="sxp-slider round"></span>
 										</label>
 									</td>
-									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Campaign Name">
+										Best Birthday sale
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-primary">Completed</div>
 									</td>
@@ -841,7 +896,10 @@ class SXP_Customer_Profile_Table {
 											<span class="sxp-slider round"></span>
 										</label>
 									</td>
-									<td data-colname="Campaign Name">Best Birthday sale</td>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Campaign Name">
+										Best Birthday sale
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
 									<td data-colname="Status">
 										<div class="sxp-status sxp-status-default">Disabled</div>
 									</td>
@@ -857,6 +915,20 @@ class SXP_Customer_Profile_Table {
 					</div><!-- end .tab-content -->
 				</div><!-- end .sxp-profile-details -->
 			</div><!-- end .sxp-profile-wrapper -->
+<!--			<div id="sxp-tag-modal" class="modal">
+				<div class="sxp-modal-content">
+					<h4>Add a tag</h4>
+					<label for="sxp-tag-select" class="screen-reader-text"><?php /*__('Tag dropdown select', 'salexpresso'); */?></label>
+					<select name="tag" id="sxp-tag-select">
+						<option value="default-tag">Search for tags or create one</option>
+						<option value="customer">customer</option>
+						<option value="product">product</option>
+						<option value="customer-type">customer type</option>
+						<option value="sale">sale</option>
+					</select>
+					<a href="#" class="sxp-btn sxp-btn-primary">add tag</a>
+				</div>
+			</div>-->
 		<?php
 	}
 
