@@ -327,11 +327,10 @@
 				margin-left: 0;
 				margin-top: 2rem;
 
-				#activity,
 				#orders,
 				#products,
 				#active-cart {
-					.sxp-table tbody tr td:nth-child(n+2){
+					.sxp-table tbody tr td:nth-child(n+2) {
 						background: #fbfbfb;
 					}
 					.wp-list-table {
@@ -466,12 +465,26 @@
 						display: none;
 					}
 					tr:not(.inline-edit-row):not(.no-items) {
+						td:not(.column-primary)::before {
+							position: absolute;
+							left: 1.5rem;
+							display: block;
+							overflow: hidden;
+							width: 32%;
+							content: attr(data-colname);
+							white-space: nowrap;
+							text-overflow: ellipsis;
+						}
 						td:not(.check-column) {
 							position: relative;
 							clear: both;
 							width: auto !important;
 						}
 						td.column-primary {
+							& ~ td:not(.check-column) {
+								margin-left: -50px;
+								padding: 17px 8px 17px 50%;
+							}
 							.toggle-row {
 								display: block;
 							}
@@ -482,20 +495,6 @@
 						overflow: hidden;
 					}
 				}
-				.wp-list-table tr:not(.inline-edit-row):not(.no-items) td:not(.column-primary)::before {
-					position: absolute;
-					left: 1.5rem;
-					display: block;
-					overflow: hidden;
-					width: 32%;
-					content: attr(data-colname);
-					white-space: nowrap;
-					text-overflow: ellipsis;
-				}
-				.sxp-table.wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary~td:not(.check-column) {
-					margin-left: -50px;
-					padding: 17px 8px 17px 50%;
-				}
 			}
 			&-details {
 				flex: 0 0 60%;
@@ -504,7 +503,7 @@
 				#orders,
 				#products,
 				#active-cart {
-					.sxp-table tbody tr td:nth-child(n+2){
+					.sxp-table tbody tr td:nth-child(n+2) {
 						background: #fbfbfb;
 					}
 					.wp-list-table {

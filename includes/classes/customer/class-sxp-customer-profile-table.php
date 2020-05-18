@@ -915,10 +915,10 @@ class SXP_Customer_Profile_Table {
 					</div><!-- end .tab-content -->
 				</div><!-- end .sxp-profile-details -->
 			</div><!-- end .sxp-profile-wrapper -->
-<!--			<div id="sxp-tag-modal" class="modal">
+			<div id="sxp-tag-modal" class="modal">
 				<div class="sxp-modal-content">
 					<h4>Add a tag</h4>
-					<label for="sxp-tag-select" class="screen-reader-text"><?php /*__('Tag dropdown select', 'salexpresso'); */?></label>
+					<label for="sxp-tag-select" class="screen-reader-text"><?php __('Tag dropdown select', 'salexpresso'); ?></label>
 					<select name="tag" id="sxp-tag-select">
 						<option value="default-tag">Search for tags or create one</option>
 						<option value="customer">customer</option>
@@ -928,7 +928,7 @@ class SXP_Customer_Profile_Table {
 					</select>
 					<a href="#" class="sxp-btn sxp-btn-primary">add tag</a>
 				</div>
-			</div>-->
+			</div>
 		<?php
 	}
 
