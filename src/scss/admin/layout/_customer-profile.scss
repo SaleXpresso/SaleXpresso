@@ -119,11 +119,14 @@
 
 				}
 				&-number {
-					margin-left: 0.75rem;
+					margin-left: 0.25rem;
 				}
 				&-name {
 					@extend .product-number;
 				}
+			}
+			.not-used {
+				color: $dark-purple;
 			}
 		}
 		&-details {
@@ -205,13 +208,29 @@
 		thead {
 			th {
 				a {
-					padding: 0 1.5rem;
+					padding: 0;
+				}
+				&:first-child {
+					a {
+						padding-left: 1.5rem;
+					}
+				}
+				&:last-child {
+					a {
+						padding-right: 1.5rem;
+					}
 				}
 			}
 		}
 		tbody {
 			td {
-				padding: 0 1.5rem;
+				padding: 0;
+				&:first-child {
+					padding-left: 1.5rem;
+				}
+				&:last-child {
+					padding-right: 1.5rem;
+				}
 				div,
 				ul {
 					display: inline-block;
@@ -269,6 +288,7 @@
 			}
 			tr:first-child td {
 				padding-top: 1rem;
+				border-top: $border-width solid $border-color;
 			}
 			tr:nth-last-child(2) td {
 				padding-bottom: 1rem;
@@ -276,6 +296,7 @@
 			tr:last-child td {
 				height: 56px;
 				border-top: $border-width solid $border-color;
+				vertical-align: middle;
 
 				&:nth-child(2) {
 					padding-left: 0;
@@ -286,6 +307,344 @@
 				&:last-child {
 					font-weight: 700;
 				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.sxp {
+		&-profile {
+			&-wrapper {
+				flex-wrap: wrap;
+				.product-list {
+					display: none;
+				}
+			}
+			&-details {
+				flex: 0 0 100%;
+				max-width: 100%;
+				margin-left: 0;
+				margin-top: 2rem;
+
+				#orders,
+				#products,
+				#active-cart {
+					.sxp-table tbody tr td:nth-child(n+2) {
+						background: #fbfbfb;
+					}
+					.wp-list-table {
+						tr:not(.inline-edit-row):not(.no-items) {
+							td.column-primary ~ td:not(.check-column) {
+								margin-left: 0;
+							}
+						}
+					}
+				}
+				#activity {
+					.wp-list-table {
+						tr:not(.inline-edit-row):not(.no-items) {
+							td.column-primary ~ td:not(.check-column) {
+								margin-left: 0;
+							}
+						}
+					}
+					tr {
+						td:nth-child(1) {
+							padding: 1.5rem;
+						}
+					}
+				}
+				#orders {
+					tr {
+						td:nth-child(1) {
+							padding: 1.6875rem 1.5rem;
+						}
+					}
+				}
+				#products {
+					tr {
+						td:nth-child(1) {
+							padding: 1rem;
+						}
+					}
+				}
+				#active-cart {
+					tbody {
+						tr,
+						tr.is-expanded {
+							td {
+								text-align: left;
+							}
+							td:nth-child(1) {
+								display: none !important;
+							}
+
+							td:nth-child(2) {
+								padding: 0.3125rem 0 0.3125rem 1.5rem;
+								background: $white !important;
+							}
+						}
+					}
+					tfoot {
+						display: block;
+						padding: 0;
+						border: none;
+						tr {
+							display: inline-table;
+							width: 100%;
+						}
+					}
+				}
+				#recommendation,
+				#searches {
+					tr,
+					tr.is-expanded {
+						th.check-column {
+							padding: 1.6875rem 0 0 1.5rem;
+						}
+					}
+					tr {
+						td:nth-child(2) {
+							padding: 1rem;
+						}
+					}
+				}
+				#discount {
+					tr,
+					tr.is-expanded {
+						th.check-column {
+							padding: 1.6875rem 0 0 1.5rem;
+						}
+					}
+					tr {
+						td:nth-child(2) {
+							padding: 1.75rem 1rem;
+						}
+					}
+				}
+				#campaign {
+					tr,
+					tr.is-expanded {
+						th.check-column {
+							padding: 1.6875rem 0 0 1.5rem;
+						}
+						td:nth-child(2) {
+							display: none !important;
+						}
+					}
+					tr {
+						td:nth-child(3) {
+							background: $white !important;
+							padding: 1.75rem 1rem;
+						}
+					}
+				}
+
+			}
+
+			&-info {
+				flex: 0 0 100%;
+				max-width: 100%;
+				margin-right: 0;
+			}
+		}
+		&-tag {
+			&-list {
+				display: none;
+			}
+		}
+	}
+}
+@media screen and (min-width: 782.99px) and (max-width: 1199px) {
+	.sxp {
+		&-profile {
+			&-wrapper {
+				#searches,
+				#recommendation,
+				#discount,
+				#campaign {
+					.wp-list-table {
+						tr:not(.inline-edit-row):not(.no-items) {
+							td.column-primary {
+								& ~ td:not(.check-column) {
+									margin-left: -50px;
+								}
+
+							}
+						}
+					}
+				}
+				.product-list {
+					display: none;
+				}
+				.wp-list-table {
+					thead {
+						tr {
+							th,
+							td {
+								display: none;
+							}
+						}
+					}
+					tbody {
+						tr {
+							td:last-child {
+								text-align: left;
+							}
+						}
+					}
+					th.column-primary ~ th,
+					tr:not(.inline-edit-row):not(.no-items) td.column-primary ~ td:not(.check-column) {
+						display: none;
+					}
+					tr:not(.inline-edit-row):not(.no-items) {
+						td:not(.column-primary)::before {
+							position: absolute;
+							left: 1.5rem;
+							display: block;
+							overflow: hidden;
+							width: 32%;
+							content: attr(data-colname);
+							white-space: nowrap;
+							text-overflow: ellipsis;
+						}
+						td:not(.check-column) {
+							position: relative;
+							clear: both;
+							width: auto !important;
+						}
+						td.column-primary {
+							& ~ td:not(.check-column) {
+								margin-left: -50px;
+								padding: 17px 8px 17px 50%;
+							}
+							.toggle-row {
+								display: block;
+							}
+						}
+					}
+					.is-expanded td:not(.hidden) {
+						display: block !important;
+						overflow: hidden;
+					}
+				}
+			}
+			&-details {
+				flex: 0 0 60%;
+				max-width: 60%;
+				#activity,
+				#orders,
+				#products,
+				#active-cart {
+					.sxp-table tbody tr td:nth-child(n+2) {
+						background: #fbfbfb;
+					}
+					.wp-list-table {
+						tr:not(.inline-edit-row):not(.no-items) {
+							td.column-primary ~ td:not(.check-column) {
+								margin-left: 0;
+							}
+						}
+					}
+				}
+				#activity {
+					tr {
+						td:nth-child(1) {
+							padding: 1.5rem;
+						}
+					}
+				}
+				#orders {
+					tr {
+						td:nth-child(1) {
+							padding: 1.6875rem 1.5rem;
+						}
+					}
+				}
+				#products {
+					tr {
+						td:nth-child(1) {
+							padding: 1rem;
+						}
+					}
+				}
+				#active-cart {
+					tbody {
+						tr,
+						tr.is-expanded {
+							td {
+								text-align: left;
+							}
+							td:nth-child(1) {
+								display: none !important;
+							}
+
+							td:nth-child(2) {
+								padding: 0.3125rem 0 0.3125rem 1.5rem;
+								background: $white !important;
+							}
+						}
+					}
+					tfoot {
+						display: block;
+						padding: 0;
+						border: none;
+						tr {
+							display: inline-table;
+							width: 100%;
+						}
+					}
+				}
+				#recommendation,
+				#searches {
+					tr,
+					tr.is-expanded {
+						th.check-column {
+							padding: 1.6875rem 0 0 1.5rem;
+						}
+					}
+					tr {
+						td:nth-child(2) {
+							padding: 1rem;
+						}
+					}
+				}
+				#discount {
+					tr,
+					tr.is-expanded {
+						th.check-column {
+							padding: 1.6875rem 0 0 1.5rem;
+						}
+					}
+					tr {
+						td:nth-child(2) {
+							padding: 1.75rem 1rem;
+						}
+					}
+				}
+				#campaign {
+					tr,
+					tr.is-expanded {
+						th.check-column {
+							padding: 1.6875rem 0 0 1.5rem;
+						}
+						td:nth-child(2) {
+							display: none !important;
+						}
+					}
+					tr {
+						td:nth-child(3) {
+							background: $white !important;
+							padding: 1.75rem 1rem;
+						}
+					}
+				}
+			}
+
+			&-info {
+				flex: 0 0 40%;
+				max-width: 40%;
 			}
 		}
 	}

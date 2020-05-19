@@ -55,7 +55,6 @@ class SXP_Customer_List_Table {
 						<th scope="col" id="sxp-customer-last-order" class="manage-column column-categories"><a href="#">Last Order</a></th>
 					</tr>
 				</thead>
-
 				<tbody id="the-list">
 					<tr id="sxp-customer-list-1" class="sxp-customer-list">
 						<th scope="row" class="check-column">
@@ -239,9 +238,7 @@ class SXP_Customer_List_Table {
 					</tr><!-- end .sxp-customer-list -->
 
 				</tbody>
-
 			</table><!-- end .sxp-customer-table -->
-
 			<div class="sxp-pagination-wrapper">
 				<ul class="sxp-pagination">
 					<li><a href="#"><img alt="arrow-left.svg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0IDhMMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02IDEyTDIgOEw2IDQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/></a></li>
@@ -257,7 +254,6 @@ class SXP_Customer_List_Table {
 					<li><a href="#"><img alt="arrow-right.svg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIgOEwxMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMCA0TDE0IDhMMTAgMTIiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/></a></li>
 				</ul>
 			</div><!-- end .sxp-paginaation-wrapper -->
-
 			<div class="sxp-bottom-wrapper">
 				<div class="sxp-selected-container">
 					<div class="sxp-row-select">

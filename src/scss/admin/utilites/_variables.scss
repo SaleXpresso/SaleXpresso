@@ -11,16 +11,18 @@ $paragraph-color:          $text-color !default;
 $table-checkbox-input:     $light-purple !default;
 $table-campaign-border:    #d4d4eb !default;
 $border-color:             #f2f4fc !default;
-$heading-color:             $dark-purple !default;
-$heading-bg:                #f4f3fc !default;
+$heading-color:            $dark-purple !default;
+$heading-bg:               #f4f3fc !default;
 $customer-heading:         $heading-color !default;
 $customer-heading-bg:      $heading-bg !default;
 $customer-rule-border:     $light-purple !default;
 $box-shadow-color:         #0d004d !default;
-$status-success:           #096 !default;
-$status-info:              #f48400 !default;
-$status-danger:            #b8001f !default;
-
+$success:                  #096 !default;
+$info:                     #f48400 !default;
+$danger:                   #b8001f !default;
+$status-success:           $success !default;
+$status-info:              $info !default;
+$status-danger:            $danger !default;
 //
 // Customer List Badge
 //

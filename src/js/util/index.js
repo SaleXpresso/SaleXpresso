@@ -10,13 +10,13 @@ const MILLISECONDS_MULTIPLIER = 1000;
 const TRANSITION_END = 'transitionend';
 
 // Shoutout AngusCroll (https://goo.gl/pxwQGp)
-const toType = obj => {
+const toType = ( obj ) => {
 	if ( obj === null || obj === undefined ) {
-		return `${obj}`;
+		return `${ obj }`;
 	}
-	
+
 	return {}.toString.call( obj ).match( /\s([a-z]+)/i )[ 1 ].toLowerCase();
-}
+};
 
 /**
  * --------------------------------------------------------------------------
@@ -24,118 +24,118 @@ const toType = obj => {
  * --------------------------------------------------------------------------
  */
 
-const getUID = prefix => {
+const getUID = ( prefix ) => {
 	do {
 		prefix += ~~( Math.random() * MAX_UID ); // "~~" acts like a faster Math.floor() here
 	} while ( document.getElementById( prefix ) );
-	
-	return prefix;
-}
 
-const getSelector = element => {
+	return prefix;
+};
+
+const getSelector = ( element ) => {
 	let selector = element.getAttribute( 'data-target' );
-	
+
 	if ( ! selector || selector === '#' ) {
 		const hrefAttr = element.getAttribute( 'href' );
-		
+
 		selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;
 	}
-	
-	return selector;
-}
 
-const getSelectorFromElement = element => {
+	return selector;
+};
+
+const getSelectorFromElement = ( element ) => {
 	const selector = getSelector( element );
-	
+
 	if ( selector ) {
 		return document.querySelector( selector ) ? selector : null;
 	}
-	
+
 	return null;
-}
+};
 
-const getElementFromSelector = element => {
+const getElementFromSelector = ( element ) => {
 	const selector = getSelector( element );
-	
-	return selector ? document.querySelector( selector ) : null;
-}
 
-const getTransitionDurationFromElement = element => {
+	return selector ? document.querySelector( selector ) : null;
+};
+
+const getTransitionDurationFromElement = ( element ) => {
 	if ( ! element ) {
 		return 0;
 	}
 
-// Get transition-duration of the element
+	// Get transition-duration of the element
 	let { transitionDuration, transitionDelay } = window.getComputedStyle( element );
-	
+
 	const floatTransitionDuration = parseFloat( transitionDuration );
 	const floatTransitionDelay = parseFloat( transitionDelay );
 
-// Return 0 if element or transition duration is not found
+	// Return 0 if element or transition duration is not found
 	if ( ! floatTransitionDuration && ! floatTransitionDelay ) {
 		return 0;
 	}
 
-// If multiple durations are defined, take the first
+	// If multiple durations are defined, take the first
 	transitionDuration = transitionDuration.split( ',' )[ 0 ];
 	transitionDelay = transitionDelay.split( ',' )[ 0 ];
-	
+
 	return ( parseFloat( transitionDuration ) + parseFloat( transitionDelay ) ) * MILLISECONDS_MULTIPLIER;
-}
+};
 
-const triggerTransitionEnd = element => {
+const triggerTransitionEnd = ( element ) => {
 	element.dispatchEvent( new Event( TRANSITION_END ) );
-}
+};
 
-const isElement = obj => ( obj[ 0 ] || obj ).nodeType;
+const isElement = ( obj ) => ( obj[ 0 ] || obj ).nodeType;
 
 const emulateTransitionEnd = ( element, duration ) => {
 	let called = false;
 	const durationPadding = 5;
 	const emulatedDuration = duration + durationPadding;
-	
-	function listener () {
+
+	function listener() {
 		called = true;
 		element.removeEventListener( TRANSITION_END, listener );
 	}
-	
+
 	element.addEventListener( TRANSITION_END, listener );
 	setTimeout( () => {
 		if ( ! called ) {
 			triggerTransitionEnd( element );
 		}
 	}, emulatedDuration );
-}
+};
 
 const typeCheckConfig = ( componentName, config, configTypes ) => {
 	Object.keys( configTypes )
-		.forEach( property => {
+		.forEach( ( property ) => {
 			const expectedTypes = configTypes[ property ];
 			const value = config[ property ];
 			const valueType = value && isElement( value ) ? 'element' : toType( value );
-			
+
 			if ( ! new RegExp( expectedTypes ).test( valueType ) ) {
-				throw new Error( `${componentName.toUpperCase()}: ` + `Option "${property}" provided type "${valueType}" ` + `but expected type "${expectedTypes}".` );
+				throw new Error( `${ componentName.toUpperCase() }: ` + `Option "${ property }" provided type "${ valueType }" ` + `but expected type "${ expectedTypes }".` );
 			}
 		} );
-}
+};
 
-const isVisible = element => {
+const isVisible = ( element ) => {
 	if ( ! element ) {
 		return false;
 	}
-	
+
 	if ( element.style && element.parentNode && element.parentNode.style ) {
 		const elementStyle = getComputedStyle( element );
 		const parentNodeStyle = getComputedStyle( element.parentNode );
-		
+
 		return elementStyle.display !== 'none' && parentNodeStyle.display !== 'none' && elementStyle.visibility !== 'hidden';
 	}
-	
-	return false;
-}
 
-const findShadowRoot = element => {
+	return false;
+};
+
+const findShadowRoot = ( element ) => {
 	if ( ! document.documentElement.attachShadow ) {
 		return null;
 	}
@@ -145,32 +145,32 @@ const findShadowRoot = element => {
 		const root = element.getRootNode();
 		return root instanceof ShadowRoot ? root : null;
 	}
-	
+
 	if ( element instanceof ShadowRoot ) {
 		return element;
 	}
 
-// when we don't find a shadow root
+	// when we don't find a shadow root
 	if ( ! element.parentNode ) {
 		return null;
 	}
-	
+
 	return findShadowRoot( element.parentNode );
-}
+};
 
 const noop = () => function() {};
 
-const reflow = element => element.offsetHeight;
+const reflow = ( element ) => element.offsetHeight;
 
 const getjQuery = () => {
 	const { jQuery } = window;
-	
+
 	if ( jQuery && ! document.body.hasAttribute( 'data-no-jquery' ) ) {
 		return jQuery;
 	}
-	
+
 	return null;
-}
+};
 
 export {
 	getjQuery,

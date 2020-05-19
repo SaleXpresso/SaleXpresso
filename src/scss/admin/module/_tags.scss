@@ -1,0 +1,39 @@
+.sxp {
+	&-wrapper {
+		.sxp {
+			&-tag {
+				margin: 0;
+				&-wrapper {
+					margin: 0 0 2rem;
+					ul,
+					div {
+						display: inline-block;
+					}
+
+				}
+				li {
+					display: inline-block;
+					margin-right: 0.5rem;
+					a {
+						padding: 0.5rem 1rem;
+						background: $white;
+						border-radius: 2rem;
+						color: $dark-purple;
+						text-decoration: none;
+					}
+					&:last-child {
+						margin-right: 0;
+					}
+				}
+				&-add {
+					a {
+						padding: 0.375rem 0.5rem;
+						color: $dark-purple;
+						text-decoration: none;
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
