@@ -166,15 +166,14 @@
 			}
 			div {
 				&:first-child {
-					flex: 1;
 					align-content: flex-start;
 					text-align: left;
-					display: inherit;
+					flex: 0 0 80%;
 				}
 				&:last-child {
-					flex: 1;
 					align-content: flex-end;
 					text-align: right;
+					flex: 0 0 20%;
 				}
 				i,
 				svg {

@@ -342,6 +342,13 @@
 					}
 				}
 				#activity {
+					.wp-list-table {
+						tr:not(.inline-edit-row):not(.no-items) {
+							td.column-primary ~ td:not(.check-column) {
+								margin-left: 0;
+							}
+						}
+					}
 					tr {
 						td:nth-child(1) {
 							padding: 1.5rem;
@@ -359,6 +366,33 @@
 					tr {
 						td:nth-child(1) {
 							padding: 1rem;
+						}
+					}
+				}
+				#active-cart {
+					tbody {
+						tr,
+						tr.is-expanded {
+							td {
+								text-align: left;
+							}
+							td:nth-child(1) {
+								display: none !important;
+							}
+
+							td:nth-child(2) {
+								padding: 0.3125rem 0 0.3125rem 1.5rem;
+								background: $white !important;
+							}
+						}
+					}
+					tfoot {
+						display: block;
+						padding: 0;
+						border: none;
+						tr {
+							display: inline-table;
+							width: 100%;
 						}
 					}
 				}
@@ -430,7 +464,7 @@
 				#recommendation,
 				#discount,
 				#campaign {
-					&.wp-list-table {
+					.wp-list-table {
 						tr:not(.inline-edit-row):not(.no-items) {
 							td.column-primary {
 								& ~ td:not(.check-column) {
@@ -532,6 +566,33 @@
 					tr {
 						td:nth-child(1) {
 							padding: 1rem;
+						}
+					}
+				}
+				#active-cart {
+					tbody {
+						tr,
+						tr.is-expanded {
+							td {
+								text-align: left;
+							}
+							td:nth-child(1) {
+								display: none !important;
+							}
+
+							td:nth-child(2) {
+								padding: 0.3125rem 0 0.3125rem 1.5rem;
+								background: $white !important;
+							}
+						}
+					}
+					tfoot {
+						display: block;
+						padding: 0;
+						border: none;
+						tr {
+							display: inline-table;
+							width: 100%;
 						}
 					}
 				}
