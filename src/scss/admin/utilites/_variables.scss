@@ -3,7 +3,7 @@ $light-purple:             #d0cfe5 !default;
 $light-purple-2:           #e7e6f5 !default;
 $dark-purple:              #7d7db2 !default;
 $dark-purple-2:            #7d7db3 !default;
-$primary:                  #35f !default;
+$primary:                  #3255ff !default;
 $white:                    #fff !default;
 $text-color:               #16163d !default;
 $table-header-color:       $dark-purple !default;
@@ -28,6 +28,10 @@ $status-danger:            $danger !default;
 //
 $badgeColors: #ffd0d0, #e3ffda, #ffcfb5, #dae4ff, #cffff4, #fffcb5;
 $badgeColorsLength: length($badgeColors);
+
+
+//Fonts
+$font : "Public Sans", sans-serif;
 
 //colors
 $customer-list-location-color: $dark-purple-2 !default;
