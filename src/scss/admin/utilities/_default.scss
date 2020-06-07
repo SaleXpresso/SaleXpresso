@@ -8,14 +8,14 @@
 		clear: both;
 	}
 	&-wrapper {
-		font-family: "Public Sans", sans-serif;
+		font-family: $font;
 		font-size: 0.875rem;
 		position: relative;
 		display: block;
 		table *,
 		table thead *,
 		table tbody * {
-			font-family: "Public Sans", sans-serif;
+			font-family: $font;
 			font-size: 0.875rem;
 			line-height: 1.25rem;
 		}
