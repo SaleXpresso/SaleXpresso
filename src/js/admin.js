@@ -14,6 +14,7 @@ import moment from 'moment';
 import feather from 'feather-icons';
 import 'daterangepicker';
 import 'jquery-modal';
+import 'selectize';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
 
 // import { tabs } from './components/_tabs.js';
@@ -40,6 +41,8 @@ import { horizontalScrollBar } from './components/_horizontalScrollBar';
 	$( '[href="#"]' ).on( 'click', function( e ) {
 		e.preventDefault();
 	} );
+
+	//$( '.selectize' ).selectize();
 
 	// date range picker
 	const reportRenge = $( '#reportrange' );

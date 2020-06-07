@@ -13,9 +13,10 @@
 @import "admin/utilities/default";
 
 // Module
+@import "admin/module/daterangepicker";
+@import "admin/module/selectize";
 @import "admin/module/tabs";
 @import "admin/module/filter";
-@import "admin/module/daterangepicker";
 @import "admin/module/table";
 @import "admin/module/rule";
 @import "admin/module/pagination";
