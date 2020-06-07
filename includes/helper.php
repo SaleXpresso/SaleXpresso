@@ -14,6 +14,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+if ( ! function_exists( 'sxp_load_file' ) ) {
+	/**
+	 * Load File
+	 *
+	 * @param string $file      File Path To Load.
+	 * @param bool   $if_exists Check if file exists before load.
+	 *                          Default true.
+	 * @param bool   $required  Load using require statement.
+	 *                          Default false.
+	 * @param bool   $once      Load once.
+	 *                          Default false.
+	 *
+	 * @return bool|mixed
+	 */
+	function sxp_load_file( $file, $if_exists = true, $required = false, $once = false ) {
+		return SXP()->load_file( $file, $if_exists, $required, $once );
+	}
+}
+
+if ( ! function_exists( 'sxp_get_plugin_uri' ) ) {
+	/**
+	 * Get Plugin file URI
+	 *
+	 * @param string $file get uri for assets file from plugin directory.
+	 *
+	 * @return string
+	 */
+	function sxp_get_plugin_uri( $file = '' ) {
+		$file = ltrim( $file, '/' );
+		return SXP()->plugin_url() . '/' . $file;
+	}
+}
+
 if ( ! function_exists( 'sxp_get_logger' ) ) {
 	/**
 	 * Get Logger

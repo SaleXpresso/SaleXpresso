@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-if ( ! defined( 'SALE_XPRESSO_PLUGIN_FILE' ) ) {
+if ( ! defined( 'SXP_PLUGIN_FILE' ) ) {
 	/**
 	 * The full path and filename of this file (main file)
 	 *
@@ -57,7 +57,7 @@ if ( ! class_exists( 'SaleXpresso', false ) ) {
  * @return SaleXpresso\SaleXpresso
  */
 function SXP() { // phpcs:ignore WordPress.NamingConventions
-	return \SaleXpresso\SaleXpresso::get_instance();
+	return SaleXpresso\SaleXpresso::get_instance();
 }
 
 SXP();

@@ -26,7 +26,8 @@ const toType = ( obj ) => {
 
 const getUID = ( prefix ) => {
 	do {
-		prefix += ~~( Math.random() * MAX_UID ); // "~~" acts like a faster Math.floor() here
+		// "~~" acts like a faster Math.floor() here
+		prefix += ~~( Math.random() * MAX_UID ); // eslint-disable-line no-bitwise
 	} while ( document.getElementById( prefix ) );
 
 	return prefix;

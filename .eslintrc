@@ -24,7 +24,8 @@
 	"context": true,
 	"jQuery": "writable",
 	"$": "writable",
-	"SaleXpresso": "writable"
+	"SaleXpresso": "writable",
+	"pagenow": "writable"
   },
   "rules": {
 	"eqeqeq": "warn",

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PhpCodeSniffer">
     <phpcs_settings>
-      <PhpCSConfiguration beautifier_path="$USER_HOME$/.composer/vendor/bin/phpcbf" standards="MySource;PEAR;PHPCompatibility;PHPCompatibilityParagonieRandomCompat;PHPCompatibilityParagonieSodiumCompat;PHPCompatibilityWP;PSR1;PSR12;PSR2;Squiz;WordPress;WordPress-Core;WordPress-Docs;WordPress-Extra;WordPress-VIP-Go;WordPressVIPMinimum;Zend" tool_path="phpcs" />
+      <PhpCSConfiguration beautifier_path="$USER_HOME$/.composer/vendor/bin/phpcbf" standards="MySource;PEAR;PHPCompatibility;PHPCompatibilityParagonieRandomCompat;PHPCompatibilityParagonieSodiumCompat;PHPCompatibilityWP;PSR1;PSR12;PSR2;Squiz;WordPress;WordPress-Core;WordPress-Docs;WordPress-Extra;WordPress-VIP-Go;WordPressVIPMinimum;Zend" tool_path="phpcs" timeout="30000" />
     </phpcs_settings>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7" />

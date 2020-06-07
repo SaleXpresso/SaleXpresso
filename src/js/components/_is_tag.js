@@ -6,12 +6,12 @@ import $ from 'jquery';
  * @param {string} tagName
  * @private
  */
-function _is_tag( el, tagName ) {
+function isTag( el, tagName ) {
 	return el.get( 0 ).tagName.toLowerCase() === tagName.toLocaleString();
 }
 
-$.fn._is_tag = function( tagName ) {
-	return _is_tag( $( this ), tagName );
+$.fn.isTag = function( tagName ) {
+	return isTag( $( this ), tagName );
 };
 
-export { _is_tag };
+export { isTag };

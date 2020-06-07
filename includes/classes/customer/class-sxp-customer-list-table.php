@@ -64,7 +64,7 @@ class SXP_Customer_List_Table {
 						<td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 							<div class="sxp-customer-desc">
 								<div class="sxp-customer-desc-thumbnail">
-									<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer1.png' ); ?>" alt="Customer Thumbnail">
+									<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/customers/customer1.png' ) ); ?>" alt="Customer Thumbnail">
 								</div><!-- end .sxp-customer-desc-thumbnail -->
 								<div class="sxp-customer-desc-details">
 									<p class="sxp-customer-desc-details-name">Wendy Bell</p>
@@ -94,7 +94,7 @@ class SXP_Customer_List_Table {
 						<td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 							<div class="sxp-customer-desc">
 								<div class="sxp-customer-desc-thumbnail">
-									<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer2.png' ); ?>" alt="Customer Thumbnail">
+									<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/customers/customer2.png' ) ); ?>" alt="Customer Thumbnail">
 								</div><!-- end .sxp-customer-desc-thumbnail -->
 								<div class="sxp-customer-desc-details">
 									<p class="sxp-customer-desc-details-name">Jane Nguyen</p>
@@ -124,7 +124,7 @@ class SXP_Customer_List_Table {
 						<td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 							<div class="sxp-customer-desc">
 								<div class="sxp-customer-desc-thumbnail">
-									<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer3.png' ); ?>" alt="Customer Thumbnail">
+									<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/customers/customer3.png' ) ); ?>" alt="Customer Thumbnail">
 								</div><!-- end .sxp-customer-desc-thumbnail -->
 								<div class="sxp-customer-desc-details">
 									<p class="sxp-customer-desc-details-name">Jane Nguyen</p>
@@ -154,7 +154,7 @@ class SXP_Customer_List_Table {
 						<td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 							<div class="sxp-customer-desc">
 								<div class="sxp-customer-desc-thumbnail">
-									<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer4.png' ); ?>" alt="Customer Thumbnail">
+									<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/customers/customer4.png' ) ); ?>" alt="Customer Thumbnail">
 								</div><!-- end .sxp-customer-desc-thumbnail -->
 								<div class="sxp-customer-desc-details">
 									<p class="sxp-customer-desc-details-name">Jane Nguyen</p>
@@ -184,7 +184,7 @@ class SXP_Customer_List_Table {
 						<td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 							<div class="sxp-customer-desc">
 								<div class="sxp-customer-desc-thumbnail">
-									<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer5.png' ); ?>" alt="Customer Thumbnail">
+									<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/customers/customer5.png' ) ); ?>" alt="Customer Thumbnail">
 								</div><!-- end .sxp-customer-desc-thumbnail -->
 								<div class="sxp-customer-desc-details">
 									<p class="sxp-customer-desc-details-name">Jane Nguyen</p>
@@ -214,7 +214,7 @@ class SXP_Customer_List_Table {
 						<td class="title column-title has-row-actions column-primary page-title sxp-customers-column" data-colname="sxp-customer-customers">
 							<div class="sxp-customer-desc">
 								<div class="sxp-customer-desc-thumbnail">
-									<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/customers/customer6.png' ); ?>" alt="Customer Thumbnail">
+									<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/customers/customer6.png' ) ); ?>" alt="Customer Thumbnail">
 								</div><!-- end .sxp-customer-desc-thumbnail -->
 								<div class="sxp-customer-desc-details">
 									<p class="sxp-customer-desc-details-name">Jane Nguyen</p>

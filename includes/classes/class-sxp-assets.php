@@ -65,6 +65,7 @@ class SXP_Assets {
 		$this->is_debugging = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
 		$this->file_suffix  = $this->is_debugging ? '.min' : '';
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ], 10, 1 );
+		add_action( 'admin_print_styles', [ $this, 'admin_styles' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'public_scripts' ], 10 );
 	}
 	
@@ -87,18 +88,22 @@ class SXP_Assets {
 				'wp-html-entities',
 				'wp-i18n',
 				'wp-keycodes',
+				'lodash',
 			],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.js' ),
 			true
 		);
 		
 		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [] );
-		wp_enqueue_script('moment', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', 'jquery', '3.4', 'true');
-		wp_enqueue_script('daterangepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'jquery', '3.4', 'true');
-		wp_enqueue_script('feather-icon', 'https://unpkg.com/feather-icons', 'jquery', '4.28.0', 'true');
-		wp_enqueue_script('jquery-modal', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js', 'jquery', '0.9.1', 'false');
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
+	}
+	
+	/**
+	 * Admin Styles
+	 */
+	public function admin_styles() {
+		global $hook_suffix;
 		wp_enqueue_style(
 			'sxp-admin',
 			$this->get_url( 'admin' . $this->file_suffix . '.css' ),

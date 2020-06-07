@@ -21,7 +21,6 @@ function Accordion( el ) {
 		} else {
 			hide( el.find( `tr.${ CLASS_NAME_FOLD }` ) );
 			show( row );
-			console.log( `.${ CLASS_NAME_FOLD }` );
 		}
 	} );
 }

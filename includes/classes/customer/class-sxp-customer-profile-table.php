@@ -40,7 +40,7 @@ class SXP_Customer_Profile_Table {
 						<div class="sxp-profile-type" style="background: #DAE4FF;">General</div>
 						<div class="sxp-profile-info-wrapper">
 							<div class="sxp-profile-thumb">
-								<img src="<?php echo esc_url( plugin_dir_url( basename(__DIR__ )) . 'SaleXpresso/assets/images/profile.png' ); ?>" alt="Customer Thumbnail">
+								<img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/profile.png' ) ); ?>" alt="Customer Thumbnail">
 							</div>
 							<h3>Norman Howard</h3>
 							<p>normaflores@info.com</p>

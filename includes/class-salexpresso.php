@@ -295,7 +295,7 @@ final class SaleXpresso {
 	public function register_tables() {
 		global $wpdb;
 		
-		$tables = [];
+		$tables = apply_filters( 'salexpresso_table_registry', [] );
 		
 		foreach ( $tables as $k => $v ) {
 			$wpdb->$k       = $v;
@@ -433,6 +433,7 @@ final class SaleXpresso {
 		$base_path   = SXP_ABSPATH;
 		$base_ns     = __NAMESPACE__;
 		$file_prefix = 'class-';
+		
 		if ( strpos( $class_name, 'Interfaces', 12 ) ) {
 			$base_path  .= 'includes/interfaces/';
 			$base_ns    .= '\\Interfaces';
@@ -464,6 +465,7 @@ final class SaleXpresso {
 		$class_path = explode( '\\', $class_file );
 		$class_file = array_pop( $class_path );
 		$class_path = implode( '/', $class_path );
+		
 		if ( ! empty( $class_path ) ) {
 			$class_path .= '/';
 		}
@@ -473,13 +475,14 @@ final class SaleXpresso {
 	}
 	
 	/**
-	 * Load php file.
+	 * Load File
 	 *
-	 * @param string $file      File Path that needs to be loaded.
-	 * @param bool   $if_exists Load only if file exists.
-	 * @param bool   $required  Use require or include statement.
+	 * @param string $file      File Path To Load.
+	 * @param bool   $if_exists Check if file exists before load.
+	 *                          Default true.
+	 * @param bool   $required  Load using require statement.
 	 *                          Default false.
-	 * @param bool   $once      Include ro require once.
+	 * @param bool   $once      Load once.
 	 *                          Default false.
 	 *
 	 * @return bool|mixed
