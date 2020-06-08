@@ -38,9 +38,10 @@
 
 				a {
 					color: $table-header-color;
-					padding: 0;
 					position: relative;
 					text-decoration: none;
+					height: 56px;
+					padding: 18px 4px;
 
 					&::after {
 						margin-left: 0.5rem;

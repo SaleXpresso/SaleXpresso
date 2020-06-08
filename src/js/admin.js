@@ -14,7 +14,7 @@ import moment from 'moment';
 import feather from 'feather-icons';
 import 'daterangepicker';
 import 'jquery-modal';
-import 'selectize';
+import 'selectize/dist/js/standalone/selectize.min.js';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
 
 // import { tabs } from './components/_tabs.js';
@@ -42,10 +42,20 @@ import { horizontalScrollBar } from './components/_horizontalScrollBar';
 		e.preventDefault();
 	} );
 
-	//$( '.selectize' ).selectize();
+	// Selectize
+	$( '#sxp-tag-select' ).selectize( {
+		delimiter: ',',
+		persist: false,
+		create( input ) {
+			return {
+				value: input,
+				text: input,
+			};
+		},
+	} );
 
 	// date range picker
-	const reportRenge = $( '#reportrange' );
+	const reportRenge = $( '#sxp-date-range' );
 	const start = moment().subtract( 29, 'days' );
 	const end = moment();
 	const dateRangeRender = ( startDt, endDt ) => {

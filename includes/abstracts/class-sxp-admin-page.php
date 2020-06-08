@@ -389,9 +389,8 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 					</select>
 				</div><!-- end .sxp-filter-default -->
 				<div class="sxp-filter-date-range">
-					<div id="reportrange" aria-label="filter by date" style="background: #fff; cursor: pointer; padding: 6px 10px; width: 100%">
-						<i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
-						<span></span> <i class="fa fa-caret-down"></i>
+					<div id="sxp-date-range" tabindex="0" aria-label="filter by date">
+						<span></span>
 					</div>
 				</div><!-- end .sxp-filter-date-range-->
 				<div class="sxp-screen-options">
