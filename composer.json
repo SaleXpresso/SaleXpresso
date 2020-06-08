@@ -29,11 +29,7 @@
 	}
   ],
   "autoload": {
-	"files": [
-	  "includes/helper.php",
-	  "includes/deprecated-functions.php",
-	  "includes/hooks.php"
-	]
+	"files": []
   },
   "autoload-dev": {
 	"files": [
@@ -43,7 +39,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-	"php": ">=7.0"
+	"php": ">=7.0",
+    "pug-php/pug": "^3.4"
   },
   "require-dev": {
 	"symfony/var-dumper": "^5.0"

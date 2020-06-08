@@ -7,7 +7,7 @@
   "scripts": {
     "install": "npm rebuild && npm run install-phpcs",
     "install-phpcs": "composer global require squizlabs/php_codesniffer dealerdirect/phpcodesniffer-composer-installer phpcompatibility/php-compatibility phpcompatibility/phpcompatibility-wp wp-coding-standards/wpcs automattic/vipwpcs",
-    "start": "npm run watch",
+    "start": "npm run dump-autoload-dev && npm run watch",
     "test": "npm run clean-logs && npm run phpcs && npm run eslint && npm run stylish",
     "phpcs": "phpcs . --standard=./phpcs.xml --extensions=php --report-file=./logs/phpcs.log",
     "eslint": "eslint . -o ./logs/eslint.log -f stylish --no-color",
@@ -18,8 +18,10 @@
     "stylelint-fix": "stylelint --syntax scss --fix **/*.scss  -o ./logs/stylelint-fix.log",
     "clean": "rm -rf assets/**/*.css* && rm -rf assets/**/*.js* && rm -rf logs/*.log* && rm -rf logs/**/*.log* && rm -rf dist/*.zip*",
     "clean-logs": "rm -rf logs/*.log",
-    "watch": "webpack --mode=development --env.NODE_ENV=local --env.MODE=development --watch --config webpack.config.js",
-    "build": "webpack --mode=production  --env.MODE=production --config webpack.config.js",
+    "dump-autoload-dev": "composer dump-autoload",
+    "dump-autoload": "composer dump-autoload --no-dev",
+    "watch": "npm run dump-autoload-dev && webpack --mode=development --env.NODE_ENV=local --env.MODE=development --watch --config webpack.config.js",
+    "build": "npm run dump-autoload && webpack --mode=production  --env.MODE=production --config webpack.config.js",
     "make-zip": "npm run build && gulp make-zip"
   },
   "keywords": [

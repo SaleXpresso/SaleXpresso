@@ -216,20 +216,13 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	public function render_page_title() {
 		$title = get_admin_page_title();
 		?>
-		<h1 class="wp-heading-inline"><?php echo wp_kses(
+		<h1 class="wp-heading-inline"><?php echo esc_html(
 			/**
 			 * Filters admin page title
 			 *
 			 * @param string $title
 			 */
-			apply_filters( "salexpresso_admin_{$this->hook_slug}_page_title", $title ),
-			[
-				'br'     => [],
-				'em'     => [],
-				'strong' => [],
-				'span'   => [],
-				'code'   => [],
-			]
+			apply_filters( "salexpresso_admin_{$this->hook_slug}_page_title", $title )
 		); ?></h1>
 		<?php
 	}
@@ -253,7 +246,6 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @return void
 	 */
 	protected function render_page_header() {
-		$this->set_flash_message( 'test' );
 		?>
 		<div class="sxp-page-header">
 			<?php
