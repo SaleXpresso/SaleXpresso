@@ -100,29 +100,31 @@ class SXP_Customer_Profile_Table {
 						</span>
 						<ul class="tabs">
 							<li class="tab-link current item" data-tab="activity">
-								Activity
+								<a href="#">Activity</a>
 							</li>
 							<li class="tab-link" data-tab="orders">
-								Orders
+								<a href="#">Orders</a>
 							</li>
 							<li class="tab-link" data-tab="products">
-								Products
+								<a href="#">Products</a>
 							</li>
 							<li class="tab-link" data-tab="active-cart">
-								Active Cart
+								<a href="#">Active Cart</a>
 							</li>
 							<li class="tab-link" data-tab="searches">
-								Searches
+								<a href="#">Searches</a>
 							</li>
 							<li class="tab-link" data-tab="recommendation">
-								Recommendation
+								<a href="#">Recommendation</a>
 							</li>
 							<li class="tab-link" data-tab="discount">
-								Discount
+								<a href="#">Discount</a>
 							</li>
 							<li class="tab-link" data-tab="campaign">
-								Campaign
-								<div class="number-bubble">54</div>
+								<a href="#">
+									Campaign
+									<span class="number-bubble">54</span>
+								</a>
 							</li>
 						</ul>
 					</nav>
@@ -295,6 +297,25 @@ class SXP_Customer_Profile_Table {
 									<td data-colname="Net Profit">$87.03</td>
 									<td data-colname="status">
 										<div class="sxp-status sxp-status-info">Refunded</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
+										<a href="#" class="order-number">200083726</a>
+										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+									</td>
+									<td data-colname="Products">
+										<ul class="product-list multiple">
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+										</ul>
+										<div class="product-number">9 Items</div>
+									</td>
+									<td data-colname="Date">Jan 20, 2020</td>
+									<td data-colname="Revenue">$5739.2</td>
+									<td data-colname="Net Profit">$87.03</td>
+									<td data-colname="status">
+										<div class="sxp-status sxp-status-success">Completed</div>
 									</td>
 								</tr>
 								<tr>
@@ -935,9 +956,8 @@ class SXP_Customer_Profile_Table {
 				<div class="sxp-modal-content">
 					<h4>Add a tag</h4>
 					<label for="sxp-tag-select" class="screen-reader-text"><?php __('Tag dropdown select', 'salexpresso'); ?></label>
-					<select name="tag" id="sxp-tag-select">
-						<option value="default-tag">Search for tags or create one</option>
-						<option value="customer">customer</option>
+					<select name="tag" id="sxp-tag-select" class="sxp-modal selectize">
+						<option value="customer" selected>customer</option>
 						<option value="product">product</option>
 						<option value="customer-type">customer type</option>
 						<option value="sale">sale</option>

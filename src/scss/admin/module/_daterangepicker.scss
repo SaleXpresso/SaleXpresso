@@ -9,10 +9,11 @@
 
 @import "~daterangepicker/daterangepicker.css";
 
-#reportrange {
+#sxp-date-range {
 	padding: 6px 34px 6px 10px !important;
 	position: relative;
 	border-radius: 4px;
+	background: $white;
 
 	&::after {
 		content: "";
@@ -23,6 +24,11 @@
 		background-size: 10px;
 		width: 24px;
 		height: 16px;
+	}
+	&:active,
+	&:focus {
+		box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+		outline: 1px solid transparent;
 	}
 }
 
@@ -43,6 +49,11 @@
 	line-height: 1rem;
 	margin-top: 0.5rem;
 	@include box-shadow(0, 32px, 128px, rgba($box-shadow-color, 0.24));
+
+	&::before,
+	&::after {
+		display: none;
+	}
 
 	&.opensleft {
 		&::before {
@@ -105,12 +116,14 @@
 			line-height: 1rem;
 			margin-bottom: 1rem;
 			cursor: pointer;
+			padding: 0;
 
 			&:last-child {
 				margin-bottom: 0;
 			}
 			&:hover {
 				color: $primary;
+				background-color: transparent;
 			}
 			&.active {
 				background-color: $white;
@@ -208,6 +221,7 @@
 			white-space: nowrap;
 			cursor: pointer;
 			padding: 0.25rem;
+			border: none;
 		}
 		table {
 			width: 100%;
@@ -287,7 +301,7 @@
 			z-index: 2;
 		}
 		&.start-date {
-			&.available + td.in-range {
+			&.available + td {
 				position: relative;
 
 				&::before {

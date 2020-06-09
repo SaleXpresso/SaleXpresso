@@ -6,6 +6,11 @@
  * @version 1.0.0
  * @since 1.0.0
  */
+
+@import "~vgnav/assets/scss/option/variables";
+@import "~vgnav/assets/scss/vgnav";
+@import "~vgnav/assets/scss/vgnav-theme";
+
 .sxp {
 	&-filter {
 		&-wrapper {
@@ -17,22 +22,89 @@
 			}
 		}
 		&-default {
-			select {
-				padding: 1px 16px;
-				margin: 0;
-				border-radius: 0.25rem;
-				border: none;
-				position: relative;
-				background: $white url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxbDQgNCA0LTQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=) no-repeat center right 0.5rem;
-				option {
-					margin-bottom: 1rem;
-					line-height: 1rem;
+			.vg-nav {
+				& > ul {
+					& > li {
+						padding: 0;
+						margin: 0;
+						& > a {
+							font-size: inherit;
+							line-height: inherit;
+							display: block;
+							color: $text-color;
+							text-decoration: none;
+							background: $white;
+							padding: 0.375rem 0.375rem 0.375rem 1rem;
+							border-radius: 0.25rem;
+						}
+					}
+				}
+				.dropdown {
+					ul {
+						background: $white;
+						border-radius: 0.25rem;
+						@include box-shadow(0, 4px, 16px, rgba($box-shadow-color, 0.06));
 
-					&:last-child {
-						margin-bottom: 0;
+						li {
+							a {
+								font-size: inherit;
+								display: block;
+								padding: 0.375rem 1rem;
+								color: inherit;
+								border: none;
+								line-height: 1rem;
+								margin-bottom: 0;
+
+								&:hover {
+									color: $primary;
+								}
+							}
+
+							&:first-child {
+								a {
+									border: none;
+								}
+							}
+						}
+					}
+				}
+				.vg-nav-main-container {
+					span.toggle {
+						span.default {
+							border: 0;
+							background: $white url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxbDQgNCA0LTQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=) no-repeat center right;
+							width: 0.75rem;
+							height: 0.5rem;
+							vertical-align: unset;
+						}
+					}
+					ul {
+						span.toggle {
+							position: absolute;
+							right: 0.75rem;
+						}
+					}
+					.dropdown.show {
+						& > a {
+							span.toggle {
+								.default {
+									transform: none;
+								}
+							}
+						}
+					}
+					& > .dropdown.show {
+						& > ul {
+							top: 120%;
+						}
 					}
 				}
 			}
+		}
+	}
+	&-screen-options {
+		a {
+			display: block;
 		}
 	}
 }

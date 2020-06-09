@@ -5,7 +5,7 @@
   "main": "clear && npm run watch",
   "URL": "https://salexpresso.com",
   "scripts": {
-    "install": "npm rebuild && npm run install-phpcs",
+    "post-install": "npm rebuild && npm run install-phpcs",
     "install-phpcs": "composer global require squizlabs/php_codesniffer dealerdirect/phpcodesniffer-composer-installer phpcompatibility/php-compatibility phpcompatibility/phpcompatibility-wp wp-coding-standards/wpcs automattic/vipwpcs",
     "start": "npm run dump-autoload-dev && npm run watch",
     "test": "npm run clean-logs && npm run phpcs && npm run eslint && npm run stylish",
@@ -42,7 +42,8 @@
     "feather-icons": "^4.28.0",
     "jquery-modal": "^0.9.2",
     "selectize": "^0.12.6",
-    "url-search-params-polyfill": "^8.1.0"
+    "url-search-params-polyfill": "^8.1.0",
+    "vgnav": "^1.1.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
