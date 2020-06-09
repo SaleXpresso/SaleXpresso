@@ -956,8 +956,7 @@ class SXP_Customer_Profile_Table {
 				<div class="sxp-modal-content">
 					<h4>Add a tag</h4>
 					<label for="sxp-tag-select" class="screen-reader-text"><?php __('Tag dropdown select', 'salexpresso'); ?></label>
-					<select name="tag" id="sxp-tag-select" class="sxp-modal">
-						<option value="default-tag">Search for tags or create one</option>
+					<select name="tag" id="sxp-tag-select" class="sxp-modal selectize">
 						<option value="customer" selected>customer</option>
 						<option value="product">product</option>
 						<option value="customer-type">customer type</option>

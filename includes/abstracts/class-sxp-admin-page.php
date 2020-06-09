@@ -377,16 +377,38 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 		?>
 			<div class="sxp-filter-wrapper">
 				<div class="sxp-filter-default">
-					<label for="sxp-filter-default" class="screen-reader-text">Filter</label>
-					<select name="sxp-filter-default" id="sxp-filter-default">
-						<option value="sort-by-name">Sort by Name</option>
-						<option value="location">Location</option>
-						<option value="customer-type">Customer Type</option>
-						<option value="customer-tag">Customer Tag</option>
-						<option value="orders">Orders</option>
-						<option value="revenue">Revenue</option>
-						<option value="last-order">Last Order</option>
-					</select>
+					<nav class="vg-nav vg-nav-lg">
+						<ul>
+							<li class="dropdown">
+								<a href="#">Sort by Name</a>
+								<ul class="left">
+									<li>
+										<a href="#">Location</a>
+									</li>
+									<li class="dropdown">
+										<a href="#">Customer Type</a>
+										<ul class="left">
+											<li>
+												<a href="#">Another page</a>
+											</li>
+											<li>
+												<a href="#">Any page</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="#">Orders</a>
+									</li>
+									<li>
+										<a href="#">Revenue</a>
+									</li>
+									<li>
+										<a href="#">First Order</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
 				</div><!-- end .sxp-filter-default -->
 				<div class="sxp-filter-date-range">
 					<div id="sxp-date-range" tabindex="0" aria-label="filter by date">

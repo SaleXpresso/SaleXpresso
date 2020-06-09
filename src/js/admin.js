@@ -14,7 +14,8 @@ import moment from 'moment';
 import feather from 'feather-icons';
 import 'daterangepicker';
 import 'jquery-modal';
-import 'selectize/dist/js/standalone/selectize.min.js';
+import 'selectize/dist/js/standalone/selectize';
+import 'vgnav/assets/js/vgnav';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
 
 // import { tabs } from './components/_tabs.js';
@@ -43,15 +44,19 @@ import { horizontalScrollBar } from './components/_horizontalScrollBar';
 	} );
 
 	// Selectize
-	$( '#sxp-tag-select' ).selectize( {
-		delimiter: ',',
-		persist: false,
+	$( '.selectize' ).selectize( {
+		maxItems: 10,
 		create( input ) {
 			return {
 				value: input,
 				text: input,
 			};
 		},
+	} );
+
+	//Vegas Menu
+	$( document ).ready( function() {
+		$( '.vg-nav' ).vegasMenu();
 	} );
 
 	// date range picker
