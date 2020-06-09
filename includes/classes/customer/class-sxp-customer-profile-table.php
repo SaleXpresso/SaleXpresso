@@ -265,10 +265,10 @@ class SXP_Customer_Profile_Table {
 									</td>
 									<td data-colname="Products">
 										<ul class="product-list multiple">
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
 										</ul>
 										<div class="product-number">9 Items</div>
 									</td>
@@ -286,9 +286,9 @@ class SXP_Customer_Profile_Table {
 									</td>
 									<td data-colname="Products">
 										<ul class="product-list multiple">
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
 										</ul>
 										<div class="product-number">9 Items</div>
 									</td>
@@ -306,8 +306,8 @@ class SXP_Customer_Profile_Table {
 									</td>
 									<td data-colname="Products">
 										<ul class="product-list multiple">
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
 										</ul>
 										<div class="product-number">9 Items</div>
 									</td>
@@ -325,7 +325,7 @@ class SXP_Customer_Profile_Table {
 									</td>
 									<td data-colname="Products">
 										<ul class="product-list">
-											<li><a href="#"><img src="https://via.placeholder.com/40" alt="Product thumb"></a></li>
+											<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
 										</ul>
 										<div class="product-number">9 Items</div>
 									</td>
@@ -353,7 +353,7 @@ class SXP_Customer_Profile_Table {
 								<tr>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-name">Premium Miniket Rice</div>
 										</div><!--product-wrap -->
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
@@ -365,7 +365,7 @@ class SXP_Customer_Profile_Table {
 								<tr>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-name">Premium Miniket Rice</div>
 										</div><!--product-wrap -->
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
@@ -377,7 +377,7 @@ class SXP_Customer_Profile_Table {
 								<tr>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-name">Premium Miniket Rice</div>
 										</div><!--product-wrap -->
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
@@ -389,7 +389,7 @@ class SXP_Customer_Profile_Table {
 								<tr>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-name">Premium Miniket Rice</div>
 										</div><!--product-wrap -->
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
@@ -401,7 +401,7 @@ class SXP_Customer_Profile_Table {
 								<tr>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-name">Premium Miniket Rice</div>
 										</div><!--product-wrap -->
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
@@ -429,7 +429,7 @@ class SXP_Customer_Profile_Table {
 									<td>1.</td>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-details">
 												<div class="product-name">Premium Miniket Rice</div>
 												<div class="product-sku">OC063-0001</div>
@@ -445,7 +445,7 @@ class SXP_Customer_Profile_Table {
 									<td>2.</td>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-details">
 												<div class="product-name">Premium Miniket Rice</div>
 												<div class="product-sku">OC063-0001</div>
@@ -461,7 +461,7 @@ class SXP_Customer_Profile_Table {
 									<td>3.</td>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
 										<div class="product-wrap">
-											<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+											<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 											<div class="product-details">
 												<div class="product-name">Premium Miniket Rice</div>
 												<div class="product-sku">OC063-0001</div>
@@ -535,7 +535,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -550,7 +550,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -565,7 +565,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td  class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -580,7 +580,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -595,7 +595,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -610,7 +610,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Search Queries">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -644,7 +644,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -661,7 +661,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -678,7 +678,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -695,7 +695,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
@@ -712,7 +712,7 @@ class SXP_Customer_Profile_Table {
 										<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 									</th>
 									<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-										<div class="product-thumb"><img src="https://via.placeholder.com/40" alt="Product"></div>
+										<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
 										<div class="product-name">Premium Miniket Rice</div>
 										<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
 									</td>
