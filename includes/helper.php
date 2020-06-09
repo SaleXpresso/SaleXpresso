@@ -32,7 +32,6 @@ if ( ! function_exists( 'sxp_load_file' ) ) {
 		return SXP()->load_file( $file, $if_exists, $required, $once );
 	}
 }
-
 if ( ! function_exists( 'sxp_get_plugin_uri' ) ) {
 	/**
 	 * Get Plugin file URI
@@ -46,7 +45,82 @@ if ( ! function_exists( 'sxp_get_plugin_uri' ) ) {
 		return SXP()->plugin_url() . '/' . $file;
 	}
 }
-
+if ( ! function_exists( 'sxp_get_upload_path' ) ) {
+	/**
+	 * Get Upload Directory location for internal uses
+	 *
+	 * @param string $path   directory/path name to generate full absolute path.
+	 * @param bool   $exists check if directory exists.
+	 *
+	 * @return string|false
+	 */
+	function sxp_get_upload_path( $path = '', $exists = false ) {
+		$path = untrailingslashit( $path );
+		$path = unleadingslashit( $path );
+		if ( empty( $path ) ) {
+			return false;
+		}
+		$path = SXP_UPLOAD_DIR . '/' . $path;
+		if ( true === $exists && ! file_exists( $path ) ) {
+			return false;
+		}
+		return $path;
+	}
+}
+if ( ! function_exists( 'sxp_get_file_upload_path' ) ) {
+	/**
+	 * Get full file for a file name.
+	 * Check and return full file path.
+	 *
+	 * @param string $file   File name with ext.
+	 * @param string $path   Directory name to look for.
+	 * @param bool   $exists [optional] flag to check if the file is already exists.
+	 *
+	 * @return bool|false|string
+	 */
+	function sxp_get_file_upload_path( $file, $path, $exists = false ) {
+		$file = untrailingslashit( $file );
+		$file = unleadingslashit( $file );
+		if ( ! empty( $file ) ) {
+			$path = sxp_get_upload_path( $path );
+			if ( $path ) {
+				$path .= '/' . $file;
+				if ( true === $exists && ! file_exists( $path ) ) {
+					return false;
+				}
+				return $path;
+			}
+		}
+		return false;
+	}
+}
+if ( ! function_exists( 'unleadingslashit' ) ) {
+	/**
+	 * Removes leading forward slashes and backslashes if they exist.
+	 *
+	 * The primary use of this is for paths and thus should be used for paths. It is
+	 * not restricted to paths and offers no specific path support.
+	 *
+	 * @param string $string What to remove the trailing slashes from.
+	 * @return string String without the trailing slashes.
+	 */
+	function unleadingslashit( $string ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+		return ltrim( $string, '/\\' );
+	}
+}
+if ( ! function_exists( 'sxp_replace_whitespace' ) ) {
+	/**
+	 * Replace/remove all whitespace from string
+	 *
+	 * @param string|string[] $string      Input string.
+	 * @param string          $replacement [optional] Replacement for the whitespace removed..
+	 *
+	 * @return string|string[]|null
+	 */
+	function sxp_replace_whitespace( $string, $replacement = '' ) {
+		return preg_replace( '/\s.*/', $replacement, $string );
+	}
+}
 if ( ! function_exists( 'sxp_get_logger' ) ) {
 	/**
 	 * Get Logger
@@ -105,7 +179,7 @@ if ( ! function_exists( 'sxp_get_screen_ids_for_admin_notice' ) ) {
 		return array_merge( sxp_get_screen_ids(), sxp_get_wc_screen_ids() );
 	}
 }
-if ( ! function_exists( 'str_replace_trim' ) ) {
+if ( ! function_exists( 'sxp_str_replace_trim' ) ) {
 	/**
 	 * Apply trim after str_replace.
 	 * Replace all occurrences of the search string with the replacement string.

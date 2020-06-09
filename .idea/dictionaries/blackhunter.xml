@@ -17,12 +17,18 @@
       <w>daterangepicker</w>
       <w>dealerdirect</w>
       <w>eslintignore</w>
+      <w>fclose</w>
+      <w>fgets</w>
+      <w>fopen</w>
+      <w>fread</w>
+      <w>fwrite</w>
       <w>gitignore</w>
       <w>hotlinking</w>
       <w>hourselect</w>
       <w>huskyrc</w>
       <w>innovizz</w>
       <w>mamp</w>
+      <w>maxlen</w>
       <w>mhamudul</w>
       <w>minifying</w>
       <w>minuteselect</w>
@@ -37,6 +43,7 @@
       <w>phpcodesniffer</w>
       <w>phpcompatibility</w>
       <w>phpcs</w>
+      <w>prettyprint</w>
       <w>printf</w>
       <w>salexpresso</w>
       <w>savequeries</w>
@@ -49,6 +56,7 @@
       <w>textdomain</w>
       <w>underscorejs</w>
       <w>uninstallation</w>
+      <w>unleadingslashit</w>
       <w>unserializing</w>
       <w>vipwpcs</w>
       <w>wamp</w>

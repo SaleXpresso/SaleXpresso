@@ -63,7 +63,7 @@ class SXP_Assets {
 	 */
 	private function __construct() {
 		$this->is_debugging = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
-		$this->file_suffix  = $this->is_debugging ? '.min' : '';
+		$this->file_suffix  = ''; // .min not on use.
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ], 10, 1 );
 		add_action( 'admin_print_styles', [ $this, 'admin_styles' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'public_scripts' ], 10 );

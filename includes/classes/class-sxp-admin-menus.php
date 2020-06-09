@@ -93,7 +93,7 @@ final class SXP_Admin_Menus {
 	public function init() {
 		global $plugin_page;
 		if ( false !== strpos( $plugin_page, 'sxp-' ) && isset( $this->renderer_map[ $plugin_page ] ) ) {
-			if ( ! ( $this->renderer[ $plugin_page ] instanceof SXP_Admin_Page ) ) {
+			if ( ! isset( $this->renderer[ $plugin_page ] ) || ( isset( $this->renderer[ $plugin_page ] ) && ! ( $this->renderer[ $plugin_page ] instanceof SXP_Admin_Page ) ) ) {
 				$this->renderer[ $plugin_page ] = new $this->renderer_map[ $plugin_page ]( $plugin_page );
 			}
 		}

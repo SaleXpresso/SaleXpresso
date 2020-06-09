@@ -150,16 +150,47 @@ class SXP_Install {
 		// Install files and folders for uploading files and prevent hotlinking.
 		$upload_dir = wp_upload_dir();
 		
+		$common_files = [
+			'htaccess' => [
+				'.htaccess',
+				'deny from all',
+			],
+			'index'    => [
+				'index.php',
+				'<?php\n// Silence is golden.',
+			],
+		];
+		
 		$files = [
 			[
-				'base'    => SXP_LOG_DIR,
-				'file'    => '.htaccess',
-				'content' => 'deny from all',
+				'base'    => SXP_UPLOAD_DIR,
+				'file'    => $common_files['htaccess'][0],
+				'content' => $common_files['htaccess'][1],
+			],
+			[
+				'base'    => SXP_UPLOAD_DIR,
+				'file'    => $common_files['index'][0],
+				'content' => $common_files['index'][1],
+			],
+			[
+				'base'    => SXP_CACHE_DIR,
+				'file'    => $common_files['htaccess'][0],
+				'content' => $common_files['htaccess'][1],
+			],
+			[
+				'base'    => SXP_CACHE_DIR,
+				'file'    => $common_files['index'][0],
+				'content' => $common_files['index'][1],
 			],
 			[
 				'base'    => SXP_LOG_DIR,
-				'file'    => 'index.php',
-				'content' => "<?php\n// Silence is golden.",
+				'file'    => $common_files['htaccess'][0],
+				'content' => $common_files['htaccess'][1],
+			],
+			[
+				'base'    => SXP_LOG_DIR,
+				'file'    => $common_files['index'][0],
+				'content' => $common_files['index'][1],
 			],
 		];
 		

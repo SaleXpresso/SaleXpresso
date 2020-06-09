@@ -1,4 +1,4 @@
-/**
+/**!
  * SaleXpresso Admin Styles
  *
  * @author SaleXpresso <support@salexpresso.com>
@@ -12,6 +12,9 @@
 @import "admin/utilities/mixins";
 @import "admin/utilities/default";
 
+// Header
+@import "admin/layout/header";
+
 // Module
 @import "admin/module/daterangepicker";
 @import "admin/module/selectize";
@@ -22,9 +25,6 @@
 @import "admin/module/pagination";
 @import "admin/module/tags";
 @import "admin/module/modal";
-
-// Header
-@import "admin/layout/header";
 
 // Content
 @import "admin/layout/customer";
