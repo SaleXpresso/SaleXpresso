@@ -94,6 +94,25 @@ if ( ! function_exists( 'sxp_get_file_upload_path' ) ) {
 		return false;
 	}
 }
+if ( ! function_exists( 'sxp_get_views' ) ) {
+	/**
+	 * Render view (pug) files from the includes directory and return or print the content.
+	 *
+	 * @param string $view  View file name without extension.
+	 * @param array  $args  [optional] variables to pass to the view file.
+	 * @param string $path  [optional] path to find the view file relative to includes/views.
+	 * @param bool   $echo return or print the output..
+	 *
+	 * @return string|void return or print rendered html
+	 */
+	function sxp_get_views( $view = '', $args = [], $path = '', $echo = true ) {
+		if ( true === $echo ) {
+			SXP()->views()->display( $view, $args, $path );
+			return;
+		}
+		return SXP()->views()->render( $view, $args, $path, false );
+	}
+}
 if ( ! function_exists( 'unleadingslashit' ) ) {
 	/**
 	 * Removes leading forward slashes and backslashes if they exist.

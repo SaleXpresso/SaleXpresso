@@ -81,14 +81,11 @@ class SXP_Assets {
 			[
 				'jquery',
 				'moment',
+				'lodash',
 				'wp-api-fetch',
-				'wp-data',
-				'wp-element',
-				'wp-hooks',
 				'wp-html-entities',
 				'wp-i18n',
 				'wp-keycodes',
-				'lodash',
 			],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.js' ),
 			true
