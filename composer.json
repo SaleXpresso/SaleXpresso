@@ -29,7 +29,8 @@
 	}
   ],
   "autoload": {
-	"files": []
+	"files": [],
+	"exclude-from-classmap": [ "includes/" ]
   },
   "autoload-dev": {
 	"files": [

@@ -30,12 +30,47 @@ final class SaleXpresso {
 	public $version = '1.0.0';
 	
 	/**
+	 * Debug Mode Flag.
+	 *
+	 * @var bool
+	 */
+	protected $debug = false;
+	
+	/**
+	 * Debug Data Log Flag.
+	 *
+	 * @var bool
+	 */
+	protected $debug_log = false;
+	
+	/**
+	 * Script Debug Flag.
+	 *
+	 * @var bool
+	 */
+	protected $debug_script = false;
+	
+	/**
+	 * Debug Data Display Flag.
+	 *
+	 * @var bool
+	 */
+	protected $debug_display = false;
+	
+	/**
 	 * The single instance of the class.
 	 *
 	 * @var SaleXpresso
 	 * @since 1.0.0
 	 */
 	protected static $instance = null;
+	
+	/**
+	 * Single instance of SXP_Views class.
+	 *
+	 * @var SXP_Views
+	 */
+	protected $views;
 	
 	/**
 	 * Main SaleXpresso Instance.
@@ -45,12 +80,14 @@ final class SaleXpresso {
 	 * @since 1.0.0
 	 * @static
 	 * @see SXP()
+	 *
 	 * @return SaleXpresso - Main instance.
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
+		
 		return self::$instance;
 	}
 	
@@ -85,7 +122,11 @@ final class SaleXpresso {
 	/**
 	 * SaleXpresso Constructor.
 	 */
-	public function __construct() {
+	private function __construct() {
+		$this->debug         = ( defined( 'WP_DEBUG' ) && WP_DEBUG );
+		$this->debug_log     = $this->debug && ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG );
+		$this->debug_script  = $this->debug && ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+		$this->debug_display = $this->debug && ( defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY );
 		$this->define_constants();
 		$this->register_tables();
 		$this->includes();
@@ -114,6 +155,7 @@ final class SaleXpresso {
 		SXP_Install::init();
 		SXP_Admin_Menus::get_instance();
 		SXP_Settings::get_instance();
+		$this->views = SXP_Views::get_instance( $this );
 		add_action( 'plugins_loaded', [ $this, 'on_load' ], -1 );
 		add_action( 'admin_notices', [ $this, 'dependencies_notice' ] );
 		add_action( 'init', [ $this, 'init' ], 0 );
@@ -127,6 +169,9 @@ final class SaleXpresso {
 	 * @return void
 	 */
 	public function init() {
+		if ( ! $this->check_assets() ) {
+			return;
+		}
 		// Pre initialization action.
 		do_action( 'before_salexpresso_init' );
 		
@@ -138,6 +183,21 @@ final class SaleXpresso {
 		
 		// Init action.
 		do_action( 'salexpresso_init' );
+	}
+	
+	/**
+	 * Get the view instance.
+	 *
+	 * @return SXP_Views
+	 */
+	public function views() {
+		if ( is_null( $this->views ) ) {
+			if ( $this->debug_log ) {
+				error_log( sprintf( 'Calling %s too early. This should be called after `salexpresso_loaded` or `salexpresso_init`', __METHOD__ ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+			return null;
+		}
+		return $this->views;
 	}
 	
 	/**
@@ -231,14 +291,27 @@ final class SaleXpresso {
 			define( 'SXP_PLUGIN_BASENAME', plugin_basename( SXP_PLUGIN_FILE ) );
 		}
 		
-		if ( ! defined( 'SXP_LOG_DIR' ) ) {
+		if ( ! defined( 'SXP_UPLOAD_DIR' ) ) {
 			$sxp_upload_dir = wp_upload_dir( null, false );
+			/**
+			 * Base Writable (?) Directory to use.
+			 *
+			 * @var string
+			 */
+			define( 'SXP_UPLOAD_DIR', $sxp_upload_dir['basedir'] . '/salexpresso' );
+		}
+		
+		if ( ! defined( 'SXP_LOG_DIR' ) ) {
 			/**
 			 * Log Directory To Use
 			 *
 			 * @var string
 			 */
-			define( 'SXP_LOG_DIR', $sxp_upload_dir['basedir'] . '/sxp-logs/' );
+			define( 'SXP_LOG_DIR', SXP_UPLOAD_DIR . '/sxp-logs' );
+		}
+		
+		if ( ! defined( 'SXP_CACHE_DIR' ) ) {
+			define( 'SXP_CACHE_DIR', SXP_UPLOAD_DIR . '/cache' );
 		}
 		
 		if ( ! defined( 'SXP_NOTICE_MIN_PHP_VERSION' ) ) {
@@ -347,6 +420,8 @@ final class SaleXpresso {
 	 * @return void
 	 */
 	private function includes() {
+		
+		$this->load_file( SXP_ABSPATH . 'vendor/autoload.php', true, true );
 		// Load the helpers and default hooks.
 		$this->load_file( SXP_ABSPATH . 'includes/helper.php', true, true );
 		$this->load_file( SXP_ABSPATH . 'includes/deprecated-functions.php', true, true );
@@ -379,13 +454,23 @@ final class SaleXpresso {
 	 * @return bool
 	 */
 	public function check_assets() {
-		// Check if we have compiled CSS.
-		if ( ! file_exists( $this->plugin_path() . '/assets/css/admin.css' ) ) {
+		if ( ! file_exists( SXP_ABSPATH . 'vendor/autoload.php' ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'Vendor Autoloader Missing' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
 			return false;
 		}
 		
-		// Check if we have minified JS.
-		if ( ! file_exists( $this->plugin_path() . '/assets/js/admin.js' ) ) {
+		if (
+			// Check if we have compiled CSS.
+			! file_exists( SXP_ABSPATH . 'assets/css/admin.css' )
+			||
+			// Check if we have minified JS.
+			! file_exists( SXP_ABSPATH . 'assets/js/admin.js' )
+		) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'Vendor Autoloader Missing' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
 			return false;
 		}
 		
@@ -425,6 +510,11 @@ final class SaleXpresso {
 	 * @return void
 	 */
 	public function autoload( $class_name ) {
+		
+		/* don't autoload this class. */
+		if ( __CLASS__ === $class_name ) {
+			return;
+		}
 		/* Only autoload classes from this namespace */
 		if ( false === strpos( $class_name, __NAMESPACE__ ) ) {
 			return;
@@ -493,13 +583,49 @@ final class SaleXpresso {
 				return false;
 			}
 		}
-		if ( ! $once ) {
+		if ( false === $once ) {
 			/** @noinspection PhpIncludeInspection */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			return ! $required ? include $file : require $file;
 		} else {
 			/** @noinspection PhpIncludeInspection */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			return ! $required ? include_once $file : require_once $file;
 		}
+	}
+	
+	/**
+	 * Check debug flag.
+	 *
+	 * @return bool
+	 */
+	public function is_debugging() {
+		return $this->debug;
+	}
+	
+	/**
+	 * Check debug log flag.
+	 *
+	 * @return bool
+	 */
+	public function is_debug_log() {
+		return $this->debug_log;
+	}
+	
+	/**
+	 * Check debug script flag.
+	 *
+	 * @return bool
+	 */
+	public function is_debug_script() {
+		return $this->debug_script;
+	}
+	
+	/**
+	 * Check debug display flag.
+	 *
+	 * @return bool
+	 */
+	public function is_debug_display() {
+		return $this->debug_display;
 	}
 }
 

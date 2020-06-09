@@ -57,6 +57,7 @@ module.exports = ( env, argv ) => {
 			// styles: './src/scss/styles.scss',
 			// admin: './src/scss/admin.scss',
 		},
+		devtool: isDev,
 		output: {
 			// Add /* filename */ comments to generated require()s in the output.
 			pathinfo: true,
@@ -89,20 +90,30 @@ module.exports = ( env, argv ) => {
 					}
 				},
 				{
-					test: /\.scss$/,
+					test: /\.(sa|sc|c)ss$/,
 					exclude: /node_modules/,
 					use: [
 						{
 							loader: 'file-loader',
 							options: {
-								outputStyle: 'compressed',
 								name: './assets/css/[name].css',
 							},
 						},
 						{ loader: 'extract-loader' },
 						{ loader: 'css-loader?-url' },
 						{ loader: 'postcss-loader' },
-						{ loader: isDev ? 'sass-loader?sourceMap' : 'sass-loader' },
+						{
+							loader: 'sass-loader',
+							options: {
+								sourceMap: isDev,
+								sassOptions: {
+									outputStyle: 'compressed',
+									includePaths: [
+										require('path').resolve(__dirname, 'node_modules')
+									],
+								},
+							}
+						},
 					],
 				},
 			],
