@@ -227,4 +227,70 @@ if ( ! function_exists( 'sxp_str_replace_trim' ) ) {
 		}, $replaced );
 	}
 }
+if ( ! function_exists( 'add_actions' ) ) {
+	/**
+	 * Hooks a function on to a array of action.
+	 *
+	 * @see add_action
+	 * @param callable  $function_to_add The name of the function you wish to be called.
+	 * @param string[]  $tags            The name of the action to which the $function_to_add is hooked.
+	 * @param int|int[] $priority        Optional. Used to specify the order in which the functions
+	 *                                   associated with a particular action are executed. Default 10.
+	 *                                   Lower numbers correspond with earlier execution,
+	 *                                   and functions with the same priority are executed
+	 *                                   in the order in which they were added to the action.
+	 * @param int|int[] $accepted_args   Optional. The number of arguments the function accepts. Default 1.
+	 * @return true Will always return true.
+	 */
+	function add_actions( $function_to_add, $tags, $priority = 10, $accepted_args = 1 ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+		return add_filters( $function_to_add, $tags, $priority, $accepted_args );
+	}
+}
+if ( ! function_exists( 'add_filters' ) ) {
+	/**
+	 * Hook a function or method to a array of filter action.
+	 *
+	 * @see add_filter
+	 * @param callable  $function_to_add The callback to be run when the filter is applied.
+	 * @param string[]  $tags            The name of the filter to hook the $function_to_add callback to.
+	 * @param int|int[] $priority        Optional. Used to specify the order in which the functions
+	 *                                   associated with a particular action are executed.
+	 *                                   Lower numbers correspond with earlier execution,
+	 *                                   and functions with the same priority are executed
+	 *                                   in the order in which they were added to the action. Default 10.
+	 * @param int|int[] $accepted_args   Optional. The number of arguments the function accepts. Default 1.
+	 * @return true
+	 */
+	function add_filters( $function_to_add, $tags, $priority = 10, $accepted_args = 1 ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+		if ( ! empty( $tags ) ) {
+			if ( empty( $priority ) ) {
+				$priority = 10;
+			}
+			if ( empty( $accepted_args ) ) {
+				$accepted_args = 1;
+			}
+			$i = 0;
+			foreach ( (array) $tags as $tag ) {
+				$_priority      = is_array( $priority ) ? ( isset( $priority[ $i ] ) ? absint( $priority[ $i ] ) : 10 ) : absint( $priority );
+				$_accepted_args = is_array( $accepted_args ) ? ( isset( $accepted_args[ $i ] ) ? absint( $accepted_args[ $i ] ) : 1 ) : absint( $accepted_args );
+				add_filter( $tag, $function_to_add, $_priority, $_accepted_args );
+				$i++;
+			}
+		}
+		return true;
+	}
+}
+if ( ! function_exists( 'is_wp_post' ) ) {
+	/**
+	 * Check whether variable is a WordPress Post Object.
+	 *
+	 * Returns true if $thing is an object of the WP_Post class.
+	 *
+	 * @param mixed $thing Check if unknown variable is a WP_Post object.
+	 * @return bool True, if WP_Post. False, if not WP_Post.
+	 */
+	function is_wp_post( $thing ) {
+		return ( $thing instanceof WP_Post );
+	}
+}
 // End of file helper.php.

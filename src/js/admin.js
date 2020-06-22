@@ -8,7 +8,7 @@
  */
 
 import 'url-search-params-polyfill';
-//import _ from 'lodash';
+// import _ from 'lodash';
 import $ from 'jquery';
 import moment from 'moment';
 import feather from 'feather-icons';
@@ -17,6 +17,8 @@ import 'jquery-modal';
 import 'selectize/dist/js/standalone/selectize';
 import 'vgnav/assets/js/vgnav';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
+import tagBox from 'tagBox';
+import { inArray } from './util';
 
 // import { tabs } from './components/_tabs.js';
 // import './components/_accordion';
@@ -28,6 +30,10 @@ import { horizontalScrollBar } from './components/_horizontalScrollBar';
 	//const sxpSubPage = sxpPage ? params.get( 'tab' ) : false;
 	if ( SaleXpresso.hasOwnProperty( 'wrapClass' ) ) {
 		$( '.wrap' ).addClass( SaleXpresso.wrapClass );
+	}
+	// Init tag box for user.
+	if ( inArray( pagenow, [ 'user-edit', 'profile' ] ) ) {
+		tagBox.init();
 	}
 	$( window ).on( 'load', function() {
 		const sxhWrapper = $( '.sxp-wrapper' );

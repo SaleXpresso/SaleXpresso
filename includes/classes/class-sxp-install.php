@@ -26,6 +26,11 @@ class SXP_Install {
 	 */
 	public static function init() {
 		add_action( 'init', [ __CLASS__, 'check_version' ], 5 );
+		
+		add_filter( 'wpmu_drop_tables', [ __CLASS__, 'wpmu_drop_tables' ], 10 );
+		
+		add_filter( 'plugin_action_links_' . SXP_PLUGIN_BASENAME, [ __CLASS__, 'plugin_action_links' ] );
+		add_filter( 'plugin_row_meta', [ __CLASS__, 'plugin_row_meta' ], 10, 2 );
 	}
 	
 	/**
@@ -62,16 +67,103 @@ class SXP_Install {
 		}
 		SXP()->register_tables();
 		self::remove_admin_notices();
+		self::create_tables();
 		self::create_roles();
 		self::setup_environment();
 		self::create_cron_jobs();
 		self::create_files();
 		self::maybe_enable_setup_wizard();
-		self::update_wc_version();
+		self::update_sxp_version();
+		self::maybe_update_db_version();
 		
 		delete_transient( 'sxp_installing' );
 		do_action( 'salexpresso_flush_rewrite_rules' );
 		do_action( 'salexpresso_installed' );
+	}
+	
+	/**
+	 * Set up the database tables which the plugin needs to function.
+	 *
+	 * @return void
+	 */
+	private static function create_tables() {
+		global $wpdb;
+		
+		$wpdb->hide_errors();
+		
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
+		
+		dbDelta( self::get_schema() ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.dbDelta_dbdelta
+		
+	}
+	
+	/**
+	 * Get Table schema.
+	 *
+	 * When adding or removing a table, make sure to update the list of tables in SXP_Install::get_tables().
+	 *
+	 * @return string
+	 */
+	private static function get_schema() {
+		global $wpdb;
+		
+		$charset_collate = '';
+		if ( $wpdb->has_cap( 'collation' ) ) {
+			$charset_collate = $wpdb->get_charset_collate();
+		}
+		
+		return <<<SQL
+CREATE TABLE {$wpdb->prefix}user_term_relationships (
+  object_id bigint(20) unsigned NOT NULL default 0,
+  term_taxonomy_id bigint(20) unsigned NOT NULL default 0,
+  term_order int(11) NOT NULL default 0,
+  PRIMARY KEY  (object_id,term_taxonomy_id),
+  KEY term_taxonomy_id (term_taxonomy_id)
+) {$charset_collate};
+SQL;
+	}
+	
+	/**
+	 * Return a list of SaleXpresso tables. Used to make sure all SXP tables are dropped when uninstalling the plugin
+	 * in a single site or multi site environment.
+	 *
+	 * @return array SaleXpresso tables.
+	 */
+	public static function get_tables() {
+		global $wpdb;
+		
+		$tables = [
+			"{$wpdb->prefix}user_term_relationships",
+		];
+		
+		/**
+		 * Add table name to the list of known SaleXpresso tables.
+		 *
+		 * If SaleXpresso plugins need to add new tables, they can inject them here.
+		 *
+		 * @param array $tables An array of SaleXpresso-specific database table names.
+		 */
+		$tables = apply_filters( 'salexpresso_install_get_tables', $tables );
+		
+		return $tables;
+	}
+	
+	/**
+	 * Drop WooCommerce tables.
+	 *
+	 * @return void
+	 */
+	public static function drop_tables() {
+		global $wpdb;
+		
+		$tables = self::get_tables();
+		// phpcs:disable
+		foreach ( $tables as $table ) {
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+		}
+		// phpcs:enable
 	}
 	
 	/**
@@ -84,12 +176,32 @@ class SXP_Install {
 	}
 	
 	/**
+	 * Uninstall tables when MU blog is deleted.
+	 *
+	 * @param array $tables List of tables that will be deleted by WP.
+	 *
+	 * @return string[]
+	 */
+	public static function wpmu_drop_tables( $tables ) {
+		return array_merge( $tables, self::get_tables() );
+	}
+	
+	/**
 	 * Create Custom Roles.
 	 *
 	 * @return void
 	 */
 	private static function create_roles() {
 		// @TODO create extra role for sales representative.
+	}
+	
+	/**
+	 * Remove Roles
+	 *
+	 * @return void
+	 */
+	public static function remove_roles() {
+		// @TODO remove extra role created by this plugin on uninstall.
 	}
 	
 	/**
@@ -127,13 +239,58 @@ class SXP_Install {
 	 *
 	 * @return void
 	 */
-	private static function update_wc_version() {
+	private static function update_sxp_version() {
 		$old = get_option( 'salexpresso_version', false );
 		if ( false !== $old ) {
 			update_option( 'salexpresso_updated_form', $old );
 		}
 		delete_option( 'salexpresso_version' );
 		add_option( 'salexpresso_version', SXP()->version );
+	}
+	
+	/**
+	 * Is a DB update needed?
+	 *
+	 * @return boolean
+	 */
+	public static function needs_db_update() {
+		// @TODO update on next release.
+		return false;
+	}
+	/**
+	 * See if we need to show or run database updates during install.
+	 *
+	 * @return void
+	 */
+	private static function maybe_update_db_version() {
+		if ( self::needs_db_update() ) {
+			if ( apply_filters( 'salexpresso_enable_auto_update_db', false ) ) {
+				self::update();
+			} else {
+				SXP_Admin_Notices::add_notice( 'update', true );
+			}
+		} else {
+			self::update_db_version();
+		}
+	}
+	
+	/**
+	 * Push all needed DB updates to the queue for processing.
+	 *
+	 * @return void
+	 */
+	private static function update() {
+		// @TODO update on next release.
+	}
+	
+	/**
+	 * Update DB version to current.
+	 *
+	 * @param string|null $version New SaleXpresso DB version or null.
+	 */
+	public static function update_db_version( $version = null ) {
+		delete_option( 'salexpresso_db_version' );
+		add_option( 'salexpresso_db_version', is_null( $version ) ? SXP()->version : $version );
 	}
 	
 	/**
@@ -213,6 +370,41 @@ class SXP_Install {
 	 */
 	private static function create_cron_jobs() {
 		// @TODO Clear cron then add again...
+	}
+	
+	/**
+	 * Show action links on the plugin screen.
+	 *
+	 * @param string[] $links Plugin Action links.
+	 *
+	 * @return array
+	 */
+	public static function plugin_action_links( $links ) {
+		$links['settings'] = '<a href="' . admin_url( 'admin.php?page=sxp-settings' ) . '" aria-label="' . esc_attr__( 'View SaleXpresso settings', 'salexpresso' ) . '">' . esc_html__( 'Settings', 'salexpresso' ) . '</a>';
+		
+		return $links;
+	}
+	
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @param mixed $links Plugin Row Meta.
+	 * @param mixed $file  Plugin Base file.
+	 *
+	 * @return array
+	 */
+	public static function plugin_row_meta( $links, $file ) {
+		if ( SXP_PLUGIN_BASENAME === $file ) {
+			$row_meta = [
+				'docs'    => '<a href="' . esc_url( apply_filters( 'salexpresso_docs_url', 'https://docs.salexpresso.com/documentation/' ) ) . '" aria-label="' . esc_attr__( 'View WooCommerce documentation', 'salexpresso' ) . '">' . esc_html__( 'Docs', 'salexpresso' ) . '</a>',
+				'apidocs' => '<a href="' . esc_url( apply_filters( 'salexpresso_apidocs_url', 'https://docs.salexpresso.com/' ) ) . '" aria-label="' . esc_attr__( 'View WooCommerce API docs', 'salexpresso' ) . '">' . esc_html__( 'API docs', 'salexpresso' ) . '</a>',
+				'support' => '<a href="' . esc_url( apply_filters( 'salexpresso_support_url', 'https://salexpresso.com/my-account/tickets/' ) ) . '" aria-label="' . esc_attr__( 'Visit premium customer support', 'salexpresso' ) . '">' . esc_html__( 'Premium support', 'salexpresso' ) . '</a>',
+			];
+			
+			return array_merge( $links, $row_meta );
+		}
+		
+		return (array) $links;
 	}
 }
 

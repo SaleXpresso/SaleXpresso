@@ -182,7 +182,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			in_array( $_GET['tab'], $tabs )
 		) {
 			$this->current_tab = sanitize_text_field( $_GET['tab'] );
-		} elseif ( is_array( $this->tabs ) ) {
+		} elseif ( is_array( $this->tabs ) && isset( $tabs[0] ) ) {
 			$this->current_tab = $tabs[0];
 		}
 		// phpcs:enable
@@ -426,9 +426,9 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			if ( $this->has_tabs() ) {
 				$this->render_page_tab_contents();
 			} else {
-				if ( is_array( $this->tabs ) ) {
-					$keys = array_keys( $this->tabs );
-					$this->exec_tab_cb( $this->tabs[ $keys[0] ]['content'], $keys[0] );
+				$keys = array_keys( $this->tabs );
+				if ( is_array( $this->tabs ) && isset( $this->tabs[0] ) ) {
+					$this->exec_tab_cb( $this->tabs[ $this->tabs[0] ]['content'], $keys[0] );
 				}
 			}
 			?>

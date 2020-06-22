@@ -36,6 +36,7 @@ const externals = [
 		[ `@wordpress/${ name }` ]: `wp.${ camelCaseDash( name ) }`,
 	} ),
 	{
+		tagBox: 'tagBox',
 		wp: 'wp',
 		ga: 'ga', // Old Google Analytics.
 		gtag: 'gtag', // New Google Analytics.
@@ -57,7 +58,7 @@ module.exports = ( env, argv ) => {
 			// styles: './src/scss/styles.scss',
 			// admin: './src/scss/admin.scss',
 		},
-		devtool: isDev,
+		devtool: isDev ? 'inline-sourcemap' : false,
 		output: {
 			// Add /* filename */ comments to generated require()s in the output.
 			pathinfo: true,

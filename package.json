@@ -20,7 +20,7 @@
     "clean-logs": "rm -rf logs/*.log",
     "dump-autoload-dev": "composer dump-autoload",
     "dump-autoload": "composer dump-autoload --no-dev",
-    "watch": "npm run dump-autoload-dev && webpack --mode=development --env.NODE_ENV=local --env.MODE=development --watch --config webpack.config.js",
+    "watch": "webpack --mode=development --env.NODE_ENV=local --env.MODE=development --watch --config webpack.config.js",
     "build": "npm run dump-autoload && webpack --mode=production  --env.MODE=production --config webpack.config.js",
     "make-zip": "npm run build && gulp make-zip"
   },

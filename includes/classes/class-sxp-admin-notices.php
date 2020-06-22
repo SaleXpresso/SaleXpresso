@@ -371,7 +371,7 @@ class SXP_Admin_Notices {
 						$msg . '<p><a href="%s" class="button button-primary">' . __( 'Learn how to upgrade', 'salexpresso' ) . '</a></p>',
 						add_query_arg(
 							array(
-								'utm_source'   => 'wc_update_banner',
+								'utm_source'   => 'sxp_update_banner',
 								'utm_medium'   => 'product',
 								'utm_campaign' => 'salexpresso_plugin',
 								'utm_content'  => 'docs',

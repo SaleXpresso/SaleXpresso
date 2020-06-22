@@ -97,7 +97,7 @@ final class SaleXpresso {
 	 * @since 1.0.0
 	 */
 	public function __clone() {
-		sxp_doing_it_wrong( __FUNCTION__, __( 'Cloning is forbidden.', 'salexpresso' ), '2.1' );
+		sxp_doing_it_wrong( __METHOD__, __( 'Cloning is forbidden.', 'salexpresso' ), '2.1' );
 	}
 	
 	/**
@@ -106,7 +106,7 @@ final class SaleXpresso {
 	 * @since 1.0.0
 	 */
 	public function __wakeup() {
-		sxp_doing_it_wrong( __FUNCTION__, __( 'Unserializing instances of this class is forbidden.', 'salexpresso' ), '2.1' );
+		sxp_doing_it_wrong( __METHOD__, __( 'Unserializing instances of this class is forbidden.', 'salexpresso' ), '2.1' );
 	}
 	
 	/**
@@ -368,10 +368,12 @@ final class SaleXpresso {
 	public function register_tables() {
 		global $wpdb;
 		
-		$tables = apply_filters( 'salexpresso_table_registry', [] );
+		$tables = [
+			'user_term_relationships' => 'user_term_relationships',
+		];
 		
 		foreach ( $tables as $k => $v ) {
-			$wpdb->$k       = $v;
+			$wpdb->$k       = $wpdb->prefix . $v;
 			$wpdb->tables[] = $v;
 		}
 	}
@@ -422,12 +424,48 @@ final class SaleXpresso {
 	private function includes() {
 		
 		$this->load_file( SXP_ABSPATH . 'vendor/autoload.php', true, true );
-		// Load the helpers and default hooks.
-		$this->load_file( SXP_ABSPATH . 'includes/helper.php', true, true );
-		$this->load_file( SXP_ABSPATH . 'includes/deprecated-functions.php', true, true );
-		$this->load_file( SXP_ABSPATH . 'includes/hooks.php', true, true );
-		// Internal autoloader for following WordPress naming convention.
-		spl_autoload_register( [ $this, 'autoload' ] );
+		
+		require_once 'deprecated-functions.php';
+		require_once 'user-taxonomy-helper.php';
+		require_once 'helper.php';
+		require_once 'hooks.php';
+		require_once 'classes/class-sxp-file-handler.php';
+		require_once 'interfaces/interface-sxp-admin-page.php';
+		require_once 'abstracts/class-sxp-admin-page.php';
+		require_once 'classes/class-sxp-admin-notices.php';
+		require_once 'classes/class-sxp-admin-menus.php';
+		require_once 'classes/class-sxp-assets.php';
+		require_once 'classes/class-sxp-admin-settings-page.php';
+		require_once 'classes/class-sxp-install.php';
+		require_once 'classes/class-sxp-post-types.php';
+		require_once 'classes/class-sxp-user-taxonomy.php';
+		require_once 'classes/class-sxp-views.php';
+		require_once 'classes/class-sxp-settings.php';
+		
+		// Core.
+		require_once 'classes/customer/class-sxp-customer-list-table.php';
+		require_once 'classes/customer/class-sxp-customer-group-table.php';
+		require_once 'classes/customer/class-sxp-customer-group-rule.php';
+		require_once 'classes/customer/class-sxp-customer-type-table.php';
+		require_once 'classes/customer/class-sxp-customer-type-rule.php';
+		require_once 'classes/customer/class-sxp-customer-tag-table.php';
+		require_once 'classes/customer/class-sxp-customer-tag-rule.php';
+		require_once 'classes/customer/class-sxp-customer-profile-table.php';
+		require_once 'classes/product/class-sxp-product-list-table.php';
+		require_once 'classes/order/class-sxp-order-list-table.php';
+		require_once 'classes/order/class-sxp-order-single-table.php';
+		require_once 'classes/campaign/class-sxp-campaign-list-table.php';
+		require_once 'classes/campaign/class-sxp-campaign-new-table.php';
+		
+		// Admin pages.
+		require_once 'classes/dashboard/class-sxp-dashboard-page.php';
+		require_once 'classes/customer/class-sxp-customers-page.php';
+		require_once 'classes/product/class-sxp-product-page.php';
+		require_once 'classes/order/class-sxp-order-page.php';
+		require_once 'classes/campaign/class-sxp-campaign-page.php';
+		require_once 'classes/settings/class-sxp-settings-page.php';
+		require_once 'classes/settings/class-sxp-status-page.php';
+		
 	}
 	
 	/**

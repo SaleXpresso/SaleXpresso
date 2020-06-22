@@ -60,5 +60,8 @@ function SXP() { // phpcs:ignore WordPress.NamingConventions
 	return SaleXpresso\SaleXpresso::get_instance();
 }
 
+// @TODO remove namespace.
+// @TODO remove autoloader, load plugin files manually.
+// @TODO remove webpack use gulp.
 SXP();
 // End of file salexpresso.php .

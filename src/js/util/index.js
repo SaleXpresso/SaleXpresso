@@ -1,4 +1,31 @@
 /**
+ * Utilities
+ *
+ * @version 1.0.0
+ */
+
+import _ from 'lodash';
+
+/**
+ *
+ * Check if value in in array.
+ *
+ * @param {*} needle        Needle to find.
+ * @param {Array} haystack Attay to search.
+ *
+ * @return {Boolean} Return true if needle in the haystack.
+ */
+function inArray( needle, haystack ) {
+	if ( ! _.isArray( haystack ) ) {
+		return false;
+	}
+	if ( 'function' === typeof Array.prototype.includes ) {
+		return haystack.includes( needle );
+	}
+	return -1 !== haystack.indexOf( needle );
+}
+/**
+ *
  * --------------------------------------------------------------------------
  * Bootstrap (v4.3.1): util/index.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -189,4 +216,5 @@ export {
 	noop,
 	reflow,
 	toType,
+	inArray,
 };
