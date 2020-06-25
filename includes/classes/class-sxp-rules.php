@@ -58,20 +58,7 @@ final class SXP_Rules {
 	 * Private constructor for preventing from creating new instance of this class.
 	 */
 	private function __construct() {
-	
-//		$expressionLanguage = new ExpressionLanguage();
-//
-//		$expression = ' user.age between 20 and 30 and qty >= 30';
-//		$data = [
-//			'user' => (object) [ 'age' => 18 ],
-//			'qty'  => 2,
-//		];
-//
-//		$s = microtime( true );
-//		$ret = $expressionLanguage->evaluate( $expression, $data );
-//		$t = microtime( true  ) - $s;
-//		var_dump( $ret, $t );
-//		die();
+
 	}
 	
 	/**

@@ -365,7 +365,8 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	/**
 	 * Render Filter section
 	 */
-	protected function render_page_filter() {}
+	protected function render_page_filter() {
+	}
 	
 	/**
 	 * Render Page Content Area
