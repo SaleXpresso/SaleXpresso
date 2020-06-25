@@ -3,7 +3,7 @@ Contributors: salexpresso, niamul, mhamudul_hk
 Tags: woocommerce, woo commerce, erp, crm, sales accelerator, marketing, e-commerce, store, sales, sell, sale
 Requires at least: 5.0
 Tested up to: 5.4
-Requires PHP: 5.6
+Requires PHP: 7.2.5
 WC requires at least: 4.0.0
 WC tested up to: 4.0.1
 Stable tag: 1.0.0

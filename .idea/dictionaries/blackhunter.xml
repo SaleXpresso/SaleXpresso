@@ -4,6 +4,7 @@
       <w>abspath</w>
       <w>addon</w>
       <w>addons</w>
+      <w>alignleft</w>
       <w>ampmselect</w>
       <w>apidocs</w>
       <w>appropite</w>
@@ -12,6 +13,7 @@
       <w>babelrc</w>
       <w>basepath</w>
       <w>browserslistrc</w>
+      <w>bulkactions</w>
       <w>charlist</w>
       <w>cmder</w>
       <w>codesniffer</w>
@@ -62,6 +64,7 @@
       <w>stylelintrc</w>
       <w>superadmin</w>
       <w>svnignore</w>
+      <w>tablenav</w>
       <w>tagcloud</w>
       <w>tagsdiv</w>
       <w>textdomain</w>

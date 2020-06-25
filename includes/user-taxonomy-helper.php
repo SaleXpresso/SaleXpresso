@@ -87,6 +87,7 @@ if ( ! function_exists( 'create_user_taxonomy_post' ) ) {
 	 * @return int|false|WP_Error The post ID on success. The value false or WP_Error on failure.
 	 */
 	function create_user_taxonomy_post( $user_id, $wp_error = false ) {
+		// check before create.
 		$sh = get_user_taxonomy_post( $user_id );
 		if ( false === $sh ) {
 			$user = get_userdata( $user_id );
@@ -97,11 +98,19 @@ if ( ! function_exists( 'create_user_taxonomy_post' ) ) {
 				return false;
 			}
 			// insert the shadow post.
-			return wp_insert_post( [
+			$sh = wp_insert_post( [
 				'post_title' => $user->display_name,
 				'post_name'  => 'shadow-copy-' . $user->user_login,
 				'post_type'  => SXP_User_Taxonomy::POST_TYPE,
 			] );
+			if ( is_wp_error( $sh ) ) {
+				if ( $wp_error ) {
+					return  $sh;
+				}
+				return false;
+			}
+			update_post_meta( $sh, SXP_User_Taxonomy::USER_KEY, $user_id );
+			update_user_meta( $user_id, SXP_User_Taxonomy::POST_KEY, $sh );
 		}
 		// return the id.
 		return $sh;

@@ -52,13 +52,10 @@ class SXP_Customer_Group_Table {
 
 					</tr>
 				</thead>
-
 				<tbody id="the-list">
-					<tr id="sxp-customer-list-1" class="sxp-customer-list">
+					<tr id="sxp-customer-list-1">
 						<th scope="row" class="check-column">
-							<label class="screen-reader-text" for="cb-select-1">
-								Customer Group
-							</label>
+							<label class="screen-reader-text" for="cb-select-1">Customer Group</label>
 							<input id="cb-select-1" type="checkbox" name="post[]" value="1">
 						</th>
 						<td class="title column-title has-row-actions column-primary page-title sxp-customer-name" data-colname="sxp-customer">
@@ -76,8 +73,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">799</td>
 					</tr><!-- end .sxp-customer-list -->
-
-					<tr id="sxp-customer-list-2" class="sxp-customer-list">
+					<tr id="sxp-customer-list-2">
 						<th scope="row" class="check-column">
 							<label class="screen-reader-text" for="cb-select-1">
 								Customer Group
@@ -99,7 +95,7 @@ class SXP_Customer_Group_Table {
 						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">27</td>
 					</tr><!-- end .sxp-customer-list -->
 
-					<tr id="sxp-customer-list-3" class="sxp-customer-list">
+					<tr id="sxp-customer-list-3">
 						<th scope="row" class="check-column">
 							<label class="screen-reader-text" for="cb-select-1">
 								Customer Group
@@ -123,7 +119,7 @@ class SXP_Customer_Group_Table {
 						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">27</td>
 					</tr><!-- end .sxp-customer-list -->
 
-					<tr id="sxp-customer-list-5" class="sxp-customer-list">
+					<tr id="sxp-customer-list-5">
 						<th scope="row" class="check-column">
 							<label class="screen-reader-text" for="cb-select-1">
 								Customer Group
@@ -144,9 +140,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">27</td>
 					</tr><!-- end .sxp-customer-list -->
-
 				</tbody>
-
 			</table><!-- end .sxp-customer-table -->
 		</div><!-- end .sxp-customer-wrapper -->
 		<?php

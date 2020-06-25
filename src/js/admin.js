@@ -17,7 +17,6 @@ import 'jquery-modal';
 import 'selectize/dist/js/standalone/selectize';
 import 'vgnav/assets/js/vgnav';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
-import tagBox from 'tagBox';
 import { inArray } from './util';
 
 // import { tabs } from './components/_tabs.js';
@@ -33,6 +32,7 @@ import { inArray } from './util';
 	}
 	// Init tag box for user.
 	if ( inArray( pagenow, [ 'user-edit', 'profile' ] ) ) {
+		// import tagBox from 'tagBox';
 		tagBox.init();
 	}
 	$( window ).on( 'load', function() {

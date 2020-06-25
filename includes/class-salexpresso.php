@@ -320,7 +320,7 @@ final class SaleXpresso {
 			 *
 			 * @var string
 			 */
-			define( 'SXP_NOTICE_MIN_PHP_VERSION', '7.0' );
+			define( 'SXP_NOTICE_MIN_PHP_VERSION', '7.2.5' );
 		}
 		
 		if ( ! defined( 'SXP_NOTICE_MIN_WP_VERSION' ) ) {
@@ -439,6 +439,7 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';
 		require_once 'classes/class-sxp-user-taxonomy.php';
+		require_once 'classes/class-sxp-rules.php';
 		require_once 'classes/class-sxp-views.php';
 		require_once 'classes/class-sxp-settings.php';
 		

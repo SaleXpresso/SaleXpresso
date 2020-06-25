@@ -133,5 +133,4 @@ class SXP_Post_Types {
 }
 
 SXP_Post_Types::init();
-
 // End of file class-sxp-post-types.php.

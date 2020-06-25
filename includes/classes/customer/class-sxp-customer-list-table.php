@@ -27,7 +27,6 @@ class SXP_Customer_List_Table {
 	 */
 	public function __construct() {
 		// @TODO Extend WP_List_Table.
-
 		?>
 		<div class="sxp-customer-list-wrapper">
 			<div class="sxp-customer-top-wrapper">
@@ -40,7 +39,7 @@ class SXP_Customer_List_Table {
 					<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i data-feather="plus"></i> Add New Customer</a>
 				</div>
 			</div><!-- end .sxp-customer-top-wrapper -->
-			<table class="wp-list-table widefat sxp-table sxp-customer-table">
+			<table class="wp-list-table widefat sxp-table">
 				<thead>
 					<tr>
 						<td id="cb" class="manage-column column-cb check-column">

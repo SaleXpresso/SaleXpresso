@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Class SXP_User_Taxonomy
+ * @TODO fix taxonomy term count.
  */
 final class SXP_User_Taxonomy {
 	
@@ -35,7 +36,7 @@ final class SXP_User_Taxonomy {
 	 *
 	 * @var string
 	 */
-	const USER_KEY = 'user_id';
+	const USER_KEY = 'tax_user_id';
 	
 	/**
 	 * User meta key for shadow post id.

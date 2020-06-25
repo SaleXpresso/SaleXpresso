@@ -365,57 +365,8 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	/**
 	 * Render Filter section
 	 */
-	protected function render_page_filter() {
-		?>
-			<div class="sxp-filter-wrapper">
-				<div class="sxp-filter-default">
-					<nav class="vg-nav vg-nav-lg">
-						<ul>
-							<li class="dropdown">
-								<a href="#">Sort by Name</a>
-								<ul class="left">
-									<li>
-										<a href="#">Location</a>
-									</li>
-									<li class="dropdown">
-										<a href="#">Customer Type</a>
-										<ul class="left">
-											<li>
-												<a href="#">Another page</a>
-											</li>
-											<li>
-												<a href="#">Any page</a>
-											</li>
-										</ul>
-									</li>
-									<li>
-										<a href="#">Orders</a>
-									</li>
-									<li>
-										<a href="#">Revenue</a>
-									</li>
-									<li>
-										<a href="#">First Order</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
-				</div><!-- end .sxp-filter-default -->
-				<div class="sxp-filter-date-range">
-					<div id="sxp-date-range" tabindex="0" aria-label="filter by date">
-						<span></span>
-					</div>
-				</div><!-- end .sxp-filter-date-range-->
-				<div class="sxp-screen-options">
-					<a href="#">
-						<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDEzQzEyLjU1MjMgMTMgMTMgMTIuNTUyMyAxMyAxMkMxMyAxMS40NDc3IDEyLjU1MjMgMTEgMTIgMTFDMTEuNDQ3NyAxMSAxMSAxMS40NDc3IDExIDEyQzExIDEyLjU1MjMgMTEuNDQ3NyAxMyAxMiAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTE5IDEzQzE5LjU1MjMgMTMgMjAgMTIuNTUyMyAyMCAxMkMyMCAxMS40NDc3IDE5LjU1MjMgMTEgMTkgMTFDMTguNDQ3NyAxMSAxOCAxMS40NDc3IDE4IDEyQzE4IDEyLjU1MjMgMTguNDQ3NyAxMyAxOSAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTUgMTNDNS41NTIyOCAxMyA2IDEyLjU1MjMgNiAxMkM2IDExLjQ0NzcgNS41NTIyOCAxMSA1IDExQzQuNDQ3NzIgMTEgNCAxMS40NDc3IDQgMTJDNCAxMi41NTIzIDQuNDQ3NzIgMTMgNSAxM1oiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="more">
-					</a>
-				</div>
-			</div><!-- end .sxp-filter-wrapper-->
-			<div class="sxp-clearfix"></div>
-		<?php
-	}
+	protected function render_page_filter() {}
+	
 	/**
 	 * Render Page Content Area
 	 */

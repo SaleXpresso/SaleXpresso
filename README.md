@@ -19,7 +19,7 @@ See the Developer guid for detailed instruction.
 
 ### Recommended Requirements 
 
-* PHP 7.2 or greater is recommended
+* PHP 7.2.5 or greater is recommended
 * MySQL 5.6 or greater is recommended
 
 
