@@ -9,6 +9,7 @@
 
 namespace SaleXpresso\Customer;
 
+use SaleXpresso\SXP_Admin_Menus;
 use SaleXpresso\Abstracts\SXP_Admin_Page;
 use WP_User_Query;
 
@@ -32,6 +33,8 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	protected $add_new_url = '';
 	
+	private $list_table;
+	
 	/**
 	 * SXP_Customer_List constructor.
 	 *
@@ -39,8 +42,22 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	public function __construct( $plugin_page = null ) {
 		parent::__construct( $plugin_page );
+//		$this->list_table = new SXP_Customer_List_Table();
+		$this->list_table = SXP_Admin_Menus::get_instance()->get_list_table();
+//		$this->list_table->old();
 		$this->add_new_label = '';
 		$this->js_tabs       = false;
+	}
+	
+	public function page_actions() {
+		// @TODO Save action for per_page.
+		add_screen_option(
+			'per_page',
+			[
+				'label'   => 'Number of items per page:',
+				'option'  => 'customers_per_page',
+			]
+		);
 	}
 	
 	/**
@@ -145,7 +162,7 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 * Render the customer list
 	 */
 	protected function render_customer_list() {
-		$list = new SXP_Customer_List_Table();
+		$this->list_table->display();
 	}
 
 	/**
@@ -195,62 +212,6 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	protected function render_customer_profile() {
 		$list = new SXP_Customer_Profile_Table();
-	}
-
-	
-	/**
-	 * Get Customers.
-	 *
-	 * @param string $search Search Customer.
-	 * @param int    $limit  Limit for pagination.
-	 * @param int    $offset Offset for pagination.
-	 *
-	 * @return WP_User_Query
-	 */
-	private function get_customers( $search = '', $limit = 10, $offset = 0 ) {
-		$args = [
-			'fields'       => 'ID',
-			'number'       => $limit,
-			'offset'       => $offset,
-			'role__not_in' => (array) apply_filters(
-				'salexpresso_exclude_user_by_role',
-				'administrator'
-			),
-		];
-		if ( ! empty( $search ) ) {
-			$args['search'] = '*' . esc_attr( $search ) . '*';
-			if ( is_email( $search ) ) {
-				$args['search_columns'] = [ 'user_login', 'user_email' ];
-				$args['meta_query']     = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-					'relation' => 'OR',
-					[
-						'key'     => 'billing_email',
-						'compare' => '=',
-					],
-					[
-						'key'     => 'shipping_email',
-						'value'   => $search,
-						'compare' => '=',
-					],
-				];
-			} else {
-				$args['search_columns'] = [ 'user_login', 'user_url', 'user_email', 'user_nicename', 'display_name' ];
-				$args['meta_query']     = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-					'relation' => 'OR',
-					[
-						'key'     => 'first_name',
-						'value'   => $search,
-						'compare' => 'LIKE',
-					],
-					[
-						'key'     => 'last_name',
-						'value'   => $search,
-						'compare' => 'LIKE',
-					],
-				];
-			}
-		}
-		return new WP_User_Query( apply_filters( 'salexpresso_customer_search', $args ) );
 	}
 }
 

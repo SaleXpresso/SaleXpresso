@@ -15,6 +15,7 @@
       <w>browserslistrc</w>
       <w>bulkactions</w>
       <w>charlist</w>
+      <w>clearfix</w>
       <w>cmder</w>
       <w>codesniffer</w>
       <w>dashicons</w>
@@ -48,6 +49,7 @@
       <w>opensright</w>
       <w>orderby</w>
       <w>pagenow</w>
+      <w>pagenum</w>
       <w>pathinfo</w>
       <w>permalinks</w>
       <w>phpcodesniffer</w>

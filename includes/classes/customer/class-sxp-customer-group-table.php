@@ -28,8 +28,8 @@ class SXP_Customer_Group_Table {
 	public function __construct() {
 		// @TODO Extend WP_List_Table.
 		?>
-		<div class="sxp-customer-wrapper">
-			<div class="sxp-customer-top-wrapper">
+		<div class="sxp-list-table">
+			<div class="sxp-list-table-top">
 				<div class="sxp-customer-search">
 					<label for="sxp-customer-search" class="screen-reader-text"><?php __('Search Customer', 'salexpresso'); ?></label>
 					<input type="text" id="sxp-customer-search" placeholder="Search Customers">
@@ -73,6 +73,7 @@ class SXP_Customer_Group_Table {
 						</td>
 						<td class="sxp-customer-assigned-column" data-colname="Customer Assigned">799</td>
 					</tr><!-- end .sxp-customer-list -->
+
 					<tr id="sxp-customer-list-2">
 						<th scope="row" class="check-column">
 							<label class="screen-reader-text" for="cb-select-1">

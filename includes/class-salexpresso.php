@@ -439,7 +439,8 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';
 		require_once 'classes/class-sxp-user-taxonomy.php';
-		require_once 'classes/class-sxp-rules.php';
+		require_once 'classes/rules/class-sxp-rules.php';
+		require_once 'classes/class-sxp-list-table.php';
 		require_once 'classes/class-sxp-views.php';
 		require_once 'classes/class-sxp-settings.php';
 		

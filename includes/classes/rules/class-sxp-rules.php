@@ -5,14 +5,15 @@
  * user activity on the frontend.
  *
  * @link https://symfony.com/doc/current/components/expression_language/syntax.html
- * @package SaleXpresso
+ * @package SaleXpresso\Rules
  * @version 1.0.0
  * @since   1.0.0
  */
 
-namespace SaleXpresso;
+namespace SaleXpresso\Rules;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ParsedExpression;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -28,13 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class SXP_Rules {
 	
 	/**
-	 * Singleton instance
-	 *
-	 * @var SXP_Rules
-	 */
-	protected static $instance;
-	
-	/**
 	 * ExpressionLanguage Instance.
 	 *
 	 * @var ExpressionLanguage
@@ -42,39 +36,62 @@ final class SXP_Rules {
 	private $engine;
 	
 	/**
-	 * Get Singleton instance of this class
+	 * Rules Storage.
+	 * Rules will be stored as multi dimensional list with a group name.
 	 *
-	 * @return SXP_Rules
+	 * @var array
 	 */
-	public static function get_instance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
+	protected $rules = [];
 	
 	/**
 	 * SXP_Settings constructor.
 	 * Private constructor for preventing from creating new instance of this class.
 	 */
-	private function __construct() {
-
-	}
+	public function __construct() {}
 	
 	/**
 	 * ExpressionLanguage Instance.
 	 *
 	 * @return ExpressionLanguage
 	 */
-	private function getEngine() {
+	private function get_engine() {
 		if ( ! is_null( $this->engine ) ) {
 			return $this->engine;
 		}
+		
+		// @TODO implement a psr6 cache with wp cache or wp transient
+		
 		$this->engine = new ExpressionLanguage();
 		
 		return $this->engine;
 	}
+	
+	
+	public function set_rule( $group, $expression ) {
+		if ( ! isset( $this->rules[ $group ] ) ) {
+			$this->rules[ $group ] = [];
+		}
+	}
+	
+	/**
+	 * @param $expression
+	 * @param $keys
+	 *
+	 * @return ParsedExpression
+	 */
+	protected function parse_rules( $expression, $keys ) {
+		return $this->engine->parse( $expression, $keys );
+	}
+	
+	/**
+	 * Get Rules
+	 *
+	 * @return array List of rules.
+	 */
+	protected function get_rules() {
+		return [];
+	}
+	
+	
 }
-
-SXP_Rules::get_instance();
 // End of file class-sxp-rules.php.

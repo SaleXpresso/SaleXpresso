@@ -54,6 +54,24 @@ final class SXP_Admin_Menus {
 	protected $renderer = [];
 	
 	/**
+	 * Admin List Table class map
+	 *
+	 * @see _get_list_table()
+	 * @var SXP_List_Table[]
+	 */
+	private $list_tables = [
+		'sxp-customer'  => 'SaleXpresso\Customer\SXP_Customer_List_Table',
+	];
+	
+	/**
+	 * List table instance for pages.
+	 * This holds the list table instance for currnet page (if needed)
+	 *
+	 * @var SXP_List_Table
+	 */
+	private $list_table;
+	
+	/**
 	 * Get Singleton instance of this class
 	 *
 	 * @return SXP_Admin_Menus
@@ -92,11 +110,22 @@ final class SXP_Admin_Menus {
 	 */
 	public function init() {
 		global $plugin_page;
-		if ( false !== strpos( $plugin_page, 'sxp-' ) && isset( $this->renderer_map[ $plugin_page ] ) ) {
-			if ( ! isset( $this->renderer[ $plugin_page ] ) || ( isset( $this->renderer[ $plugin_page ] ) && ! ( $this->renderer[ $plugin_page ] instanceof SXP_Admin_Page ) ) ) {
-				$this->renderer[ $plugin_page ] = new $this->renderer_map[ $plugin_page ]( $plugin_page );
+		if ( false !== strpos( $plugin_page, 'sxp-' ) ) {
+			
+			if ( isset( $this->list_tables[ $plugin_page ] ) && ! ( $this->list_table instanceof SXP_List_Table ) ) {
+				$this->list_table = new $this->list_tables[ $plugin_page ]();
+			}
+			
+			if ( isset( $this->renderer_map[ $plugin_page ] ) ) {
+				if ( ! isset( $this->renderer[ $plugin_page ] ) || ( isset( $this->renderer[ $plugin_page ] ) && ! ( $this->renderer[ $plugin_page ] instanceof SXP_Admin_Page ) ) ) {
+					$this->renderer[ $plugin_page ] = new $this->renderer_map[ $plugin_page ]( $plugin_page );
+				}
 			}
 		}
+	}
+	
+	public function get_list_table() {
+		return $this->list_table;
 	}
 	
 	/**
@@ -136,7 +165,6 @@ final class SXP_Admin_Menus {
 	 * Add customer menu item
 	 */
 	public function customer_menu() {
-	
 	}
 	
 	/**

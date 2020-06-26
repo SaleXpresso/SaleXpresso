@@ -14,7 +14,8 @@
 		border-style: hidden; /* hide standard table (collapsed) border */
 		box-shadow: 0 0 0 1px transparent;
 		width: 100%;
-		thead {
+		thead,
+		tfoot {
 			th {
 				font-weight: 700;
 				height: 56px;

@@ -144,6 +144,7 @@ class SXP_List_Table {
 	 * }
 	 */
 	public function __construct( $args = array() ) {
+		// @TODO screen options for columns.
 		$args = wp_parse_args(
 			$args,
 			array(
@@ -163,14 +164,15 @@ class SXP_List_Table {
 		
 		$this->screen = convert_to_screen( $args['screen'] );
 		$this->screen_id = $this->screen->id;
-		if ( empty( $args['tab'] ) && isset( $_GET['tab'] ) ) {
-			$args['tab'] = sanitize_text_field( $_GET['tab'] );
-		}
 		
-		$args['tab'] = sanitize_title( $args['tab'] );
-		if ( $args['tab'] ) {
-			$this->screen_id .= '_' . $args['tab'];
-		}
+//		if ( empty( $args['tab'] ) && isset( $_GET['tab'] ) ) {
+//			$args['tab'] = sanitize_text_field( $_GET['tab'] );
+//		}
+//
+//		$args['tab'] = sanitize_title( $args['tab'] );
+//		if ( $args['tab'] ) {
+//			$this->screen_id .= '_' . $args['tab'];
+//		}
 		
 		add_filter( "manage_{$this->screen_id}_columns", array( $this, 'get_columns' ), 0 );
 		
@@ -760,139 +762,110 @@ class SXP_List_Table {
 	/**
 	 * Display the pagination.
 	 *
-	 * @param string $which
+	 * @return void
 	 */
-	protected function pagination( $which ) {
+	protected function pagination() {
 		if ( empty( $this->_pagination_args ) ) {
 			return;
 		}
 		
-		$total_items     = $this->_pagination_args['total_items'];
 		$total_pages     = $this->_pagination_args['total_pages'];
 		$infinite_scroll = false;
 		if ( isset( $this->_pagination_args['infinite_scroll'] ) ) {
 			$infinite_scroll = $this->_pagination_args['infinite_scroll'];
 		}
 		
-		if ( 'top' === $which && $total_pages > 1 ) {
+		if ( $total_pages > 1 ) {
 			$this->screen->render_screen_reader_content( 'heading_pagination' );
 		}
 		
-		$output = '<span class="displaying-num">' . sprintf(
-			/* translators: %s: Number of items. */
-				_n( '%s item', '%s items', $total_items ),
-				number_format_i18n( $total_items )
-			) . '</span>';
 		
 		$current              = $this->get_pagenum();
 		$removable_query_args = wp_removable_query_args();
 		
 		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		
+		$removable_query_args[] = 'paged';
 		$current_url = remove_query_arg( $removable_query_args, $current_url );
-		
-		$page_links = array();
-		
-		$total_pages_before = '<span class="paging-input">';
-		$total_pages_after  = '</span></span>';
-		
-		$disable_first = false;
-		$disable_last  = false;
-		$disable_prev  = false;
-		$disable_next  = false;
-		
-		if ( 1 == $current ) {
-			$disable_first = true;
-			$disable_prev  = true;
-		}
-		if ( 2 == $current ) {
-			$disable_first = true;
-		}
-		if ( $total_pages == $current ) {
-			$disable_last = true;
-			$disable_next = true;
-		}
-		if ( $total_pages - 1 == $current ) {
-			$disable_last = true;
-		}
-		
-		if ( $disable_first ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='first-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( remove_query_arg( 'paged', $current_url ) ),
-				__( 'First page' ),
-				'&laquo;'
-			);
-		}
-		
-		if ( $disable_prev ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='prev-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', max( 1, $current - 1 ), $current_url ) ),
-				__( 'Previous page' ),
-				'&lsaquo;'
-			);
-		}
-		
-		if ( 'bottom' === $which ) {
-			$html_current_page  = $current;
-			$total_pages_before = '<span class="screen-reader-text">' . __( 'Current Page' ) . '</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">';
-		} else {
-			$html_current_page = sprintf(
-				"%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' /><span class='tablenav-paging-text'>",
-				'<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page' ) . '</label>',
-				$current,
-				strlen( $total_pages )
-			);
-		}
-		$html_total_pages = sprintf( "<span class='total-pages'>%s</span>", number_format_i18n( $total_pages ) );
-		$page_links[]     = $total_pages_before . sprintf(
-			/* translators: 1: Current page, 2: Total pages. */
-				_x( '%1$s of %2$s', 'paging' ),
-				$html_current_page,
-				$html_total_pages
-			) . $total_pages_after;
-		
-		if ( $disable_next ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='next-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', min( $total_pages, $current + 1 ), $current_url ) ),
-				__( 'Next page' ),
-				'&rsaquo;'
-			);
-		}
-		
-		if ( $disable_last ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='last-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', $total_pages, $current_url ) ),
-				__( 'Last page' ),
-				'&raquo;'
-			);
-		}
 		
 		$pagination_links_class = 'pagination-links';
 		if ( ! empty( $infinite_scroll ) ) {
 			$pagination_links_class .= ' hide-if-js';
 		}
-		$output .= "\n<span class='$pagination_links_class'>" . join( "\n", $page_links ) . '</span>';
 		
 		if ( $total_pages ) {
 			$page_class = $total_pages < 2 ? ' one-page' : '';
 		} else {
 			$page_class = ' no-pages';
 		}
-		$this->_pagination = "<div class='tablenav-pages{$page_class}'>$output</div>";
+		
+		$links = paginate_links( $this->get_pagination_args( [ 'total' => $total_pages ] ) );
+		$output = '';
+		if ( ! empty( $links ) ) {
+			$output .= "\n<ul class='sxp-pagination {$pagination_links_class}'>\n\t<li>";
+			$output .= join( "</li>\n\t<li>", $links );
+			$output .= "</li>\n</ul>\n";
+		}
+		
+		$this->_pagination = "<div class='sxp-pagination tablenav-pages{$page_class}'>$output</div>";
 		
 		echo $this->_pagination;
+	}
+	
+	/**
+	 * Get Pagination args for paginate links.
+	 *
+	 * @see paginate_links()
+	 * @param string|array $args {
+	 *     Optional. Array or string of arguments for generating paginated links for archives.
+	 *
+	 *     @type string $base               Base of the paginated url. Default empty.
+	 *     @type string $format             Format for the pagination structure. Default empty.
+	 *     @type int    $total              The total amount of pages. Default is the value WP_Query's
+	 *                                      `max_num_pages` or 1.
+	 *     @type int    $current            The current page number. Default is 'paged' query var or 1.
+	 *     @type string $aria_current       The value for the aria-current attribute. Possible values are 'page',
+	 *                                      'step', 'location', 'date', 'time', 'true', 'false'. Default is 'page'.
+	 *     @type bool   $show_all           Whether to show all pages. Default false.
+	 *     @type int    $end_size           How many numbers on either the start and the end list edges.
+	 *                                      Default 1.
+	 *     @type int    $mid_size           How many numbers to either side of the current pages. Default 2.
+	 *     @type bool   $prev_next          Whether to include the previous and next links in the list. Default true.
+	 *     @type bool   $prev_text          The previous page text. Default '&laquo; Previous'.
+	 *     @type bool   $next_text          The next page text. Default 'Next &raquo;'.
+	 *     @type string $type               Controls format of the returned value. Possible values are 'plain',
+	 *                                      'array' and 'list'. Default is 'plain'.
+	 *     @type array  $add_args           An array of query args to add. Default false.
+	 *     @type string $add_fragment       A string to append to each link. Default empty.
+	 *     @type string $before_page_number A string to appear before the page number. Default empty.
+	 *     @type string $after_page_number  A string to append after the page number. Default empty.
+	 * }
+	 *
+	 * @return array
+	 */
+	private function get_pagination_args( $args ) {
+		$removable_query_args = wp_removable_query_args();
+		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		$removable_query_args[] = 'paged';
+		$current_url = remove_query_arg( $removable_query_args, $current_url );
+		$defaults = [
+			'base'               => add_query_arg( [ 'paged' => '%#%' ], $current_url ), // http://example.com/all_posts.php%_% : %_% is replaced by format (below).
+			'format'             => 'paged=%#%', // ?page=%#% : %#% is replaced by the page number.
+			'total'              => count( $this->items ),
+			'current'            => $this->get_pagenum(),
+			'aria_current'       => 'page',
+			'show_all'           => false,
+			'prev_next'          => true,
+			'prev_text'          => '<img alt="'. esc_attr__( '&laquo; Previous', 'salexpresso' ) .'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0IDhMMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02IDEyTDIgOEw2IDQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/>',
+			'next_text'          => '<img alt="' . esc_attr__( 'Next &raquo;', 'salexpresso' ) . '" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIgOEwxMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMCA0TDE0IDhMMTAgMTIiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/>',
+			'end_size'           => 4,
+			'mid_size'           => 2,
+			'type'               => 'array',
+			'add_args'           => array(), // Array of query args to add.
+			'add_fragment'       => '',
+			'before_page_number' => '',
+			'after_page_number'  => '',
+		];
+		return apply_filters( "manage_{$this->screen_id}_pagination_args", wp_parse_args( $args, $defaults ) );
 	}
 	
 	/**
@@ -969,7 +942,7 @@ class SXP_List_Table {
 		// If the primary column doesn't exist,
 		// fall back to the first non-checkbox column.
 		if ( ! isset( $columns[ $default ] ) ) {
-			$default = WP_List_Table::get_default_primary_column_name();
+			$default = SXP_List_Table::get_default_primary_column_name();
 		}
 		
 		/**
@@ -1112,7 +1085,7 @@ class SXP_List_Table {
 					$class[] = $desc_first ? 'asc' : 'desc';
 				}
 				
-				$column_display_name = '<a href="' . esc_url( add_query_arg( compact( 'orderby', 'order' ), $current_url ) ) . '"><span>' . $column_display_name . '</span><span class="sorting-indicator"></span></a>';
+				$column_display_name = '<a href="' . esc_url( add_query_arg( compact( 'orderby', 'order' ), $current_url ) ) . '"><span>' . $column_display_name . '</span></a>';
 			}
 			
 			$tag   = ( 'cb' === $column_key ) ? 'td' : 'th';
@@ -1133,47 +1106,45 @@ class SXP_List_Table {
 	 */
 	public function display() {
 		$singular = $this->_args['singular'];
-		
-		if ( $this->_args['table_nav']['top'] ) {
-			$this->display_tablenav( 'top' );
-		}
-		
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
-		
-		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
-			<?php if ( $this->_args['thead'] ) { ?>
-			<thead>
-			<tr>
-				<?php $this->print_column_headers(); ?>
-			</tr>
-			</thead>
-			<?php } ?>
+		<div class="sxp-list-table">
+			<?php
+			if ( $this->_args['table_nav']['top'] ) {
+				$this->display_tablenav( 'top' );
+			}
+			?>
+			<div class="clearfix"></div>
+			<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+				<?php if ( $this->_args['thead'] ) { ?>
+					<thead>
+					<tr>
+						<?php $this->print_column_headers(); ?>
+					</tr>
+					</thead>
+				<?php } ?>
+				
+				<tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
+				<?php $this->display_rows_or_placeholder(); ?>
+				</tbody>
+				
+				<?php if ( $this->_args['tfoot'] ) { ?>
+					<tfoot>
+					<tr>
+						<?php $this->print_column_headers( false ); ?>
+					</tr>
+					</tfoot>
+				<?php } ?>
 			
-			<tbody id="the-list"
-				<?php
-				if ( $singular ) {
-					echo " data-wp-lists='list:$singular'";
-				}
-				?>
-			>
-			<?php $this->display_rows_or_placeholder(); ?>
-			</tbody>
-			
-			<?php if ( $this->_args['tfoot'] ) { ?>
-			<tfoot>
-			<tr>
-				<?php $this->print_column_headers( false ); ?>
-			</tr>
-			</tfoot>
-			<?php } ?>
-		
-		</table>
+			</table>
+			<div class="sxp-clearfix"></div>
+			<?php
+			if ( $this->_args['table_nav']['bottom'] ) {
+				$this->display_tablenav( 'bottom' );
+			}
+			?>
+		</div>
 		<?php
-		
-		if ( $this->_args['table_nav']['bottom'] ) {
-			$this->display_tablenav( 'bottom' );
-		}
 	}
 	
 	/**
@@ -1182,7 +1153,7 @@ class SXP_List_Table {
 	 * @return string[] Array of CSS classes for the table tag.
 	 */
 	protected function get_table_classes() {
-		return array( 'widefat', 'fixed', 'striped', $this->_args['plural'], $this->_args['tab'], $this->screen_id );
+		return array( 'sxp-table', 'widefat', 'fixed', 'striped', $this->_args['plural'], $this->_args['tab'], $this->screen_id );
 	}
 	
 	/**
@@ -1194,21 +1165,51 @@ class SXP_List_Table {
 		if ( 'top' === $which ) {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
-		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
-			
-			<?php if ( $this->has_items() ) : ?>
-				<div class="alignleft actions bulkactions">
-					<?php $this->bulk_actions( $which ); ?>
-				</div>
-			<?php
-			endif;
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
+		if ( 'top' === $which ) {
 			?>
-			
-			<br class="clear" />
-		</div>
+			<div class="sxp-list-table-top" style="display:none;">
+				<div class="sxp-customer-search">
+					<label for="sxp-customer-search" class="screen-reader-text"><?php __('Search Customer', 'salexpresso'); ?></label>
+					<input type="text" id="sxp-customer-search" placeholder="Search Customers">
+				</div><!-- end .sxp-customer-search -->
+				<div class="sxp-customer-btn-wrapper">
+					<?php $this->table_actions(); ?>
+				</div>
+				<?php $this->extra_tablenav( $which ); ?>
+			</div><!-- end .sxp-customer-top-wrapper -->
+			<div class="clearfix"></div>
+			<!-- /.clearfix -->
+			<?php
+		}
+		if ( 'bottom' === $which ) {
+			?>
+			<div class="sxp-pagination-wrapper">
+				<?php $this->pagination( $which ); ?>
+			</div><!-- end .sxp-paginaation-wrapper -->
+			<div class="sxp-bottom-wrapper">
+				<div class="sxp-selected-container">
+					<?php if ( $this->has_items() ) : ?>
+						<?php $this->bulk_actions( $which ); ?>
+						<div class="sxp-row-select">
+							<a href="#" class="sxp-remove-select">
+								<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="<?php esc_attr_e( 'Remove selection', 'salexpresso' ); ?>">
+							</a>
+							<a href="#" class="sxp-selected"><span>2</span> Rows Selected</a>
+						</div>
+						<div class="sxp-remove-customer">
+							<a href="#"><?php esc_html_e( 'Delete', 'salexpresso' ); ?></a>
+						</div>
+					<?php endif; ?>
+				</div><!-- end .sxp-selected-container -->
+			</div><!-- end .sxp-bottom-wrapper -->
+			<?php
+		}
+	}
+	
+	protected function table_actions() {
+		?>
+		<a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i data-feather="plus"></i> Customer Type Rules</a>
+		<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i data-feather="plus"></i> Add New Customer</a>
 		<?php
 	}
 	
@@ -1217,7 +1218,8 @@ class SXP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	protected function extra_tablenav( $which ) {}
+	protected function extra_tablenav( $which ) {
+	}
 	
 	/**
 	 * Generate the tbody element for the list table.

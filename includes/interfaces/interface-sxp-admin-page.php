@@ -30,14 +30,6 @@ interface SXP_Admin_Page_Interface {
 	public function __construct();
 	
 	/**
-	 * Init Actions
-	 *
-	 * @hooked admin_init
-	 * @return void
-	 */
-	public function actions();
-	
-	/**
 	 * Get page slug for current page
 	 *
 	 * @return string

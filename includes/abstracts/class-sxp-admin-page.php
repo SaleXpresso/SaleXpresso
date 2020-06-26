@@ -33,6 +33,14 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	protected $page_slug = '';
 	
 	/**
+	 * Page Hook Name..
+	 * Default to current slug or global admin $page
+	 *
+	 * @var string
+	 */
+	protected $page_hookname = '';
+	
+	/**
 	 * Hook Slug
 	 * Default to current page slug with prefix removed
 	 * 
@@ -98,25 +106,29 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @return void
 	 */
 	public function __construct( $plugin_page = null ) {
+		$this->set_page_hookname( $plugin_page );
 		$this->set_page_slug( $plugin_page );
 		$this->set_tabs();
 		$this->set_active_tab();
 		$this->get_flash_messages();
 		$this->add_new_url   = admin_url( 'admin.php?page=' . $this->page_slug );
 		$this->add_new_label = __( 'Add New', 'salexpresso' );
-		// admin init.
-		add_action( 'admin_init', [ $this, 'actions' ] );
+		// Admin init is already over...
+		// page load (substitute to admin init for current page.
+		if ( $this->page_hookname ) {
+			add_action( 'load-' . $this->page_hookname, [ $this, 'page_actions' ] );
+		}
 		// Save flash notices for showing on next page load.
 		add_action( 'shutdown', [ $this, 'save_flash_message' ] );
 	}
 	
 	/**
-	 * Init Actions
+	 * Init Page Load
 	 *
-	 * @hooked admin_init
+	 * @hooked load-hookname
 	 * @return void
 	 */
-	public function actions() {
+	public function page_actions() {
 	}
 	
 	/**
@@ -124,7 +136,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 *
 	 * @param string $plugin_page Plugin Page slug.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	private function set_page_slug( $plugin_page = null ) {
 		if ( is_string( $plugin_page ) && ! empty( $plugin_page ) ) {
@@ -135,6 +147,24 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			$this->page_slug = end( $__class );
 		}
 		$this->hook_slug = str_replace( 'sxp-', '', $this->page_slug );
+		
+		return $this->page_slug;
+	}
+	
+	/**
+	 * Set page hookname for current page (class instance)
+	 *
+	 * @see add_menu_page()
+	 * @see add_submenu_page()
+	 * @param string $plugin_page Plugin Page slug.
+	 *
+	 * @return string
+	 */
+	private function set_page_hookname( $plugin_page  = null ) {
+		$plugin_page = is_null( $plugin_page ) ? $this->set_page_slug( $plugin_page ) : $plugin_page;
+		$this->page_hookname = get_plugin_page_hookname( $plugin_page, get_admin_page_parent() );
+		
+		return $this->page_hookname;
 	}
 	
 	/**
@@ -144,6 +174,15 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 */
 	public function get_page_slug() {
 		return $this->page_slug;
+	}
+	
+	/**
+	 * Get the page hook name
+	 *
+	 * @return string
+	 */
+	public function get_page_hookname() {
+		return $this->page_hookname;
 	}
 	
 	/**
@@ -307,7 +346,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @param string[]|string $class Class names to add with the generated class names.
 	 */
 	private function wrapper_classes( $class = '' ) {
-		$classes = [ 'sxp-wrapper', $this->page_slug ];
+		$classes = [ 'sxp-wrapper', 'sxp-clearfix', $this->page_slug ];
 		if ( $this->has_tabs() ) {
 			$classes[] = 'sxp-has-tabs';
 		}
