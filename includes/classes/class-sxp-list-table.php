@@ -58,11 +58,25 @@ class SXP_List_Table {
 	protected $screen_id;
 	
 	/**
+	 * Current Page URL
+	 *
+	 * @var string
+	 */
+	protected $current_url;
+	
+	/**
 	 * Cached bulk actions.
 	 *
 	 * @var array
 	 */
 	private $_actions;
+	
+	/**
+	 * List of table action button.
+	 *
+	 * @var [][]
+	 */
+	private $table_actions;
 	
 	/**
 	 * Cached pagination output.
@@ -117,6 +131,12 @@ class SXP_List_Table {
 	);
 	
 	/**
+	 * Unique String for common ID
+	 * @var string
+	 */
+	protected $uid = '';
+	
+	/**
 	 * Constructor.
 	 *
 	 * The child class should call this constructor from its own constructor to override
@@ -156,15 +176,24 @@ class SXP_List_Table {
 				'thead'     => true,
 				'tfoot'     => true,
 				'table_nav' => [
-					'top'    => true,
-					'bottom' => true,
+					'top'        => true,
+					'pagination' => true,
+					'bottom'     => false,
 				],
 			)
 		);
-		
 		$this->screen = convert_to_screen( $args['screen'] );
-		$this->screen_id = $this->screen->id;
 		
+		if ( is_null( $this->screen_id ) ) {
+			$this->screen_id = $this->screen->id;
+		}
+		
+		$this->uid = wp_unique_id( $this->screen_id . '_list_table_' );
+		
+		$removable_query_args = wp_removable_query_args();
+		$removable_query_args[] = 'paged';
+		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		$this->current_url = remove_query_arg( $removable_query_args, $current_url );
 //		if ( empty( $args['tab'] ) && isset( $_GET['tab'] ) ) {
 //			$args['tab'] = sanitize_text_field( $_GET['tab'] );
 //		}
@@ -779,14 +808,6 @@ class SXP_List_Table {
 			$this->screen->render_screen_reader_content( 'heading_pagination' );
 		}
 		
-		
-		$current              = $this->get_pagenum();
-		$removable_query_args = wp_removable_query_args();
-		
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		$removable_query_args[] = 'paged';
-		$current_url = remove_query_arg( $removable_query_args, $current_url );
-		
 		$pagination_links_class = 'pagination-links';
 		if ( ! empty( $infinite_scroll ) ) {
 			$pagination_links_class .= ' hide-if-js';
@@ -843,12 +864,8 @@ class SXP_List_Table {
 	 * @return array
 	 */
 	private function get_pagination_args( $args ) {
-		$removable_query_args = wp_removable_query_args();
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		$removable_query_args[] = 'paged';
-		$current_url = remove_query_arg( $removable_query_args, $current_url );
 		$defaults = [
-			'base'               => add_query_arg( [ 'paged' => '%#%' ], $current_url ), // http://example.com/all_posts.php%_% : %_% is replaced by format (below).
+			'base'               => add_query_arg( [ 'paged' => '%#%' ], $this->current_url ), // http://example.com/all_posts.php%_% : %_% is replaced by format (below).
 			'format'             => 'paged=%#%', // ?page=%#% : %#% is replaced by the page number.
 			'total'              => count( $this->items ),
 			'current'            => $this->get_pagenum(),
@@ -1033,9 +1050,6 @@ class SXP_List_Table {
 	public function print_column_headers( $with_id = true ) {
 		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
 		
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		$current_url = remove_query_arg( 'paged', $current_url );
-		
 		if ( isset( $_GET['orderby'] ) ) {
 			$current_orderby = $_GET['orderby'];
 		} else {
@@ -1085,7 +1099,7 @@ class SXP_List_Table {
 					$class[] = $desc_first ? 'asc' : 'desc';
 				}
 				
-				$column_display_name = '<a href="' . esc_url( add_query_arg( compact( 'orderby', 'order' ), $current_url ) ) . '"><span>' . $column_display_name . '</span></a>';
+				$column_display_name = '<a href="' . esc_url( add_query_arg( compact( 'orderby', 'order' ), $this->current_url ) ) . '"><span>' . $column_display_name . '</span></a>';
 			}
 			
 			$tag   = ( 'cb' === $column_key ) ? 'td' : 'th';
@@ -1108,42 +1122,47 @@ class SXP_List_Table {
 		$singular = $this->_args['singular'];
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
-		<div class="sxp-list-table">
-			<?php
-			if ( $this->_args['table_nav']['top'] ) {
-				$this->display_tablenav( 'top' );
-			}
-			?>
-			<div class="clearfix"></div>
-			<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
-				<?php if ( $this->_args['thead'] ) { ?>
-					<thead>
-					<tr>
-						<?php $this->print_column_headers(); ?>
-					</tr>
-					</thead>
-				<?php } ?>
+		<form action="<?php echo esc_url( $this->current_url ); ?>">
+			<div class="sxp-list-table">
+				<?php
+				if ( $this->_args['table_nav']['top'] ) {
+					$this->display_tablenav( 'top' );
+				}
+				?>
+				<div class="clearfix"></div>
+				<table id="<?php echo esc_attr( $this->uid ); ?>" class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+					<?php if ( $this->_args['thead'] ) { ?>
+						<thead>
+						<tr>
+							<?php $this->print_column_headers(); ?>
+						</tr>
+						</thead>
+					<?php } ?>
+					
+					<tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
+					<?php $this->display_rows_or_placeholder(); ?>
+					</tbody>
+					
+					<?php if ( $this->_args['tfoot'] ) { ?>
+						<tfoot>
+						<tr>
+							<?php $this->print_column_headers( false ); ?>
+						</tr>
+						</tfoot>
+					<?php } ?>
 				
-				<tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
-				<?php $this->display_rows_or_placeholder(); ?>
-				</tbody>
-				
-				<?php if ( $this->_args['tfoot'] ) { ?>
-					<tfoot>
-					<tr>
-						<?php $this->print_column_headers( false ); ?>
-					</tr>
-					</tfoot>
-				<?php } ?>
-			
-			</table>
-			<div class="sxp-clearfix"></div>
-			<?php
-			if ( $this->_args['table_nav']['bottom'] ) {
-				$this->display_tablenav( 'bottom' );
-			}
-			?>
-		</div>
+				</table>
+				<div class="clearfix"></div>
+				<?php
+				if ( $this->_args['table_nav']['pagination'] ) {
+					$this->display_tablenav( 'pagination' );
+				}
+				if ( $this->_args['table_nav']['bottom'] ) {
+					$this->display_tablenav( 'bottom' );
+				}
+				?>
+			</div>
+		</form>
 		<?php
 	}
 	
@@ -1167,10 +1186,10 @@ class SXP_List_Table {
 		}
 		if ( 'top' === $which ) {
 			?>
-			<div class="sxp-list-table-top" style="display:none;">
+			<div class="sxp-list-table-top">
 				<div class="sxp-customer-search">
-					<label for="sxp-customer-search" class="screen-reader-text"><?php __('Search Customer', 'salexpresso'); ?></label>
-					<input type="text" id="sxp-customer-search" placeholder="Search Customers">
+					<label for="sxp-customer-search" class="screen-reader-text"><?php esc_html_e('Search Customer', 'salexpresso'); ?></label>
+					<input type="text" id="sxp-customer-search" placeholder="<?php esc_html_e( 'Search', 'salexpresso' ); ?>">
 				</div><!-- end .sxp-customer-search -->
 				<div class="sxp-customer-btn-wrapper">
 					<?php $this->table_actions(); ?>
@@ -1181,12 +1200,16 @@ class SXP_List_Table {
 			<!-- /.clearfix -->
 			<?php
 		}
-		if ( 'bottom' === $which ) {
+		if ( 'pagination' === $which ) {
 			?>
 			<div class="sxp-pagination-wrapper">
 				<?php $this->pagination( $which ); ?>
 			</div><!-- end .sxp-paginaation-wrapper -->
-			<div class="sxp-bottom-wrapper">
+			<?php
+		}
+		if ( 'bottom' === $which ) {
+			?>
+			<div class="sxp-bottom-wrapper" data-list_table="<?php echo esc_attr( $this->uid ); ?>" style="display: block;">
 				<div class="sxp-selected-container">
 					<?php if ( $this->has_items() ) : ?>
 						<?php $this->bulk_actions( $which ); ?>
@@ -1194,7 +1217,7 @@ class SXP_List_Table {
 							<a href="#" class="sxp-remove-select">
 								<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="<?php esc_attr_e( 'Remove selection', 'salexpresso' ); ?>">
 							</a>
-							<a href="#" class="sxp-selected"><span>2</span> Rows Selected</a>
+							<a href="#" class="sxp-selected"><span>0</span> <?php esc_html_e( 'Rows Selected', 'salexpresso' ); ?></a>
 						</div>
 						<div class="sxp-remove-customer">
 							<a href="#"><?php esc_html_e( 'Delete', 'salexpresso' ); ?></a>
@@ -1202,15 +1225,39 @@ class SXP_List_Table {
 					<?php endif; ?>
 				</div><!-- end .sxp-selected-container -->
 			</div><!-- end .sxp-bottom-wrapper -->
+			<script>
+				(function($){
+					$(document).on('change', '')
+				})(jQuery);
+			</script>
 			<?php
 		}
 	}
 	
+	protected function set_table_actions() {
+		$this->table_actions = [];
+	}
+	
 	protected function table_actions() {
-		?>
-		<a href="#" class="sxp-customer-type-btn sxp-btn sxp-btn-default"><i data-feather="plus"></i> Customer Type Rules</a>
-		<a href="#" class="sxp-customer-add-btn sxp-btn sxp-btn-primary"><i data-feather="plus"></i> Add New Customer</a>
-		<?php
+		$this->table_actions = $this->set_table_actions();
+		if ( ! is_array( $this->table_actions ) || empty( $this->table_actions ) ) {
+			return;
+		}
+		foreach ( $this->table_actions as $action ) {
+			if ( ! isset( $action['link'], $action['icon'], $action['label'] ) ) {
+				continue;
+			}
+			if ( ! isset( $action['type'] ) || ( isset( $action['type'] ) && empty( $action['type'] ) ) ) {
+				$action['type'] = 'default';
+			}
+			printf(
+				'<a href="%s" class="sxp-customer-type-btn sxp-btn sxp-btn-%s"><i data-feather="%s"></i> %s</a>',
+				esc_url( $action['link'] ),
+				esc_attr( $action['type'] ),
+				esc_attr( $action['icon'] ),
+				esc_html( $action['label'] )
+			);
+		}
 	}
 	
 	/**

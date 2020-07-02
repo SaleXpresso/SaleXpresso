@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use SaleXpresso\SXP_User_Taxonomy;
 
+// Shadow Copy.
 if ( ! function_exists( 'get_user_taxonomy_post_type' ) ) {
 	/**
 	 * Get the post type of shadow copy post for WP User.
@@ -36,7 +37,6 @@ if ( ! function_exists( 'get_user_taxonomy_post' ) ) {
 	 * @return int|false
 	 */
 	function get_user_taxonomy_post( $user_id, $create = false ) {
-		global $wpdb;
 		$user_id = absint( $user_id );
 		$user    = get_userdata( $user_id );
 		if ( false === $user ) {
@@ -47,6 +47,7 @@ if ( ! function_exists( 'get_user_taxonomy_post' ) ) {
 		if ( is_wp_post( $shadow_copy ) && SXP_User_Taxonomy::POST_TYPE === $shadow_copy->post_type ) {
 			return $shadow_copy->ID;
 		}
+		global $wpdb;
 		// search post table for shadow copy.
 		$meta_query = get_meta_sql(
 			[
@@ -99,9 +100,10 @@ if ( ! function_exists( 'create_user_taxonomy_post' ) ) {
 			}
 			// insert the shadow post.
 			$sh = wp_insert_post( [
-				'post_title' => $user->display_name,
-				'post_name'  => 'shadow-copy-' . $user->user_login,
-				'post_type'  => SXP_User_Taxonomy::POST_TYPE,
+				'post_title'  => $user->display_name,
+				'post_name'   => 'shadow-copy-' . $user->user_login,
+				'post_type'   => SXP_User_Taxonomy::POST_TYPE,
+				'post_status' => 'publish',
 			] );
 			if ( is_wp_error( $sh ) ) {
 				if ( $wp_error ) {
@@ -179,6 +181,8 @@ if ( ! function_exists( 'delete_user_taxonomy_post' ) ) {
 		return false;
 	}
 }
+
+// Taxonomy.
 if ( ! function_exists( 'get_user_taxonomies' ) ) {
 	/**
 	 * Get All Users Taxonomies.
@@ -432,6 +436,368 @@ if ( ! function_exists( 'display_user_tags_meta_box' ) ) {
 			</tr>
 		</table>
 		<?php
+	}
+}
+
+// Terms.
+if ( ! function_exists( 'wp_get_user_terms' ) ) {
+	/**
+	 * Retrieves the terms for a user.
+	 *
+	 * @param int          $user_id  User ID.
+	 * @param string|array $taxonomy The taxonomy slug or array of slugs for which to retrieve terms.
+	 * @param array        $args     {
+	 *     Optional. Term query parameters. See WP_Term_Query::__construct() for supported arguments.
+	 *
+	 *     @type string $fields Term fields to retrieve. Default 'all'.
+	 * }
+	 * @return array|int[]|WP_Term[]|WP_Error Array of WP_Term objects on success or empty array if no terms were found.
+	 *                        WP_Error object if `$taxonomy` doesn't exist.
+	 */
+	function wp_get_user_terms( $user_id, $taxonomy, $args = [] ) {
+		$sh       = (int) get_user_taxonomy_post( (int) $user_id, false );
+		$defaults = [ 'fields' => 'all' ];
+		$args     = wp_parse_args( $args, $defaults );
+		
+		return wp_get_object_terms( $sh, $taxonomy, $args );
+	}
+}
+if ( ! function_exists( 'sxp_get_user_groups' ) ) {
+	/**
+	 * Retrieve the groups for a user.
+	 *
+	 * There is only one default for this function, called 'fields' and by default
+	 * is set to 'all'. There are other defaults that can be overridden in
+	 * sxp_get_user_groups().
+	 *
+	 * @param int   $user_id User ID.
+	 * @param array $args    Optional. Tag query parameters. Default empty array.
+	 *                       See WP_Term_Query::__construct() for supported arguments.
+	 * @return array|int[]|WP_Term[]|WP_Error Array of WP_Term objects on success or empty array if no tags were found.
+	 *                        WP_Error object if 'post_tag' taxonomy doesn't exist.
+	 */
+	function sxp_get_user_groups( $user_id, $args = [] ) {
+		return wp_get_user_terms( $user_id, 'user_group', $args );
+	}
+}
+if ( ! function_exists( 'sxp_get_user_group' ) ) {
+	/**
+	 * Retrieve the groups for a user.
+	 *
+	 * There is only one default for this function, called 'fields' and by default
+	 * is set to 'all'. There are other defaults that can be overridden in
+	 * sxp_get_user_groups().
+	 *
+	 * @param int|WP_User $user   User ID.
+	 * @param string      $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
+	 *                            a WP_Term object, an associative array, or a numeric array, respectively. Default OBJECT.
+	 * @param string      $filter Optional, default is raw or no WordPress defined filter will applied.
+	 *
+	 * @return WP_Term|array|WP_Error|false Object of the type specified by `$output` on success. When `$output` is 'OBJECT',
+	 *                                     a WP_Term instance is returned. If taxonomy does not exist, a WP_Error is
+	 *                                     returned. Returns false for miscellaneous failure.
+	 * @see sanitize_term_field() The $context param lists the available values for get_term_by() $filter param.
+	 *
+	 */
+	function sxp_get_user_group( $user, $output = OBJECT, $filter = 'raw' ) {
+		if ( $user instanceof WP_User ) {
+			$user = $user->ID;
+		}
+		$user   = absint( $user );
+		$groups = sxp_get_user_groups( $user, [ 'fields' => 'ids' ] );
+		if ( is_wp_error( $groups ) ) {
+			return $groups;
+		}
+		if ( ! empty( $groups ) ) {
+			return get_term( $groups[0], 'user_group', $output, $filter );
+		}
+		return false;
+	}
+}
+if ( ! function_exists( 'sxp_get_user_types' ) ) {
+	/**
+	 * Retrieve the types for a user.
+	 *
+	 * There is only one default for this function, called 'fields' and by default
+	 * is set to 'all'. There are other defaults that can be overridden in
+	 * sxp_get_user_groups().
+	 *
+	 * @param int   $user_id User ID.
+	 * @param array $args    Optional. Tag query parameters. Default empty array.
+	 *                       See WP_Term_Query::__construct() for supported arguments.
+	 * @return array|int[]|WP_Term[]|WP_Error Array of WP_Term objects on success or empty array if no tags were found.
+	 *                        WP_Error object if 'post_tag' taxonomy doesn't exist.
+	 */
+	function sxp_get_user_types( $user_id, $args = [] ) {
+		return wp_get_user_terms( $user_id, 'user_type', $args );
+	}
+}
+if ( ! function_exists( 'sxp_get_user_tags' ) ) {
+	/**
+	 * Retrieve the tags for a user.
+	 *
+	 * There is only one default for this function, called 'fields' and by default
+	 * is set to 'all'. There are other defaults that can be overridden in
+	 * sxp_get_user_groups().
+	 *
+	 * @param int   $user_id User ID.
+	 * @param array $args    Optional. Tag query parameters. Default empty array.
+	 *                       See WP_Term_Query::__construct() for supported arguments.
+	 * @return array|int[]|WP_Term[]|WP_Error Array of WP_Term objects on success or empty array if no tags were found.
+	 *                        WP_Error object if 'post_tag' taxonomy doesn't exist.
+	 */
+	function sxp_get_user_tags( $user_id, $args = [] ) {
+		return wp_get_user_terms( $user_id, 'user_tag', $args );
+	}
+}
+if ( ! function_exists( 'sxp_get_term_background_color' ) ) {
+	/**
+	 * Get Background Color For Term.
+	 *
+	 * @param WP_Term|int $term Term
+	 *
+	 * @return mixed
+	 */
+	function sxp_get_term_background_color( $term ) {
+		if ( $term instanceof WP_Term ) {
+			$term = $term->term_id;
+		}
+		return get_term_meta( $term, '__sxp_term_color', true );
+	}
+}
+
+// Set User Terms.
+if ( ! function_exists( 'sxp_set_user_groups' ) ) {
+	function sxp_set_user_groups( $user_id, $groups, $append = false ) {
+		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
+		return wp_set_post_terms( $sh, $groups, 'user_group', $append );
+	}
+}
+if ( ! function_exists( 'sxp_set_user_types' ) ) {
+	function sxp_set_user_types( $user_id, $types = '', $append = false ) {
+		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
+		return wp_set_post_terms( $sh, $types, 'user_type', $append );
+	}
+}
+if ( ! function_exists( 'sxp_set_user_tags' ) ) {
+	function sxp_set_user_tags( $user_id, $tags = '', $append = false ) {
+		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
+		return wp_set_post_terms( $sh, $tags, 'user_type', $append );
+	}
+}
+
+// CRUD.
+if ( ! function_exists( 'sxp_add_user_group' ) ) {
+	/**
+	 * Create New User Group Term.
+	 *
+	 * @param string $name
+	 *
+	 * @return int|WP_Error
+	 */
+	function sxp_add_user_group( $name ) {
+		$id = wp_create_term( $name, 'user_group' );
+		if ( is_wp_error( $id ) ) {
+			return $id;
+		}
+		return $id['term_id'];
+	}
+}
+if ( ! function_exists( 'sxp_add_user_type' ) ) {
+	/**
+	 * Create New User Type Term.
+	 *
+	 * @param string $name
+	 *
+	 * @return int|WP_Error
+	 */
+	function sxp_add_user_type( $name ) {
+		$id = wp_create_term( $name, 'user_type' );
+		if ( is_wp_error( $id ) ) {
+			return $id;
+		}
+		return $id['term_id'];
+	}
+}
+if ( ! function_exists( 'sxp_add_user_tag' ) ) {
+	/**
+	 * Create New User Tag Term.
+	 *
+	 * @param string $name
+	 *
+	 * @return int|WP_Error
+	 */
+	function sxp_add_user_tag( $name ) {
+		$id = wp_create_term( $name, 'user_tag' );
+		if ( is_wp_error( $id ) ) {
+			return $id;
+		}
+		return $id['term_id'];
+	}
+}
+if ( ! function_exists( 'sxp_update_user_group' ) ) {
+	/**
+	 * Update User Group Term.
+	 *
+	 * @param int $term_id
+	 * @param array $args
+	 *
+	 * @return int|WP_Error
+	 */
+	function sxp_update_user_group( $term_id, $args ) {
+		$id = wp_update_term( $term_id, 'user_group', $args );
+		if ( is_wp_error( $id ) ) {
+			return $id;
+		}
+		return $id['term_id'];
+	}
+}
+if ( ! function_exists( 'sxp_update_user_type' ) ) {
+	/**
+	 * Update User Type Term.
+	 *
+	 * @param int $term_id
+	 * @param array $args
+	 *
+	 * @return int|WP_Error
+	 */
+	function sxp_update_user_type( $term_id, $args ) {
+		$id = wp_update_term( $term_id, 'user_type', $args );
+		if ( is_wp_error( $id ) ) {
+			return $id;
+		}
+		return $id['term_id'];
+	}
+}
+if ( ! function_exists( 'sxp_update_user_tag' ) ) {
+	/**
+	 * Update User Tag Term.
+	 *
+	 * @param int $term_id
+	 * @param array $args
+	 *
+	 * @return int|WP_Error
+	 */
+	function sxp_update_user_tag( $term_id, $args ) {
+		$id = wp_update_term( $term_id, 'user_tag', $args );
+		if ( is_wp_error( $id ) ) {
+			return $id;
+		}
+		return $id['term_id'];
+	}
+}
+if ( ! function_exists( 'sxp_delete_user_group' ) ) {
+	/**
+	 * Delete User Group.
+	 *
+	 * @param int $term_id
+	 *
+	 * @return bool|int|WP_Error
+	 */
+	function sxp_delete_user_group( $term_id ) {
+		return wp_delete_term( $term_id, 'user_group' );
+	}
+}
+if ( ! function_exists( 'sxp_delete_user_type' ) ) {
+	/**
+	 * Delete User Type.
+	 *
+	 * @param int $term_id
+	 *
+	 * @return bool|int|WP_Error
+	 */
+	function sxp_delete_user_type( $term_id ) {
+		return wp_delete_term( $term_id, 'user_tag' );
+	}
+}
+if ( ! function_exists( 'sxp_delete_user_tag' ) ) {
+	/**
+	 * Delete User Tag.
+	 *
+	 * @param int $term_id
+	 *
+	 * @return bool|int|WP_Error
+	 */
+	function sxp_delete_user_tag( $term_id ) {
+		return wp_delete_term( $term_id, 'user_tag' );
+	}
+}
+
+// Term rules.
+if ( ! function_exists( 'sxp_get_term_rules' ) ) {
+	/**
+	 * Get Saved Rules for Term.
+	 *
+	 * @param WP_Term|int $term Term
+	 *
+	 * @return array
+	 */
+	function sxp_get_term_rules( $term ) {
+		if ( $term instanceof WP_Term ) {
+			$term = $term->term_id;
+		}
+		$rules = get_term_meta( $term, '__sxp_term_rules', true );
+		return $rules ? (array) $rules : [];
+	}
+}
+if ( ! function_exists( 'sxp_save_term_rules' ) ) {
+	/**
+	 * Save Rules for Term.
+	 *
+	 * @param WP_Term|int $term Term
+	 * @param array $data Rule data.
+	 *
+	 * @return bool|int|WP_Error
+	 */
+	function sxp_save_term_rules( $term, $data ) {
+		if ( $term instanceof WP_Term ) {
+			$term = $term->term_id;
+		}
+		return update_term_meta( $term, '__sxp_term_rules', $data );
+	}
+}
+
+// Mics.
+if ( ! function_exists( 'sxp_get_all_user_groups' ) ) {
+	/**
+	 * Get All Groups.
+	 *
+	 * @return WP_Term[]|WP_Error List of WP_Term instances and their children. Will return WP_Error, if any of taxonomies
+	 *                                do not exist.
+	 */
+	function sxp_get_all_user_groups() {
+		return get_terms( [
+			'taxonomy'   => 'user_group',
+			'hide_empty' => false,
+		] );
+	}
+}
+if ( ! function_exists( 'sxp_get_all_user_types' ) ) {
+	/**
+	 * Get All Types.
+	 *
+	 * @return WP_Term[]|WP_Error List of WP_Term instances and their children. Will return WP_Error, if any of taxonomies
+	 *                                do not exist.
+	 */
+	function sxp_get_all_user_types() {
+		return get_terms( [
+			'taxonomy'   => 'user_type',
+			'hide_empty' => false,
+		] );
+	}
+}
+if ( ! function_exists( 'sxp_get_all_user_tags' ) ) {
+	/**
+	 * Get All Tags.
+	 *
+	 * @return WP_Term[]|WP_Error List of WP_Term instances and their children. Will return WP_Error, if any of taxonomies
+	 *                                do not exist.
+	 */
+	function sxp_get_all_user_tags() {
+		return get_terms( [
+			'taxonomy'   => 'user_tag',
+			'hide_empty' => false,
+		] );
 	}
 }
 // @todo use get_tax_sql() to add tax args to user query

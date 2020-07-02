@@ -293,4 +293,35 @@ if ( ! function_exists( 'is_wp_post' ) ) {
 		return ( $thing instanceof WP_Post );
 	}
 }
+if ( ! function_exists( 'sxp_views' ) ) {
+	/**
+	 * Render view (pug) files
+	 *
+	 * @param array $args {
+	 *      Args.
+	 *      @type string $view  View file name without extension.
+	 *      @type array  $data  [optional] variables to pass to the view file.
+	 *      @type string $path  [optional] path to find the view file relative to includes/views.
+	 *      @type bool   $echo return or print the output..
+	 * }
+	 *
+	 * @return string|void
+	 */
+	function sxp_views( $args ) {
+		$args = wp_parse_args( $args, [
+			'data' => [],
+			'path' => '',
+			'echo' => true,
+		] );
+		if ( ! isset( $args['view'] ) || ( isset( $args['view'] ) && empty( $args['view'] ) ) ) {
+			return;
+		}
+		$engine = SaleXpresso\SXP_Views::get_instance( SXP() );
+		if ( $args['echo'] ) {
+			$engine->display( $args['view'], $args['data'], $args['path'] );
+		} else {
+			return $engine->render( $args['view'], $args['data'], $args['path'], false );
+		}
+	}
+}
 // End of file helper.php.

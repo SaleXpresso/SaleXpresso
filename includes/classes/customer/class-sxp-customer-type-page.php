@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package SaleXpresso\Customer
  */
-class SXP_Customers_Page extends SXP_Admin_Page {
+class SXP_Customer_Type_Page extends SXP_Admin_Page {
 	
 	/**
 	 * Add new button url for current page.
@@ -50,6 +50,7 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	}
 	
 	public function page_actions() {
+		// @TODO Save action for per_page.
 		add_screen_option(
 			'per_page',
 			[
@@ -220,4 +221,4 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	}
 }
 
-// End of file class-sxp-customers-page.php.
+// End of file class-sxp-customer-type-page.php.

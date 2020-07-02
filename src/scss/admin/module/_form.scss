@@ -1,0 +1,85 @@
+/**
+ * SaleXpresso Form Module
+ *
+ * @author SaleXpresso <support@salexpresso.com>
+ * @package SaleXpresso
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+.sxp {
+	&-form {
+		position: relative;
+		display: block;
+		.form-top,
+		.form-body,
+		.form-bottom {
+			position: relative;
+			display: block;
+		}
+		.section {
+			.header {
+				color: $paragraph-color;
+				font-weight: 700;
+				position: relative;
+				line-height: 1.25rem;
+				margin: 0 0 1rem 0;
+				svg.feather {
+					color: $heading-color;
+				}
+			}
+		}
+		&-group,
+		input[type="color"],
+		input[type="date"],
+		input[type="datetime-local"],
+		input[type="datetime"],
+		input[type="email"],
+		input[type="month"],
+		input[type="number"],
+		input[type="password"],
+		input[type="search"],
+		input[type="tel"],
+		input[type="text"],
+		input[type="time"],
+		input[type="url"],
+		input[type="week"],
+		select,
+		textarea {
+			color: $text-color;
+			border: 1px solid $table-checkbox-input;
+			height: 40px;
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0 auto;
+		}
+		&-group {
+			border-radius: 4px;
+			padding-left: 16px;
+			input[type="number"] {
+				height: 38px;
+				border: 1px solid transparent;
+				box-shadow: none;
+			}
+		}
+		.title-edit,
+		input[type="text"].title-edit {
+			color: $heading-color;
+			background: $heading-bg;
+			padding: 14px 16px;
+			border-radius: 4px;
+			line-height: 20px;
+			height: auto;
+			border: none;
+			width: 100%;
+		}
+		
+		.save-wrapper {
+			float: right;
+			line-height: 48px;
+			margin-top: 20px;
+		}
+		.btn-save {
+			margin-left: 32px;
+		}
+	}
+}

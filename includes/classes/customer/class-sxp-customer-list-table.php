@@ -52,12 +52,23 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		// using wc report api data store.
 		$reportStore = new CustomerReportDataStore();
 		$per_page    = $this->get_items_per_page( 'customers_per_page' );
+		$order_by    = 'date_last_order';
+		$sort_order  = 'DESC';
 		
-		$data        = $reportStore->get_data( [
+		// set sorting.
+		if ( isset( $_REQUEST['orderby'] ) ) {
+			$order_by = sanitize_text_field( $_REQUEST['orderby'] );
+		}
+		
+		if ( isset( $_REQUEST['order'] ) ) {
+			$sort_order = 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC';
+		}
+		
+		$data = $reportStore->get_data( [
 			'per_page'     => $per_page,
 			'page'         => $this->get_pagenum(),
-			'order'        => 'DESC',
-			'orderby'      => 'date_last_order', // date_registered
+			'order'        => $sort_order,
+			'orderby'      => $order_by, // date_registered
 			'order_before' => TimeInterval::default_before(),
 			'order_after'  => TimeInterval::default_after(),
 			'fields'       => '*',
@@ -77,8 +88,8 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 	
 	public function column_cb( $item ) {
 		return sprintf(
-			'<label class="screen-reader-text" for="customer_id_%1$s">%2$s</label>' .
-			'<input type="checkbox" name="users[]" id="customer_id_%1$s" class="%3$s" value="%1$s" />',
+			'<label class="screen-reader-text" for="customer_%1$s">%2$s</label>' .
+			'<input type="checkbox" name="users[]" id="customer_%1$s" class="%3$s" value="%1$s" />',
 			$item['id'],
 			/* translators: %s: User Display Name. */
 			sprintf( __( 'Select %s', 'salexpresso' ), $item['name'] ),
@@ -96,24 +107,52 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 					],
 					' '
 				);
+				$profile_tab = '#';
+				if ( $item['user_id'] ) {
+					$profile_tab = esc_url_raw( admin_url( 'admin.php?page=sxp-customer&tab=customer-profile&customer=' . $item['user_id'] ) );
+				}
+				
 				return sprintf(
 					'<div class="sxp-customer-desc">
 							<div class="sxp-customer-desc-thumbnail">%s</div><!-- end .sxp-customer-desc-thumbnail -->
 							<div class="sxp-customer-desc-details">
-								<p class="sxp-customer-desc-details-name">%s</p>
+								<a href="%s">
+									<p class="sxp-customer-desc-details-name">%s</p>
+								</a>
 								<p class="sxp-customer-desc-details-location">%s</p>
 							</div><!-- end .sxp-customer-desc-detaisl -->
 						</div><!-- end .sxp-customer-desc -->',
-					get_avatar( $item['email'], 40, '', $item['name'] ),
+					sprintf( '<a href="%s">%s</a>', $profile_tab, get_avatar( $item['email'], 40, '', $item['name'] ) ),
+					$profile_tab,
 					$item['name'],
 					$address
 				);
 				break;
 			case 'customers-type':
-				return 'type';
+				$type = sxp_get_user_types( $item['user_id'] );
+				if ( ! empty( $type ) && ! is_wp_error( $type ) ) {
+					$type = $type[0];
+					$color = sxp_get_term_background_color( $type );
+					
+					return sprintf( '<a href="#%s"  style="background: %s">%s</a>', esc_url( $type->term_id ), esc_attr( $color ), esc_html( $type->name ) );
+				}
 				break;
 			case 'customer-tag':
-				return 'tag';
+				$output = '<ul class="sxp-tag-list">';
+				if ( $item['user_id'] ) {
+					$tags = sxp_get_user_tags( $item['user_id'] );
+					if ( ! empty( $tags ) && ! is_wp_error( $tags ) ) {
+						$output .= sprintf( '<li><a href="#%s">%s</a></li>', esc_url( $tags[0]->term_id ), esc_html( $tags[0]->name ) );
+						array_shift( $tags );
+						if ( ! empty( $tags ) ) {
+							$output .= sprintf( '<li><a href="#">%d</a></li>', count( $tags ) );
+						}
+					}
+				} else {
+					$output .= sprintf( '<li><a href="#">%s</a></li>', esc_html_x( 'Guest', 'Guest Customer', 'salexpresso' ) );
+				}
+				$output .= '</ul>';
+				return $output;
 				break;
 			case 'orders_count':
 				return $item['orders_count'];

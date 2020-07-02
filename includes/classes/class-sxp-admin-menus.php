@@ -38,10 +38,13 @@ final class SXP_Admin_Menus {
 	 */
 	private $renderer_map = [
 		'sxp-customer'  => 'SaleXpresso\Customer\SXP_Customers_Page',
-		'sxp-dashboard' => 'SaleXpresso\Dashboard\SXP_Dashboard_Page',
-		'sxp-product'   => 'SaleXpresso\Product\SXP_Product_Page',
-		'sxp-order'     => 'SaleXpresso\Order\SXP_Order_Page',
-		'sxp-campaign'  => 'SaleXpresso\Campaign\SXP_Campaign_Page',
+		'sxp-customer-group'  => 'SaleXpresso\Customer\SXP_Customer_Group_Page',
+		'sxp-customer-type'  => 'SaleXpresso\Customer\SXP_Customer_Type_Page',
+		'sxp-customer-tag'  => 'SaleXpresso\Customer\SXP_Customer_Tag_Page',
+//		'sxp-dashboard' => 'SaleXpresso\Dashboard\SXP_Dashboard_Page',
+//		'sxp-product'   => 'SaleXpresso\Product\SXP_Product_Page',
+//		'sxp-order'     => 'SaleXpresso\Order\SXP_Order_Page',
+//		'sxp-campaign'  => 'SaleXpresso\Campaign\SXP_Campaign_Page',
 		'sxp-settings'  => 'SaleXpresso\Settings\SXP_Settings_Page',
 		'sxp-status'    => 'SaleXpresso\Settings\SXP_Status_Page',
 	];
@@ -61,6 +64,9 @@ final class SXP_Admin_Menus {
 	 */
 	private $list_tables = [
 		'sxp-customer'  => 'SaleXpresso\Customer\SXP_Customer_List_Table',
+		'sxp-customer-group'  => 'SaleXpresso\Customer\SXP_Customer_Group_List_Table',
+		'sxp-customer-type'  => 'SaleXpresso\Customer\SXP_Customer_Type_List_Table',
+		'sxp-customer-tag'  => 'SaleXpresso\Customer\SXP_Customer_Tag_List_Table',
 	];
 	
 	/**
@@ -109,10 +115,15 @@ final class SXP_Admin_Menus {
 	 * Initialize Renderer
 	 */
 	public function init() {
-		global $plugin_page;
+		global $plugin_page, $hook_suffix;
+		if ( is_null( $hook_suffix ) ) {
+			return;
+		}
+
 		if ( false !== strpos( $plugin_page, 'sxp-' ) ) {
-			
-			if ( isset( $this->list_tables[ $plugin_page ] ) && ! ( $this->list_table instanceof SXP_List_Table ) ) {
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : '';
+			$disallowed_list_table = [ 'add-new', 'edit' ];
+			if ( ! in_array( $action, $disallowed_list_table ) && isset( $this->list_tables[ $plugin_page ] ) && ! ( $this->list_table instanceof SXP_List_Table ) ) {
 				$this->list_table = new $this->list_tables[ $plugin_page ]();
 			}
 			
@@ -148,17 +159,31 @@ final class SXP_Admin_Menus {
 			$menu[] = array( '', 'read', 'separator-salexpresso', '', 'wp-menu-separator salexpresso' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 		
-		add_menu_page( __( 'SaleXpresso', 'salexpresso' ), __( 'SaleXpresso', 'salexpresso' ), 'manage_woocommerce', 'salexpresso', null, null, '55.5' );
-		add_submenu_page( 'salexpresso', __( 'Dashboard', 'salexpresso' ), __( 'Dashboard', 'salexpresso' ), 'manage_woocommerce', 'sxp-dashboard', array( $this, 'render_page' ) );
-		add_submenu_page( 'salexpresso', __( 'Customer List', 'salexpresso' ), __( 'Customer', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer', array( $this, 'render_page' ) );
-		add_submenu_page( 'salexpresso', __( 'Products', 'salexpresso' ), __( 'Products', 'salexpresso' ), 'manage_woocommerce', 'sxp-product', array( $this, 'render_page' ) );
-		add_submenu_page( 'salexpresso', __( 'Orders', 'salexpresso' ), __( 'Orders', 'salexpresso' ), 'manage_woocommerce', 'sxp-order', array( $this, 'render_page' ) );
-		add_submenu_page( 'salexpresso', __( 'Campaign', 'salexpresso' ), __( 'Campaign', 'salexpresso' ), 'manage_woocommerce', 'sxp-campaign', array( $this, 'render_page' ) );
-
-		$settings_page = add_submenu_page( 'salexpresso', __( 'SaleXpresso Settings', 'salexpresso' ), __( 'Settings', 'salexpresso' ), 'manage_woocommerce', 'sxp-settings', [ $this, 'render_page' ] );
-		add_action( 'load-' . $settings_page, array( $this, 'settings_page_init' ) );
+		$hook = add_menu_page( __( 'SaleXpresso', 'salexpresso' ), __( 'SaleXpresso', 'salexpresso' ), 'manage_woocommerce', 'salexpresso', null, null, '55.5' );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+		$hook = add_submenu_page( 'salexpresso', __( 'Dashboard', 'salexpresso' ), __( 'Dashboard', 'salexpresso' ), 'manage_woocommerce', 'sxp-dashboard', array( $this, 'render_page' ) );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+		$hook = add_submenu_page( 'salexpresso', __( 'Customer List', 'salexpresso' ), __( 'Customer', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer', array( $this, 'render_page' ) );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+		$hook = add_submenu_page( 'salexpresso', __( 'Customer Group', 'salexpresso' ), __( 'Customer Group', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer-group', array( $this, 'render_page' ) );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+		$hook = add_submenu_page( 'salexpresso', __( 'Customer Type', 'salexpresso' ), __( 'Customer Type', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer-type', array( $this, 'render_page' ) );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+		$hook = add_submenu_page( 'salexpresso', __( 'Customer Tag', 'salexpresso' ), __( 'Customer Tag', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer-tag', array( $this, 'render_page' ) );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+//		$hook = add_submenu_page( 'salexpresso', __( 'Products', 'salexpresso' ), __( 'Products', 'salexpresso' ), 'manage_woocommerce', 'sxp-product', array( $this, 'render_page' ) );
+//		add_action( 'load-' . $hook, [ $this, 'init' ] );
+//		$hook = add_submenu_page( 'salexpresso', __( 'Orders', 'salexpresso' ), __( 'Orders', 'salexpresso' ), 'manage_woocommerce', 'sxp-order', array( $this, 'render_page' ) );
+//		add_action( 'load-' . $hook, [ $this, 'init' ] );
+//		$hook = add_submenu_page( 'salexpresso', __( 'Campaign', 'salexpresso' ), __( 'Campaign', 'salexpresso' ), 'manage_woocommerce', 'sxp-campaign', array( $this, 'render_page' ) );
+//		add_action( 'load-' . $hook, [ $this, 'init' ] );
 		
-		add_submenu_page( 'salexpresso', __( 'SaleXpresso status', 'salexpresso' ), __( 'Status', 'salexpresso' ), 'manage_woocommerce', 'sxp-status', array( $this, 'render_page' ) );
+		$hook = add_submenu_page( 'salexpresso', __( 'SaleXpresso Settings', 'salexpresso' ), __( 'Settings', 'salexpresso' ), 'manage_woocommerce', 'sxp-settings', [ $this, 'render_page' ] );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
+		add_action( 'load-' . $hook, array( $this, 'settings_page_init' ) );
+		
+		$hook = add_submenu_page( 'salexpresso', __( 'SaleXpresso status', 'salexpresso' ), __( 'Status', 'salexpresso' ), 'manage_woocommerce', 'sxp-status', array( $this, 'render_page' ) );
+		add_action( 'load-' . $hook, [ $this, 'init' ] );
 	}
 	
 	/**
@@ -276,7 +301,11 @@ final class SXP_Admin_Menus {
 	 * @return int|bool
 	 */
 	public function set_screen_option( $status, $option, $value ) {
-		if ( in_array( $option, array( 'salexpresso_keys_per_page', 'salexpresso_webhooks_per_page' ), true ) ) {
+		$options = [
+			'customers_per_page',
+			'customer_groups_per_page'
+		];
+		if ( in_array( $option, $options, true ) ) {
 			return $value;
 		}
 		

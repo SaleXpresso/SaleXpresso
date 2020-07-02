@@ -17,7 +17,6 @@
 		&-single {
 			padding: 12px 0;
 			position: relative;
-
 			&::after {
 				content: "";
 				position: absolute;
@@ -26,30 +25,12 @@
 				bottom: 0;
 				border-bottom: 1px dashed $customer-rule-border;
 			}
-
 			&:first-child {
 				padding-top: 0;
 			}
 		}
 		&-container {
 			margin-top: 2rem;
-		}
-		&-section-header {
-			color: $paragraph-color;
-			font-weight: 700;
-			position: relative;
-			line-height: 1.25rem;
-			margin: 0 0 1rem 0;
-			svg.feather {
-				color: $heading-color;
-			}
-		}
-		&-section-title-container {
-			color: $heading-color;
-			background: $heading-bg;
-			padding: 14px 16px;
-			border-radius: 4px;
-			line-height: 20px;
 		}
 		&-add-btn {
 			a {
@@ -67,14 +48,6 @@
 					left: -16px;
 				}*/
 			}
-		}
-		&-save-wrapper {
-			float: right;
-			line-height: 48px;
-			margin-top: 20px;
-		}
-		&-save-btn {
-			margin-left: 32px;
 		}
 	}
 }

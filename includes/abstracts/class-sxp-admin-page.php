@@ -55,6 +55,8 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 */
 	protected $show_page_title_action = false;
 	
+	protected $current_action = '';
+	
 	/**
 	 * Add new button url
 	 *
@@ -75,6 +77,13 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @var array
 	 */
 	protected $tabs = [];
+	
+	/**
+	 * Page Titles.
+	 *
+	 * @var array
+	 */
+	protected $titles = [];
 	
 	/**
 	 * Enable JS Tab Plugin for this page.
@@ -109,14 +118,21 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 		$this->set_page_hookname( $plugin_page );
 		$this->set_page_slug( $plugin_page );
 		$this->set_tabs();
+		$this->set_current_action();
 		$this->set_active_tab();
+		$this->set_page_title();
 		$this->get_flash_messages();
+		
 		$this->add_new_url   = admin_url( 'admin.php?page=' . $this->page_slug );
 		$this->add_new_label = __( 'Add New', 'salexpresso' );
 		// Admin init is already over...
 		// page load (substitute to admin init for current page.
-		if ( $this->page_hookname ) {
+		
+		if ( ! did_action( 'load-' . $this->page_hookname ) ) {
 			add_action( 'load-' . $this->page_hookname, [ $this, 'page_actions' ] );
+		} else {
+			// late bind actions.
+			$this->page_actions();
 		}
 		// Save flash notices for showing on next page load.
 		add_action( 'shutdown', [ $this, 'save_flash_message' ] );
@@ -207,6 +223,19 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	}
 	
 	/**
+	 * Set Current Action
+	 *
+	 * @return void
+	 */
+	public function set_current_action() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['action'] ) ) {
+			$this->current_action = sanitize_text_field( $_GET['action'] );
+		}
+		// phpcs:enable
+	}
+	
+	/**
 	 * Set Current Tab
 	 *
 	 * @return void
@@ -221,7 +250,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			in_array( $_GET['tab'], $tabs )
 		) {
 			$this->current_tab = sanitize_text_field( $_GET['tab'] );
-		} elseif ( is_array( $this->tabs ) && isset( $tabs[0] ) ) {
+		} elseif ( is_array( $this->tabs ) && isset( $tabs[ $tabs[0] ] ) ) {
 			$this->current_tab = $tabs[0];
 		}
 		// phpcs:enable
@@ -248,20 +277,48 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	}
 	
 	/**
+	 * Get Current Page Title for page header.
+	 *
+	 * @return void
+	 */
+	protected function set_page_title() {
+		if ( ! empty( $this->titles ) ) {
+			$new_title = '';
+			if ( isset( $this->titles['actions'], $this->titles['actions'][ $this->current_action ] ) ) {
+				$new_title .= $this->titles['actions'][ $this->current_action ];
+			}
+			if ( isset( $this->titles['tabs'], $this->titles['tabs'][ $this->current_tab ] ) ) {
+				if ( ! empty( $new_title ) ) {
+					$new_title .= ' ‹ ';
+				}
+				$new_title .= $this->titles['tabs'][ $this->current_tab ];
+			}
+			
+			if ( ! empty( $new_title ) ) {
+				add_filter( 'admin_title', static function( $admin_title ) use ( $new_title ) {
+					global $title;
+					$admin_title = str_replace( $title, $new_title, $admin_title );
+					$title = $new_title;
+					return $admin_title;
+				}, 10 );
+			}
+		}
+	}
+	
+	/**
 	 * Get Page title
 	 *
 	 * @return void
 	 */
 	public function render_page_title() {
-		$title = get_admin_page_title();
 		?>
 		<h1 class="wp-heading-inline"><?php echo esc_html(
 			/**
 			 * Filters admin page title
 			 *
-			 * @param string $title
+			 * @param string $title Page Title.
 			 */
-			apply_filters( "salexpresso_admin_{$this->hook_slug}_page_title", $title )
+			apply_filters( "salexpresso_admin_{$this->hook_slug}_page_title", get_admin_page_title() )
 		); ?></h1>
 		<?php
 	}
@@ -310,7 +367,18 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @return bool
 	 */
 	protected function has_tabs() {
-		return ( is_array( $this->tabs ) && count( $this->tabs ) > 1 );
+		if ( is_array( $this->tabs ) && count( $this->tabs ) > 1 ) {
+			$temp = array_filter( $this->tabs, function( $tab ) {
+				if ( ! isset( $tab['label'] ) || ! isset( $tab['content'] ) ) {
+					return false;
+				}
+				if ( empty( $tab['label'] ) || ( isset( $tab['hidden'] ) && true === $tab['hidden'] ) ) {
+					return false;
+				}
+				return true;
+			} );
+		}
+		return false;
 	}
 	
 	/**
@@ -346,7 +414,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @param string[]|string $class Class names to add with the generated class names.
 	 */
 	private function wrapper_classes( $class = '' ) {
-		$classes = [ 'sxp-wrapper', 'sxp-clearfix', $this->page_slug ];
+		$classes = [ 'sxp-wrapper', 'clearfix', $this->page_slug ];
 		if ( $this->has_tabs() ) {
 			$classes[] = 'sxp-has-tabs';
 		}
@@ -394,9 +462,11 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			$this->render_page_header();
 			do_action( "salexpresso_admin_after_{$this->hook_slug}_page_header", $this );
 			do_action( "salexpresso_admin_before_{$this->hook_slug}_page_content_wrapper", $this );
-			$this->render_page_content();
-			do_action( "salexpresso_admin_after_{$this->hook_slug}_page_content_wrapper", $this );
 			?>
+			<div <?php $this->content_classes(); ?>>
+			<?php $this->render_page_content(); ?>
+			</div>
+			<?php do_action( "salexpresso_admin_after_{$this->hook_slug}_page_content_wrapper", $this ); ?>
 		</div>
 		<?php
 	}
@@ -411,20 +481,14 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * Render Page Content Area
 	 */
 	protected function render_page_content() {
-		?>
-		<div <?php $this->content_classes(); ?>>
-			<?php
-			if ( $this->has_tabs() ) {
-				$this->render_page_tab_contents();
-			} else {
-				$keys = array_keys( $this->tabs );
-				if ( is_array( $this->tabs ) && isset( $this->tabs[0] ) ) {
-					$this->exec_tab_cb( $this->tabs[ $this->tabs[0] ]['content'], $keys[0] );
-				}
+		if ( $this->has_tabs() ) {
+			$this->render_page_tab_contents();
+		} else {
+			$keys = array_keys( $this->tabs );
+			if ( is_array( $this->tabs ) && isset( $this->tabs[ $keys[0] ] ) ) {
+				$this->exec_tab_cb( $this->tabs[ $keys[0] ], $keys[0] );
 			}
-			?>
-		</div>
-		<?php
+		}
 	}
 	
 	/**

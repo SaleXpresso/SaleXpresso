@@ -432,6 +432,7 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-file-handler.php';
 		require_once 'interfaces/interface-sxp-admin-page.php';
 		require_once 'abstracts/class-sxp-admin-page.php';
+		require_once 'abstracts/class-sxp-action_rules.php';
 		require_once 'classes/class-sxp-admin-notices.php';
 		require_once 'classes/class-sxp-admin-menus.php';
 		require_once 'classes/class-sxp-assets.php';
@@ -439,14 +440,14 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';
 		require_once 'classes/class-sxp-user-taxonomy.php';
-		require_once 'classes/rules/class-sxp-rules.php';
+		require_once 'classes/class-sxp-expression.php';
 		require_once 'classes/class-sxp-list-table.php';
 		require_once 'classes/class-sxp-views.php';
 		require_once 'classes/class-sxp-settings.php';
 		
 		// Core.
 		require_once 'classes/customer/class-sxp-customer-list-table.php';
-		require_once 'classes/customer/class-sxp-customer-group-table.php';
+		require_once 'classes/customer/class-sxp-customer-group-list-table.php';
 		require_once 'classes/customer/class-sxp-customer-group-rule.php';
 		require_once 'classes/customer/class-sxp-customer-type-table.php';
 		require_once 'classes/customer/class-sxp-customer-type-rule.php';
@@ -458,10 +459,14 @@ final class SaleXpresso {
 		require_once 'classes/order/class-sxp-order-single-table.php';
 		require_once 'classes/campaign/class-sxp-campaign-list-table.php';
 		require_once 'classes/campaign/class-sxp-campaign-new-table.php';
+		require_once 'classes/rules/class-sxp-user-group-action.php';
 		
 		// Admin pages.
 		require_once 'classes/dashboard/class-sxp-dashboard-page.php';
 		require_once 'classes/customer/class-sxp-customers-page.php';
+		require_once 'classes/customer/class-sxp-customer-group-page.php';
+		require_once 'classes/customer/class-sxp-customer-type-page.php';
+		require_once 'classes/customer/class-sxp-customer-tag-page.php';
 		require_once 'classes/product/class-sxp-product-page.php';
 		require_once 'classes/order/class-sxp-order-page.php';
 		require_once 'classes/campaign/class-sxp-campaign-page.php';

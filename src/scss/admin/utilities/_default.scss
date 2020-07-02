@@ -4,18 +4,6 @@
 }
 
 .sxp {
-	&-clearfix {
-		clear: both;
-		*zoom: 1;
-		&::before,
-		&::after {
-			content: " ";
-			display: table;
-		}
-		&::after {
-			clear: both;
-		}
-	}
 	&-wrapper {
 		font-family: $font;
 		font-size: 0.875rem;
@@ -44,61 +32,96 @@
 				box-shadow: none;
 			}
 		}
+		.clearfix {
+			clear: both;
+			*zoom: 1;
+			&::before,
+			&::after {
+				content: " ";
+				display: table;
+			}
+			&::after {
+				clear: both;
+			}
+		}
 	}
 	//
 	// Buttons
 	//
 	&-btn {
+		padding: 1rem 1.5rem;
 		line-height: 1.25rem;
 		border-radius: 0.25rem;
 		text-decoration: none;
 		display: inline-block;
+		border: 2px solid transparent;
 		&:hover {
 			color: inherit;
 		}
-	}
-	&-btn-primary {
-		padding: 1rem 1.5rem;
-		background: $primary;
-		color: $white;
-		&:hover {
+		&:focus {
+			color: inherit;
+			box-shadow: 0 0 0 1px $primary;
+			border-color: $primary;
+		}
+		&-primary {
+			background: $primary;
 			color: $white;
+			&:hover,
+			&:focus {
+				color: $white;
+			}
+			&:focus {
+				border-color: darken($primary, 30%);
+				box-shadow: 0 0 0 1px darken($primary, 30%);
+			}
 		}
-	}
-	&-btn-default {
-		padding: 1rem 1.5rem;
-		background: $white;
-		color: $dark-purple;
-		&:hover {
+		&-default {
+			background: $white;
 			color: $dark-purple;
+			&:hover,
+			&:focus {
+				color: $dark-purple;
+			}
 		}
-	}
-	&-btn-secondary {
-		padding: 0.5rem 1rem;
-	}
-	&-btn-muted {
-		padding: 1rem 1.5rem;
-		background: $light-purple-2;
-		color: $dark-purple;
-		&:hover {
+		&-secondary {
+			padding: 0.5rem 1rem;
+		}
+		&-muted {
+			background: $light-purple-2;
 			color: $dark-purple;
+			&:hover,
+			&:focus {
+				color: $dark-purple;
+			}
 		}
-	}
-	&-btn-link {
-		text-decoration: none;
-		color: $customer-heading;
-		font-weight: 700;
-		line-height: 20px;
-		&:hover {
+		&-link {
+			text-decoration: none;
 			color: $customer-heading;
+			font-weight: 700;
+			&:hover,
+			&:focus {
+				color: $customer-heading;
+			}
 		}
-	}
-	&-btn-cancel {
-		color: $text-color;
-		line-height: $btn-line-height;
-		text-decoration: none;
-		&:hover {
+		&-cancel {
 			color: $text-color;
+			text-decoration: none;
+			&:hover,
+			&:focus {
+				color: $text-color;
+			}
+		}
+		&-disabled {
+			background: $light-purple;
+			color: $dark-purple;
+			cursor: not-allowed;
+			&:hover,
+			&:focus,
+			&:active {
+				background: $light-purple;
+				color: $dark-purple;
+				border-color: transparent;
+			}
 		}
 	}
 	//

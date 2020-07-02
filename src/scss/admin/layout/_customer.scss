@@ -7,32 +7,6 @@
  * @since 1.0.0
  */
 .sxp {
-	&-form-group {
-		border-radius: 4px;
-		padding-left: 16px;
-		input[type="number"] {
-			height: 38px;
-			border: 1px solid transparent;
-			box-shadow: none;
-		}
-	}
-	&-custom-number,
-	&-form-group {
-		color: $text-color !important;
-		border-color: $table-checkbox-input !important;
-		border: 1px solid $text-color;
-		height: 40px;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	&-custom-select {
-		color: $text-color !important;
-		border-color: $table-checkbox-input !important;
-		border: 1px solid $text-color;
-		height: 40px;
-		display: inline-block;
-		vertical-align: middle;
-	}
 	&-customer {
 		&-btn-wrapper {
 			float: right;

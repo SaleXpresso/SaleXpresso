@@ -48,14 +48,14 @@ final class SXP_User_Taxonomy {
 	/**
 	 * Singleton instance.
 	 *
-	 * @var SXP_User_Taxonomy
+	 * @var self
 	 */
 	protected static $instance;
 	
 	/**
 	 * Singleton instance for this class.
 	 *
-	 * @return SXP_User_Taxonomy
+	 * @return self
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
@@ -87,19 +87,22 @@ final class SXP_User_Taxonomy {
 	 * SXP_User_Taxonomy constructor.
 	 */
 	private function __construct() {
-		add_action( 'init', [ __CLASS__, 'register' ], -1 );
-		add_action( 'registered_taxonomy', [ __CLASS__, 'register_menu' ], -1, 1 );
 		
+		// Initialize.
+		add_action( 'init', [ __CLASS__, 'register' ], -1 );
+		// Register menu for the user taxonomies under users.
+		add_action( 'registered_taxonomy', [ __CLASS__, 'register_menu' ], -1, 1 );
+		// Enqueue taxonomy scripts (post) for user screen.
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_scripts' ], -1, 1 );
 		
-		// profile edit (user editing own profile).
+		// Profile edit (user editing own profile).
 		add_action( 'show_user_profile', [ __CLASS__, 'user_tax_meta_box' ], -1, 1 );
-		// user edit (admin editing other user profile).
+		// User edit (admin editing other user profile).
 		add_action( 'edit_user_profile', [ __CLASS__, 'user_tax_meta_box' ], -1, 1 );
-		// new user.
+		// New user.
 		add_action( 'user_new_form', [ __CLASS__, 'user_tax_meta_box' ], -1, 1 );
 		
-		// save data.
+		// Save data.
 		// personal_options_update, edit_user_profile_update, edit_user_created_user
 		// profile_update & user_register covers all of the 3 actions.
 		add_action( 'profile_update', [ __CLASS__, 'save' ], 10, 1 );
@@ -121,7 +124,7 @@ final class SXP_User_Taxonomy {
 				'salexpresso_user_taxonomy_shadow_post_type',
 				[
 					'label'               => __( 'Users', 'salexpresso' ),
-					'public'              => true,
+					'public'              => false,
 					'publicly_queryable'  => false,
 					'hierarchical'        => false,
 					'has_archive'         => false,

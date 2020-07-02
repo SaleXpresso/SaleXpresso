@@ -88,7 +88,6 @@ class SXP_Views {
 				'not_found_template' => '',
 			]
 		);
-		
 		// engine - > requirements.
 	}
 	
