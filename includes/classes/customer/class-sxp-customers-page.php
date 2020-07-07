@@ -166,52 +166,10 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 //		}
 //		$this->list_table = new \WC_Report_Customer_List();
 //		$this->list_table->output_report();
+		$this->list_table->prepare_items();
 		$this->list_table->display();
 	}
-
-	/**
-	 * Render the customer Group
-	 */
-	protected function render_customer_group() {
-		$list = new SXP_Customer_Group_Table();
-		$list->display();
-	}
-
-	/**
-	 * Render the customer Group Rule
-	 */
-	protected function render_customer_group_rule() {
-		$list = new SXP_Customer_Group_Rule();
-	}
-
-	/**
-	 * Render the customer type
-	 */
-	protected function render_customer_type() {
-		$list = new SXP_Customer_Type_Table();
-	}
-
-	/**
-	 * Render the customer type Rule
-	 */
-	protected function render_customer_type_rule() {
-		$list = new SXP_Customer_Type_Rule();
-	}
-
-	/**
-	 * Render the customer type
-	 */
-	protected function render_customer_tag() {
-		$list = new SXP_Customer_Tag_Table();
-	}
-
-	/**
-	 * Render the customer type Rule
-	 */
-	protected function render_customer_tag_rule() {
-		$list = new SXP_Customer_Tag_Rule();
-	}
-
+	
 	/**
 	 * Render the customer Profile
 	 */

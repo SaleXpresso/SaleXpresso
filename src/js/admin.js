@@ -23,10 +23,16 @@ import { inArray } from './util';
 // import './components/_accordion';
 // import { sprintf, _n } from '@wordpress/i18n';
 
+// navigator.onLine
+
 ( function( window, document, wp, pagenow, SaleXpresso ) {
 	// const params = new URLSearchParams( location.search );
 	//const sxpPage = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? params.get( 'page' ) : false;
 	//const sxpSubPage = sxpPage ? params.get( 'tab' ) : false;
+	const netStatus = function( event ) {
+		console.log( 'online offline ', navigator.onLine, { event } );
+	}
+	$( window ).on( 'online', netStatus ).on( 'offline', netStatus );
 	if ( SaleXpresso.hasOwnProperty( 'wrapClass' ) ) {
 		$( '.wrap' ).addClass( SaleXpresso.wrapClass );
 	}

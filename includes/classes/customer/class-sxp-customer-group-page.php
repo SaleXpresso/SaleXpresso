@@ -11,7 +11,11 @@ namespace SaleXpresso\Customer;
 
 use SaleXpresso\SXP_Admin_Menus;
 use SaleXpresso\Abstracts\SXP_Admin_Page;
+use SaleXpresso\SXP_Post_Types;
 use SaleXpresso\Rules\SXP_Rules_Group_Action;
+use SaleXpresso\List_Table\SXP_Customer_Group_List_Table;
+use WP_Error;
+use WP_Taxonomy;
 use WP_Term;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,14 +43,28 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	 *
 	 * @var SXP_Customer_Group_List_Table
 	 */
-	private $list_table;
+	protected $list_table;
 	
 	/**
 	 * The Term That is being edited.
 	 *
 	 * @var WP_Term
 	 */
-	private $term = false;
+	protected $term = false;
+	
+	/**
+	 * The Taxonomy Slug.
+	 *
+	 * @var string
+	 */
+	protected $taxonomy_name = SXP_Post_Types::CUSTOMER_GROUP_TAX;
+	
+	/**
+	 * The Taxonomy.
+	 *
+	 * @var WP_Taxonomy
+	 */
+	protected $taxonomy;
 	
 	/**
 	 * SXP_Customer_List constructor.
@@ -54,6 +72,13 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	 * @param string $plugin_page Current page slug.
 	 */
 	public function __construct( $plugin_page = null ) {
+		parent::__construct( $plugin_page );
+		$this->taxonomy = get_taxonomy( $this->taxonomy_name );
+		$this->init();
+		$this->form_action_handler();
+	}
+	
+	protected function init() {
 		$this->list_table = SXP_Admin_Menus::get_instance()->get_list_table();
 		
 		$this->set_current_action();
@@ -64,7 +89,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		}
 		
 		if ( 'edit' === $this->current_action ) {
-			$this->term = get_term( absint( $_GET['id'] ), 'user_group' );
+			$this->term = get_term( absint( $_GET['id'] ), $this->taxonomy_name );
 			if ( is_wp_error( $this->term ) ) {
 				$this->set_flash_message( $this->term->get_error_message(), 'error', true );
 			}
@@ -73,19 +98,14 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		if ( 'add-new' === $this->current_action ) {
 			$this->term = new WP_Term( (object) [] );
 		}
-		
-		$this->titles = [
-			'actions' => [
-				'add-new' => esc_html__( 'New Customer Group', 'salexpresso' ),
-				'edit'    => esc_html__( 'Edit Customer Group', 'salexpresso' ),
-			]
-		];
-		
-		parent::__construct( $plugin_page );
-		
-		if ( isset( $_POST['action'] ) && in_array( $_POST['action'], [ 'add-user-group', 'edit-user-group' ] ) ) {
+	}
+	
+	protected function form_action_handler() {
+		if ( ! empty( $this->get_current_action() ) && 'post' === $this->get_request_method() && in_array( $this->get_current_action(), [ 'add-' . $this->taxonomy_name, 'edit-' . $this->taxonomy_name ] ) ) {
+			var_dump( $_REQUEST );
+			die();
 			$term_id = 0;
-			$page    = esc_url( admin_url( 'admin.php?page=sxp-customer-group' ) );
+			$page    = esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) );
 			if ( isset( $_POST['term_id'] ) ) {
 				$term_id = absint( $_POST['term_id'] );
 			}
@@ -96,18 +116,24 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			}
 			
 			$name = sanitize_text_field( $_POST['name'] );
-			
+			$id   = new WP_Error( 'invalid_taxonomy', __( 'Invalid Taxonomy', 'salexpresso' ) );
 			if ( $term_id ) {
-				$id = sxp_update_user_group( $term_id, [ 'name' => $name ] );
+				if ( is_callable( 'sxp_update_' . $this->taxonomy_name ) ) {
+					// @see sxp_update_user_group
+					$id = call_user_func( 'sxp_update_' . $this->taxonomy_name, $term_id, [ 'name' => $name ]);
+				}
 			} else {
-				$id = sxp_add_user_group( $name );
-				if ( ! is_wp_error( $id ) ) {
-					$term_id = $id['term_id'];
+				if ( is_callable( 'sxp_add_' . $this->taxonomy_name ) ) {
+					// @see sxp_add_user_group
+					$id = call_user_func( 'sxp_add_' . $this->taxonomy_name, $term_id, [ 'name' => $name ]);
+					if ( ! is_wp_error( $id ) ) {
+						$term_id = $id['term_id'];
+					}
 				}
 			}
 			
 			if ( is_wp_error( $id ) ) {
-				$message = $term_id ? esc_html__( 'There was an error updating group. %s', 'salexpresso' ) : esc_html__( 'There was an error creating new group. %s', 'salexpresso' );
+				$message = $term_id ? esc_html__( 'There was an error updating the term. %s', 'salexpresso' ) : esc_html__( 'There was an error creating new term. %s', 'salexpresso' );
 				$this->set_flash_message( sprintf( $message, $id->get_error_message() ), 'error', true );
 				wp_safe_redirect( $page );
 				die();
@@ -119,15 +145,16 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 					if ( ! isset( $rule['compare'], $rule['operator'], $rule['values'] ) ) {
 						continue;
 					}
+					
 					if ( empty( $rule['compare'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
 						continue;
 					}
 					
 					$rules[] = [
-						'relation' => 'AND',
-						'compare'  => sanitize_text_field( $rule['compare'] ),
-						'operator' => sanitize_text_field( $rule['operator'] ),
-						'values'   => sanitize_text_field( $rule['values'] ),
+						'relation'  => 'AND',
+						'condition' => sanitize_text_field( $rule['condition'] ),
+						'operator'  => sanitize_text_field( $rule['operator'] ),
+						'values'    => sanitize_text_field( $rule['values'] ),
 					];
 				}
 				
@@ -139,8 +166,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				}
 			}
 			
-			$message = $term_id ? esc_html__( 'Group Updated', 'salexpresso' ) : esc_html__( 'Group Created.', 'salexpresso' );
-			$this->set_flash_message( $message, 'success', true );
+			$message = $term_id ? esc_html__( '%s Updated', 'salexpresso' ) : esc_html__( '%s Created.', 'salexpresso' );
+			$this->set_flash_message( sprintf( $message, $this->taxonomy->labels->singular_name ), 'success', true );
 			
 			wp_safe_redirect( $page );
 			die();
@@ -158,7 +185,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			'per_page',
 			[
 				'label'   => 'Number of items per page:',
-				'option'  => 'customer_groups_per_page',
+				'option'  => $this->taxonomy_name . '_per_page',
 			]
 		);
 	}
@@ -236,6 +263,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				$this->render_form();
 				break;
 			default:
+				$this->list_table->prepare_items();
 				$this->list_table->display();
 				break;
 		}
@@ -255,15 +283,11 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		?>
 		<div class="sxp-rule-wrapper">
 			<form action="<?php echo esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) ) ?>" method="post" class="sxp-form">
-				<?php if ( ! $this->term->term_id ) { ?>
-				<input type="hidden" name="action" value="add-user-group">
-				<?php } else { ?>
-				<input type="hidden" name="action" value="edit-user-group">
+				<input type="hidden" name="action" value="<?php echo ( ! $this->term->term_id ) ? 'add' : 'edit'; ?>-<?php echo esc_attr( $this->taxonomy_name ); ?>">
 				<input type="hidden" name="term_id" value="<?php echo $this->term->term_id; ?>">
-				<?php } ?>
 				<div class="form-top">
 					<div class="section">
-						<h4 class="header"><?php esc_html_e( 'Customer Group Name', 'salexpresso' ); ?> <i data-feather="info"></i></h4>
+						<h4 class="header"><?php printf( esc_html__( 'Customer %s Name', 'salexpresso' ), $this->taxonomy->labels->singular_name ); ?> <i data-feather="info"></i></h4>
 						<!-- /.header -->
 						<input type="text" class="title-edit" name="name" value="<?php echo esc_attr( $this->term->name ); ?>">
 						<!-- /.title-edit -->
@@ -286,7 +310,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 								?>
 								<div class="sxp-rule-single rule_<?php echo $idx; ?>">
 									<label for="rule_compare_<?php echo $idx; ?>" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
-									<select id="rule_compare_<?php echo $idx; ?>" name="sxp_rule[<?php echo $idx; ?>][compare]">
+									<select id="rule_compare_<?php echo $idx; ?>" name="sxp_rule[<?php echo $idx; ?>][condition]">
 										<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
 										<?php
 										foreach ( $conditions as $slug => $data ) {
@@ -374,7 +398,11 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 					</div><!-- end .sxp-customer-rule-bottom -->
 					<div class="save-wrapper">
 						<a class="sxp-btn sxp-btn-cancel" href="#" onclick="return confirm( '<?php esc_attr_e( 'Are You Sure?\nAny changes you made will be lost.', 'salexpresso' ); ?>' ) ? history.back() : false;">Cancel</a>
-						<input type="submit" class="sxp-btn sxp-btn-primary btn-save" value="<?php esc_attr_e( 'Save New Customer Type', 'salexpresso' ); ?>">
+						<input type="submit" class="sxp-btn sxp-btn-primary btn-save" value="<?php
+						printf(
+							$this->term->term_id ? esc_attr__( 'Update %s', 'salexpresso' ) : esc_attr__( 'Save New %s', 'salexpresso' ),
+							$this->taxonomy->labels->singular_name
+						); ?>">
 					</div><!-- end .sxp-customer-rule-save-wrapper -->
 				</div>
 				<!-- /.form-bottom -->

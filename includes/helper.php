@@ -227,6 +227,46 @@ if ( ! function_exists( 'sxp_str_replace_trim' ) ) {
 		}, $replaced );
 	}
 }
+if ( ! function_exists( '_sxp_get_list_table' ) ) {
+	/**
+	 * Fetches an instance of a WP_List_Table class.
+	 *
+	 * @access private
+	 *
+	 * @global string $hook_suffix
+	 *
+	 * @param string $class The type of the list table, which is the class name.
+	 * @param array  $args  Optional. Arguments to pass to the class. Accepts 'screen'.
+	 * @return SaleXpresso\SXP_List_Table|bool List table object on success, false if the class does not exist.
+	 */
+	function _sxp_get_list_table( $class, $args = [] ) {
+		
+		$core_classes = [
+			'SaleXpresso\List_Table\SXP_Customer_List_Table'       => 'customer',
+			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table' => 'customer-group',
+			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'  => [ 'customer-group', 'customer-type' ],
+			'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table'   => [ 'customer-group', 'customer-tag' ],
+		];
+		if ( isset( $core_classes[ $class ] ) ) {
+			foreach ( (array) $core_classes[ $class ] as $required ) {
+				sxp_load_file( 'includes/classes/list-table/class-sxp-' . $required . '-list-table.php' );
+			}
+			
+			if ( isset( $args['screen'] ) ) {
+				$args['screen'] = convert_to_screen( $args['screen'] );
+			} elseif ( isset( $GLOBALS['hook_suffix'] ) ) {
+				$args['screen'] = get_current_screen();
+			} else {
+				$args['screen'] = null;
+			}
+			
+			$class = $class;
+			return new $class( $args );
+		}
+		
+		return false;
+	}
+}
 if ( ! function_exists( 'add_actions' ) ) {
 	/**
 	 * Hooks a function on to a array of action.

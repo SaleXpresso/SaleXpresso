@@ -164,10 +164,9 @@ class SXP_List_Table {
 	 * }
 	 */
 	public function __construct( $args = array() ) {
-		// @TODO screen options for columns.
 		$args = wp_parse_args(
 			$args,
-			array(
+			[
 				'plural'    => '',
 				'singular'  => '',
 				'ajax'      => false,
@@ -180,7 +179,7 @@ class SXP_List_Table {
 					'pagination' => true,
 					'bottom'     => false,
 				],
-			)
+			]
 		);
 		$this->screen = convert_to_screen( $args['screen'] );
 		
@@ -203,7 +202,7 @@ class SXP_List_Table {
 //			$this->screen_id .= '_' . $args['tab'];
 //		}
 		
-		add_filter( "manage_{$this->screen_id}_columns", array( $this, 'get_columns' ), 0 );
+		add_filter( "manage_{$this->screen_id}_columns", [ $this, 'get_columns' ], 0 );
 		
 		if ( ! $args['plural'] ) {
 			$args['plural'] = $this->screen->base;
@@ -215,8 +214,8 @@ class SXP_List_Table {
 		$this->_args = $args;
 		
 		if ( $args['ajax'] ) {
-			// wp_enqueue_script( 'list-table' );
-			add_action( 'admin_footer', array( $this, '_js_vars' ) );
+			//wp_enqueue_script( 'list-table' );
+			add_action( 'admin_footer', [ $this, '_js_vars' ] );
 		}
 		
 		if ( empty( $this->modes ) ) {
@@ -295,7 +294,7 @@ class SXP_List_Table {
 	 * @abstract
 	 */
 	public function ajax_user_can() {
-		die( 'function WP_List_Table::ajax_user_can() must be overridden in a subclass.' );
+		die( 'function SaleXpresso\SXP_List_Table::ajax_user_can() must be overridden in a subclass.' );
 	}
 	
 	/**
@@ -377,7 +376,7 @@ class SXP_List_Table {
 	 * @param string $text     The 'submit' button label.
 	 * @param string $input_id ID attribute value for the search input field.
 	 */
-	public function search_box( $text, $input_id ) {
+	public function search_box( $text = '', $input_id = '' ) {
 		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
 			return;
 		}
@@ -397,10 +396,14 @@ class SXP_List_Table {
 			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />';
 		}
 		?>
+		<div class="sxp-customer-search">
+			<label for="sxp-admin-search" class="screen-reader-text"><?php esc_html_e('Search Customer', 'salexpresso'); ?></label>
+			<input type="search" id="sxp-admin-search" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php esc_html_e( 'Search', 'salexpresso' ); ?>">
+		</div><!-- end .sxp-customer-search -->
 		<p class="search-box">
 			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo $text; ?>:</label>
 			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" />
-			<?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>
+			
 		</p>
 		<?php
 	}
@@ -458,10 +461,8 @@ class SXP_List_Table {
 	/**
 	 * Display the bulk actions dropdown.
 	 *
-	 * @param string $which The location of the bulk actions: 'top' or 'bottom'.
-	 *                      This is designated as optional for backward compatibility.
 	 */
-	protected function bulk_actions( $which = '' ) {
+	protected function bulk_actions() {
 		if ( is_null( $this->_actions ) ) {
 			$this->_actions = $this->get_bulk_actions();
 			/**
@@ -476,29 +477,35 @@ class SXP_List_Table {
 			 * @param string[] $actions An array of the available bulk actions.
 			 */
 			$this->_actions = apply_filters( "bulk_actions-{$this->screen_id}", $this->_actions ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-			$two            = '';
-		} else {
-			$two = '2';
 		}
 		
 		if ( empty( $this->_actions ) ) {
 			return;
 		}
-		
-		echo '<label for="bulk-action-selector-' . esc_attr( $which ) . '" class="screen-reader-text">' . __( 'Select bulk action' ) . '</label>';
-		echo '<select name="action' . $two . '" id="bulk-action-selector-' . esc_attr( $which ) . "\">\n";
-		echo '<option value="-1">' . __( 'Bulk Actions' ) . "</option>\n";
-		
-		foreach ( $this->_actions as $name => $title ) {
-			$class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
-			
-			echo "\t" . '<option value="' . $name . '"' . $class . '>' . $title . "</option>\n";
-		}
-		
-		echo "</select>\n";
-		
-		submit_button( __( 'Apply' ), 'action', '', false, array( 'id' => "doaction$two" ) );
-		echo "\n";
+		$nonce_action = get_class( $this );
+		?>
+		<div class="sxp-bulk-actions">
+			<?php
+			foreach ( $this->_actions as $action => $label ) {
+				list( $label, $icon ) = (array) $label;
+				$class = 'sxp-list-table-action';
+				if ( empty( $icon ) ) {
+					$class .= ' no-icon';
+				}
+				
+				printf(
+					'<a href="#" class="%s" data-action="%s" data-nonce="%s"><i data-feather="%s" aria-hidden="true"></i> %s <span class="screen-reader-text">%s</span></a>',
+					esc_attr( $class ),
+					esc_attr( $action ),
+					wp_create_nonce( $nonce_action . '_' . $action ),
+					esc_attr( $icon ),
+					esc_html( $label ),
+					esc_html_x( 'Selected', 'Bulk Action Label Screen Reader', 'salexpresso' )
+				);
+			}
+			?>
+		</div>
+		<?php
 	}
 	
 	/**
@@ -507,16 +514,9 @@ class SXP_List_Table {
 	 * @return string|false The action name or False if no action was selected
 	 */
 	public function current_action() {
-		if ( isset( $_REQUEST['filter_action'] ) && ! empty( $_REQUEST['filter_action'] ) ) {
-			return false;
-		}
-		
-		if ( isset( $_REQUEST['action'] ) && -1 != $_REQUEST['action'] ) {
-			return $_REQUEST['action'];
-		}
-		
-		if ( isset( $_REQUEST['action2'] ) && -1 != $_REQUEST['action2'] ) {
-			return $_REQUEST['action2'];
+		// Actual action is assigned for the ajax action itself.
+		if ( isset( $_REQUEST['_action'] ) && ! empty( $_REQUEST['_action'] ) ) {
+			return sanitize_text_field( $_REQUEST['_action'] );
 		}
 		
 		return false;
@@ -540,12 +540,12 @@ class SXP_List_Table {
 		$out = '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
 		foreach ( $actions as $action => $link ) {
 			++$i;
-			( $i == $action_count ) ? $sep = '' : $sep = ' | ';
-			$out                          .= "<span class='$action'>$link$sep</span>";
+			$sep = ( $i == $action_count ) ? '' : $sep = ' | ';
+			$out .= "<span class='$action'>$link$sep</span>";
 		}
 		$out .= '</div>';
 		
-		$out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
+		$out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details', 'salexpresso' ) . '</span></button>';
 		
 		return $out;
 	}
@@ -553,8 +553,8 @@ class SXP_List_Table {
 	/**
 	 * Displays a dropdown for filtering items in the list table by month.
 	 *
-	 * @global wpdb      $wpdb      WordPress database abstraction object.
-	 * @global WP_Locale $wp_locale WordPress date and time locale object.
+	 * @global \wpdb      $wpdb      WordPress database abstraction object.
+	 * @global \WP_Locale $wp_locale WordPress date and time locale object.
 	 *
 	 * @param string $post_type The post type.
 	 */
@@ -580,13 +580,9 @@ class SXP_List_Table {
 		
 		$months = $wpdb->get_results(
 			$wpdb->prepare(
-				"
-			SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
-			FROM $wpdb->posts
-			WHERE post_type = %s
-			$extra_checks
-			ORDER BY post_date DESC
-		",
+				"SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month FROM $wpdb->posts
+					WHERE post_type = %s {$extra_checks}
+					ORDER BY post_date DESC",
 				$post_type
 			)
 		);
@@ -676,19 +672,19 @@ class SXP_List_Table {
 		
 		$approved_only_phrase = sprintf(
 		/* translators: %s: Number of comments. */
-			_n( '%s comment', '%s comments', $approved_comments ),
+			_n( '%s comment', '%s comments', $approved_comments, 'salexpresso' ),
 			$approved_comments_number
 		);
 		
 		$approved_phrase = sprintf(
 		/* translators: %s: Number of comments. */
-			_n( '%s approved comment', '%s approved comments', $approved_comments ),
+			_n( '%s approved comment', '%s approved comments', $approved_comments, 'salexpresso' ),
 			$approved_comments_number
 		);
 		
 		$pending_phrase = sprintf(
 		/* translators: %s: Number of comments. */
-			_n( '%s pending comment', '%s pending comments', $pending_comments ),
+			_n( '%s pending comment', '%s pending comments', $pending_comments, 'salexpresso' ),
 			$pending_comments_number
 		);
 		
@@ -718,7 +714,7 @@ class SXP_List_Table {
 			printf(
 				'<span class="post-com-count post-com-count-no-comments"><span class="comment-count comment-count-no-comments" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
 				$approved_comments_number,
-				$pending_comments ? __( 'No approved comments' ) : __( 'No comments' )
+				$pending_comments ? __( 'No approved comments', 'salexpresso' ) : __( 'No comments', 'salexpresso' )
 			);
 		}
 		
@@ -727,10 +723,10 @@ class SXP_List_Table {
 				'<a href="%s" class="post-com-count post-com-count-pending"><span class="comment-count-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></a>',
 				esc_url(
 					add_query_arg(
-						array(
+						[
 							'p'              => $post_id,
 							'comment_status' => 'moderated',
-						),
+						],
 						admin_url( 'edit-comments.php' )
 					)
 				),
@@ -741,7 +737,7 @@ class SXP_List_Table {
 			printf(
 				'<span class="post-com-count post-com-count-pending post-com-count-no-pending"><span class="comment-count comment-count-no-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
 				$pending_comments_number,
-				$approved_comments ? __( 'No pending comments' ) : __( 'No comments' )
+				$approved_comments ? __( 'No pending comments', 'salexpresso' ) : __( 'No comments', 'salexpresso' )
 			);
 		}
 	}
@@ -894,7 +890,7 @@ class SXP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		die( 'function WP_List_Table::get_columns() must be overridden in a subclass.' );
+		die( 'function SaleXpresso\SXP_List_Table::get_columns() must be overridden in a subclass.' );
 	}
 	
 	/**
@@ -1009,7 +1005,7 @@ class SXP_List_Table {
 		 */
 		$_sortable = apply_filters( "manage_{$this->screen_id}_sortable_columns", $sortable_columns );
 		
-		$sortable = array();
+		$sortable = [];
 		foreach ( $_sortable as $id => $data ) {
 			if ( empty( $data ) ) {
 				continue;
@@ -1023,8 +1019,12 @@ class SXP_List_Table {
 			$sortable[ $id ] = $data;
 		}
 		
-		$primary               = $this->get_primary_column_name();
-		$this->_column_headers = array( $columns, $hidden, $sortable, $primary );
+		$this->_column_headers = [
+			$columns,
+			$hidden,
+			$sortable,
+			$this->get_primary_column_name()
+		];
 		
 		return $this->_column_headers;
 	}
@@ -1064,7 +1064,7 @@ class SXP_List_Table {
 		
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-			$columns['cb']     = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All' ) . '</label>'
+			$columns['cb']     = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All', 'salexpresso' ) . '</label>'
 			                     . '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
 			$cb_counter++;
 		}
@@ -1122,7 +1122,12 @@ class SXP_List_Table {
 		$singular = $this->_args['singular'];
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
-		<form action="<?php echo esc_url( $this->current_url ); ?>">
+		<form action="<?php echo esc_url( $this->current_url ); ?>" method="get">
+			<?php
+			// if ( $this->_args['ajax'] ) {
+				// wp_nonce_field( 'fetch-list-' . get_class( $this ), '_sxp_ajax_fetch_list_nonce' );
+			// }
+			?>
 			<div class="sxp-list-table">
 				<?php
 				if ( $this->_args['table_nav']['top'] ) {
@@ -1142,7 +1147,6 @@ class SXP_List_Table {
 					<tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
 					<?php $this->display_rows_or_placeholder(); ?>
 					</tbody>
-					
 					<?php if ( $this->_args['tfoot'] ) { ?>
 						<tfoot>
 						<tr>
@@ -1172,7 +1176,7 @@ class SXP_List_Table {
 	 * @return string[] Array of CSS classes for the table tag.
 	 */
 	protected function get_table_classes() {
-		return array( 'sxp-table', 'widefat', 'fixed', 'striped', $this->_args['plural'], $this->_args['tab'], $this->screen_id );
+		return [ 'sxp-table', 'widefat', $this->_args['plural'], $this->_args['tab'], $this->screen_id ];
 	}
 	
 	/**
@@ -1182,15 +1186,9 @@ class SXP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
-		}
-		if ( 'top' === $which ) {
 			?>
 			<div class="sxp-list-table-top">
-				<div class="sxp-customer-search">
-					<label for="sxp-customer-search" class="screen-reader-text"><?php esc_html_e('Search Customer', 'salexpresso'); ?></label>
-					<input type="text" id="sxp-customer-search" placeholder="<?php esc_html_e( 'Search', 'salexpresso' ); ?>">
-				</div><!-- end .sxp-customer-search -->
+				<?php $this->search_box( 'Search', 'search' ); ?>
 				<div class="sxp-customer-btn-wrapper">
 					<?php $this->table_actions(); ?>
 				</div>
@@ -1203,34 +1201,119 @@ class SXP_List_Table {
 		if ( 'pagination' === $which ) {
 			?>
 			<div class="sxp-pagination-wrapper">
-				<?php $this->pagination( $which ); ?>
-			</div><!-- end .sxp-paginaation-wrapper -->
+				<?php $this->pagination(); ?>
+			</div><!-- end .sxp-pagination-wrapper -->
 			<?php
 		}
 		if ( 'bottom' === $which ) {
+			if ( $this->has_items() ) {
 			?>
-			<div class="sxp-bottom-wrapper" data-list_table="<?php echo esc_attr( $this->uid ); ?>" style="display: block;">
-				<div class="sxp-selected-container">
-					<?php if ( $this->has_items() ) : ?>
-						<?php $this->bulk_actions( $which ); ?>
-						<div class="sxp-row-select">
-							<a href="#" class="sxp-remove-select">
-								<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="<?php esc_attr_e( 'Remove selection', 'salexpresso' ); ?>">
-							</a>
-							<a href="#" class="sxp-selected"><span>0</span> <?php esc_html_e( 'Rows Selected', 'salexpresso' ); ?></a>
-						</div>
-						<div class="sxp-remove-customer">
-							<a href="#"><?php esc_html_e( 'Delete', 'salexpresso' ); ?></a>
-						</div>
-					<?php endif; ?>
-				</div><!-- end .sxp-selected-container -->
-			</div><!-- end .sxp-bottom-wrapper -->
-			<script>
-				(function($){
-					$(document).on('change', '')
-				})(jQuery);
-			</script>
+				<div class="sxp-bulk-action-container hidden">
+					<div class="sxp-row-select">
+						<a href="#" class="sxp-remove-selected" aria-label="<?php esc_attr_e( 'Remove selection', 'salexpresso' ); ?>">
+							<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyIDE0TDE0IDIyIiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNCAxNEwyMiAyMiIgc3Ryb2tlPSIjN0Q3REIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" alt="<?php esc_attr_e( 'Remove selection', 'salexpresso' ); ?>" aria-hidden="true">
+						</a>
+						<span class="sxp-selected"><span>0</span> <?php esc_html_e( 'Rows Selected', 'salexpresso' ); ?></span>
+					</div>
+					<?php $this->bulk_actions(); ?>
+				</div><!-- end .sxp-bulk-action-container -->
+				<script>
+					( function ( $ ) {
+						let config = {
+							errors : {
+								server_500: 'Server Error Contact Your System Admin',
+								server_404: 'Resource not found',
+								server_403: 'You doesn\'t have the permission to perform this request.',
+								server_0: 'Client Error', // Unknown.
+							},
+						};
+						function sxpListTable() {
+							const wrapperClass = '.sxp-list-table';
+							let balkWrapper = '.sxp-bulk-action-container';
+							const actionsSelector = ' .sxp-list-table-action';
+							const selectedCount = $( balkWrapper + ' .sxp-selected span' );
+							balkWrapper = $( balkWrapper );
+							const manageCheckBoxSelector = 'thead .column-cb input[type="checkbox"]';
+							const manageCbPartialChecked = 'partial-checked';
+							const checkedSelector = ' tbody .check-column input[type="checkbox"]:checked';
+							let checkedBoxes;
+							$(wrapperClass).each( function () {
+								const self = $( this );
+								const checkboxes = self.find( '.check-column input[type="checkbox"]' );
+								checkboxes.on( 'change', function() {
+									checkedBoxes = self.find( checkedSelector );
+									const checked = checkedBoxes.length;
+									const manageCb = self.find( manageCheckBoxSelector );
+									selectedCount.text( checked );
+									if ( checked ) {
+										if ( ( checked + 1 ) !== checkboxes.length ) {
+											manageCb.addClass( manageCbPartialChecked );
+										} else {
+											manageCb.removeClass( manageCbPartialChecked );
+										}
+										if ( ! balkWrapper.is( ':visible' ) ) {
+											balkWrapper.show()
+										}
+									} else {
+										manageCb.removeClass( manageCbPartialChecked );
+										if ( balkWrapper.is( ':visible' ) ) {
+											balkWrapper.hide()
+										}
+									}
+								} ).trigger( 'change' );
+								self.find( '.sxp-remove-selected' ).on( 'click', function ( event ) {
+									event.preventDefault();
+									//checkboxes.removeAttr( 'checked' );
+									checkboxes.prop( 'checked', false );
+									selectedCount.text( 0 );
+									balkWrapper.hide();
+									checkedBoxes = undefined;
+								} );
+								const getValues = el => {
+									let selected = [];
+									return el && el.each( function () {
+										selected.push( $( this ).val() );
+									} ), selected;
+								};
+								self.find( actionsSelector ).on( 'click', function ( event ) {
+									event.preventDefault();
+									const el = $(this),
+										action = el.data( 'action' ),
+										_wpnonce = el.data( 'nonce' );
+									if ( event ) {
+										let selected = getValues( checkedBoxes );
+										wp.ajax
+											.post( 'sxp_list_table', { _action: action, _wpnonce, selected, list_args } )
+											.then( response => {
+												if( response.hasOwnProperty( 'reload' ) ) {
+													window.location = response.reload;
+												}
+												if( response.hasOwnProperty( 'message' ) ) {
+													alert( response.message );
+												}
+											} )
+											.fail( error => {
+												if ( 'string' === typeof error ) {
+													alert( error );
+												} else {
+													if ( error.hasOwnProperty( 'statusText' ) && error.hasOwnProperty( 'status' ) ) {
+														if ( config.errors.hasOwnProperty( 'server_' + error.status )  ) {
+															alert( config.errors[ 'server_' + error.status ] ) ;
+														} else {
+															alert( error.statusText );
+														}
+													}
+												}
+											} );
+									}
+								} );
+							} );
+						}
+						sxpListTable();
+					} )( jQuery );
+				</script>
 			<?php
+			}
 		}
 	}
 	
@@ -1357,13 +1440,7 @@ class SXP_List_Table {
 				echo $this->column_cb( $item );
 				echo '</th>';
 			} elseif ( method_exists( $this, '_column_' . $column_name ) ) {
-				echo call_user_func(
-					[ $this, '_column_' . $column_name ],
-					$item,
-					$classes,
-					$data,
-					$primary
-				);
+				echo call_user_func( [ $this, '_column_' . $column_name ], $item, $classes, $data, $primary );
 			} elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 				echo call_user_func( [ $this, 'column_' . $column_name ], $item );
@@ -1388,7 +1465,7 @@ class SXP_List_Table {
 	 *                if the current column is not the primary column.
 	 */
 	protected function handle_row_actions( $item, $column_name, $primary ) {
-		return $column_name === $primary ? '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>' : '';
+		return $column_name === $primary ? '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details', 'salexpresso' ) . '</span></button>' : '';
 	}
 	
 	/**
@@ -1396,6 +1473,26 @@ class SXP_List_Table {
 	 *
 	 */
 	public function ajax_response() {
+		
+		$action = $this->current_action();
+		$cb = [ $this, 'ajax_response_' . str_replace( ['-'], '_', $action ) ];
+		if ( is_callable( $cb ) ) {
+			call_user_func( $cb );
+		} else {
+			/**
+			 * Handle bulk action request if method not implemented.
+			 * Developer needs to terminate execution using die() or exit()
+			 * otherwise the response header status will bet set to 501 (Not Implemented).
+			 *
+			 * @param SXP_List_Table $list_class
+			 */
+			do_action( 'sxp-list-bulk-' . get_class( $this ) . '-' . $action, $this );
+		}
+		// No Response handler implemented.
+		wp_die( -1, 501 );
+	}
+	
+	protected function ajax_fetch_list() {
 		$this->prepare_items();
 		
 		ob_start();
@@ -1405,36 +1502,36 @@ class SXP_List_Table {
 			$this->display_rows_or_placeholder();
 		}
 		
-		$rows = ob_get_clean();
-		
-		$response = array( 'rows' => $rows );
+		$response = [ 'rows' => ob_get_clean() ];
 		
 		if ( isset( $this->_pagination_args['total_items'] ) ) {
 			$response['total_items_i18n'] = sprintf(
 			/* translators: Number of items. */
-				_n( '%s item', '%s items', $this->_pagination_args['total_items'] ),
+				_n( '%s item', '%s items', $this->_pagination_args['total_items'], 'salexpresso' ),
 				number_format_i18n( $this->_pagination_args['total_items'] )
 			);
 		}
+		
 		if ( isset( $this->_pagination_args['total_pages'] ) ) {
 			$response['total_pages']      = $this->_pagination_args['total_pages'];
 			$response['total_pages_i18n'] = number_format_i18n( $this->_pagination_args['total_pages'] );
 		}
 		
-		die( wp_json_encode( $response ) );
+		wp_send_json_success( $response );
+		die();
 	}
 	
 	/**
 	 * Send required variables to JavaScript land
 	 */
 	public function _js_vars() {
-		$args = array(
+		$args = [
 			'class'  => get_class( $this ),
-			'screen' => array(
+			'screen' => [
 				'id'   => $this->screen_id,
 				'base' => $this->screen->base,
-			),
-		);
+			],
+		];
 		
 		printf( "<script type='text/javascript'>list_args = %s;</script>\n", wp_json_encode( $args ) );
 	}

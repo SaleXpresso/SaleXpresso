@@ -7,7 +7,7 @@
  * @since   SaleXpresso v1.0.0
  */
 
-namespace SaleXpresso\Customer;
+namespace SaleXpresso\List_Table;
 
 use SaleXpresso\SXP_List_Table;
 use Automattic\WooCommerce\Admin\API\Reports\TimeInterval;
@@ -45,7 +45,6 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		);
 		
 		$this->items = [];
-		$this->prepare_items();
 	}
 	
 	public function prepare_items() {
@@ -70,7 +69,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 			'order'        => $sort_order,
 			'orderby'      => $order_by, // date_registered
 			'order_before' => TimeInterval::default_before(),
-			'order_after'  => TimeInterval::default_after(),
+			'order_after'  => new \WC_DateTime( '2020-01-01 19:18:11.918532'),
 			'fields'       => '*',
 			/*'status_is'     => '',
 			'status_is_not' => [ 'trash','pending','failed','cancelled' ],*/
@@ -116,9 +115,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 					'<div class="sxp-customer-desc">
 							<div class="sxp-customer-desc-thumbnail">%s</div><!-- end .sxp-customer-desc-thumbnail -->
 							<div class="sxp-customer-desc-details">
-								<a href="%s">
-									<p class="sxp-customer-desc-details-name">%s</p>
-								</a>
+								<a href="%s">%s</a>
 								<p class="sxp-customer-desc-details-location">%s</p>
 							</div><!-- end .sxp-customer-desc-detaisl -->
 						</div><!-- end .sxp-customer-desc -->',

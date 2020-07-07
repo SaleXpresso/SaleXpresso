@@ -115,6 +115,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @return void
 	 */
 	public function __construct( $plugin_page = null ) {
+		
 		$this->set_page_hookname( $plugin_page );
 		$this->set_page_slug( $plugin_page );
 		$this->set_tabs();
@@ -223,16 +224,35 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	}
 	
 	/**
-	 * Set Current Action
+	 * Set Current Action.
 	 *
 	 * @return void
 	 */
 	public function set_current_action() {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_GET['action'] ) ) {
-			$this->current_action = sanitize_text_field( $_GET['action'] );
+		if ( isset( $_REQUEST['action'] ) ) {
+			$this->current_action = sanitize_text_field( $_REQUEST['action'] );
 		}
 		// phpcs:enable
+	}
+	
+	/**
+	 * Get Current Action.
+	 *
+	 * @return string
+	 */
+	public function get_current_action() {
+		return $this->current_action;
+	}
+	
+	/**
+	 * Request Method.
+	 * Method name in lower case.
+	 *
+	 * @return string
+	 */
+	public function get_request_method() {
+		return ( isset( $_SERVER['REQUEST_METHOD'] ) && ! empty( $_SERVER['REQUEST_METHOD'] ) )? strtolower( $_SERVER['REQUEST_METHOD'] ) : 'get';
 	}
 	
 	/**

@@ -423,7 +423,7 @@ final class SaleXpresso {
 	 */
 	private function includes() {
 		
-		$this->load_file( SXP_ABSPATH . 'vendor/autoload.php', true, true );
+		$this->load_file( 'vendor/autoload.php', true, true );
 		
 		require_once 'deprecated-functions.php';
 		require_once 'user-taxonomy-helper.php';
@@ -446,18 +446,13 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-settings.php';
 		
 		// Core.
-		require_once 'classes/customer/class-sxp-customer-list-table.php';
-		require_once 'classes/customer/class-sxp-customer-group-list-table.php';
 		require_once 'classes/customer/class-sxp-customer-group-rule.php';
 		require_once 'classes/customer/class-sxp-customer-type-table.php';
 		require_once 'classes/customer/class-sxp-customer-type-rule.php';
 		require_once 'classes/customer/class-sxp-customer-tag-table.php';
 		require_once 'classes/customer/class-sxp-customer-tag-rule.php';
 		require_once 'classes/customer/class-sxp-customer-profile-table.php';
-		require_once 'classes/product/class-sxp-product-list-table.php';
-		require_once 'classes/order/class-sxp-order-list-table.php';
 		require_once 'classes/order/class-sxp-order-single-table.php';
-		require_once 'classes/campaign/class-sxp-campaign-list-table.php';
 		require_once 'classes/campaign/class-sxp-campaign-new-table.php';
 		require_once 'classes/rules/class-sxp-user-group-action.php';
 		
@@ -477,20 +472,27 @@ final class SaleXpresso {
 	
 	/**
 	 * Get the plugin url.
+	 * No Trailing Slash.
+	 *
+	 * @param string $path Optional. File name or path to get the URL for
 	 *
 	 * @return string
 	 */
-	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', SXP_PLUGIN_FILE ) );
+	public function plugin_url( $path = '/' ) {
+		return untrailingslashit( plugins_url( $path, SXP_PLUGIN_FILE ) );
 	}
 	
 	/**
 	 * Get the plugin path.
+	 * No Trailing Slash.
+	 *
+	 * @param string $path Optional. File name or path to get the URL for
 	 *
 	 * @return string
 	 */
-	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( SXP_PLUGIN_FILE ) );
+	public function plugin_path( $path = '' ) {
+		$path = ltrim( $path, '/\\' );
+		return untrailingslashit( plugin_dir_path( SXP_PLUGIN_FILE ) . $path );
 	}
 	
 	/**
@@ -565,7 +567,7 @@ final class SaleXpresso {
 			return;
 		}
 		
-		$base_path   = SXP_ABSPATH;
+		$base_path   = '';
 		$base_ns     = __NAMESPACE__;
 		$file_prefix = 'class-';
 		
@@ -623,6 +625,7 @@ final class SaleXpresso {
 	 * @return bool|mixed
 	 */
 	public function load_file( $file, $if_exists = true, $required = false, $once = false ) {
+		$file = $this->plugin_path( $file );
 		if ( true === $if_exists ) {
 			if ( ! file_exists( $file ) ) {
 				return false;

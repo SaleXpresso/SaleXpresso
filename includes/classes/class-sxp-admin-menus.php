@@ -63,10 +63,10 @@ final class SXP_Admin_Menus {
 	 * @var SXP_List_Table[]
 	 */
 	private $list_tables = [
-		'sxp-customer'  => 'SaleXpresso\Customer\SXP_Customer_List_Table',
-		'sxp-customer-group'  => 'SaleXpresso\Customer\SXP_Customer_Group_List_Table',
-		'sxp-customer-type'  => 'SaleXpresso\Customer\SXP_Customer_Type_List_Table',
-		'sxp-customer-tag'  => 'SaleXpresso\Customer\SXP_Customer_Tag_List_Table',
+		'sxp-customer'       => 'SaleXpresso\List_Table\SXP_Customer_List_Table',
+		'sxp-customer-group' => 'SaleXpresso\List_Table\SXP_Customer_Group_List_Table',
+		'sxp-customer-type'  => 'SaleXpresso\List_Table\SXP_Customer_Type_List_Table',
+		'sxp-customer-tag'   => 'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table',
 	];
 	
 	/**
@@ -103,28 +103,65 @@ final class SXP_Admin_Menus {
 		add_action( 'admin_head', array( $this, 'menu_element_manipulation' ) );
 		add_filter( 'menu_order', array( $this, 'menu_order' ) );
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order' ) );
-		add_filter( 'set-screen-option', array( $this, 'set_screen_option' ), 10, 3 );
 		
 		// Handle saving settings earlier than load-{page} hook to avoid race conditions in conditional menus.
 		add_action( 'wp_loaded', array( $this, 'save_settings' ) );
 		
 		add_action( 'admin_init', [ $this, 'init' ] );
+		
+		add_action( 'wp_ajax_sxp_list_table', function () {
+			if ( isset( $_REQUEST['list_args'], $_REQUEST['_action'], $_REQUEST['list_args']['class'] ) ) {
+				$list_class     = wp_unslash( $_REQUEST['list_args']['class'] );
+				$sxp_list_table = _sxp_get_list_table( $list_class, [ 'screen' => $_REQUEST['list_args']['screen']['id'] ] );
+				check_ajax_referer( $list_class . '_' . $_REQUEST['_action'] );
+				if ( ! $sxp_list_table ) {
+					wp_die( 0 );
+				}
+				if ( ! $sxp_list_table->ajax_user_can() ) {
+					wp_die( -1 );
+				}
+				
+				$sxp_list_table->ajax_response();
+			}
+			wp_die( 0 );
+		} );
 	}
 	
 	/**
 	 * Initialize Renderer
 	 */
 	public function init() {
-		global $plugin_page, $hook_suffix;
+		global $plugin_page, $hook_suffix, $current_screen;
 		if ( is_null( $hook_suffix ) ) {
 			return;
 		}
 
 		if ( false !== strpos( $plugin_page, 'sxp-' ) ) {
+			/**
+			 * Action before rendering plugin page.
+			 *
+			 * @param string $plugin_page
+			 */
+			do_action( 'sxp-before-page', $plugin_page );
 			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : '';
 			$disallowed_list_table = [ 'add-new', 'edit' ];
+			// set user taxonomy to current screen taxonomy
+			switch ( $plugin_page ) {
+				case 'sxp-customer-group':
+					$current_screen->taxonomy = SXP_Post_Types::CUSTOMER_GROUP_TAX;
+					break;
+				case 'sxp-customer-type':
+					$current_screen->taxonomy = SXP_Post_Types::CUSTOMER_TYPE_TAX;
+					break;
+				case 'sxp-customer-tag':
+					$current_screen->taxonomy = SXP_Post_Types::CUSTOMER_TAG_TAX;
+					break;
+				default:
+					break;
+			}
+			
 			if ( ! in_array( $action, $disallowed_list_table ) && isset( $this->list_tables[ $plugin_page ] ) && ! ( $this->list_table instanceof SXP_List_Table ) ) {
-				$this->list_table = new $this->list_tables[ $plugin_page ]();
+				$this->list_table = _sxp_get_list_table( $this->list_tables[ $plugin_page ] );
 			}
 			
 			if ( isset( $this->renderer_map[ $plugin_page ] ) ) {
@@ -146,6 +183,13 @@ final class SXP_Admin_Menus {
 		global $plugin_page;
 		if ( isset( $this->renderer[ $plugin_page ] ) && ( $this->renderer[ $plugin_page ] instanceof SXP_Admin_Page ) ) {
 			$this->renderer[ $plugin_page ]->render();
+			
+			/**
+			 * Action after rendering plugin page.
+			 *
+			 * @param string $plugin_page
+			 */
+			do_action( 'sxp-after-page', $plugin_page );
 		}
 	}
 	
@@ -218,19 +262,6 @@ final class SXP_Admin_Menus {
 	public function menu_highlight() {
 		global $parent_file, $submenu_file, $post_type;
 		// @TODO check current screen, check for user group taxonomy and highlight the main menu.
-		switch ( $post_type ) {
-			case 'shop_order':
-			case 'shop_coupon':
-				$parent_file = 'salexpresso'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-				break;
-			case 'product':
-				$screen = get_current_screen();
-				if ( $screen && taxonomy_is_product_attribute( $screen->taxonomy ) ) {
-					$submenu_file = 'product_attributes'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-					$parent_file  = 'edit.php?post_type=product'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-				}
-				break;
-		}
 	}
 	
 	/**
@@ -289,27 +320,6 @@ final class SXP_Admin_Menus {
 	 */
 	public function custom_menu_order( $enabled ) {
 		return $enabled || current_user_can( 'manage_woocommerce' );
-	}
-	
-	/**
-	 * Validate screen options on update.
-	 *
-	 * @param bool|int $status Screen option value. Default false to skip.
-	 * @param string   $option The option name.
-	 * @param int      $value  The number of rows to use.
-	 *
-	 * @return int|bool
-	 */
-	public function set_screen_option( $status, $option, $value ) {
-		$options = [
-			'customers_per_page',
-			'customer_groups_per_page'
-		];
-		if ( in_array( $option, $options, true ) ) {
-			return $value;
-		}
-		
-		return $status;
 	}
 	
 	/**

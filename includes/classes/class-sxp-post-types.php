@@ -22,6 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SXP_Post_Types {
 	
+	const CUSTOMER_GROUP_TAX = 'user_group';
+	const CUSTOMER_TYPE_TAX = 'user_type';
+	const CUSTOMER_TAG_TAX = 'user_tag';
+	
 	/**
 	 * Initialize things.
 	 */
@@ -64,7 +68,7 @@ class SXP_Post_Types {
 			'show_in_nav_menus' => false,
 			'show_tagcloud'     => false,
 		];
-		register_user_taxonomy( 'user_group', $args );
+		register_user_taxonomy( self::CUSTOMER_GROUP_TAX, $args );
 		// user type.
 		$args = [
 			'labels'            => [
@@ -96,7 +100,7 @@ class SXP_Post_Types {
 			'show_in_nav_menus' => false,
 			'show_tagcloud'     => false,
 		];
-		register_user_taxonomy( 'user_type', $args );
+		register_user_taxonomy( self::CUSTOMER_TYPE_TAX, $args );
 		// user tag.
 		$args = [
 			'labels'            => [
@@ -128,7 +132,7 @@ class SXP_Post_Types {
 			'show_in_nav_menus' => false,
 			'show_tagcloud'     => false,
 		];
-		register_user_taxonomy( 'user_tag', $args );
+		register_user_taxonomy( self::CUSTOMER_TAG_TAX, $args );
 	}
 }
 
