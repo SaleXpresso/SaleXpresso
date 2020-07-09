@@ -136,7 +136,8 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		
 		$data = new WP_Term_Query( $term_args );
 		global $wpdb;
-		$total = $wpdb->get_row( preg_replace( '/SELECT .+ FROM/i', 'SELECT  COUNT(*) as total FROM', $data->request ) );
+		$sql = preg_replace( '/SELECT .+ FROM(.*)LIMIT.*/i', 'SELECT  COUNT(*) as total FROM$1', $data->request );
+		$total = (array) $wpdb->get_row( $sql );
 		$this->items = $data->get_terms();
 		
 		$this->set_pagination_args( [

@@ -100,23 +100,35 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		}
 	}
 	
+	/**
+	 * Handle The Term add/edit form post request.
+	 *
+	 * @return void
+	 */
 	protected function form_action_handler() {
 		if ( ! empty( $this->get_current_action() ) && 'post' === $this->get_request_method() && in_array( $this->get_current_action(), [ 'add-' . $this->taxonomy_name, 'edit-' . $this->taxonomy_name ] ) ) {
-			var_dump( $_REQUEST );
-			die();
+			
+			// Security check.
+			check_admin_referer( $this->get_current_action() );
+			
 			$term_id = 0;
 			$page    = esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) );
+			
+			// Get posted data.
 			if ( isset( $_POST['term_id'] ) ) {
 				$term_id = absint( $_POST['term_id'] );
 			}
+			
 			if ( ! isset( $_POST['name'] ) || ( isset( $_POST['name'] ) && empty( $_POST['name'] ) ) ) {
-				$this->set_flash_message( esc_html__( 'Name is missing', 'salexpresso' ), 'error', true );
+				$name = new WP_Error( 'term_name_missing', esc_html__( 'Term Name missing.', 'salexpresso' ) );
+				$this->term_error_flash( $name, $term_id );
 				wp_safe_redirect( $page );
 				die();
 			}
 			
 			$name = sanitize_text_field( $_POST['name'] );
-			$id   = new WP_Error( 'invalid_taxonomy', __( 'Invalid Taxonomy', 'salexpresso' ) );
+			$id   = new WP_Error( 'invalid_taxonomy', __( 'Invalid Taxonomy.', 'salexpresso' ) );
+			
 			if ( $term_id ) {
 				if ( is_callable( 'sxp_update_' . $this->taxonomy_name ) ) {
 					// @see sxp_update_user_group
@@ -133,8 +145,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			}
 			
 			if ( is_wp_error( $id ) ) {
-				$message = $term_id ? esc_html__( 'There was an error updating the term. %s', 'salexpresso' ) : esc_html__( 'There was an error creating new term. %s', 'salexpresso' );
-				$this->set_flash_message( sprintf( $message, $id->get_error_message() ), 'error', true );
+				$this->term_error_flash( $id, $term_id );
 				wp_safe_redirect( $page );
 				die();
 			}
@@ -172,6 +183,19 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			wp_safe_redirect( $page );
 			die();
 		}
+	}
+	
+	/**
+	 * Set the flash error message.
+	 *
+	 * @param WP_Error $error   Error object.
+	 * @param bool $update      Updating or creating.
+	 *
+	 * @return void
+	 */
+	private function term_error_flash( $error, $update ) {
+		$message = $update ? esc_html__( 'There was an error updating the term. %s', 'salexpresso' ) : esc_html__( 'There was an error creating new term. %s', 'salexpresso' );
+		$this->set_flash_message( sprintf( $message, $error->get_error_message() ), 'error', true );
 	}
 	
 	/**
@@ -280,11 +304,13 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				'values' => [],
 			];
 		}
+		$action = ( ! $this->term->term_id ? 'add-' : 'edit-' ) . $this->taxonomy_name;
 		?>
 		<div class="sxp-rule-wrapper">
 			<form action="<?php echo esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) ) ?>" method="post" class="sxp-form">
-				<input type="hidden" name="action" value="<?php echo ( ! $this->term->term_id ) ? 'add' : 'edit'; ?>-<?php echo esc_attr( $this->taxonomy_name ); ?>">
-				<input type="hidden" name="term_id" value="<?php echo $this->term->term_id; ?>">
+				<input type="hidden" name="action" value="<?php echo esc_attr( $action ); ?>">
+				<input type="hidden" name="term_id" value="<?php echo absint( $this->term->term_id ); ?>">
+				<?php wp_nonce_field( $action ) ?>
 				<div class="form-top">
 					<div class="section">
 						<h4 class="header"><?php printf( esc_html__( 'Customer %s Name', 'salexpresso' ), $this->taxonomy->labels->singular_name ); ?> <i data-feather="info"></i></h4>

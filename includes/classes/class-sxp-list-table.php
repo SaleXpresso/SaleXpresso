@@ -1237,6 +1237,7 @@ class SXP_List_Table {
 							const manageCbPartialChecked = 'partial-checked';
 							const checkedSelector = ' tbody .check-column input[type="checkbox"]:checked';
 							let checkedBoxes;
+							// handle back button.
 							$(wrapperClass).each( function () {
 								const self = $( this );
 								const checkboxes = self.find( '.check-column input[type="checkbox"]' );
