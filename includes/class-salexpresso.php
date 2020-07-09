@@ -446,15 +446,9 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-settings.php';
 		
 		// Core.
-		require_once 'classes/customer/class-sxp-customer-group-rule.php';
-		require_once 'classes/customer/class-sxp-customer-type-table.php';
-		require_once 'classes/customer/class-sxp-customer-type-rule.php';
-		require_once 'classes/customer/class-sxp-customer-tag-table.php';
-		require_once 'classes/customer/class-sxp-customer-tag-rule.php';
-		require_once 'classes/customer/class-sxp-customer-profile-table.php';
-		require_once 'classes/order/class-sxp-order-single-table.php';
-		require_once 'classes/campaign/class-sxp-campaign-new-table.php';
 		require_once 'classes/rules/class-sxp-user-group-action.php';
+		
+		require_once 'classes/customer/class-sxp-customer-profile-table.php';
 		
 		// Admin pages.
 		require_once 'classes/dashboard/class-sxp-dashboard-page.php';
@@ -462,9 +456,6 @@ final class SaleXpresso {
 		require_once 'classes/customer/class-sxp-customer-group-page.php';
 		require_once 'classes/customer/class-sxp-customer-type-page.php';
 		require_once 'classes/customer/class-sxp-customer-tag-page.php';
-		require_once 'classes/product/class-sxp-product-page.php';
-		require_once 'classes/order/class-sxp-order-page.php';
-		require_once 'classes/campaign/class-sxp-campaign-page.php';
 		require_once 'classes/settings/class-sxp-settings-page.php';
 		require_once 'classes/settings/class-sxp-status-page.php';
 		
