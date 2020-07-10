@@ -9,8 +9,8 @@ function Accordion( el ) {
 		return;
 	}
 
-	const hide = ( elem ) => elem.removeClass( CLASS_NAME_OPEN ).next( `.${ CLASS_NAME_FOLD }` ).removeClass( CLASS_NAME_OPEN );
-	const show = ( elem ) => elem.addClass( CLASS_NAME_OPEN ).next( `.${ CLASS_NAME_FOLD }` ).addClass( CLASS_NAME_OPEN );
+	const hide = elem => elem.removeClass( CLASS_NAME_OPEN ).next( `.${ CLASS_NAME_FOLD }` ).removeClass( CLASS_NAME_OPEN );
+	const show = elem => elem.addClass( CLASS_NAME_OPEN ).next( `.${ CLASS_NAME_FOLD }` ).addClass( CLASS_NAME_OPEN );
 
 	return el.find( `tr.${ CLASS_NAME_HAS_FOLD }` ).on( 'click', function( e ) {
 		e.preventDefault();

@@ -12,6 +12,7 @@ namespace SaleXpresso\Rules;
 use Exception;
 use SaleXpresso\Abstracts\SXP_Action_Rules;
 use SaleXpresso\SXP_Expression;
+use WC_Customer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -22,17 +23,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class SXP_Rules_Group_Action
  */
-class SXP_Rules_Group_Action extends SXP_Action_Rules {
+class SXP_User_Group_Rules extends SXP_Action_Rules {
 	
 	/**
-	 * @var SXP_Rules_Group_Action
+	 * Singleton Instance.
+	 *
+	 * @var SXP_User_Group_Rules
 	 */
 	protected static $instance;
 	
 	/**
 	 * Singleton instance.
 	 *
-	 * @return SXP_Rules_Group_Action
+	 * @return SXP_User_Group_Rules
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
@@ -43,17 +46,15 @@ class SXP_Rules_Group_Action extends SXP_Action_Rules {
 	}
 	
 	/**
-	 * Initialize things.
+	 * Init Hooks
+	 *
+	 * @return void
 	 */
-	protected function __construct() {
-		parent::__construct();
-	}
-	
 	protected function hooks() {
 		
 		if ( is_admin() ) {
-			add_action( 'wp_ajax_get_comparisons', [ $this, 'ajax_get_comparisons'] );
-			add_action( 'wp_ajax_get_conditions', [ $this, 'ajax_get_conditions'] );
+			add_action( 'wp_ajax_user_group_get_comparisons', [ $this, 'ajax_get_comparisons' ] );
+			add_action( 'wp_ajax_user_group_get_conditions', [ $this, 'ajax_get_conditions' ] );
 		}
 		
 		add_action( 'woocommerce_thankyou', [ $this, 'evaluate_rules' ], 10, 1 );
@@ -66,7 +67,6 @@ class SXP_Rules_Group_Action extends SXP_Action_Rules {
 	 * @param int $order_id the order id.
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
 	public function evaluate_rules( $order_id ) {
 		if ( ! is_user_logged_in() ) {
@@ -77,13 +77,13 @@ class SXP_Rules_Group_Action extends SXP_Action_Rules {
 			return;
 		}
 		try {
-			$order = wc_get_order( $order_id );
-			$customer = new \WC_Customer( $order->get_customer_id() );
-			$tags = sxp_get_user_tags( $customer->get_id() );
+			$order    = wc_get_order( $order_id );
+			$customer = new WC_Customer( $order->get_customer_id() );
+			$tags     = sxp_get_user_tags( $customer->get_id() );
 			if ( is_wp_error( $tags ) ) {
 				$tags = [];
 			} else {
-				$tags = array_map( function( $tag ) {
+				$tags = array_map( function ( $tag ) {
 					return $tag->term_id;
 				}, $tags );
 			}
@@ -92,7 +92,7 @@ class SXP_Rules_Group_Action extends SXP_Action_Rules {
 				$qty += $item->get_quantity();
 			}
 			$coupons = $order->get_coupon_codes();
-			$e = new SXP_Expression();
+			$e       = new SXP_Expression();
 			$e->get_engine()->set_data( [
 				'order' => (object) [
 					'amount'   => $order->get_amount(),
@@ -113,24 +113,41 @@ class SXP_Rules_Group_Action extends SXP_Action_Rules {
 				}
 			}
 		} catch ( Exception $e ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( $e->getMessage() );
-			}
+			// This exception only get caught if the user id is wrong.
+			// @TODO use wc logger.
 			return;
 		}
 	}
 	
-	protected function execute_action( ...$args ) {}
-	
+	/**
+	 * Get registered Conditions.
+	 *
+	 * @return array
+	 */
 	public function get_conditions() {
+		/**
+		 * Filters Group Rules.
+		 *
+		 * @param array $conditions.
+		 */
 		return apply_filters( 'salexpresso_user_group_rule_conditions', $this->conditions );
 	}
 	
+	/**
+	 * Ajax Response for user_group_get_comparisons action
+	 *
+	 * @return void
+	 */
 	public function ajax_get_comparisons() {
 		wp_send_json_success( $this->get_comparisons() );
 		die();
 	}
 	
+	/**
+	 * Ajax Response for user_group_get_conditions action
+	 *
+	 * @return void
+	 */
 	public function ajax_get_conditions() {
 		wp_send_json_success( $this->get_conditions() );
 		die();
@@ -167,5 +184,5 @@ class SXP_Rules_Group_Action extends SXP_Action_Rules {
 	}
 }
 
-SXP_Rules_Group_Action::get_instance();
-// End of file class-sxp-user-group-action.
+SXP_User_Group_Rules::get_instance();
+// End of file class-sxp-user-group-rules.php.

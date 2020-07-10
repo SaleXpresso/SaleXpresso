@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="blackhunter">
     <words>
+      <w>absint</w>
       <w>abspath</w>
       <w>addon</w>
       <w>addons</w>
@@ -60,6 +61,7 @@
       <w>salexpresso</w>
       <w>savequeries</w>
       <w>secondselect</w>
+      <w>selectize</w>
       <w>sprintf</w>
       <w>squiz</w>
       <w>squizlabs</w>

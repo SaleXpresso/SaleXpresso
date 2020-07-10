@@ -9,6 +9,7 @@
 
 namespace SaleXpresso\Customer;
 
+use Exception;
 use WC_Customer;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,22 +36,30 @@ class SXP_Customer_Profile_Table {
 	 */
 	public function __construct() {
 		// @TODO Extend WP_List_Table.
-		if ( ! isset( $_REQUEST['customer'] ) ) {
+		if ( ! isset( $_REQUEST['customer'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 			die();
 		}
 		
 		try {
-			$customer = new WC_Customer( absint( $_REQUEST['customer'] ) );
+			$customer = new WC_Customer( absint( $_REQUEST['customer'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if ( $customer->get_id() ) {
 				$this->customer = $customer;
 			}
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
+			// This exception only get caught if the user id is wrong.
+			// @TODO use wc logger.
+			$this->customer = null;
 		}
 		
 		$this->display();
 	}
 	
+	/**
+	 * Render Profile.
+	 *
+	 * @return void
+	 */
 	public function display() {
 		if ( ! $this->customer ) {
 			?>
@@ -63,8 +72,8 @@ class SXP_Customer_Profile_Table {
 			<?php
 			return;
 		}
-		$tags = sxp_get_user_tags( $this->customer->get_id() );
-		$group = sxp_get_user_group( $this->customer->get_id() );
+		$tags      = sxp_get_user_tags( $this->customer->get_id() );
+		$group     = sxp_get_user_group( $this->customer->get_id() );
 		$histories = $this->get_histories();
 		?>
 		<div class="sxp-tag-wrapper">
@@ -80,7 +89,7 @@ class SXP_Customer_Profile_Table {
 					esc_html( $tag->name )
 					);
 					?>
-					<?php }
+				<?php }
 			} else {
 				?>
 				<li><a>No Tag</a></li>
@@ -106,13 +115,13 @@ class SXP_Customer_Profile_Table {
 							<?php echo get_avatar( $this->customer->get_email(), 72, '', $this->customer->get_display_name() ); ?>
 						</div>
 						<h3><?php echo esc_html( $this->customer->get_display_name() ); ?></h3>
-						<p><a href="mailto:<?php echo esc_url( $this->customer->get_email() ); ?>"><?php  echo esc_html( $this->customer->get_email() ); ?></a></p>
+						<p><a href="mailto:<?php echo esc_url( $this->customer->get_email() ); ?>"><?php echo esc_html( $this->customer->get_email() ); ?></a></p>
 						<p><?php echo esc_html( $this->customer->get_address() ); ?></p>
 					</div><!-- end .sxp-profile-info-wrapper -->
 					<div class="sxp-profile-info-history">
 						<?php
 						if ( ! empty( $histories ) ) {
-							foreach( $histories as $history ) {
+							foreach ( $histories as $history ) {
 								if ( ! isset( $history['label'], $history['data'] ) ) {
 									continue;
 								}
@@ -260,7 +269,6 @@ class SXP_Customer_Profile_Table {
 									</div>
 									<div>5s later</div>
 								</div><!-- end .sxp-fold-content -->
-							
 							</td>
 						</tr>
 						<tr>
@@ -1003,12 +1011,11 @@ class SXP_Customer_Profile_Table {
 				<label for="sxp-tag-select" class="screen-reader-text"><?php __('Tag dropdown select', 'salexpresso'); ?></label>
 				<?php
 				wp_dropdown_categories( [
-					'taxonomy' => 'user_tag',
-					'hide_if_empty' => false
+					'taxonomy'      => 'user_tag',
+					'hide_if_empty' => false,
 				] );
 				?>
 				<select name="tag" id="sxp-tag-select" class="sxp-modal selectize">
-					
 					<option value="customer" selected>customer</option>
 					<option value="product">product</option>
 					<option value="customer-type">customer type</option>
@@ -1020,40 +1027,45 @@ class SXP_Customer_Profile_Table {
 		<?php
 	}
 	
+	/**
+	 * Customer History.
+	 *
+	 * @return array
+	 */
 	private function get_histories() {
 		return [
 			'acquired_via' => [
 				'label' => __( 'Acquired via', 'salexpresso' ),
 				'data'  => 'Google',
 			],
-			'revenue' => [
+			'revenue'      => [
 				'label' => __( 'Revenue', 'salexpresso' ),
-				'data' => wc_price( 12.22 ),
+				'data'  => wc_price( 12.22 ),
 			],
-			'sessions' => [
+			'sessions'     => [
 				'label' => __( 'Sessions', 'salexpresso' ),
-				'data' => 2,
+				'data'  => 2,
 			],
-			'orders' => [
+			'orders'       => [
 				'label' => __( 'Orders', 'salexpresso' ),
-				'data' => 1,
+				'data'  => 1,
 			],
-			'actions' => [
+			'actions'      => [
 				'label' => __( 'Actions', 'salexpresso' ),
-				'data' => 32,
+				'data'  => 32,
 			],
-			'first_order' => [
+			'first_order'  => [
 				'label' => __( 'First Order', 'salexpresso' ),
-				'data' => '24 Jan, 2019',
+				'data'  => '24 Jan, 2019',
 			],
-			'last_order' => [
+			'last_order'   => [
 				'label' => __( 'Last Order', 'salexpresso' ),
-				'data' => '29 Mar, 2020',
+				'data'  => '29 Mar, 2020',
 			],
-			'last_active' => [
+			'last_active'  => [
 				'label' => __( 'Last Active', 'salexpresso' ),
-				'data' => '2 Apr, 2020',
-			]
+				'data'  => '2 Apr, 2020',
+			],
 		];
 	}
 }

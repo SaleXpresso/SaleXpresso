@@ -30,6 +30,7 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	
 	/**
 	 * Page Slug
+	 *
 	 * @var string
 	 */
 	protected $page;
@@ -51,19 +52,19 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	/**
 	 * SXP_Customer_Group_Table constructor.
 	 *
-	 * @param array $args
+	 * @param array|string $args Optional. List Table Options.
 	 */
 	public function __construct( $args = [] ) {
 		global $plugin_page;
 		$this->page = $plugin_page;
 		
 		parent::__construct( wp_parse_args( $args, [
-			'singular' => __( 'Customer Group', 'salexpresso' ),
-			'plural'   => __( 'Customer Groups', 'salexpresso' ),
-			'ajax'     => true,
-			'screen'   => isset( $args['screen'] ) ? $args['screen'] : null,
-			'tab'      => '',
-			'tfoot'    => false,
+			'singular'  => __( 'Customer Group', 'salexpresso' ),
+			'plural'    => __( 'Customer Groups', 'salexpresso' ),
+			'ajax'      => true,
+			'screen'    => isset( $args['screen'] ) ? $args['screen'] : null,
+			'tab'       => '',
+			'tfoot'     => false,
 			'table_nav' => [
 				'top'        => true,
 				'pagination' => true,
@@ -75,8 +76,12 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		$this->items    = [];
 	}
 	
-	protected function set_table_actions() {
-		
+	/**
+	 * Table Action Buttons.
+	 * 
+	 * @return array
+	 */
+	protected function get_table_actions() {
 		return [
 			[
 				'link'  => admin_url( 'admin.php?page=' . $this->page . '&action=add-new' ),
@@ -98,26 +103,27 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	
 	/**
 	 * Fetch data and prepare the list.
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
-		// using wc report api data store.
+		// Using wc report api data store.
 		$per_page   = $this->get_items_per_page( $this->taxonomy_name . '_per_page' );
 		$order_by   = 'name';
 		$sort_order = 'ASC';
 		$search     = '';
 		
 		// set sorting.
-		if ( isset( $_GET['orderby'] ) ) {
-			$order_by = sanitize_text_field( $_GET['orderby'] );
+		if ( isset( $_GET['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$order_by = sanitize_text_field( $_GET['orderby'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 		
-		if ( isset( $_GET['order'] ) ) {
-			$sort_order = 'asc' === strtolower( $_GET['order'] ) ? 'ASC' : 'DESC';
+		if ( isset( $_GET['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$sort_order = 'asc' === strtolower( $_GET['order'] ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
 		}
 		
-		if ( isset( $_GET['s'] ) ) {
-			$search = sanitize_text_field( $_GET['s'] );
+		if ( isset( $_GET['s'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$search = sanitize_text_field( $_GET['s'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$search = preg_replace( '/\s\s+/', ' ', $search );
 			$search = trim( $search );
 		}
@@ -136,8 +142,8 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		
 		$data = new WP_Term_Query( $term_args );
 		global $wpdb;
-		$sql = preg_replace( '/SELECT .+ FROM(.*)LIMIT.*/i', 'SELECT  COUNT(*) as total FROM$1', $data->request );
-		$total = (array) $wpdb->get_row( $sql );
+		$sql         = preg_replace( '/SELECT .+ FROM(.*)LIMIT.*/i', 'SELECT  COUNT(*) as total FROM$1', $data->request );
+		$total       = (array) $wpdb->get_row( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
 		$this->items = $data->get_terms();
 		
 		$this->set_pagination_args( [
@@ -148,6 +154,7 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	
 	/**
 	 * Set the bulk actions
+	 *
 	 * @return array
 	 */
 	protected function get_bulk_actions() {
@@ -160,7 +167,7 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	}
 	
 	/**
-	 * CB Column Callback.
+	 * CB Column Renderer.
 	 *
 	 * @param WP_Term $item Term.
 	 *
@@ -181,12 +188,12 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	 * Default Column Callback.
 	 *
 	 * @param WP_Term $item Term.
-	 * @param string $column_slug Column Slug.
+	 * @param string  $column_name Column Slug.
 	 *
 	 * @return string
 	 */
-	public function column_default( $item, $column_slug ) {
-		switch ( $column_slug ) {
+	public function column_default( $item, $column_name ) {
+		switch ( $column_name ) {
 			case 'name':
 				return sprintf(
 					'<a href="%s" style="background: %s">%s</a>',
@@ -194,21 +201,23 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 					sxp_get_term_background_color( $item ),
 					$item->name
 				);
-				break;
 			case 'assigned':
 				return $item->count;
-				break;
 			default:
-				return apply_filters( "manage_{$this->screen->id}_{$column_slug}_column_content", '', $item );
-				break;
+				return $this->column_default_filtered( $item, $column_name );
 		}
 	}
 	
+	/**
+	 * Get Default Columns.
+	 *
+	 * @return array
+	 */
 	public function get_columns() {
 		return [
-			'cb'        => '<input type="checkbox" />',
-			'name'      => __( 'Customer Group', 'salexpresso' ),
-			'assigned'  => __( 'Assigned', 'salexpresso' ),
+			'cb'       => '<input type="checkbox" />',
+			'name'     => __( 'Customer Group', 'salexpresso' ),
+			'assigned' => __( 'Assigned', 'salexpresso' ),
 		];
 	}
 	
@@ -224,4 +233,4 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		];
 	}
 }
-// End of file class-sxp-customer-group-list-table.php
+// End of file class-sxp-customer-group-list-table.php.

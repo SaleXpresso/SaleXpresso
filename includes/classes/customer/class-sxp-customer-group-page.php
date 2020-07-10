@@ -78,18 +78,23 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		$this->form_action_handler();
 	}
 	
+	/**
+	 * Init Page Actions.
+	 *
+	 * @return void
+	 */
 	protected function init() {
 		$this->list_table = SXP_Admin_Menus::get_instance()->get_list_table();
 		
 		$this->set_current_action();
 		
-		if ( 'edit' === $this->current_action && ! isset( $_GET['id'] ) ) {
+		if ( 'edit' === $this->current_action && ! isset( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_safe_redirect( wp_get_referer() );
 			die();
 		}
 		
 		if ( 'edit' === $this->current_action ) {
-			$this->term = get_term( absint( $_GET['id'] ), $this->taxonomy_name );
+			$this->term = get_term( absint( $_GET['id'] ), $this->taxonomy_name ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if ( is_wp_error( $this->term ) ) {
 				$this->set_flash_message( $this->term->get_error_message(), 'error', true );
 			}
@@ -107,7 +112,6 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	 */
 	protected function form_action_handler() {
 		if ( ! empty( $this->get_current_action() ) && 'post' === $this->get_request_method() && in_array( $this->get_current_action(), [ 'add-' . $this->taxonomy_name, 'edit-' . $this->taxonomy_name ] ) ) {
-			
 			// Security check.
 			check_admin_referer( $this->get_current_action() );
 			
@@ -152,7 +156,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			
 			if ( isset( $_POST['sxp_rule'] ) && is_array( $_POST['sxp_rule'] ) ) {
 				$rules = [];
-				foreach ( $_POST['sxp_rule'] as $rule ) {
+				foreach ( $_POST['sxp_rule'] as $rule ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 					if ( ! isset( $rule['compare'], $rule['operator'], $rule['values'] ) ) {
 						continue;
 					}
@@ -172,12 +176,22 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				if ( $term_id && ! empty( $rules ) ) {
 					$save = sxp_save_term_rules( $term_id, $rules );
 					if ( is_wp_error( $save ) ) {
-						$this->set_flash_message( sprintf( esc_html__( 'Error Saving Rules. %s'), $save->get_error_message() ), 'error', true );
+						$this->set_flash_message( sprintf(
+							/* translators: 1 Error message while saving the term. */
+							esc_html__( 'Error Saving Rules. %s', 'salexpresso' ),
+							$save->get_error_message()
+						), 'error', true );
 					}
 				}
 			}
 			
-			$message = $term_id ? esc_html__( '%s Updated', 'salexpresso' ) : esc_html__( '%s Created.', 'salexpresso' );
+			if ( $term_id ) {
+				/* translators: 1 Taxonomy term that just been updated. */
+				$message = esc_html__( '%s Updated', 'salexpresso' );
+			} else {
+				/* translators: 1 Taxonomy term that just been created. */
+				$message = esc_html__( '%s Created.', 'salexpresso' );
+			}
 			$this->set_flash_message( sprintf( $message, $this->taxonomy->labels->singular_name ), 'success', true );
 			
 			wp_safe_redirect( $page );
@@ -189,17 +203,25 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	 * Set the flash error message.
 	 *
 	 * @param WP_Error $error   Error object.
-	 * @param bool $update      Updating or creating.
+	 * @param bool     $update      Updating or creating.
 	 *
 	 * @return void
 	 */
 	private function term_error_flash( $error, $update ) {
-		$message = $update ? esc_html__( 'There was an error updating the term. %s', 'salexpresso' ) : esc_html__( 'There was an error creating new term. %s', 'salexpresso' );
+		if ( $update ) {
+			/* translators: Error message of term update WP_Error Object. */
+			$message = esc_html__( 'There was an error updating the term. %s', 'salexpresso' );
+		} else {
+			/* translators: Error message of term add WP_Error Object. */
+			$message = esc_html__( 'There was an error creating new term. %s', 'salexpresso' );
+		}
 		$this->set_flash_message( sprintf( $message, $error->get_error_message() ), 'error', true );
 	}
 	
 	/**
-	 * Page Actions.
+	 * Set Screen Option
+	 *
+	 * @return void
 	 */
 	public function page_actions() {
 		if ( in_array( $this->current_action, [ 'edit', 'add-new' ] ) ) {
@@ -208,8 +230,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		add_screen_option(
 			'per_page',
 			[
-				'label'   => 'Number of items per page:',
-				'option'  => $this->taxonomy_name . '_per_page',
+				'label'  => 'Number of items per page:',
+				'option' => $this->taxonomy_name . '_per_page',
 			]
 		);
 	}
@@ -217,7 +239,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	/**
 	 * Set Tabs and tab content.
 	 */
-	protected function set_tabs() {}
+	protected function set_tabs() {
+	}
 	
 	/**
 	 * Render Filter section
@@ -293,28 +316,36 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		}
 	}
 	
+	/**
+	 * Render the taxonomy term edit form
+	 *
+	 * @return void
+	 */
 	protected function render_form() {
 		$conditions = SXP_Rules_Group_Action::get_instance()->get_conditions();
-		$operators = SXP_Rules_Group_Action::get_instance()->get_operators();
-		$rules = sxp_get_term_rules( $this->term );
+		$operators  = SXP_Rules_Group_Action::get_instance()->get_operators();
+		$rules      = sxp_get_term_rules( $this->term );
 		if ( empty( $rules ) ) {
 			$rules[] = [
-				'operator' => '',
+				'operator'  => '',
 				'condition' => '',
-				'values' => [],
+				'values'    => [],
 			];
 		}
 		$action = ( ! $this->term->term_id ? 'add-' : 'edit-' ) . $this->taxonomy_name;
 		?>
 		<div class="sxp-rule-wrapper">
-			<form action="<?php echo esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) ) ?>" method="post" class="sxp-form">
+			<form action="<?php echo esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) ); ?>" method="post" class="sxp-form">
 				<input type="hidden" name="action" value="<?php echo esc_attr( $action ); ?>">
 				<input type="hidden" name="term_id" value="<?php echo absint( $this->term->term_id ); ?>">
-				<?php wp_nonce_field( $action ) ?>
+				<?php wp_nonce_field( $action ); ?>
 				<div class="form-top">
 					<div class="section">
-						<h4 class="header"><?php printf( esc_html__( 'Customer %s Name', 'salexpresso' ), $this->taxonomy->labels->singular_name ); ?> <i data-feather="info"></i></h4>
-						<!-- /.header -->
+						<h4 class="header"><?php printf(
+								/* translators: 1 Taxonomy Singular Name */
+								esc_html__( 'Customer %s Name', 'salexpresso' ),
+								esc_html( $this->taxonomy->labels->singular_name )
+							); ?> <i data-feather="info"></i></h4><!-- /.header -->
 						<input type="text" class="title-edit" name="name" value="<?php echo esc_attr( $this->term->name ); ?>">
 						<!-- /.title-edit -->
 					</div>
@@ -329,14 +360,14 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 							<div class="sxp-rules">
 								<?php
 								$idx = 1;
-								foreach( $rules as $rule ) {
+								foreach ( $rules as $rule ) {
 									if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'] ) ) {
 										continue;
 									}
-								?>
-								<div class="sxp-rule-single rule_<?php echo $idx; ?>">
-									<label for="rule_compare_<?php echo $idx; ?>" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
-									<select id="rule_compare_<?php echo $idx; ?>" name="sxp_rule[<?php echo $idx; ?>][condition]">
+									?>
+								<div class="sxp-rule-single rule_<?php echo esc_attr( $idx ); ?>">
+									<label for="rule_compare_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
+									<select id="rule_compare_<?php echo esc_attr( $idx ); ?>" name="sxp_rule[<?php echo esc_attr( $idx ); ?>][condition]">
 										<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
 										<?php
 										foreach ( $conditions as $slug => $data ) {
@@ -344,8 +375,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 										}
 										?>
 									</select>
-									<label for="rule_operator_<?php echo $idx; ?>" class="screen-reader-text"><?php __('Select Comparison Operator', 'salexpresso'); ?> </label>
-									<select id="rule_operator_<?php echo $idx; ?>" name="sxp_rule[<?php echo $idx; ?>][operator]">
+									<label for="rule_operator_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php __('Select Comparison Operator', 'salexpresso'); ?> </label>
+									<select id="rule_operator_<?php echo esc_attr( $idx ); ?>" name="sxp_rule[<?php echo esc_attr( $idx ); ?>][operator]">
 										<option value=""><?php esc_html_e( 'Select Operator', 'salexpresso' ); ?></option>
 										<?php
 										foreach ( $operators as $slug => $data ) {
@@ -353,8 +384,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 										}
 										?>
 									</select>
-									<label for="rule_values_<?php echo $idx; ?>" class="screen-reader-text"><?php esc_html_e( 'Value to compare', 'salexpresso' ); ?></label>
-									<input type="text" id="rule_values_<?php echo $idx; ?>" name="sxp_rule[<?php echo $idx; ?>][values]" placeholder="<?php esc_attr_e( 'Value to compare', 'salexpresso' ); ?>" value="<?php
+									<label for="rule_values_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e( 'Value to compare', 'salexpresso' ); ?></label>
+									<input type="text" id="rule_values_<?php echo esc_attr( $idx ); ?>" name="sxp_rule[<?php echo esc_attr( $idx ); ?>][values]" placeholder="<?php esc_attr_e( 'Value to compare', 'salexpresso' ); ?>" value="<?php
 									if ( is_array( $rule['values'] ) ) {
 										echo esc_attr( implode( ',', $rule['values'] ) );
 									} else {
@@ -402,23 +433,22 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 							</script>
 							<a href="#" class="sxp-btn sxp-btn-link"><i data-feather="plus"></i> <?php esc_html_e( 'Add Condition', 'salexpresso' ); ?></a>
 							<script>
-								(function($){
-									var template = $('.rule_ui_template').text(),
-										wrapper = $('.sxp-rules'),
-										length = wrapper.find('.sxp-rule-single').length || 1;
+								( function( $ ) {
+									var template = $( '.rule_ui_template' ).text(),
+										wrapper = $( '.sxp-rules' ),
+										length = wrapper.find( '.sxp-rule-single' ).length || 1
 									if ( '' !== template ) {
-										template.trim();
+										template.trim()
 									}
 									if ( '' === template ) {
-										return;
+										return
 									}
-									
-									$(document).on('click', '.sxp-rule-add-btn .sxp-btn-link', function( e ) {
-										e.preventDefault();
-										length += 1;
-										wrapper.append( template.replace( /__IDX__/g, length ) );
-									});
-								})(jQuery);
+									$( document ).on( 'click', '.sxp-rule-add-btn .sxp-btn-link', function( e ) {
+										e.preventDefault()
+										length += 1
+										wrapper.append( template.replace( /__IDX__/g, length ) )
+									} )
+								} )( jQuery )
 							</script>
 						</div><!-- end .sxp-customer-rule-add-btn -->
 					</div><!-- end .sxp-customer-rule-bottom -->
@@ -426,8 +456,9 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 						<a class="sxp-btn sxp-btn-cancel" href="#" onclick="return confirm( '<?php esc_attr_e( 'Are You Sure?\nAny changes you made will be lost.', 'salexpresso' ); ?>' ) ? history.back() : false;">Cancel</a>
 						<input type="submit" class="sxp-btn sxp-btn-primary btn-save" value="<?php
 						printf(
-							$this->term->term_id ? esc_attr__( 'Update %s', 'salexpresso' ) : esc_attr__( 'Save New %s', 'salexpresso' ),
-							$this->taxonomy->labels->singular_name
+							/* translators: 1 Term name this just created or get updated. */
+							$this->term->term_id ? esc_attr__( 'Update %s', 'salexpresso' ) : esc_attr__( 'Save New %s', 'salexpresso' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							esc_attr( $this->taxonomy->labels->singular_name )
 						); ?>">
 					</div><!-- end .sxp-customer-rule-save-wrapper -->
 				</div>

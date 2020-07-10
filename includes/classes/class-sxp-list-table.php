@@ -34,14 +34,14 @@ class SXP_List_Table {
 	 *
 	 * @var array
 	 */
-	protected $_args;
+	protected $_args; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 	
 	/**
 	 * Various information needed for displaying the pagination.
 	 *
 	 * @var array
 	 */
-	protected $_pagination_args = array();
+	protected $_pagination_args = array(); // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 	
 	/**
 	 * The current screen.
@@ -69,7 +69,7 @@ class SXP_List_Table {
 	 *
 	 * @var array
 	 */
-	private $_actions;
+	private $_actions; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 	
 	/**
 	 * List of table action button.
@@ -83,7 +83,7 @@ class SXP_List_Table {
 	 *
 	 * @var string
 	 */
-	private $_pagination;
+	private $_pagination; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 	
 	/**
 	 * The view switcher modes.
@@ -97,7 +97,7 @@ class SXP_List_Table {
 	 *
 	 * @var array
 	 */
-	protected $_column_headers;
+	protected $_column_headers; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 	
 	/**
 	 * {@internal Missing Summary}
@@ -132,6 +132,7 @@ class SXP_List_Table {
 	
 	/**
 	 * Unique String for common ID
+	 *
 	 * @var string
 	 */
 	protected $uid = '';
@@ -164,7 +165,7 @@ class SXP_List_Table {
 	 * }
 	 */
 	public function __construct( $args = array() ) {
-		$args = wp_parse_args(
+		$args         = wp_parse_args(
 			$args,
 			[
 				'plural'    => '',
@@ -189,18 +190,13 @@ class SXP_List_Table {
 		
 		$this->uid = wp_unique_id( $this->screen_id . '_list_table_' );
 		
-		$removable_query_args = wp_removable_query_args();
+		$removable_query_args   = wp_removable_query_args();
 		$removable_query_args[] = 'paged';
-		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		$current_url            = '';
+		if ( isset( $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ) ) {
+			$current_url = set_url_scheme( 'http://' . sanitize_text_field( $_SERVER['HTTP_HOST'] ) . sanitize_text_field( $_SERVER['REQUEST_URI'] ) );
+		}
 		$this->current_url = remove_query_arg( $removable_query_args, $current_url );
-//		if ( empty( $args['tab'] ) && isset( $_GET['tab'] ) ) {
-//			$args['tab'] = sanitize_text_field( $_GET['tab'] );
-//		}
-//
-//		$args['tab'] = sanitize_title( $args['tab'] );
-//		if ( $args['tab'] ) {
-//			$this->screen_id .= '_' . $args['tab'];
-//		}
 		
 		add_filter( "manage_{$this->screen_id}_columns", [ $this, 'get_columns' ], 0 );
 		
@@ -214,14 +210,14 @@ class SXP_List_Table {
 		$this->_args = $args;
 		
 		if ( $args['ajax'] ) {
-			//wp_enqueue_script( 'list-table' );
+			// may be we need to use wp enqueue script [ list-table ].
 			add_action( 'admin_footer', [ $this, '_js_vars' ] );
 		}
 		
 		if ( empty( $this->modes ) ) {
 			$this->modes = array(
-				'list'    => __( 'List View' ),
-				'excerpt' => __( 'Excerpt View' ),
+				'list'    => esc_html__( 'List View', 'salexpresso' ),
+				'excerpt' => esc_html__( 'Excerpt View', 'salexpresso' ),
 			);
 		}
 	}
@@ -277,8 +273,8 @@ class SXP_List_Table {
 	/**
 	 * Make private/protected methods readable for backward compatibility.
 	 *
-	 * @param string   $name      Method to call.
-	 * @param array    $arguments Arguments to pass when calling.
+	 * @param string $name      Method to call.
+	 * @param array  $arguments Arguments to pass when calling.
 	 * @return mixed|bool Return value of the callback, false otherwise.
 	 */
 	public function __call( $name, $arguments ) {
@@ -329,7 +325,7 @@ class SXP_List_Table {
 		
 		// Redirect if page number is invalid and headers are not already sent.
 		if ( ! headers_sent() && ! wp_doing_ajax() && $args['total_pages'] > 0 && $this->get_pagenum() > $args['total_pages'] ) {
-			wp_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
+			wp_safe_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
 			exit;
 		}
 		
@@ -364,10 +360,9 @@ class SXP_List_Table {
 	
 	/**
 	 * Message to be displayed when there are no items
-	 *
 	 */
 	public function no_items() {
-		_e( 'No items found.' );
+		esc_html_e( 'No items found.', 'salexpresso' );
 	}
 	
 	/**
@@ -377,23 +372,23 @@ class SXP_List_Table {
 	 * @param string $input_id ID attribute value for the search input field.
 	 */
 	public function search_box( $text = '', $input_id = '' ) {
-		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
+		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 		
 		$input_id = $input_id . '-search-input';
 		
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( $_REQUEST['orderby'] ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
-		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+		if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( $_REQUEST['order'] ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
-		if ( ! empty( $_REQUEST['post_mime_type'] ) ) {
-			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( $_REQUEST['post_mime_type'] ) . '" />';
+		if ( ! empty( $_REQUEST['post_mime_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( sanitize_text_field( $_REQUEST['post_mime_type'] ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
-		if ( ! empty( $_REQUEST['detached'] ) ) {
-			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />';
+		if ( ! empty( $_REQUEST['detached'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<input type="hidden" name="detached" value="' . esc_attr( sanitize_text_field( $_REQUEST['detached'] ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 		?>
 		<div class="sxp-customer-search">
@@ -401,9 +396,8 @@ class SXP_List_Table {
 			<input type="search" id="sxp-admin-search" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php esc_html_e( 'Search', 'salexpresso' ); ?>">
 		</div><!-- end .sxp-customer-search -->
 		<p class="search-box">
-			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo $text; ?>:</label>
+			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
 			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" />
-			
 		</p>
 		<?php
 	}
@@ -420,7 +414,6 @@ class SXP_List_Table {
 	
 	/**
 	 * Display the list of views available on this table.
-	 *
 	 */
 	public function views() {
 		$views = $this->get_views();
@@ -444,8 +437,8 @@ class SXP_List_Table {
 		foreach ( $views as $class => $view ) {
 			$views[ $class ] = "\t<li class='$class'>$view";
 		}
-		echo implode( " |</li>\n", $views ) . "</li>\n";
-		echo '</ul>';
+		echo implode( " |</li>\n", $views ) . "</li>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '</ul>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 	
 	/**
@@ -460,7 +453,6 @@ class SXP_List_Table {
 	
 	/**
 	 * Display the bulk actions dropdown.
-	 *
 	 */
 	protected function bulk_actions() {
 		if ( is_null( $this->_actions ) ) {
@@ -472,7 +464,6 @@ class SXP_List_Table {
 			 * to the ID of the current screen, usually a string.
 			 *
 			 * This filter can currently only be used to remove bulk actions.
-			 *
 			 *
 			 * @param string[] $actions An array of the available bulk actions.
 			 */
@@ -488,7 +479,7 @@ class SXP_List_Table {
 			<?php
 			foreach ( $this->_actions as $action => $label ) {
 				list( $label, $icon ) = (array) $label;
-				$class = 'sxp-list-table-action';
+				$class                = 'sxp-list-table-action';
 				if ( empty( $icon ) ) {
 					$class .= ' no-icon';
 				}
@@ -497,7 +488,7 @@ class SXP_List_Table {
 					'<a href="#" class="%s" data-action="%s" data-nonce="%s"><i data-feather="%s" aria-hidden="true"></i> %s <span class="screen-reader-text">%s</span></a>',
 					esc_attr( $class ),
 					esc_attr( $action ),
-					wp_create_nonce( $nonce_action . '_' . $action ),
+					wp_create_nonce( $nonce_action . '_' . $action ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					esc_attr( $icon ),
 					esc_html( $label ),
 					esc_html_x( 'Selected', 'Bulk Action Label Screen Reader', 'salexpresso' )
@@ -515,8 +506,8 @@ class SXP_List_Table {
 	 */
 	public function current_action() {
 		// Actual action is assigned for the ajax action itself.
-		if ( isset( $_REQUEST['_action'] ) && ! empty( $_REQUEST['_action'] ) ) {
-			return sanitize_text_field( $_REQUEST['_action'] );
+		if ( isset( $_REQUEST['_action'] ) && ! empty( $_REQUEST['_action'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return sanitize_text_field( $_REQUEST['_action'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 		
 		return false;
@@ -540,7 +531,7 @@ class SXP_List_Table {
 		$out = '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
 		foreach ( $actions as $action => $link ) {
 			++$i;
-			$sep = ( $i == $action_count ) ? '' : $sep = ' | ';
+			$sep  = ( $i == $action_count ) ? '' : $sep = ' | ';
 			$out .= "<span class='$action'>$link$sep</span>";
 		}
 		$out .= '</div>';
@@ -572,12 +563,12 @@ class SXP_List_Table {
 		}
 		
 		$extra_checks = "AND post_status != 'auto-draft'";
-		if ( ! isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) {
+		if ( ! isset( $_GET['post_status'] ) || 'trash' !== $_GET['post_status'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$extra_checks .= " AND post_status != 'trash'";
-		} elseif ( isset( $_GET['post_status'] ) ) {
-			$extra_checks = $wpdb->prepare( ' AND post_status = %s', $_GET['post_status'] );
+		} elseif ( isset( $_GET['post_status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$extra_checks = $wpdb->prepare( ' AND post_status = %s', sanitize_text_field( $_GET['post_status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
-		
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$months = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month FROM $wpdb->posts
@@ -586,6 +577,7 @@ class SXP_List_Table {
 				$post_type
 			)
 		);
+		// phpcs:enable
 		
 		/**
 		 * Filters the 'Months' drop-down results.
@@ -601,11 +593,11 @@ class SXP_List_Table {
 			return;
 		}
 		
-		$m = isset( $_GET['m'] ) ? (int) $_GET['m'] : 0;
+		$m = isset( $_GET['m'] ) ? (int) $_GET['m'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		?>
-		<label for="filter-by-date" class="screen-reader-text"><?php _e( 'Filter by date' ); ?></label>
+		<label for="filter-by-date" class="screen-reader-text"><?php esc_html_e( 'Filter by date', 'salexpresso' ); ?></label>
 		<select name="m" id="filter-by-date">
-			<option<?php selected( $m, 0 ); ?> value="0"><?php _e( 'All dates' ); ?></option>
+			<option<?php selected( $m, 0 ); ?> value="0"><?php esc_html_e( 'All dates', 'salexpresso' ); ?></option>
 			<?php
 			foreach ( $months as $arc_row ) {
 				if ( 0 == $arc_row->year ) {
@@ -619,8 +611,13 @@ class SXP_List_Table {
 					"<option %s value='%s'>%s</option>\n",
 					selected( $m, $year . $month, false ),
 					esc_attr( $arc_row->year . $month ),
-					/* translators: 1: Month name, 2: 4-digit year. */
-					sprintf( __( '%1$s %2$d' ), $wp_locale->get_month( $month ), $year )
+					
+					sprintf(
+						/* translators: 1: Month name, 2: 4-digit year. */
+						esc_html__( '%1$s %2$d', 'salexpresso' ),
+						esc_html( $wp_locale->get_month( $month ) ),
+						esc_html( $year )
+					)
 				);
 			}
 			?>
@@ -631,7 +628,7 @@ class SXP_List_Table {
 	/**
 	 * Display a view switcher
 	 *
-	 * @param string $current_mode
+	 * @param string $current_mode Current view Mode the list table.
 	 */
 	protected function view_switcher( $current_mode ) {
 		?>
@@ -647,10 +644,12 @@ class SXP_List_Table {
 					$aria_current = ' aria-current="page"';
 				}
 				printf(
-					"<a href='%s' class='%s' id='view-switch-$mode'$aria_current><span class='screen-reader-text'>%s</span></a>\n",
+					"<a href='%s' class='%s' id='view-switch-%s'%s><span class='screen-reader-text'>%s</span></a>\n",
+					esc_attr( $mode ),
+					$aria_current, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					esc_url( add_query_arg( 'mode', $mode ) ),
-					implode( ' ', $classes ),
-					$title
+					esc_attr( implode( ' ', $classes ) ),
+					esc_html( $title )
 				);
 			}
 			?>
@@ -692,7 +691,7 @@ class SXP_List_Table {
 		if ( ! $approved_comments && ! $pending_comments ) {
 			printf(
 				'<span aria-hidden="true">&#8212;</span><span class="screen-reader-text">%s</span>',
-				__( 'No comments' )
+				esc_html__( 'No comments', 'salexpresso' )
 			);
 			// Approved comments have different display depending on some conditions.
 		} elseif ( $approved_comments ) {
@@ -707,14 +706,14 @@ class SXP_List_Table {
 						admin_url( 'edit-comments.php' )
 					)
 				),
-				$approved_comments_number,
-				$pending_comments ? $approved_phrase : $approved_only_phrase
+				esc_html( $approved_comments_number ),
+				$pending_comments ? esc_html( $approved_phrase ) : esc_html( $approved_only_phrase )
 			);
 		} else {
 			printf(
 				'<span class="post-com-count post-com-count-no-comments"><span class="comment-count comment-count-no-comments" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
-				$approved_comments_number,
-				$pending_comments ? __( 'No approved comments', 'salexpresso' ) : __( 'No comments', 'salexpresso' )
+				esc_html( $approved_comments_number ),
+				$pending_comments ? esc_html__( 'No approved comments', 'salexpresso' ) : esc_html__( 'No comments', 'salexpresso' )
 			);
 		}
 		
@@ -730,14 +729,14 @@ class SXP_List_Table {
 						admin_url( 'edit-comments.php' )
 					)
 				),
-				$pending_comments_number,
-				$pending_phrase
+				esc_html( $pending_comments_number ),
+				esc_html( $pending_phrase)
 			);
 		} else {
 			printf(
 				'<span class="post-com-count post-com-count-pending post-com-count-no-pending"><span class="comment-count comment-count-no-pending" aria-hidden="true">%s</span><span class="screen-reader-text">%s</span></span>',
-				$pending_comments_number,
-				$approved_comments ? __( 'No pending comments', 'salexpresso' ) : __( 'No comments', 'salexpresso' )
+				esc_html( $pending_comments_number ),
+				$approved_comments ? esc_html__( 'No pending comments', 'salexpresso' ) : esc_html__( 'No comments', 'salexpresso' )
 			);
 		}
 	}
@@ -748,7 +747,7 @@ class SXP_List_Table {
 	 * @return int
 	 */
 	public function get_pagenum() {
-		$pagenum = isset( $_REQUEST['paged'] ) ? absint( $_REQUEST['paged'] ) : 0;
+		$pagenum = isset( $_REQUEST['paged'] ) ? absint( $_REQUEST['paged'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		
 		if ( isset( $this->_pagination_args['total_pages'] ) && $pagenum > $this->_pagination_args['total_pages'] ) {
 			$pagenum = $this->_pagination_args['total_pages'];
@@ -758,10 +757,10 @@ class SXP_List_Table {
 	}
 	
 	/**
-	 * Get number of items to display on a single page
+	 * Get number of items to display on a single page.
 	 *
-	 * @param string $option
-	 * @param int    $default
+	 * @param string $option  Option name for item per page.
+	 * @param int    $default Default value for items per page.
 	 * @return int
 	 */
 	protected function get_items_per_page( $option, $default = 20 ) {
@@ -815,7 +814,7 @@ class SXP_List_Table {
 			$page_class = ' no-pages';
 		}
 		
-		$links = paginate_links( $this->get_pagination_args( [ 'total' => $total_pages ] ) );
+		$links  = paginate_links( $this->get_pagination_args( [ 'total' => $total_pages ] ) );
 		$output = '';
 		if ( ! empty( $links ) ) {
 			$output .= "\n<ul class='sxp-pagination {$pagination_links_class}'>\n\t<li>";
@@ -825,7 +824,7 @@ class SXP_List_Table {
 		
 		$this->_pagination = "<div class='sxp-pagination tablenav-pages{$page_class}'>$output</div>";
 		
-		echo $this->_pagination;
+		echo $this->_pagination; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 	
 	/**
@@ -868,7 +867,7 @@ class SXP_List_Table {
 			'aria_current'       => 'page',
 			'show_all'           => false,
 			'prev_next'          => true,
-			'prev_text'          => '<img alt="'. esc_attr__( '&laquo; Previous', 'salexpresso' ) .'" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0IDhMMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02IDEyTDIgOEw2IDQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/>',
+			'prev_text'          => '<img alt="' . esc_attr__( '&laquo; Previous', 'salexpresso' ) . '" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0IDhMMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik02IDEyTDIgOEw2IDQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/>',
 			'next_text'          => '<img alt="' . esc_attr__( 'Next &raquo;', 'salexpresso' ) . '" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIgOEwxMyA4IiBzdHJva2U9IiM3RDdEQjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMCA0TDE0IDhMMTAgMTIiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="/>',
 			'end_size'           => 4,
 			'mid_size'           => 2,
@@ -886,8 +885,6 @@ class SXP_List_Table {
 	 * 'internal-name' => 'Title'
 	 *
 	 * @abstract
-	 *
-	 * @return array
 	 */
 	public function get_columns() {
 		die( 'function SaleXpresso\SXP_List_Table::get_columns() must be overridden in a subclass.' );
@@ -955,7 +952,7 @@ class SXP_List_Table {
 		// If the primary column doesn't exist,
 		// fall back to the first non-checkbox column.
 		if ( ! isset( $columns[ $default ] ) ) {
-			$default = SXP_List_Table::get_default_primary_column_name();
+			$default = self::get_default_primary_column_name();
 		}
 		
 		/**
@@ -1023,7 +1020,7 @@ class SXP_List_Table {
 			$columns,
 			$hidden,
 			$sortable,
-			$this->get_primary_column_name()
+			$this->get_primary_column_name(),
 		];
 		
 		return $this->_column_headers;
@@ -1045,18 +1042,18 @@ class SXP_List_Table {
 	 *
 	 * @staticvar int $cb_counter
 	 *
-	 * @param bool $with_id Whether to set the id attribute or not
+	 * @param bool $with_id Whether to set the id attribute or not.
 	 */
 	public function print_column_headers( $with_id = true ) {
 		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
 		
-		if ( isset( $_GET['orderby'] ) ) {
-			$current_orderby = $_GET['orderby'];
+		if ( isset( $_GET['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$current_orderby = sanitize_text_field( $_GET['orderby'] );  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		} else {
 			$current_orderby = '';
 		}
 		
-		if ( isset( $_GET['order'] ) && 'desc' === $_GET['order'] ) {
+		if ( isset( $_GET['order'] ) && 'desc' === $_GET['order'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$current_order = 'desc';
 		} else {
 			$current_order = 'asc';
@@ -1064,9 +1061,8 @@ class SXP_List_Table {
 		
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-			$columns['cb']     = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All', 'salexpresso' ) . '</label>'
-			                     . '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
-			$cb_counter++;
+			$columns['cb']     = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . esc_html__( 'Select All', 'salexpresso' ) . '</label><input id="cb-select-all-' . esc_attr( $cb_counter ) . '" type="checkbox" />';
+			$cb_counter ++;
 		}
 		
 		foreach ( $columns as $column_key => $column_display_name ) {
@@ -1110,24 +1106,18 @@ class SXP_List_Table {
 				$class = "class='" . join( ' ', $class ) . "'";
 			}
 			
-			echo "<$tag $scope $id $class>$column_display_name</$tag>";
+			echo "<$tag $scope $id $class>$column_display_name</$tag>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 	
 	/**
 	 * Displays the table.
-	 *
 	 */
 	public function display() {
 		$singular = $this->_args['singular'];
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
 		<form action="<?php echo esc_url( $this->current_url ); ?>" method="get">
-			<?php
-			// if ( $this->_args['ajax'] ) {
-				// wp_nonce_field( 'fetch-list-' . get_class( $this ), '_sxp_ajax_fetch_list_nonce' );
-			// }
-			?>
 			<div class="sxp-list-table">
 				<?php
 				if ( $this->_args['table_nav']['top'] ) {
@@ -1135,7 +1125,7 @@ class SXP_List_Table {
 				}
 				?>
 				<div class="clearfix"></div>
-				<table id="<?php echo esc_attr( $this->uid ); ?>" class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+				<table id="<?php echo esc_attr( $this->uid ); ?>" class="wp-list-table <?php echo esc_attr( implode( ' ', $this->get_table_classes() ) ); ?>">
 					<?php if ( $this->_args['thead'] ) { ?>
 						<thead>
 						<tr>
@@ -1143,8 +1133,7 @@ class SXP_List_Table {
 						</tr>
 						</thead>
 					<?php } ?>
-					
-					<tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
+					<tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:" . esc_attr( $singular ) . "'" : ''; ?>>
 					<?php $this->display_rows_or_placeholder(); ?>
 					</tbody>
 					<?php if ( $this->_args['tfoot'] ) { ?>
@@ -1154,7 +1143,6 @@ class SXP_List_Table {
 						</tr>
 						</tfoot>
 					<?php } ?>
-				
 				</table>
 				<div class="clearfix"></div>
 				<?php
@@ -1182,7 +1170,7 @@ class SXP_List_Table {
 	/**
 	 * Generate the table navigation above or below the table
 	 *
-	 * @param string $which
+	 * @param string $which Table top or bottom position.
 	 */
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
@@ -1207,7 +1195,7 @@ class SXP_List_Table {
 		}
 		if ( 'bottom' === $which ) {
 			if ( $this->has_items() ) {
-			?>
+				?>
 				<div class="sxp-bulk-action-container hidden">
 					<div class="sxp-row-select">
 						<a href="#" class="sxp-remove-selected" aria-label="<?php esc_attr_e( 'Remove selection', 'salexpresso' ); ?>">
@@ -1318,12 +1306,22 @@ class SXP_List_Table {
 		}
 	}
 	
-	protected function set_table_actions() {
-		$this->table_actions = [];
+	/**
+	 * Table Action Buttons.
+	 *
+	 * @return array
+	 */
+	protected function get_table_actions() {
+		return [];
 	}
 	
+	/**
+	 * Render Table Action.
+	 *
+	 * @return void
+	 */
 	protected function table_actions() {
-		$this->table_actions = $this->set_table_actions();
+		$this->table_actions = $this->get_table_actions();
 		if ( ! is_array( $this->table_actions ) || empty( $this->table_actions ) ) {
 			return;
 		}
@@ -1347,20 +1345,19 @@ class SXP_List_Table {
 	/**
 	 * Extra controls to be displayed between bulk actions and pagination
 	 *
-	 * @param string $which
+	 * @param string $which Table top or bottom position.
 	 */
 	protected function extra_tablenav( $which ) {
 	}
 	
 	/**
 	 * Generate the tbody element for the list table.
-	 *
 	 */
 	public function display_rows_or_placeholder() {
 		if ( $this->has_items() ) {
 			$this->display_rows();
 		} else {
-			echo '<tr class="no-items"><td class="colspanchange" colspan="' . $this->get_column_count() . '">';
+			echo '<tr class="no-items"><td class="colspanchange" colspan="' . $this->get_column_count() . '">'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$this->no_items();
 			echo '</td></tr>';
 		}
@@ -1380,7 +1377,7 @@ class SXP_List_Table {
 	/**
 	 * Generates content for a single row of the table.
 	 *
-	 * @param object $item The current item.
+	 * @param object|array $item The current item.
 	 * @return void
 	 */
 	public function single_row( $item ) {
@@ -1392,19 +1389,33 @@ class SXP_List_Table {
 	/**
 	 * Default Column Renderer Callback.
 	 *
-	 * @param object $item        Item to render.
-	 * @param string $column_name Column Name.
+	 * @param object|array $item        Item to render.
+	 * @param string       $column_name Column Name.
 	 *
 	 * @return string
 	 */
 	protected function column_default( $item, $column_name ) {
-		return '';
+		return $this->column_default_filtered( $item, $column_name );
+	}
+	
+	/**
+	 * Filter Column Item Use in case of column output not handled.
+	 * Helper method.
+	 *
+	 * @param object|array $item        Item to render.
+	 * @param string       $column_name Column Name.
+	 *
+	 * @return string
+	 */
+	protected function column_default_filtered( $item, $column_name ) {
+		return apply_filters( "manage_{$this->screen->id}_{$column_name}_column_content", '', $item );
 	}
 	
 	/**
 	 * CB Column Renderer.
 	 *
-	 * @param object $item
+	 * @param object|array $item Item to render.
+	 *
 	 * @return string
 	 */
 	protected function column_cb( $item ) {
@@ -1414,7 +1425,7 @@ class SXP_List_Table {
 	/**
 	 * Generates the columns for a single row of the table
 	 *
-	 * @param object $item The current item
+	 * @param object|array $item The current item.
 	 * @return void
 	 */
 	protected function single_row_columns( $item ) {
@@ -1435,7 +1446,7 @@ class SXP_List_Table {
 			$data = 'data-colname="' . wp_strip_all_tags( $column_display_name ) . '"';
 			
 			$attributes = "class='$classes' $data";
-			
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 			if ( 'cb' === $column_name ) {
 				echo '<th scope="row" class="check-column">';
 				echo $this->column_cb( $item );
@@ -1453,17 +1464,18 @@ class SXP_List_Table {
 				echo $this->handle_row_actions( $item, $column_name, $primary );
 				echo '</td>';
 			}
+			// phpcs:enable
 		}
 	}
 	
 	/**
 	 * Generates and display row actions links for the list table.
 	 *
-	 * @param object $item        The item being acted upon.
-	 * @param string $column_name Current column name.
-	 * @param string $primary     Primary column name.
-	 * @return string The row actions HTML, or an empty string
-	 *                if the current column is not the primary column.
+	 * @param object|array $item        The item being acted upon.
+	 * @param string       $column_name Current column name.
+	 * @param string       $primary     Primary column name.
+	 *
+	 * @return string The row actions HTML, or an empty string if the current column is not the primary column.
 	 */
 	protected function handle_row_actions( $item, $column_name, $primary ) {
 		return $column_name === $primary ? '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details', 'salexpresso' ) . '</span></button>' : '';
@@ -1471,12 +1483,11 @@ class SXP_List_Table {
 	
 	/**
 	 * Handle an incoming ajax request (called from admin-ajax.php)
-	 *
 	 */
 	public function ajax_response() {
 		
 		$action = $this->current_action();
-		$cb = [ $this, 'ajax_response_' . str_replace( ['-'], '_', $action ) ];
+		$cb     = [ $this, 'ajax_response_' . str_replace( [ '-' ], '_', $action ) ];
 		if ( is_callable( $cb ) ) {
 			call_user_func( $cb );
 		} else {
@@ -1487,17 +1498,22 @@ class SXP_List_Table {
 			 *
 			 * @param SXP_List_Table $list_class
 			 */
-			do_action( 'sxp-list-bulk-' . get_class( $this ) . '-' . $action, $this );
+			do_action( 'sxp_list_bulk_' . get_class( $this ) . '_' . $action, $this );
 		}
 		// No Response handler implemented.
 		wp_die( -1, 501 );
 	}
 	
+	/**
+	 * List table ajax response handler.
+	 *
+	 * @return void
+	 */
 	protected function ajax_fetch_list() {
 		$this->prepare_items();
 		
 		ob_start();
-		if ( ! empty( $_REQUEST['no_placeholder'] ) ) {
+		if ( ! empty( $_REQUEST['no_placeholder'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$this->display_rows();
 		} else {
 			$this->display_rows_or_placeholder();
@@ -1524,8 +1540,10 @@ class SXP_List_Table {
 	
 	/**
 	 * Send required variables to JavaScript land
+	 *
+	 * @return void
 	 */
-	public function _js_vars() {
+	public function _js_vars() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 		$args = [
 			'class'  => get_class( $this ),
 			'screen' => [

@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SXP_Post_Types {
 	
 	const CUSTOMER_GROUP_TAX = 'user_group';
-	const CUSTOMER_TYPE_TAX = 'user_type';
-	const CUSTOMER_TAG_TAX = 'user_tag';
+	const CUSTOMER_TYPE_TAX  = 'user_type';
+	const CUSTOMER_TAG_TAX   = 'user_tag';
 	
 	/**
 	 * Initialize things.

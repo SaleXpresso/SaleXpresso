@@ -9,10 +9,7 @@
 
 namespace SaleXpresso\List_Table;
 
-use SaleXpresso\SXP_List_Table;
 use SaleXpresso\SXP_Post_Types;
-use WP_Term;
-use WP_Term_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -21,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class SXP_Customer_Group_List_Table
+ * Class SXP_Customer_Type_List_Table
  *
  * @package SaleXpresso
  */
@@ -35,9 +32,9 @@ class SXP_Customer_Type_List_Table extends SXP_Customer_Group_List_Table {
 	protected $taxonomy_name = SXP_Post_Types::CUSTOMER_TYPE_TAX;
 	
 	/**
-	 * SXP_Customer_Group_Table constructor.
+	 * SXP_Customer_Type_List_Table constructor.
 	 *
-	 * @param array $args
+	 * @param array|string $args Optional. List Table Options.
 	 */
 	public function __construct( $args = [] ) {
 		parent::__construct( wp_parse_args( $args, [
@@ -46,12 +43,17 @@ class SXP_Customer_Type_List_Table extends SXP_Customer_Group_List_Table {
 		] ) );
 	}
 	
+	/**
+	 * Get Default Columns.
+	 *
+	 * @return array
+	 */
 	public function get_columns() {
 		return [
-			'cb'        => '<input type="checkbox" />',
-			'name'      => __( 'Customer Type', 'salexpresso' ),
-			'assigned'  => __( 'Assigned', 'salexpresso' ),
+			'cb'       => '<input type="checkbox" />',
+			'name'     => __( 'Customer Type', 'salexpresso' ),
+			'assigned' => __( 'Assigned', 'salexpresso' ),
 		];
 	}
 }
-// End of file class-sxp-customer-type-list-table.php
+// End of file class-sxp-customer-type-list-table.php.

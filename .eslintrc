@@ -29,6 +29,7 @@
   },
   "rules": {
 	"eqeqeq": "warn",
-	"semi": "error"
+	"semi": "error",
+	"arrow-parens": ["error", "as-needed"]
   }
 }

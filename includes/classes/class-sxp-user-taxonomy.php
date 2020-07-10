@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Class SXP_User_Taxonomy
+ *
  * @TODO fix taxonomy term count.
  */
 final class SXP_User_Taxonomy {

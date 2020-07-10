@@ -432,7 +432,7 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-file-handler.php';
 		require_once 'interfaces/interface-sxp-admin-page.php';
 		require_once 'abstracts/class-sxp-admin-page.php';
-		require_once 'abstracts/class-sxp-action_rules.php';
+		require_once 'abstracts/class-sxp-action-rules.php';
 		require_once 'classes/class-sxp-admin-notices.php';
 		require_once 'classes/class-sxp-admin-menus.php';
 		require_once 'classes/class-sxp-assets.php';
@@ -446,7 +446,7 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-settings.php';
 		
 		// Core.
-		require_once 'classes/rules/class-sxp-user-group-action.php';
+		require_once 'classes/rules/class-sxp-user-group-rules.php';
 		
 		require_once 'classes/customer/class-sxp-customer-profile-table.php';
 		
@@ -465,7 +465,7 @@ final class SaleXpresso {
 	 * Get the plugin url.
 	 * No Trailing Slash.
 	 *
-	 * @param string $path Optional. File name or path to get the URL for
+	 * @param string $path Optional. File name or path to get the URL for.
 	 *
 	 * @return string
 	 */
@@ -477,7 +477,7 @@ final class SaleXpresso {
 	 * Get the plugin path.
 	 * No Trailing Slash.
 	 *
-	 * @param string $path Optional. File name or path to get the URL for
+	 * @param string $path Optional. File name or path to get the URL for.
 	 *
 	 * @return string
 	 */

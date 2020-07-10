@@ -51,7 +51,7 @@ final class SXP_Expression {
 	protected $data = [];
 	
 	/**
-	 * Result.
+	 * Parsed expression.
 	 *
 	 * @var ParsedExpression
 	 */
@@ -64,6 +64,11 @@ final class SXP_Expression {
 	 */
 	protected $result;
 	
+	/**
+	 * Cache key for saving parsed expression.
+	 *
+	 * @var string
+	 */
 	protected $cache_key = '';
 	
 	/**
@@ -98,6 +103,11 @@ final class SXP_Expression {
 		return $this;
 	}
 	
+	/**
+	 * Get current expression.
+	 *
+	 * @return string
+	 */
 	public function get_expression() {
 		return $this->expression;
 	}
@@ -114,6 +124,11 @@ final class SXP_Expression {
 		return $this;
 	}
 	
+	/**
+	 * Get the data.
+	 *
+	 * @return array
+	 */
 	public function get_data() {
 		return $this->data;
 	}
@@ -121,7 +136,7 @@ final class SXP_Expression {
 	/**
 	 * Set Parsed Expression.
 	 *
-	 * @param ParsedExpression $expression
+	 * @param ParsedExpression $expression Parsed expression to set.
 	 *
 	 * @return self
 	 */
@@ -142,10 +157,21 @@ final class SXP_Expression {
 		return $this;
 	}
 	
+	/**
+	 * Compile Expression.
+	 * This should be using for debugging purpose.
+	 *
+	 * @return string
+	 */
 	public function compile() {
 		return $this->engine->compile( $this->get_expression(), array_keys( $this->get_data() ) );
 	}
 	
+	/**
+	 * Get Parsed Expression.
+	 *
+	 * @return ParsedExpression|null
+	 */
 	public function get_parsed() {
 		return $this->parsed;
 	}
@@ -169,6 +195,11 @@ final class SXP_Expression {
 		return $this->result;
 	}
 	
+	/**
+	 * Reset Properties for next use.
+	 *
+	 * @return void
+	 */
 	public function reset() {
 		$this->result = null;
 		$this->set_expression( '' );
@@ -177,7 +208,7 @@ final class SXP_Expression {
 	}
 }
 
-//add_action( 'init', function () {
-//	new SXP_Expression();
-//}, 10 );
+// add_action( 'init', function () {
+// new SXP_Expression();
+// }, 10 );
 // End of file class-sxp-expression.php.

@@ -107,7 +107,7 @@ if ( ! function_exists( 'create_user_taxonomy_post' ) ) {
 			] );
 			if ( is_wp_error( $sh ) ) {
 				if ( $wp_error ) {
-					return  $sh;
+					return $sh;
 				}
 				return false;
 			}
@@ -497,7 +497,6 @@ if ( ! function_exists( 'sxp_get_user_group' ) ) {
 	 *                                     a WP_Term instance is returned. If taxonomy does not exist, a WP_Error is
 	 *                                     returned. Returns false for miscellaneous failure.
 	 * @see sanitize_term_field() The $context param lists the available values for get_term_by() $filter param.
-	 *
 	 */
 	function sxp_get_user_group( $user, $output = OBJECT, $filter = 'raw' ) {
 		if ( $user instanceof WP_User ) {
@@ -554,7 +553,7 @@ if ( ! function_exists( 'sxp_get_term_background_color' ) ) {
 	/**
 	 * Get Background Color For Term.
 	 *
-	 * @param WP_Term|int $term Term
+	 * @param WP_Term|int $term Term.
 	 *
 	 * @return mixed
 	 */
@@ -568,18 +567,45 @@ if ( ! function_exists( 'sxp_get_term_background_color' ) ) {
 
 // Set User Terms.
 if ( ! function_exists( 'sxp_set_user_groups' ) ) {
+	/**
+	 * Set User Group.
+	 *
+	 * @param int    $user_id User ID.
+	 * @param string $groups   Tag list to add.
+	 * @param bool   $append  Replace or append the tag list.
+	 *
+	 * @return array|false|WP_Error
+	 */
 	function sxp_set_user_groups( $user_id, $groups, $append = false ) {
 		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
 		return wp_set_post_terms( $sh, $groups, 'user_group', $append );
 	}
 }
 if ( ! function_exists( 'sxp_set_user_types' ) ) {
+	/**
+	 * Set User Types.
+	 *
+	 * @param int    $user_id User ID.
+	 * @param string $types   Tag list to add.
+	 * @param bool   $append  Replace or append the tag list.
+	 *
+	 * @return array|false|WP_Error
+	 */
 	function sxp_set_user_types( $user_id, $types = '', $append = false ) {
 		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
 		return wp_set_post_terms( $sh, $types, 'user_type', $append );
 	}
 }
 if ( ! function_exists( 'sxp_set_user_tags' ) ) {
+	/**
+	 * Set User Tags.
+	 *
+	 * @param int    $user_id User ID.
+	 * @param string $tags    Tag list to add.
+	 * @param bool   $append  Replace or append the tag list.
+	 *
+	 * @return array|false|WP_Error
+	 */
 	function sxp_set_user_tags( $user_id, $tags = '', $append = false ) {
 		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
 		return wp_set_post_terms( $sh, $tags, 'user_type', $append );
@@ -591,7 +617,7 @@ if ( ! function_exists( 'sxp_add_user_group' ) ) {
 	/**
 	 * Create New User Group Term.
 	 *
-	 * @param string $name
+	 * @param string $name Term Name to create a term with.
 	 *
 	 * @return int|WP_Error
 	 */
@@ -607,7 +633,7 @@ if ( ! function_exists( 'sxp_add_user_type' ) ) {
 	/**
 	 * Create New User Type Term.
 	 *
-	 * @param string $name
+	 * @param string $name Term Name to create a term with.
 	 *
 	 * @return int|WP_Error
 	 */
@@ -623,7 +649,7 @@ if ( ! function_exists( 'sxp_add_user_tag' ) ) {
 	/**
 	 * Create New User Tag Term.
 	 *
-	 * @param string $name
+	 * @param string $name Term Name to create a term with.
 	 *
 	 * @return int|WP_Error
 	 */
@@ -639,8 +665,8 @@ if ( ! function_exists( 'sxp_update_user_group' ) ) {
 	/**
 	 * Update User Group Term.
 	 *
-	 * @param int $term_id
-	 * @param array $args
+	 * @param int   $term_id Term ID.
+	 * @param array $args Data to update.
 	 *
 	 * @return int|WP_Error
 	 */
@@ -656,8 +682,8 @@ if ( ! function_exists( 'sxp_update_user_type' ) ) {
 	/**
 	 * Update User Type Term.
 	 *
-	 * @param int $term_id
-	 * @param array $args
+	 * @param int   $term_id Term ID.
+	 * @param array $args Data to update.
 	 *
 	 * @return int|WP_Error
 	 */
@@ -673,8 +699,8 @@ if ( ! function_exists( 'sxp_update_user_tag' ) ) {
 	/**
 	 * Update User Tag Term.
 	 *
-	 * @param int $term_id
-	 * @param array $args
+	 * @param int   $term_id Term ID.
+	 * @param array $args Data to update.
 	 *
 	 * @return int|WP_Error
 	 */
@@ -690,7 +716,7 @@ if ( ! function_exists( 'sxp_delete_user_group' ) ) {
 	/**
 	 * Delete User Group.
 	 *
-	 * @param int $term_id
+	 * @param int $term_id Term ID.
 	 *
 	 * @return bool|int|WP_Error
 	 */
@@ -702,7 +728,7 @@ if ( ! function_exists( 'sxp_delete_user_type' ) ) {
 	/**
 	 * Delete User Type.
 	 *
-	 * @param int $term_id
+	 * @param int $term_id Term ID.
 	 *
 	 * @return bool|int|WP_Error
 	 */
@@ -714,7 +740,7 @@ if ( ! function_exists( 'sxp_delete_user_tag' ) ) {
 	/**
 	 * Delete User Tag.
 	 *
-	 * @param int $term_id
+	 * @param int $term_id Term ID.
 	 *
 	 * @return bool|int|WP_Error
 	 */
@@ -728,7 +754,7 @@ if ( ! function_exists( 'sxp_get_term_rules' ) ) {
 	/**
 	 * Get Saved Rules for Term.
 	 *
-	 * @param WP_Term|int $term Term
+	 * @param WP_Term|int $term Term.
 	 *
 	 * @return array
 	 */
@@ -744,8 +770,8 @@ if ( ! function_exists( 'sxp_save_term_rules' ) ) {
 	/**
 	 * Save Rules for Term.
 	 *
-	 * @param WP_Term|int $term Term
-	 * @param array $data Rule data.
+	 * @param WP_Term|int $term Term.
+	 * @param array       $data Rule data.
 	 *
 	 * @return bool|int|WP_Error
 	 */
@@ -800,5 +826,5 @@ if ( ! function_exists( 'sxp_get_all_user_tags' ) ) {
 		] );
 	}
 }
-// @todo use get_tax_sql() to add tax args to user query
+// @todo use get_tax_sql() to add tax args to user query.
 // End of file user-taxonomy-helper.php.

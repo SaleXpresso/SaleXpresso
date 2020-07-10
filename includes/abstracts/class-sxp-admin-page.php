@@ -55,6 +55,11 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 */
 	protected $show_page_title_action = false;
 	
+	/**
+	 * Current (sanitized) value of action parameter from $_REQUEST.
+	 *
+	 * @var string
+	 */
 	protected $current_action = '';
 	
 	/**
@@ -140,7 +145,8 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	}
 	
 	/**
-	 * Init Page Load
+	 * Init Page Load.
+	 * Useful for setting screen options
 	 *
 	 * @hooked load-hookname
 	 * @return void
@@ -177,8 +183,8 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 *
 	 * @return string
 	 */
-	private function set_page_hookname( $plugin_page  = null ) {
-		$plugin_page = is_null( $plugin_page ) ? $this->set_page_slug( $plugin_page ) : $plugin_page;
+	private function set_page_hookname( $plugin_page = null ) {
+		$plugin_page         = is_null( $plugin_page ) ? $this->set_page_slug( $plugin_page ) : $plugin_page;
 		$this->page_hookname = get_plugin_page_hookname( $plugin_page, get_admin_page_parent() );
 		
 		return $this->page_hookname;
@@ -252,7 +258,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 * @return string
 	 */
 	public function get_request_method() {
-		return ( isset( $_SERVER['REQUEST_METHOD'] ) && ! empty( $_SERVER['REQUEST_METHOD'] ) )? strtolower( $_SERVER['REQUEST_METHOD'] ) : 'get';
+		return ( isset( $_SERVER['REQUEST_METHOD'] ) && ! empty( $_SERVER['REQUEST_METHOD'] ) ) ? strtolower( $_SERVER['REQUEST_METHOD'] ) : 'get'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	}
 	
 	/**
@@ -315,10 +321,10 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			}
 			
 			if ( ! empty( $new_title ) ) {
-				add_filter( 'admin_title', static function( $admin_title ) use ( $new_title ) {
+				add_filter( 'admin_title', static function ( $admin_title ) use ( $new_title ) {
 					global $title;
 					$admin_title = str_replace( $title, $new_title, $admin_title );
-					$title = $new_title;
+					$title       = $new_title; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					return $admin_title;
 				}, 10 );
 			}
@@ -388,7 +394,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 */
 	protected function has_tabs() {
 		if ( is_array( $this->tabs ) && count( $this->tabs ) > 1 ) {
-			$temp = array_filter( $this->tabs, function( $tab ) {
+			$temp = array_filter( $this->tabs, function ( $tab ) {
 				if ( ! isset( $tab['label'] ) || ! isset( $tab['content'] ) ) {
 					return false;
 				}

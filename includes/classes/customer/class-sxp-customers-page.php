@@ -11,6 +11,7 @@ namespace SaleXpresso\Customer;
 
 use SaleXpresso\SXP_Admin_Menus;
 use SaleXpresso\Abstracts\SXP_Admin_Page;
+use SaleXpresso\SXP_List_Table;
 use WP_User_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -33,6 +34,11 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	protected $add_new_url = '';
 	
+	/**
+	 * Holds the list table instance for this class (page).
+	 *
+	 * @var SXP_List_Table
+	 */
 	private $list_table;
 	
 	/**
@@ -42,19 +48,22 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 */
 	public function __construct( $plugin_page = null ) {
 		parent::__construct( $plugin_page );
-//		$this->list_table = new SXP_Customer_List_Table();
-		$this->list_table = SXP_Admin_Menus::get_instance()->get_list_table();
-//		$this->list_table->old();
+		$this->list_table    = SXP_Admin_Menus::get_instance()->get_list_table();
 		$this->add_new_label = '';
 		$this->js_tabs       = false;
 	}
 	
+	/**
+	 * Set Screen Option
+	 *
+	 * @return void
+	 */
 	public function page_actions() {
 		add_screen_option(
 			'per_page',
 			[
-				'label'   => 'Number of items per page:',
-				'option'  => 'customers_per_page',
+				'label'  => 'Number of items per page:',
+				'option' => 'customers_per_page',
 			]
 		);
 	}
@@ -161,13 +170,22 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	 * Render the customer list
 	 */
 	protected function render_customer_list() {
-//		if ( ! class_exists( '\WC_Report_Customer_List', false ) ) {
-//			require_once ABSPATH . 'wp-content/plugins/woocommerce/includes/admin/reports/class-wc-report-customer-list.php';
-//		}
-//		$this->list_table = new \WC_Report_Customer_List();
-//		$this->list_table->output_report();
 		$this->list_table->prepare_items();
 		$this->list_table->display();
+	}
+	
+	/**
+	 * Render WC Customer Report List.
+	 * This is here for testing/debugging purpose only.
+	 *
+	 * @return void
+	 */
+	private function wc_customer_report() {
+		if ( ! class_exists( '\WC_Report_Customer_List', false ) ) {
+			require_once ABSPATH . 'wp-content/plugins/woocommerce/includes/admin/reports/class-wc-report-customer-list.php';
+		}
+		$this->list_table = new \WC_Report_Customer_List();
+		$this->list_table->output_report();
 	}
 	
 	/**

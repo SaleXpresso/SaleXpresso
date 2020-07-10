@@ -13,7 +13,7 @@ import _ from 'lodash';
  * @param {*} needle        Needle to find.
  * @param {Array} haystack Attay to search.
  *
- * @return {Boolean} Return true if needle in the haystack.
+ * @return {boolean} Return true if needle in the haystack.
  */
 function inArray( needle, haystack ) {
 	if ( ! _.isArray( haystack ) ) {
@@ -37,7 +37,7 @@ const MILLISECONDS_MULTIPLIER = 1000;
 const TRANSITION_END = 'transitionend';
 
 // Shoutout AngusCroll (https://goo.gl/pxwQGp)
-const toType = ( obj ) => {
+const toType = obj => {
 	if ( obj === null || obj === undefined ) {
 		return `${ obj }`;
 	}
@@ -51,7 +51,7 @@ const toType = ( obj ) => {
  * --------------------------------------------------------------------------
  */
 
-const getUID = ( prefix ) => {
+const getUID = prefix => {
 	do {
 		// "~~" acts like a faster Math.floor() here
 		prefix += ~~( Math.random() * MAX_UID ); // eslint-disable-line no-bitwise
@@ -60,7 +60,7 @@ const getUID = ( prefix ) => {
 	return prefix;
 };
 
-const getSelector = ( element ) => {
+const getSelector = element => {
 	let selector = element.getAttribute( 'data-target' );
 
 	if ( ! selector || selector === '#' ) {
@@ -72,7 +72,7 @@ const getSelector = ( element ) => {
 	return selector;
 };
 
-const getSelectorFromElement = ( element ) => {
+const getSelectorFromElement = element => {
 	const selector = getSelector( element );
 
 	if ( selector ) {
@@ -82,13 +82,13 @@ const getSelectorFromElement = ( element ) => {
 	return null;
 };
 
-const getElementFromSelector = ( element ) => {
+const getElementFromSelector = element => {
 	const selector = getSelector( element );
 
 	return selector ? document.querySelector( selector ) : null;
 };
 
-const getTransitionDurationFromElement = ( element ) => {
+const getTransitionDurationFromElement = element => {
 	if ( ! element ) {
 		return 0;
 	}
@@ -111,11 +111,11 @@ const getTransitionDurationFromElement = ( element ) => {
 	return ( parseFloat( transitionDuration ) + parseFloat( transitionDelay ) ) * MILLISECONDS_MULTIPLIER;
 };
 
-const triggerTransitionEnd = ( element ) => {
+const triggerTransitionEnd = element => {
 	element.dispatchEvent( new Event( TRANSITION_END ) );
 };
 
-const isElement = ( obj ) => ( obj[ 0 ] || obj ).nodeType;
+const isElement = obj => ( obj[ 0 ] || obj ).nodeType;
 
 const emulateTransitionEnd = ( element, duration ) => {
 	let called = false;
@@ -137,7 +137,7 @@ const emulateTransitionEnd = ( element, duration ) => {
 
 const typeCheckConfig = ( componentName, config, configTypes ) => {
 	Object.keys( configTypes )
-		.forEach( ( property ) => {
+		.forEach( property => {
 			const expectedTypes = configTypes[ property ];
 			const value = config[ property ];
 			const valueType = value && isElement( value ) ? 'element' : toType( value );
@@ -148,7 +148,7 @@ const typeCheckConfig = ( componentName, config, configTypes ) => {
 		} );
 };
 
-const isVisible = ( element ) => {
+const isVisible = element => {
 	if ( ! element ) {
 		return false;
 	}
@@ -163,7 +163,7 @@ const isVisible = ( element ) => {
 	return false;
 };
 
-const findShadowRoot = ( element ) => {
+const findShadowRoot = element => {
 	if ( ! document.documentElement.attachShadow ) {
 		return null;
 	}
@@ -188,7 +188,7 @@ const findShadowRoot = ( element ) => {
 
 const noop = () => function() {};
 
-const reflow = ( element ) => element.offsetHeight;
+const reflow = element => element.offsetHeight;
 
 const getjQuery = () => {
 	const { jQuery } = window;
