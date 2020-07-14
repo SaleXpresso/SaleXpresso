@@ -10,10 +10,12 @@
 	&-customer {
 		&-btn-wrapper {
 			float: right;
-			margin-bottom: 1rem;
 			a {
 				height: 3rem;
 				position: relative;
+				padding: 0.875rem 1.5rem;
+				border: none;
+
 				&::before {
 					background-size: 1rem;
 					width: 1rem;
@@ -81,6 +83,9 @@
 		}
 	}
 	&-customer-desc {
+		a {
+			color: $dark-purple-2 !important;
+		}
 		&-thumbnail {
 			float: left;
 			height: 40px;
