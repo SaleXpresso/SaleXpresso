@@ -7,267 +7,287 @@
  * @since 1.0.0
  */
 .sxp {
-	&-table {
-		border: none !important;
-		border-collapse: collapse;
-		border-radius: 4px;
-		border-style: hidden; /* hide standard table (collapsed) border */
-		box-shadow: 0 0 0 1px transparent;
-		width: 100%;
-		thead,
-		tfoot {
-			th {
-				font-weight: 700;
-				height: 56px;
-				vertical-align: middle;
-				color: $table-header-color !important;
-				border-bottom: $border-width solid $border-color;
-				text-align: left;
-				padding: 0;
+	&-wrapper {
+		.sxp {
+			&-table {
+				border: none !important;
+				border-collapse: collapse;
+				border-radius: 4px;
+				border-style: hidden; /* hide standard table (collapsed) border */
+				box-shadow: 0 0 0 1px transparent;
+				width: 100%;
+				thead,
+				tfoot {
+					th {
+						font-weight: 700;
+						height: 56px;
+						vertical-align: middle;
+						color: $table-header-color !important;
+						border-bottom: $border-width solid $border-color;
+						text-align: left;
+						padding: 0;
 
-				&:first-child {
-					a {
-						padding-left: 1.5rem;
+						&:first-child {
+							a {
+								padding-left: 1.5rem;
+							}
+						}
+						&:last-child {
+							width: 11%;
+							text-align: center;
+							a {
+								padding-right: 1.5rem;
+							}
+						}
+
+						a {
+							color: $table-header-color;
+							position: relative;
+							text-decoration: none;
+							height: 56px;
+							padding: 18px 4px;
+
+							&::after {
+								margin-left: 0.5rem;
+								content: url(data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%2210%22%20viewBox%3D%220%200%208%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204L4%208L8%204%22%20fill%3D%22%23D0CFE6%22%2F%3E%0A%3C%2Fsvg%3E%0A);
+								display: inline-block;
+							}
+						}
+						&.sortable {
+							a {
+								span {
+									float: none;
+								}
+							}
+						}
+						&.asc {
+							a {
+								&::after {
+									transform: rotate(-180deg);
+									margin-top: 2px;
+								}
+							}
+						}
+					}
+					td {
+						border-bottom: $border-width solid $border-color;
+
+					}
+					td.check-column {
+						padding: 0.25rem 1rem 0 0.625rem;
 					}
 				}
-				&:last-child {
-					width: 11%;
-					text-align: center;
-					a {
-						padding-right: 1.5rem;
+				tbody {
+					th.check-column {
+						padding: 1.125rem 1rem 0 0.625rem;
+						border-bottom: 1px solid $border-color;
 					}
-				}
-
-				a {
-					color: $table-header-color;
-					position: relative;
-					text-decoration: none;
-					height: 56px;
-					padding: 18px 4px;
-
-					&::after {
-						margin-left: 0.5rem;
-						content: url(data:image/svg+xml,%3Csvg%20width%3D%228%22%20height%3D%2210%22%20viewBox%3D%220%200%208%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204L4%208L8%204%22%20fill%3D%22%23D0CFE6%22%2F%3E%0A%3C%2Fsvg%3E%0A);
+					td {
+						font-size: 0.875rem;
+						color: $paragraph-color;
+						padding: 0;
+						height: 56px;
+						vertical-align: middle;
+						border-bottom: 1px solid $border-color;
+						a {
+							color: $dark-purple-2;
+						}
+						&:first-child {
+							padding-left: 1.5rem;
+						}
+						&:last-child {
+							text-align: center;
+							padding-right: 1.5rem;
+						}
+						i,
+						svg {
+							color: $dark-purple;
+						}
 					}
-				}
-			}
-			td {
-				border-bottom: $border-width solid $border-color;
-
-			}
-			td.check-column {
-				padding: 0.25rem 1rem 0 0.625rem;
-			}
-		}
-		tbody {
-			th.check-column {
-				padding: 1.125rem 1rem 0 0.625rem;
-				border-bottom: 1px solid $border-color;
-			}
-			td {
-				font-size: 0.875rem;
-				color: $paragraph-color;
-				padding: 0;
-				height: 56px;
-				vertical-align: middle;
-				border-bottom: 1px solid $border-color;
-				a {
-					color: $paragraph-color;
-				}
-				&:first-child {
-					padding-left: 1.5rem;
-				}
-				&:last-child {
-					text-align: center;
-					padding-right: 1.5rem;
-				}
-				i,
-				svg {
-					color: $dark-purple;
-				}
-			}
-			// has-fold segment
-			> tr.has-fold {
-				transition: all 0.3s ease;
-				td,
-				th {
-					cursor: pointer;
-				}
-				td:first-child,
-				th:first-child {
-					position: relative;
-					&::before {
-						position: absolute;
-						top: 50%;
-						left: 5px;
-						width: 9px;
-						height: 16px;
-						margin-top: -8px;
+					// has-fold segment
+					> tr.has-fold {
 						transition: all 0.3s ease;
+						td,
+						th {
+							cursor: pointer;
+						}
+						td:first-child,
+						th:first-child {
+							position: relative;
+							&::before {
+								position: absolute;
+								top: 50%;
+								left: 5px;
+								width: 9px;
+								height: 16px;
+								margin-top: -8px;
+								transition: all 0.3s ease;
+							}
+						}
+						&.open {
+							td:first-child,
+							th:first-child {
+								&::before {
+									transform: rotate(-180deg);
+								}
+							}
+						}
+					}
+
+					// fold segment
+					> tr.fold {
+						display: none;
+						&.open {
+							display: table-row;
+						}
 					}
 				}
-				&.open {
-					td:first-child,
-					th:first-child {
+				tfoot {
+					th,
+					td {
+						border-top: $border-width solid transparent;
+					}
+					td {
+						i,
+						svg {
+							color: $dark-purple;
+						}
+					}
+				}
+				input[type="checkbox"] {
+					border: $table-checkbox-input-width solid $table-checkbox-input;
+					border-radius: 0;
+					box-shadow: none;
+					&.partial-checked,
+					&:checked {
+						border: none;
+						&:focus {
+							outline: 0;
+						}
 						&::before {
-							transform: rotate(-180deg);
+							content: url(data:image/svg+xml;utf8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6%207.66667L8%209.66667L14.6667%203%22%20stroke%3D%22%233355FF%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M15%208V13.4444C15%2013.857%2014.8361%2014.2527%2014.5444%2014.5444C14.2527%2014.8361%2013.857%2015%2013.4444%2015H2.55556C2.143%2015%201.74733%2014.8361%201.45561%2014.5444C1.16389%2014.2527%201%2013.857%201%2013.4444V2.55556C1%202.143%201.16389%201.74733%201.45561%201.45561C1.74733%201.16389%202.143%201%202.55556%201H11.1111%22%20stroke%3D%22%233355FF%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
+							margin: 0 0 0 -0.25rem;
+							height: 1.3125rem;
+							width: 1.3125rem;
+						}
+					}
+					&.partial-checked {
+						&::before {
+							content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20height%3D%2224%22%20stroke%3D%22%233355FF%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2218%22%20height%3D%2218%22%20rx%3D%222%22%20ry%3D%222%22%3E%3C%2Frect%3E%3Cline%20x1%3D%228%22%20y1%3D%2212%22%20x2%3D%2216%22%20y2%3D%2212%22%3E%3C%2Fline%3E%3C%2Fsvg%3E);
+						}
+					}
+				}
+				.sxp-fold-content {
+					display: flex;
+					border-bottom: $border-width solid $border-color;
+					vertical-align: middle;
+					line-height: 20px;
+					height: 40px;
+					margin: 0;
+					padding: 10px 20px;
+					width: 100%;
+
+					&:last-child {
+						border-bottom: none;
+					}
+					div {
+						&:first-child {
+							align-content: flex-start;
+							text-align: left;
+							flex: 0 0 80%;
+						}
+						&:last-child {
+							align-content: flex-end;
+							text-align: right;
+							flex: 0 0 20%;
+						}
+						i,
+						svg {
+							font-size: 1rem;
+							color: $dark-purple;
+						}
+						.serial {
+							margin: 0 0.25rem 0 0.5rem;
+							color: $dark-purple;
+						}
+						.product {
+							color: $primary;
+							padding: 0 0.25rem;
+						}
+
+					}
+				}
+			}
+			&-list-table {
+				&-top {
+					margin-bottom: 1rem;
+					overflow: hidden;
+
+					input {
+						&:focus {
+							box-shadow: none;
+						}
+					}
+
+					.search-box {
+						margin-left: 1rem;
+						input {
+							height: 3rem;
+							border: $border-width solid $light-purple;
 						}
 					}
 				}
 			}
+			&-tag-list {
+				@extend .sxp-campaign-list;
+			}
+			&-bulk-action-container {
+				max-width: 685px;
+				background: $white;
+				margin: 0 auto;
+				@include box-shadow(0, 4px, 16px, rgba($box-shadow-color, 0.06));
+				border-top-left-radius: 4px;
+				border-top-right-radius: 4px;
+				padding: 1rem;
+				overflow: hidden;
+			}
 
-			// fold segment
-			> tr.fold {
-				display: none;
-				&.open {
-					display: table-row;
-				}
+			&-remove-selected {
+				height: 2.25rem;
 			}
-		}
-		tfoot {
-			th,
-			td {
-				border-top: $border-width solid transparent;
-			}
-			td {
-				i,
-				svg {
-					color: $dark-purple;
-				}
-			}
-		}
-		input[type="checkbox"] {
-			border: $table-checkbox-input-width solid $table-checkbox-input;
-			border-radius: 0;
-			box-shadow: none;
-			&.partial-checked,
-			&:checked {
-				border: none;
-				&:focus {
-					outline: 0;
-				}
-				&::before {
-					content: url(data:image/svg+xml;utf8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6%207.66667L8%209.66667L14.6667%203%22%20stroke%3D%22%233355FF%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M15%208V13.4444C15%2013.857%2014.8361%2014.2527%2014.5444%2014.5444C14.2527%2014.8361%2013.857%2015%2013.4444%2015H2.55556C2.143%2015%201.74733%2014.8361%201.45561%2014.5444C1.16389%2014.2527%201%2013.857%201%2013.4444V2.55556C1%202.143%201.16389%201.74733%201.45561%201.45561C1.74733%201.16389%202.143%201%202.55556%201H11.1111%22%20stroke%3D%22%233355FF%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
-					margin: 0 0 0 -0.25rem;
-					height: 1.3125rem;
-					width: 1.3125rem;
-				}
-			}
-			&.partial-checked {
-				&::before {
-					content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20height%3D%2224%22%20stroke%3D%22%233355FF%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2218%22%20height%3D%2218%22%20rx%3D%222%22%20ry%3D%222%22%3E%3C%2Frect%3E%3Cline%20x1%3D%228%22%20y1%3D%2212%22%20x2%3D%2216%22%20y2%3D%2212%22%3E%3C%2Fline%3E%3C%2Fsvg%3E);
-				}
-			}
-		}
-		.sxp-fold-content {
-			display: flex;
-			border-bottom: $border-width solid $border-color;
-			vertical-align: middle;
-			line-height: 20px;
-			height: 40px;
-			margin: 0;
-			padding: 10px 20px;
-			width: 100%;
-			
-			&:last-child {
-				border-bottom: none;
-			}
-			div {
-				&:first-child {
-					align-content: flex-start;
-					text-align: left;
-					flex: 0 0 80%;
-				}
-				&:last-child {
-					align-content: flex-end;
-					text-align: right;
-					flex: 0 0 20%;
-				}
-				i,
-				svg {
-					font-size: 1rem;
-					color: $dark-purple;
-				}
-				.serial {
-					margin: 0 0.25rem 0 0.5rem;
-					color: $dark-purple;
-				}
-				.product {
-					color: $primary;
-					padding: 0 0.25rem;
-				}
-				
-			}
-		}
-	}
-	&-list-table {
-		&-top {
-			margin-bottom: 1rem;
-			overflow: hidden;
-
-			input {
-				&:focus {
-					box-shadow: none;
+			&-selected {
+				padding: 0.5rem 1rem;
+				border-radius: 2rem;
+				background: $light-purple-2;
+				line-height: 1.25rem;
+				text-decoration: none;
+				color: $text-color;
+				&:hover {
+					color: $text-color;
 				}
 			}
 
-			.search-box {
-				margin-left: 1rem;
-				input {
-					height: 3rem;
+			&-bulk-actions {
+				float: right;
+				a {
+					@extend .sxp-btn;
+					@extend .sxp-btn-secondary;
+					background: $white;
 					border: $border-width solid $light-purple;
+					position: relative;
+					color: $text-color;
+					&:not(.no-icon) {
+						padding: 0.4375rem 1rem 0.4375rem 2.5rem;
+					}
+					svg.feather {
+						top: initial;
+						stroke: #7d7db3;
+						width: 1rem;
+						height: 1rem;
+						position: absolute;
+						left: 1rem;
+					}
 				}
-			}
-		}
-	}
-	&-tag-list {
-		@extend .sxp-campaign-list;
-	}
-	&-bulk-action-container {
-		max-width: 685px;
-		background: $white;
-		margin: 0 auto;
-		@include box-shadow(0, 4px, 16px, rgba($box-shadow-color, 0.06));
-		border-top-left-radius: 4px;
-		border-top-right-radius: 4px;
-		padding: 1rem;
-		overflow: hidden;
-	}
-
-	&-remove-selected {
-		height: 2.25rem;
-	}
-	&-selected {
-		padding: 0.5rem 1rem;
-		border-radius: 2rem;
-		background: $light-purple-2;
-		line-height: 1.25rem;
-		text-decoration: none;
-		color: $text-color;
-		&:hover {
-			color: $text-color;
-		}
-	}
-
-	&-bulk-actions {
-		float: right;
-		a {
-			@extend .sxp-btn;
-			@extend .sxp-btn-secondary;
-			background: $white;
-			border: $border-width solid $light-purple;
-			position: relative;
-			color: $text-color;
-			&:not(.no-icon) {
-				padding: 0.4375rem 1rem 0.4375rem 2.5rem;
-			}
-			svg.feather {
-				top: initial;
-				stroke: #7d7db3;
-				width: 1rem;
-				height: 1rem;
-				position: absolute;
-				left: 1rem;
 			}
 		}
 	}
