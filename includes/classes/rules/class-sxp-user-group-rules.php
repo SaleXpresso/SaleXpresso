@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class SXP_Rules_Group_Action
+ * Class SXP_User_Group_Rules
  */
 class SXP_User_Group_Rules extends SXP_Action_Rules {
 	

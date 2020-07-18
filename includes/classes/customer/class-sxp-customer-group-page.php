@@ -12,7 +12,7 @@ namespace SaleXpresso\Customer;
 use SaleXpresso\SXP_Admin_Menus;
 use SaleXpresso\Abstracts\SXP_Admin_Page;
 use SaleXpresso\SXP_Post_Types;
-use SaleXpresso\Rules\SXP_Rules_Group_Action;
+use SaleXpresso\Rules\SXP_User_Group_Rules;
 use SaleXpresso\List_Table\SXP_Customer_Group_List_Table;
 use WP_Error;
 use WP_Taxonomy;
@@ -30,13 +30,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package SaleXpresso\Customer
  */
 class SXP_Customer_Group_Page extends SXP_Admin_Page {
-	
-	/**
-	 * Add new button url for current page.
-	 *
-	 * @var string
-	 */
-	protected $add_new_url = '';
 	
 	/**
 	 * List table instance.
@@ -322,8 +315,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	 * @return void
 	 */
 	protected function render_form() {
-		$conditions = SXP_Rules_Group_Action::get_instance()->get_conditions();
-		$operators  = SXP_Rules_Group_Action::get_instance()->get_operators();
+		$conditions = SXP_User_Group_Rules::get_instance()->get_conditions();
+		$operators  = SXP_User_Group_Rules::get_instance()->get_operators();
 		$rules      = sxp_get_term_rules( $this->term );
 		if ( empty( $rules ) ) {
 			$rules[] = [
@@ -434,11 +427,11 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 							<a href="#" class="sxp-btn sxp-btn-link"><i data-feather="plus"></i> <?php esc_html_e( 'Add Condition', 'salexpresso' ); ?></a>
 							<script>
 								( function( $ ) {
-									var template = $( '.rule_ui_template' ).text(),
+									let template = $( '.rule_ui_template' ).text(),
 										wrapper = $( '.sxp-rules' ),
 										length = wrapper.find( '.sxp-rule-single' ).length || 1
 									if ( '' !== template ) {
-										template.trim()
+										template = template.trim()
 									}
 									if ( '' === template ) {
 										return
