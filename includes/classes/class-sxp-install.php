@@ -166,7 +166,6 @@ SQL;
 		
 		$tables = [
 			"{$wpdb->prefix}sxp_analytics",
-			"{$wpdb->prefix}sxp_analytics_event",
 			"{$wpdb->prefix}sxp_abandon_cart",
 		];
 		

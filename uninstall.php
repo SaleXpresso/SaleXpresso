@@ -42,8 +42,8 @@ if ( defined( 'SXP_REMOVE_ALL_DATA' ) && true === SXP_REMOVE_ALL_DATA ) {
 	// Delete orphan relationships.
 	$wpdb->query(
 		"
-		DELETE tr FROM {$wpdb->user_term_relationships} tr
-		LEFT JOIN {$wpdb->users} user ON user.ID = tr.object_id
+		DELETE tr FROM {$wpdb->term_relationships} tr
+		LEFT JOIN {$wpdb->posts} posts ON posts.ID = tr.object_id
 		WHERE posts.ID IS NULL;
 		"
 	);
