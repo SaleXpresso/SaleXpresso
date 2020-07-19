@@ -200,6 +200,28 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	}
 	
 	/**
+	 * Get Current URL
+	 *
+	 * @param bool $tab Optional. Exclude tab slug.
+	 *
+	 * @return string
+	 */
+	public function get_current_url( $tab = false ) {
+		if ( false === $tab ) {
+			return admin_url( 'admin.php?page=' . $this->get_page_slug() );
+		}
+		if ( $this->has_tabs() ) {
+			return add_query_arg(
+				[
+					'page' => $this->get_page_slug(),
+					'tab'  => $this->get_active_tab(),
+				],
+				admin_url( 'admin.php?' )
+			);
+		}
+	}
+	
+	/**
 	 * Get the page hook name
 	 *
 	 * @return string
@@ -268,16 +290,13 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 */
 	private function set_active_tab() {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		$tabs = array_keys( $this->tabs );
-		if (
-			$this->has_tabs() &&
-			isset( $_GET['page'], $_GET['tab'] ) &&
-			$this->page_slug === $_GET['page'] &&
-			in_array( $_GET['tab'], $tabs )
-		) {
-			$this->current_tab = sanitize_text_field( $_GET['tab'] );
-		} elseif ( is_array( $this->tabs ) && isset( $tabs[ $tabs[0] ] ) ) {
-			$this->current_tab = $tabs[0];
+		if ( isset( $_GET['page'] ) && $this->page_slug === $_GET['page'] ) {
+			$tabs = array_keys( $this->tabs );
+			if ( isset( $_GET['tab'] ) && $this->has_tabs() && in_array( $_GET['tab'], $tabs ) ) {
+				$this->current_tab = sanitize_text_field( $_GET['tab'] );
+			} else {
+				$this->current_tab = $tabs[0];
+			}
 		}
 		// phpcs:enable
 	}
@@ -289,6 +308,23 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 	 */
 	public function get_active_tab() {
 		return $this->current_tab;
+	}
+	
+	/**
+	 * Return fields array for tab.
+	 *
+	 * @param string $tab Optional. Tab Slug, empty for current tab.
+	 *
+	 * @return bool|array
+	 */
+	public function get_tab_fields( $tab = null ) {
+		if ( is_null( $tab ) ) {
+			$tab = $this->get_active_tab();
+		}
+		if ( $tab && isset( $this->tabs[ $tab ], $this->tabs[ $tab ]['fields'] ) ) {
+			return $this->tabs[ $tab ]['fields'];
+		}
+		return false;
 	}
 	
 	/**
@@ -403,6 +439,9 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 				}
 				return true;
 			} );
+			if ( ! empty( $temp ) ) {
+				return true;
+			}
 		}
 		return false;
 	}
