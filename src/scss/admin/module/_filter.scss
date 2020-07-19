@@ -11,11 +11,17 @@
 @import "~vgnav/assets/scss/vgnav";
 @import "~vgnav/assets/scss/vgnav-theme";
 
+// Resetting vgnav/assets/scss/vgnav-theme file a tag transition issue
+a {
+	transition: unset;
+}
+
 .sxp {
 	&-filter {
 		&-wrapper {
 			float: right;
-			margin-top: 5px;
+			margin: 1rem 0;
+
 			div {
 				display: inline-block;
 				vertical-align: middle;
@@ -36,6 +42,17 @@
 							background: $white;
 							padding: 0.375rem 0.375rem 0.375rem 1rem;
 							border-radius: 0.25rem;
+
+							span.toggle {
+								span.default {
+									border: 0 !important;
+									background: $white url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxbDQgNCA0LTQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=) no-repeat center right;
+									width: 0.75rem !important;
+									position: unset !important;
+									transform: none !important;
+								}
+							}
+
 						}
 					}
 				}
@@ -75,13 +92,23 @@
 					}
 				}
 				.vg-nav-main-container {
+					a {
+						position: relative;
+					}
 					span.toggle {
 						span.default {
-							border: 0;
-							background: $white url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxbDQgNCA0LTQiIHN0cm9rZT0iIzdEN0RCMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=) no-repeat center right;
-							width: 0.75rem;
+							border-top: 4px solid;
+							border-right: 4px solid transparent;
+							border-bottom: 0;
+							border-left: 4px solid transparent;
+							width: 0.5rem;
 							height: 0.5rem;
 							vertical-align: unset;
+							position: absolute;
+							right: 1.5rem;
+							top: 50%;
+							transform: translateY(-30%);
+							color: $light-purple;
 						}
 					}
 					ul {
@@ -100,7 +127,8 @@
 						& > a {
 							span.toggle {
 								.default {
-									transform: none;
+									transform: rotate(-180deg);
+									top: 7px;
 								}
 							}
 						}

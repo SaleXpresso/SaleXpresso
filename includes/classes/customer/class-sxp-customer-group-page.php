@@ -248,7 +248,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				<nav class="vg-nav vg-nav-lg">
 					<ul>
 						<li class="dropdown">
-							<a href="#">Sort by Name</a>
+							<a href="#">Filter by Name</a>
 							<ul class="left">
 								<li>
 									<a href="#">Location</a>
