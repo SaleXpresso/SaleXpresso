@@ -369,7 +369,8 @@ final class SaleXpresso {
 		global $wpdb;
 		
 		$tables = [
-			'user_term_relationships' => 'user_term_relationships',
+			'sxp_analytics'       => 'sxp_analytics',
+			'sxp_abandon_cart'    => 'sxp_abandon_cart',
 		];
 		
 		foreach ( $tables as $k => $v ) {
