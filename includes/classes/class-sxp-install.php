@@ -115,12 +115,42 @@ class SXP_Install {
 		}
 		
 		return <<<SQL
-CREATE TABLE {$wpdb->prefix}user_term_relationships (
-  object_id bigint(20) unsigned NOT NULL default 0,
-  term_taxonomy_id bigint(20) unsigned NOT NULL default 0,
-  term_order int(11) NOT NULL default 0,
-  PRIMARY KEY  (object_id,term_taxonomy_id),
-  KEY term_taxonomy_id (term_taxonomy_id)
+CREATE TABLE {$wpdb->prefix}sxp_analytics (
+    id BIGINT(20) NOT NULL AUTO_INCREMENT,
+	session_id VARCHAR(60) NOT NULL,
+	page_id VARCHAR(36) NOT NULL,
+	duration int DEFAULT 0,
+	scrolled int DEFAULT 0,
+	hostname TEXT,
+	path TEXT,
+	viewport_width int DEFAULT 0,
+	viewport_height int DEFAULT 0,
+	screen_width int DEFAULT 0,
+	screen_height int DEFAULT 0,
+	language VARCHAR( 6 ),
+	is_unique int( 1 ) DEFAULT 0,
+	referrer TEXT,
+	timezone VARCHAR( 60 ),
+	type VARCHAR( 60 ),
+	bot int( 1 ) DEFAULT 0,
+	version VARCHAR( 10 ),
+	PRIMARY KEY  ( `id` ),
+) {$charset_collate};
+CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
+	id BIGINT(20) NOT NULL AUTO_INCREMENT,
+	email VARCHAR(100),
+	session_id VARCHAR(60) NOT NULL,
+	cart_contents LONGTEXT,
+	order_id BIGINT(20),
+	cart_total DECIMAL(10,2),
+	cart_meta LONGTEXT NULL,
+	status ENUM( 'processing','abandoned','recovered','completed', 'lost' ) NOT NULL DEFAULT 'processing',
+	coupon_code VARCHAR(60) DEFAULT NULL,
+	last_sent_email int DEFAULT 0,
+    time DATETIME DEFAULT NULL,
+    unsubscribed boolean DEFAULT 0,
+	PRIMARY KEY  (`id`, `session_id`),
+	UNIQUE KEY (`session_id`)
 ) {$charset_collate};
 SQL;
 	}
@@ -135,7 +165,9 @@ SQL;
 		global $wpdb;
 		
 		$tables = [
-			"{$wpdb->prefix}user_term_relationships",
+			"{$wpdb->prefix}sxp_analytics",
+			"{$wpdb->prefix}sxp_analytics_event",
+			"{$wpdb->prefix}sxp_abandon_cart",
 		];
 		
 		/**
