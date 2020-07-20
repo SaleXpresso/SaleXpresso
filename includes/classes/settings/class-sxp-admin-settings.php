@@ -55,7 +55,10 @@ class SXP_Admin_Settings {
 	public static function get_settings_pages() {
 		if ( empty( self::$settings ) ) {
 			$settings = array();
-
+			
+			$settings[] = include 'tabs/class-sxp-general-settings.php';
+			$settings[] = include 'tabs/class-sxp-abundant-cart-settings.php';
+			
 			self::$settings = apply_filters( 'salexpresso_get_settings_pages', $settings );
 		}
 
