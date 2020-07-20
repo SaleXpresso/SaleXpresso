@@ -4,7 +4,7 @@
  *
  * @package SaleXpresso\Dashboard
  * @version 1.0.0
- * @since   SaleXpresso v
+ * @since   SaleXpresso v1.0.0
  */
 
 namespace SaleXpresso\Dashboard;

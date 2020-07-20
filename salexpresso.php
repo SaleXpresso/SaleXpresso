@@ -63,5 +63,6 @@ function SXP() { // phpcs:ignore WordPress.NamingConventions
 // @TODO remove namespace.
 // @TODO remove autoloader, load plugin files manually.
 // @TODO remove webpack use gulp.
+// @TODO rewrite @package SaleXpresso\... to @package SaleXpresso/...
 SXP();
 // End of file salexpresso.php .

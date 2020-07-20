@@ -154,7 +154,6 @@ final class SaleXpresso {
 		SXP_Assets::get_instance();
 		SXP_Install::init();
 		SXP_Admin_Menus::get_instance();
-		SXP_Settings::get_instance();
 		$this->views = SXP_Views::get_instance( $this );
 		add_action( 'plugins_loaded', [ $this, 'on_load' ], -1 );
 		add_action( 'admin_notices', [ $this, 'dependencies_notice' ] );
@@ -433,18 +432,18 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-file-handler.php';
 		require_once 'interfaces/interface-sxp-admin-page.php';
 		require_once 'abstracts/class-sxp-admin-page.php';
+		require_once 'abstracts/class-sxp-settings-tab.php';
 		require_once 'abstracts/class-sxp-action-rules.php';
 		require_once 'classes/class-sxp-admin-notices.php';
 		require_once 'classes/class-sxp-admin-menus.php';
 		require_once 'classes/class-sxp-assets.php';
-		require_once 'classes/class-sxp-admin-settings-page.php';
+		
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';
 		require_once 'classes/class-sxp-user-taxonomy.php';
 		require_once 'classes/class-sxp-expression.php';
 		require_once 'classes/class-sxp-list-table.php';
 		require_once 'classes/class-sxp-views.php';
-		require_once 'classes/class-sxp-settings.php';
 		
 		// Core.
 		require_once 'classes/rules/class-sxp-user-group-rules.php';
@@ -457,6 +456,7 @@ final class SaleXpresso {
 		require_once 'classes/customer/class-sxp-customer-group-page.php';
 		require_once 'classes/customer/class-sxp-customer-type-page.php';
 		require_once 'classes/customer/class-sxp-customer-tag-page.php';
+		require_once 'classes/settings/class-sxp-admin-settings.php';
 		require_once 'classes/settings/class-sxp-settings-page.php';
 		require_once 'classes/settings/class-sxp-status-page.php';
 		

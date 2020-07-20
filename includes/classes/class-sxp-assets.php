@@ -90,7 +90,8 @@ class SXP_Assets {
 			$this->get_file_version( 'admin' . $this->file_suffix . '.js' ),
 			true
 		);
-		
+		wp_enqueue_media();
+		wp_enqueue_script( 'wp-color-picker' );
 		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [] );
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
@@ -101,6 +102,7 @@ class SXP_Assets {
 	 */
 	public function admin_styles() {
 		global $hook_suffix;
+		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style(
 			'sxp-admin',
 			$this->get_url( 'admin' . $this->file_suffix . '.css' ),
@@ -123,7 +125,13 @@ class SXP_Assets {
 			$this->get_file_version( 'scripts' . $this->file_suffix . '.js' ),
 			true
 		);
-		$js_opts = apply_filters( 'salexpresso_js_opts', [] );
+		$js_opts = apply_filters( 'salexpresso_js_opts', [
+			'gdpr'     => true,
+			'messages' => [
+				'cart_email_gdpr' => esc_html__( 'Your email address will help us support your shopping experience throughout the site. Please check our Privacy Policy to see how we use your personal data.', 'salexpresso' ),
+				'no_thanks'       => esc_html__( 'No Thanks.', 'salexpresso' ),
+			],
+		] );
 		wp_localize_script( 'sxp-scripts', 'SaleXpresso', $js_opts );
 		wp_enqueue_script( 'sxp-scripts' );
 		wp_enqueue_style( 'sxp-styles', $this->get_url( 'styles' . $this->file_suffix . '.css' ), [], $this->get_file_version( 'styles' . $this->file_suffix . '.css' )

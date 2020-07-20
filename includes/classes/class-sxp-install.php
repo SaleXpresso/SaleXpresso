@@ -8,6 +8,8 @@
 
 namespace SaleXpresso;
 
+use SaleXpresso\Settings\SXP_Admin_Settings;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -68,6 +70,7 @@ class SXP_Install {
 		SXP()->register_tables();
 		self::remove_admin_notices();
 		self::create_tables();
+		self::create_options();
 		self::create_roles();
 		self::setup_environment();
 		self::create_cron_jobs();
@@ -79,6 +82,34 @@ class SXP_Install {
 		delete_transient( 'sxp_installing' );
 		do_action( 'salexpresso_flush_rewrite_rules' );
 		do_action( 'salexpresso_installed' );
+	}
+	
+	/**
+	 * Default options.
+	 *
+	 * Sets up the default options used on the settings page.
+	 */
+	private static function create_options() {
+		// Include settings so that we can run through defaults.
+		include_once dirname( __FILE__ ) . '/settings/class-sxp-admin-settings.php';
+		
+		$settings = SXP_Admin_Settings::get_settings_pages();
+		
+		foreach ( $settings as $section ) {
+			if ( ! method_exists( $section, 'get_settings' ) ) {
+				continue;
+			}
+			$subsections = array_unique( array_merge( array( '' ), array_keys( $section->get_sections() ) ) );
+			
+			foreach ( $subsections as $subsection ) {
+				foreach ( $section->get_settings( $subsection ) as $value ) {
+					if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
+						$autoload = isset( $value['autoload'] ) ? (bool) $value['autoload'] : true;
+						add_option( $value['id'], $value['default'], '', ( $autoload ? 'yes' : 'no' ) );
+					}
+				}
+			}
+		}
 	}
 	
 	/**
