@@ -54,7 +54,6 @@ abstract class SXP_Settings_Tab {
 	/**
 	 * Get settings page ID.
 	 *
-	 * @since 3.0.0
 	 * @return string
 	 */
 	public function get_id() {
@@ -64,7 +63,6 @@ abstract class SXP_Settings_Tab {
 	/**
 	 * Get settings page label.
 	 *
-	 * @since 3.0.0
 	 * @return string
 	 */
 	public function get_label() {
