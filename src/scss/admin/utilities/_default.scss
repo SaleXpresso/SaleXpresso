@@ -38,6 +38,7 @@
 			}
 		}
 		.clearfix {
+			@include clearfix();
 			clear: both;
 			*zoom: 1;
 			&::before,
@@ -236,3 +237,8 @@ svg.feather {
 	position: relative;
 }
 
+@keyframes sxp_spin {
+	100% {
+		transform: rotate(360deg);
+	}
+}

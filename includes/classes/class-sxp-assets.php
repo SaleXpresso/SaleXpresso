@@ -86,13 +86,22 @@ class SXP_Assets {
 				'wp-html-entities',
 				'wp-i18n',
 				'wp-keycodes',
+				'jquery-blockui',
+				'jquery-tiptip',
+				'wp-util',
+				'jquery-ui-datepicker',
+				'jquery-ui-sortable',
+				'iris',
+				'selectWoo'
 			],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.js' ),
 			true
 		);
 		wp_enqueue_media();
 		wp_enqueue_script( 'wp-color-picker' );
-		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [] );
+		$js_opts = apply_filters( 'salexpresso_admin_js_opts', [
+			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'salexpresso' ),
+		] );
 		wp_enqueue_script( 'sxp-admin' );
 		wp_localize_script( 'sxp-admin', 'SaleXpresso', $js_opts );
 	}
@@ -119,9 +128,7 @@ class SXP_Assets {
 		wp_register_script(
 			'sxp-scripts',
 			$this->get_url( 'scripts' . $this->file_suffix . '.js' ),
-			[
-				'jquery',
-			],
+			[ 'jquery', 'lodash', ],
 			$this->get_file_version( 'scripts' . $this->file_suffix . '.js' ),
 			true
 		);
@@ -134,8 +141,7 @@ class SXP_Assets {
 		] );
 		wp_localize_script( 'sxp-scripts', 'SaleXpresso', $js_opts );
 		wp_enqueue_script( 'sxp-scripts' );
-		wp_enqueue_style( 'sxp-styles', $this->get_url( 'styles' . $this->file_suffix . '.css' ), [], $this->get_file_version( 'styles' . $this->file_suffix . '.css' )
-		);
+		wp_enqueue_style( 'sxp-styles', $this->get_url( 'styles' . $this->file_suffix . '.css' ), [], $this->get_file_version( 'styles' . $this->file_suffix . '.css' ) );
 	}
 	
 	/**

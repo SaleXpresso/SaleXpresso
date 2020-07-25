@@ -1,0 +1,219 @@
+/**
+ * SaleXpresso Settings
+ *
+ * @author SaleXpresso <support@salexpresso.com>
+ * @package SaleXpresso
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+
+.sxp-settings {
+	
+	h2.sxp-nav-tab-wrapper {
+		margin-bottom: 1em;
+	}
+	
+	nav.sxp-nav-tab-wrapper {
+		margin: 1.5em 0 1em;
+	}
+	
+	.subsubsub {
+		margin: -8px 0 0;
+	}
+	
+	table.form-table {
+		margin: 0;
+		position: relative;
+		table-layout: fixed;
+		
+		.forminp-radio ul {
+			margin: 0;
+			
+			li {
+				line-height: 1.4em;
+			}
+		}
+		
+		input[type="text"],
+		input[type="number"],
+		input[type="email"] {
+			height: auto;
+		}
+		
+		textarea.input-text {
+			height: 100%;
+			min-width: 150px;
+			display: block;
+		}
+		
+		// Give regular settings inputs a standard width and padding.
+		textarea,
+		input[type="text"],
+		input[type="email"],
+		input[type="number"],
+		input[type="password"],
+		input[type="datetime"],
+		input[type="datetime-local"],
+		input[type="date"],
+		input[type="time"],
+		input[type="week"],
+		input[type="url"],
+		input[type="tel"],
+		input.regular-input {
+			width: 400px;
+			margin: 0;
+			padding: 6px;
+			box-sizing: border-box;
+			vertical-align: top;
+		}
+		
+		input[type="datetime-local"],
+		input[type="date"],
+		input[type="time"],
+		input[type="week"],
+		input[type="tel"] {
+			width: 200px;
+		}
+		
+		select {
+			width: 400px;
+			margin: 0;
+			box-sizing: border-box;
+			line-height: 32px;
+			vertical-align: top;
+		}
+		
+		input[size] {
+			width: auto !important;
+		}
+		
+		// Ignore nested inputs.
+		table {
+			
+			select,
+			textarea,
+			input[type="text"],
+			input[type="email"],
+			input[type="number"],
+			input.regular-input {
+				width: auto;
+			}
+		}
+		
+		textarea.wide-input {
+			width: 100%;
+		}
+		
+		.sxp-help-tip {
+			padding: 0;
+			margin: -4px 0 0 5px;
+			vertical-align: middle;
+			cursor: help;
+			line-height: 1;
+		}
+		
+		th {
+			position: relative;
+			padding-right: 24px;
+		}
+		
+		th label {
+			position: relative;
+			display: block;
+			
+			.sxp-help-tip {
+				margin: -8px -24px 0 0;
+				position: absolute;
+				right: 0;
+				top: 50%;
+			}
+		}
+		
+		th label + .sxp-help-tip {
+			margin: 0 0 0 0;
+			position: absolute;
+			right: 0;
+			top: 20px;
+		}
+		
+		.select2-container {
+			vertical-align: top;
+			margin-bottom: 3px;
+		}
+		
+		.select2-container + span.description {
+			display: block;
+			margin-top: 8px;
+		}
+		
+		table.widefat th {
+			padding-right: inherit;
+		}
+		
+		.wp-list-table .sxp-help-tip {
+			float: none;
+		}
+		
+		fieldset {
+			margin-top: 4px;
+			
+			.sxp-help-tip {
+				margin: -3px 0 0 5px;
+			}
+			
+			p.description {
+				margin-bottom: 8px;
+			}
+			
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+		
+		.iris-picker {
+			z-index: 100;
+			display: none;
+			position: absolute;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+			
+			.ui-slider {
+				border: 0 !important;
+				margin: 0 !important;
+				width: auto !important;
+				height: auto !important;
+				background: none transparent !important;
+				
+				.ui-slider-handle {
+					margin-bottom: 0 !important;
+				}
+			}
+		}
+		
+		.iris-error {
+			background-color: #ffafaf;
+		}
+		
+		.color-pick-preview {
+			padding: 7px 0;
+			line-height: 1em;
+			display: inline-block;
+			width: 26px;
+			border: 1px solid #ddd;
+			font-size: 14px;
+		}
+		
+		.image_width_settings { /* stylelint-disable-line selector-class-pattern */
+			vertical-align: middle;
+			
+			label {
+				margin-left: 10px;
+			}
+			
+			input {
+				width: auto;
+			}
+		}
+	}
+}

@@ -32,6 +32,11 @@ class SXP_Settings_Page extends SXP_Admin_Page {
 	 */
 	public function __construct( $plugin_page = null ) {
 		parent::__construct( $plugin_page );
+		
+		add_filter( "salexpresso_admin_{$this->hook_slug}_page_class", function ( $classes ) {
+			$classes[] = 'sxp-settings';
+			return $classes;
+		}, 10, 1 );
 	}
 	
 	/**
@@ -78,7 +83,7 @@ class SXP_Settings_Page extends SXP_Admin_Page {
 		?>
 		<?php do_action( 'salexpresso_before_settings_' . $current_tab ); ?>
 		<form method="<?php echo esc_attr( apply_filters( 'salexpresso_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
-			<nav class="nav-tab-wrapper woo-nav-tab-wrapper">
+			<nav class="nav-tab-wrapper sxp-nav-tab-wrapper">
 				<?php
 				foreach ( $this->settings_tabs as $slug => $label ) {
 					echo '<a href="' . esc_html( admin_url( 'admin.php?page=sxp-settings&tab=' . esc_attr( $slug ) ) ) . '" class="nav-tab ' . ( $current_tab === $slug ? 'nav-tab-active' : '' ) . '">' . esc_html( $label ) . '</a>';
@@ -93,7 +98,6 @@ class SXP_Settings_Page extends SXP_Admin_Page {
 			SXP_Admin_Settings::show_messages();
 			
 			do_action( 'salexpresso_settings_' . $current_tab );
-			do_action( 'salexpresso_settings_tabs_' . $current_tab ); // @deprecated hook. @todo remove in 4.0.
 			?>
 			<p class="submit">
 				<?php if ( empty( $GLOBALS['hide_save_button'] ) ) : ?>

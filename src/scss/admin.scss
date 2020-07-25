@@ -10,7 +10,9 @@
 // Utilities
 @import "admin/utilities/variables";
 @import "admin/utilities/mixins";
+@import "admin/module/help_tip";
 @import "admin/utilities/default";
+@import "admin/module/settings";
 
 // Header
 @import "admin/layout/header";

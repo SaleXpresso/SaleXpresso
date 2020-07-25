@@ -143,11 +143,12 @@ class SXP_Admin_Settings {
 				'i18n_no_specific_countries_selected' => __( 'Selecting no country / region to sell to prevents from completing the checkout. Continue anyway?', 'salexpresso' ),
 			)
 		);
+		
+		// @TODO Use Tooltip (desc_tip).
+		// @TODO copy scripts from wc settings.js to admin.js
 
 		// Get tabs for the settings page.
 		$tabs = apply_filters( 'salexpresso_settings_tabs_array', [] );
-
-		include dirname( __FILE__ ) . '/views/html-admin-settings.php';
 	}
 
 	/**
@@ -317,7 +318,7 @@ class SXP_Admin_Settings {
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 						</th>
 						<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
-							<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
+							<span class="color-pick-preview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
 							<input
 								name="<?php echo esc_attr( $value['id'] ); ?>"
 								id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -671,7 +672,7 @@ class SXP_Admin_Settings {
 		if ( $tooltip_html && in_array( $value['type'], array( 'checkbox' ), true ) ) {
 			$tooltip_html = '<p class="description">' . $tooltip_html . '</p>';
 		} elseif ( $tooltip_html ) {
-			$tooltip_html = wc_help_tip( $tooltip_html );
+			$tooltip_html = sxp_help_tip( $tooltip_html );
 		}
 
 		return array(
@@ -690,6 +691,7 @@ class SXP_Admin_Settings {
 	 * @return bool
 	 */
 	public static function save_fields( $options, $data = null ) {
+		global $current_section;
 		if ( is_null( $data ) ) {
 			$data = $_POST; // WPCS: input var okay, CSRF ok.
 		}
@@ -700,7 +702,7 @@ class SXP_Admin_Settings {
 		// Options to update will be stored here and saved later.
 		$update_options   = array();
 		$autoload_options = array();
-
+		
 		// Loop options and get values to save.
 		foreach ( $options as $option ) {
 			if ( ! isset( $option['id'] ) || ! isset( $option['type'] ) || ( isset( $option['is_option'] ) && false === $option['is_option'] ) ) {
@@ -761,27 +763,20 @@ class SXP_Admin_Settings {
 			}
 
 			/**
-			 * Fire an action when a certain 'type' of field is being saved.
-			 *
-			 * @deprecated 2.4.0 - doesn't allow manipulation of values!
-			 */
-			if ( has_action( 'salexpresso_update_option_' . sanitize_title( $option['type'] ) ) ) {
-				wc_deprecated_function( 'The woocommerce_update_option_X action', '2.4.0', 'salexpresso_admin_settings_sanitize_option filter' );
-				do_action( 'salexpresso_update_option_' . sanitize_title( $option['type'] ), $option );
-				continue;
-			}
-
-			/**
 			 * Sanitize the value of an option.
 			 *
-			 * @since 2.4.0
+			 * @param mixed $value  Sanitized Value.
+             * @param array $option The Option Array.
+             * @param mixed $raw_value Un-sanitized Raw Value.
 			 */
 			$value = apply_filters( 'salexpresso_admin_settings_sanitize_option', $value, $option, $raw_value );
 
 			/**
 			 * Sanitize the value of an option by option name.
 			 *
-			 * @since 2.4.0
+			 * @param mixed $value  Sanitized Value.
+             * @param array $option The Option Array.
+             * @param mixed $raw_value Un-sanitized Raw Value.
 			 */
 			$value = apply_filters( "woocommerce_admin_settings_sanitize_option_$option_name", $value, $option, $raw_value );
 
@@ -803,20 +798,13 @@ class SXP_Admin_Settings {
 			}
 
 			$autoload_options[ $option_name ] = isset( $option['autoload'] ) ? (bool) $option['autoload'] : true;
-
-			/**
-			 * Fire an action before saved.
-			 *
-			 * @deprecated 2.4.0 - doesn't allow manipulation of values!
-			 */
-			do_action( 'salexpresso_update_option', $option );
 		}
 
 		// Save all options in our array.
 		foreach ( $update_options as $name => $value ) {
 			update_option( $name, $value, $autoload_options[ $name ] ? 'yes' : 'no' );
 		}
-
+		
 		return true;
 	}
 }

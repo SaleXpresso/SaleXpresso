@@ -18,16 +18,16 @@ import 'selectize/dist/js/standalone/selectize';
 import 'vgnav/assets/js/vgnav';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
 import { inArray } from './util';
+import { tabs } from './components/_tabs.js';
 
-// import { tabs } from './components/_tabs.js';
 // import './components/_accordion';
 // import { sprintf, _n } from '@wordpress/i18n';
 
 // navigator.onLine
 
 ( function( window, document, wp, pagenow, SaleXpresso ) {
-	// const params = new URLSearchParams( location.search );
-	//const sxpPage = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? params.get( 'page' ) : false;
+	const params = new URLSearchParams( location.search );
+	const sxpPage = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? params.get( 'page' ) : false;
 	//const sxpSubPage = sxpPage ? params.get( 'tab' ) : false;
 	// const netStatus = function( event ) {
 	// console.log( 'online offline ', navigator.onLine, { event } );
@@ -47,7 +47,7 @@ import { inArray } from './util';
 			event.preventDefault();
 		} );
 		if ( sxhWrapper.hasClass( 'sxp-has-tabs' ) ) {
-			// tabs();
+			tabs();
 		}
 	} );
 
@@ -144,4 +144,81 @@ import { inArray } from './util';
 		$( '.nav-bar .item' ).removeClass( 'active' );
 		li.addClass( 'active' );
 	} );
+	$( '.sxp-help-tip' ).tipTip( {
+		'attribute': 'data-tip',
+		'fadeIn': 50,
+		'fadeOut': 50,
+		'delay': 200
+	} );
+	if ( sxpPage ) {
+		// Color picker
+		$( '.colorpick' )
+			
+			.iris({
+				change: function( event, ui ) {
+					$( this ).parent().find( '.color-pick-preview' ).css({ backgroundColor: ui.color.toString() });
+				},
+				hide: true,
+				border: true
+			})
+			
+			.on( 'click focus', function( event ) {
+				event.stopPropagation();
+				$( '.iris-picker' ).hide();
+				$( this ).closest( 'td' ).find( '.iris-picker' ).show();
+				$( this ).data( 'original-value', $( this ).val() );
+			})
+			
+			.on( 'change', function() {
+				if ( $( this ).is( '.iris-error' ) ) {
+					var original_value = $( this ).data( 'original-value' );
+					
+					if ( original_value.match( /^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/ ) ) {
+						$( this ).val( $( this ).data( 'original-value' ) ).change();
+					} else {
+						$( this ).val( '' ).change();
+					}
+				}
+			});
+		
+		$( 'body' ).on( 'click', function() {
+			$( '.iris-picker' ).hide();
+		});
+		// Edit prompt
+		$( function() {
+			var changed = false;
+			
+			$( 'input, textarea, select, checkbox' ).change( function() {
+				changed = true;
+			});
+			
+			$( '.sxp-nav-tab-wrapper a' ).click( function() {
+				if ( changed ) {
+					window.onbeforeunload = function() {
+						return SaleXpresso.i18n_nav_warning;
+					};
+				} else {
+					window.onbeforeunload = '';
+				}
+			});
+			
+			$( '.submit :input' ).click( function() {
+				window.onbeforeunload = '';
+			});
+		});
+
+		// Select all/none
+		$( '.sxp-settings' ).on( 'click', '.select_all', function() {
+			$( this ).closest( 'td' ).find( 'select option' ).attr( 'selected', 'selected' );
+			$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
+			return false;
+		});
+		
+		$( '.sxp-settings' ).on( 'click', '.select_none', function() {
+			$( this ).closest( 'td' ).find( 'select option' ).removeAttr( 'selected' );
+			$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
+			return false;
+		});
+		
+	}
 }( window, document, wp, pagenow, SaleXpresso ) );

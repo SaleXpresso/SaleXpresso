@@ -94,6 +94,39 @@ if ( ! function_exists( 'sxp_get_file_upload_path' ) ) {
 		return false;
 	}
 }
+if ( ! function_exists( 'sxp_site_is_https' ) ) {
+	/**
+	 * Check if the home URL is https. If it is, we don't need to do things such as 'force ssl'.
+	 *
+	 * @see wc_site_is_https
+	 *
+	 * @return bool
+	 */
+	function sxp_site_is_https() {
+		return false !== strstr( get_option( 'home' ), 'https:' );
+	}
+}
+if ( ! function_exists( 'sxp_setcookie' ) ) {
+	/**
+	 * Set a cookie - wrapper for setcookie using WP constants.
+	 *
+	 * @see wc_setcookie
+	 *
+	 * @param  string  $name   Name of the cookie being set.
+	 * @param  string  $value  Value of the cookie.
+	 * @param  integer $expire Expiry of the cookie.
+	 * @param  bool    $secure Whether the cookie should be served only over https.
+	 * @param  bool    $httponly Whether the cookie is only accessible over HTTP, not scripting languages like JavaScript. @since 3.6.0.
+	 */
+	function sxp_setcookie( $name, $value, $expire = 0, $secure = false, $httponly = false ) {
+		if ( ! headers_sent() ) {
+			setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'woocommerce_cookie_httponly', $httponly, $name, $value, $expire, $secure ) );
+		} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			headers_sent( $file, $line );
+			trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
+		}
+	}
+}
 if ( ! function_exists( 'sxp_get_views' ) ) {
 	/**
 	 * Render view (pug) files from the includes directory and return or print the content.
@@ -362,6 +395,25 @@ if ( ! function_exists( 'sxp_views' ) ) {
 		} else {
 			return $engine->render( $args['view'], $args['data'], $args['path'], false );
 		}
+	}
+}
+if ( ! function_exists( 'sxp_help_tip' ) ) {
+	/**
+	 * Display a SaleXpresso help tip.
+	 *
+	 * @see wc_help_tip()
+	 * @param  string $tip        Help tip text.
+	 * @param  bool   $allow_html Allow sanitized HTML if true or escape.
+	 * @return string
+	 */
+	function sxp_help_tip( $tip, $allow_html = false ) {
+		if ( $allow_html ) {
+			$tip = wc_sanitize_tooltip( $tip );
+		} else {
+			$tip = esc_attr( $tip );
+		}
+		
+		return '<span class="sxp-help-tip" data-tip="' . $tip . '"></span>';
 	}
 }
 // End of file helper.php.
