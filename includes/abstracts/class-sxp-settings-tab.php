@@ -87,10 +87,12 @@ abstract class SXP_Settings_Tab {
 	/**
 	 * Get settings array.
 	 *
+	 * @param string $current_section Optional. Current Settings Section
+	 *
 	 * @return array
 	 */
-	public function get_settings() {
-		return apply_filters( 'salexpresso_get_settings_' . $this->id, array() );
+	public function get_settings( $current_section = '' ) {
+		return apply_filters( 'salexpresso_get_settings_' . $this->id, [] );
 	}
 	
 	/**
@@ -99,11 +101,12 @@ abstract class SXP_Settings_Tab {
 	 * @return array
 	 */
 	public function get_sections() {
-		return apply_filters( 'salexpresso_get_sections_' . $this->id, array() );
+		return apply_filters( 'salexpresso_get_sections_' . $this->id, [] );
 	}
 	
 	/**
 	 * Output sections.
+	 * @return void
 	 */
 	public function output_sections() {
 		global $current_section;
@@ -119,7 +122,13 @@ abstract class SXP_Settings_Tab {
 		$array_keys = array_keys( $sections );
 		
 		foreach ( $sections as $id => $label ) {
-			echo '<li><a href="' . admin_url( 'admin.php?page=sxp-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+			printf(
+				'<li><a href="%s" class="%s">%s</a> %s </li>',
+				esc_url( admin_url( 'admin.php?page=sxp-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) ),
+				( $current_section == $id ? 'current' : '' ),
+				esc_html( $label ),
+				( end( $array_keys ) == $id ? '' : '|' )
+			);
 		}
 		
 		echo '</ul><br class="clear" />';
@@ -127,15 +136,18 @@ abstract class SXP_Settings_Tab {
 	
 	/**
 	 * Output the settings.
+	 * @return void
 	 */
 	public function output() {
-		$settings = $this->get_settings();
+		global $current_section;
+		$settings = $this->get_settings( $current_section );
 		
 		SXP_Admin_Settings::output_fields( $settings );
 	}
 	
 	/**
 	 * Save settings.
+	 * @return void
 	 */
 	public function save() {
 		global $current_section;
@@ -148,5 +160,4 @@ abstract class SXP_Settings_Tab {
 		}
 	}
 }
-
 // End of file class-sxp-settings-tab.php.

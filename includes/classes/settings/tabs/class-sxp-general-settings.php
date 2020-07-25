@@ -37,9 +37,13 @@ class SXP_General_Settings extends SXP_Settings_Tab {
 	/**
 	 * Get settings array.
 	 *
+	 * @param string $current_section Optional. Current section slug.
+	 *
 	 * @return array
 	 */
-	public function get_settings() {
+	public function get_settings( $current_section = '' ) {
+		global $hide_save_button;
+		$hide_save_button = true;
 		
 		$settings = apply_filters(
 			'salexpresso_general_settings',
@@ -47,7 +51,7 @@ class SXP_General_Settings extends SXP_Settings_Tab {
 				[
 					'title' => __( 'General Settings', 'salexpresso' ),
 					'type'  => 'title',
-					'desc'  => __( 'This is where your business is located. Tax rates and shipping rates will use this address.', 'salexpresso' ),
+					'desc'  => '',
 					'id'    => 'general_settings',
 				],
 				[
