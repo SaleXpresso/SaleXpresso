@@ -152,7 +152,7 @@ abstract class SXP_Settings_Tab {
 	public function save() {
 		global $current_section;
 		
-		$settings = $this->get_settings();
+		$settings = $this->get_settings( $current_section );
 		SXP_Admin_Settings::save_fields( $settings );
 		
 		if ( $current_section ) {
