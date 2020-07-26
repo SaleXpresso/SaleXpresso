@@ -416,4 +416,139 @@ if ( ! function_exists( 'sxp_help_tip' ) ) {
 		return '<span class="sxp-help-tip" data-tip="' . $tip . '"></span>';
 	}
 }
+if ( ! function_exists( 'sxp_sanitize_csv_ids' ) ) {
+	/**
+	 * Sanitize Comma Separated Values with callback.
+	 *
+	 * @param string $input The Input.
+	 * @param string $sanitize_callback Optional. Sanitize Callback, default is absint
+	 * @param bool $unique Return Only Unique
+	 *
+	 * @return string
+	 */
+	function sxp_sanitize_csv_ids( $input, $sanitize_callback = 'sanitize_text_field', $unique = true ) {
+		if ( ! empty( $input ) ) {
+			
+			if ( ! is_callable( $sanitize_callback ) ) {
+				$sanitize_callback = 'sanitize_text_field';
+			}
+			
+			$output = sanitize_text_field( $input );
+			
+			$output = str_replace( [ ' ' ], '', $output );
+			$output = explode( ',', $output );
+			$output = array_map( $sanitize_callback, $output );
+			$output = array_filter( $output );
+			
+			if ( $unique ) {
+				$output = array_unique( $output );
+			}
+			
+			return implode( ',', $output );
+		}
+		return '';
+	}
+}
+if ( ! function_exists( 'sxp_csv_string_to_ids_array' ) ) {
+	/**
+	 * Convert comma separated values to integer array
+	 * @param $input
+	 *
+	 * @return array|int[]
+	 */
+	function sxp_csv_string_to_ids_array( $input ) {
+		if ( empty( $input ) ) {
+			return [];
+		}
+		
+		$output = str_replace( [ ' ' ], '', $input );
+		$output = explode( ',', $output );
+		$output = array_map( 'absint', $output );
+		$output = array_filter( $output );
+		
+		return array_unique( $output );
+	}
+}
+if ( ! function_exists( 'sxp_get_the_user' ) ) {
+	/**
+	 * Get User Object.
+	 *
+	 * @param int|string $user Optional. User ID, Email or login (username) to fine the user.
+	 *                         Default to current user.
+	 *
+	 * @return bool|WP_User
+	 */
+	function sxp_get_the_user( $user = null ) {
+		if ( is_null( $user ) ) {
+			if ( ! function_exists( 'wp_get_current_user' ) ) {
+				return false;
+			}
+			$user = wp_get_current_user();
+			
+			return $user->ID > 0 ? $user : false;
+		}
+		if ( ! function_exists( 'get_user_by' ) ) {
+			return false;
+		}
+		if ( is_numeric( $user ) ) {
+			return get_user_by( 'id', (int) $user );
+		} elseif ( is_email( $user ) ) {
+			return get_user_by( 'email', $user );
+		} elseif ( is_string( $user ) ) {
+			return get_user_by( 'login', $user );
+		}
+		
+		return false;
+	}
+}
+if ( ! function_exists( 'sxp_is_abundant_cart_enabled_for_user' ) ) {
+	/**
+	 * Check if abundant cart is enabled for current user.
+	 *
+	 * @param int $user Optional. Default to current user id.
+	 * @return bool
+	 */
+	function sxp_is_abundant_cart_enabled_for_user( $user = null ) {
+		$ids  = sxp_csv_string_to_ids_array( get_option( 'salexpresso_ac_exclude_ids' ) );
+		$user = sxp_get_the_user( $user );
+		
+		if ( empty( $user ) ) {
+			return false;
+		}
+		
+		if ( ! empty( $ids ) ) {
+			if ( in_array( $user->ID, $ids ) ) {
+				// exclude user.
+				return true;
+			}
+		}
+		
+		return $user->has_cap( 'disable_abundant_cart' );
+	}
+}
+if ( ! function_exists( 'sxp_exclude_user_from_session_tracking' ) ) {
+	/**
+	 * Check if session tracking is enabled for current user.
+	 *
+	 * @param int $user Optional. Default to current user id.
+	 * @return bool
+	 */
+	function sxp_exclude_user_from_session_tracking( $user = null ) {
+		$ids  = sxp_csv_string_to_ids_array( get_option( 'salexpresso_st_exclude_ids' ) );
+		$user = sxp_get_the_user( $user );
+		
+		if ( empty( $user ) ) {
+			return false;
+		}
+		
+		if ( ! empty( $ids ) ) {
+			if ( in_array( $user->ID, $ids ) ) {
+				// exclude user.
+				return true;
+			}
+		}
+		
+		return $user->has_cap( 'disable_session_tracking' );
+	}
+}
 // End of file helper.php.

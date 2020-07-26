@@ -73,6 +73,13 @@ final class SaleXpresso {
 	protected $views;
 	
 	/**
+	 * Session Handler.
+	 *
+	 * @var SXP_Session
+	 */
+	public $session;
+	
+	/**
 	 * Main SaleXpresso Instance.
 	 *
 	 * Ensures only one instance of SaleXpresso is loaded or can be loaded.
@@ -176,7 +183,7 @@ final class SaleXpresso {
 		
 		// Set up localisation.
 		$this->load_plugin_textdomain();
-		
+		$this->session = SXP_Session::get_instance();
 		SXP_Admin_Notices::init();
 		SXP_Admin_Notices::reset_admin_notices();
 		
@@ -424,6 +431,11 @@ final class SaleXpresso {
 	private function includes() {
 		
 		$this->load_file( 'vendor/autoload.php', true, true );
+		
+		require_once 'classes/class-sxp-ip.php';
+		require_once 'classes/class-sxp-session.php';
+		require_once 'classes/simple-analytics/class-sxp-simple-analytics.php';
+		require_once 'classes/simple-analytics/class-sxp-analytics-collects.php';
 		
 		require_once 'deprecated-functions.php';
 		require_once 'user-taxonomy-helper.php';

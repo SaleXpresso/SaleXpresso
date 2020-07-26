@@ -258,21 +258,19 @@ SQL;
 	 */
 	public static function create_roles_caps() {
 		
-		$exclude_tracking = get_option( 'salexpresso_st_exclude_role' );
-		$exclude_abundant_cart = get_option( 'salexpresso_ac_exclude_role' );
+		$exclude_session_tracking = get_option( 'salexpresso_st_exclude_role' );
+		$exclude_abundant_cart    = get_option( 'salexpresso_ac_exclude_role' );
 		
 		$roles = wp_roles();
-		if ( ! empty( $exclude_tracking ) ) {
-			foreach ( $exclude_tracking as $role => $exclude ) {
-				$grant = $exclude !== 'yes';
-				$roles->add_cap( $role, 'track_session', $grant );
+		if ( ! empty( $exclude_session_tracking ) ) {
+			foreach ( $exclude_session_tracking as $role => $exclude ) {
+				$roles->add_cap( $role, 'disable_session_tracking', $exclude === 'yes' );
 			}
 		}
 		
 		if ( ! empty( $exclude_abundant_cart ) ) {
 			foreach ( $exclude_abundant_cart as $role => $exclude ) {
-				$grant = $exclude !== 'yes';
-				$roles->add_cap( $role, 'track_abundant_cart', $grant );
+				$roles->add_cap( $role, 'disable_abundant_cart', $exclude === 'yes' );
 			}
 		}
 	}

@@ -414,7 +414,7 @@ class SXP_IP {
 	 * @param string $ip
 	 * @return bool
 	 */
-	private static function is_valid_ip( $ip ) {
+	public static function is_valid_ip( $ip ) {
 		return false !== filter_var( $ip, FILTER_VALIDATE_IP );
 	}
 	

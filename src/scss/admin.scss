@@ -12,7 +12,6 @@
 @import "admin/utilities/mixins";
 @import "admin/module/help_tip";
 @import "admin/utilities/default";
-@import "admin/module/settings";
 
 // Header
 @import "admin/layout/header";
@@ -24,6 +23,7 @@
 @import "admin/module/tabs";
 @import "admin/module/filter";
 @import "admin/module/table";
+@import "admin/module/settings";
 @import "admin/module/rule";
 @import "admin/module/pagination";
 @import "admin/module/tags";

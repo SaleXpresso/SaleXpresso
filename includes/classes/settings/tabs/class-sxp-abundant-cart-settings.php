@@ -190,13 +190,7 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 	public function save() {
 		// phpcs:disable
 		if ( isset( $_POST['salexpresso_ac_exclude_ids'] ) && ! empty( $_POST['salexpresso_ac_exclude_ids'] ) ) {
-			$_POST['salexpresso_ac_exclude_ids'] = sanitize_text_field( $_POST['salexpresso_ac_exclude_ids'] );
-			$_POST['salexpresso_ac_exclude_ids'] = str_replace( [ ' ' ], '', $_POST['salexpresso_ac_exclude_ids'] );
-			$_POST['salexpresso_ac_exclude_ids'] = explode( ',', $_POST['salexpresso_ac_exclude_ids'] );
-			$_POST['salexpresso_ac_exclude_ids'] = array_map( 'absint', $_POST['salexpresso_ac_exclude_ids'] );
-			$_POST['salexpresso_ac_exclude_ids'] = array_filter( $_POST['salexpresso_ac_exclude_ids'] );
-			$_POST['salexpresso_ac_exclude_ids'] = array_unique( $_POST['salexpresso_ac_exclude_ids'] );
-			$_POST['salexpresso_ac_exclude_ids'] = implode( ',', $_POST['salexpresso_ac_exclude_ids'] );
+			$_POST['salexpresso_ac_exclude_ids'] = sxp_sanitize_csv_ids( $_POST['salexpresso_ac_exclude_ids'], 'absint' );
 		}
 		// phpcs:enable
 		

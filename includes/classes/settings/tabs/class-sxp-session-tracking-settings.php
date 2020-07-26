@@ -207,6 +207,9 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 			}
 			$_POST['salexpresso_st_trusted_proxies'] = $trusted_proxies;
 		}
+		if ( isset( $_POST['salexpresso_st_exclude_ids'] ) ) {
+			$_POST['salexpresso_st_exclude_ids'] = sxp_sanitize_csv_ids( $_POST['salexpresso_st_exclude_ids'], 'absint' );
+		}
 		// phpcs:enable
 		
 		parent::save();
