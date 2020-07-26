@@ -201,6 +201,10 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 		
 		parent::save();
 		
+		/**
+		 * Update WP_Roles Capabilities
+		 */
+		do_action( 'salexpresso_update_roles_and_caps' );
 	}
 }
 new SXP_Session_Tracking_Settings();

@@ -33,6 +33,8 @@ class SXP_Install {
 		
 		add_filter( 'plugin_action_links_' . SXP_PLUGIN_BASENAME, [ __CLASS__, 'plugin_action_links' ] );
 		add_filter( 'plugin_row_meta', [ __CLASS__, 'plugin_row_meta' ], 10, 2 );
+		
+		add_action( 'salexpresso_update_roles_and_caps', [ __CLASS__, 'create_roles_caps' ] );
 	}
 	
 	/**
@@ -71,7 +73,7 @@ class SXP_Install {
 		self::remove_admin_notices();
 		self::create_tables();
 		self::create_options();
-		self::create_roles();
+		self::create_roles_caps();
 		self::setup_environment();
 		self::create_cron_jobs();
 		self::create_files();
@@ -254,8 +256,25 @@ SQL;
 	 *
 	 * @return void
 	 */
-	private static function create_roles() {
-		// @TODO create extra role for sales representative.
+	public static function create_roles_caps() {
+		
+		$exclude_tracking = get_option( 'salexpresso_st_exclude_role' );
+		$exclude_abundant_cart = get_option( 'salexpresso_ac_exclude_role' );
+		
+		$roles = wp_roles();
+		if ( ! empty( $exclude_tracking ) ) {
+			foreach ( $exclude_tracking as $role => $exclude ) {
+				$grant = $exclude !== 'yes';
+				$roles->add_cap( $role, 'track_session', $grant );
+			}
+		}
+		
+		if ( ! empty( $exclude_abundant_cart ) ) {
+			foreach ( $exclude_abundant_cart as $role => $exclude ) {
+				$grant = $exclude !== 'yes';
+				$roles->add_cap( $role, 'track_abundant_cart', $grant );
+			}
+		}
 	}
 	
 	/**
@@ -263,8 +282,13 @@ SQL;
 	 *
 	 * @return void
 	 */
-	public static function remove_roles() {
-		// @TODO remove extra role created by this plugin on uninstall.
+	public static function remove_roles_caps() {
+		$roles = wp_roles();
+		
+		foreach ( $roles->roles as $role_key => $role_value ) {
+			$roles->remove_cap( $role_key, 'track_session' );
+			$roles->remove_cap( $role_key, 'track_abundant_cart' );
+		}
 	}
 	
 	/**

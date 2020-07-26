@@ -30,7 +30,6 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 	public function __construct() {
 		$this->id    = 'abundant-cart';
 		$this->label = __( 'Abundant Cart', 'salexpresso' );
-		add_filter( 'salexpresso_abundant_cart_settings', [ $this, 'exclude_user_role_checkboxes' ], 10, 1 );
 		parent::__construct();
 	}
 	
@@ -54,7 +53,7 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 	 */
 	public function get_settings( $current_section = '' ) {
 		global $wp_roles;
-		// @TODO Use Tooltip (desc_tip).
+		
 		if ( 'exclusion' === $current_section ) {
 			$settings[] = [
 				'type'  => 'title',
@@ -186,17 +185,8 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 	}
 	
 	/**
-	 * Add Checkboxes for excluding user roles from abundant cart tracking.
-	 *
-	 * @param array $settings
-	 *
-	 * @return array
+	 * Save Settings.
 	 */
-	public function exclude_user_role_checkboxes( $settings ) {
-		
-		return $settings;
-	}
-	
 	public function save() {
 		// phpcs:disable
 		if ( isset( $_POST['salexpresso_ac_exclude_ids'] ) && ! empty( $_POST['salexpresso_ac_exclude_ids'] ) ) {
@@ -209,7 +199,13 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 			$_POST['salexpresso_ac_exclude_ids'] = implode( ',', $_POST['salexpresso_ac_exclude_ids'] );
 		}
 		// phpcs:enable
+		
 		parent::save();
+		
+		/**
+		 * Update WP_Roles Capabilities
+		 */
+		do_action( 'salexpresso_update_roles_and_caps' );
 	}
 }
 new SXP_Abundant_Cart_Settings();

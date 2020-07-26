@@ -23,8 +23,9 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  */
 if ( defined( 'SXP_REMOVE_ALL_DATA' ) && true === SXP_REMOVE_ALL_DATA ) {
 	global $wpdb;
-	// Remove custom roles.
-	SXP_Install::remove_roles();
+	
+	// Remove custom roles & capabilities.
+	SXP_Install::remove_roles_caps();
 	
 	// Delete Options.
 	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'salexpresso\_%';" );
