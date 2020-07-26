@@ -137,6 +137,16 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 				],
 			];
 			
+			$settings[] = [
+				'title'    => __( 'Exclude User IDs', 'salexpresso' ),
+				'desc'     => __( 'Exclude Users by ID, Multiple Id must be separated with comma', 'salexpresso' ),
+				'id'       => 'salexpresso_st_exclude_ids',
+				'type'     => 'text',
+				'default'  => '',
+				'autoload' => false,
+				'desc_tip' => true,
+			];
+			
 			$count = count( $wp_roles->roles );
 			$i = 0;
 			foreach ( $wp_roles->roles as $role_key => $role_value ) {
