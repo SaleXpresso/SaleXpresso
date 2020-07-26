@@ -178,6 +178,7 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 	 * @return void
 	 */
 	public function save() {
+		// phpcs:disable
 		if ( isset( $_POST['salexpresso_st_trusted_proxies'] ) && ! empty( $_POST['salexpresso_st_trusted_proxies'] ) ) {
 			$trusted_proxies = sanitize_textarea_field( $_POST['salexpresso_st_trusted_proxies'] );
 			
@@ -186,7 +187,7 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 			
 			$invalid_IPs = [];
 			foreach ( $validIPs as $val ) {
-				if ( ! ( wfUtils::isValidIP( $val ) || wfUtils::isValidCIDRRange( $val ) ) ) {
+				if ( ! ( SXP_IP::is_valid_ip( $val ) || SXP_IP::is_valid_cidr_range( $val ) ) ) {
 					$invalid_IPs[] = $val;
 				}
 			}
@@ -196,7 +197,10 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 			}
 			$_POST['salexpresso_st_trusted_proxies'] = $trusted_proxies;
 		}
+		// phpcs:enable
+		
 		parent::save();
+		
 	}
 }
 new SXP_Session_Tracking_Settings();
