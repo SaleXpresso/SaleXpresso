@@ -58,6 +58,7 @@ class SXP_Admin_Settings {
 			
 			$settings[] = include 'tabs/class-sxp-general-settings.php';
 			$settings[] = include 'tabs/class-sxp-abundant-cart-settings.php';
+			$settings[] = include 'tabs/class-sxp-session-tracking-settings.php';
 			
 			self::$settings = apply_filters( 'salexpresso_get_settings_pages', $settings );
 		}
@@ -126,29 +127,6 @@ class SXP_Admin_Settings {
 	 */
 	public static function output() {
 		global $current_section, $current_tab;
-
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.min' : '';
-
-		do_action( 'salexpresso_settings_start' );
-
-		wp_enqueue_script( 'woocommerce_settings', WC()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'wp-util', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), WC()->version, true );
-
-		wp_localize_script(
-			'woocommerce_settings',
-			'woocommerce_settings_params',
-			array(
-				'i18n_nav_warning'                    => __( 'The changes you made will be lost if you navigate away from this page.', 'salexpresso' ),
-				'i18n_moved_up'                       => __( 'Item moved up', 'salexpresso' ),
-				'i18n_moved_down'                     => __( 'Item moved down', 'salexpresso' ),
-				'i18n_no_specific_countries_selected' => __( 'Selecting no country / region to sell to prevents from completing the checkout. Continue anyway?', 'salexpresso' ),
-			)
-		);
-		
-		// @TODO Use Tooltip (desc_tip).
-		// @TODO copy scripts from wc settings.js to admin.js
-
-		// Get tabs for the settings page.
-		$tabs = apply_filters( 'salexpresso_settings_tabs_array', [] );
 	}
 
 	/**
