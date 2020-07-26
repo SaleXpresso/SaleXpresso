@@ -162,6 +162,8 @@ CREATE TABLE {$wpdb->prefix}sxp_analytics (
 	screen_width int DEFAULT 0,
 	screen_height int DEFAULT 0,
 	language VARCHAR( 6 ),
+	country VARCHAR( 10 ),
+	city VARCHAR( 50 ),
 	is_unique int( 1 ) DEFAULT 0,
 	referrer TEXT,
 	timezone VARCHAR( 60 ),
@@ -169,6 +171,8 @@ CREATE TABLE {$wpdb->prefix}sxp_analytics (
 	bot int( 1 ) DEFAULT 0,
 	version VARCHAR( 10 ),
 	PRIMARY KEY  ( `id` ),
+	INDEX(`session_id`),
+	INDEX(`page_id`)
 ) {$charset_collate};
 CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
 	id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -180,7 +184,7 @@ CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
 	cart_meta LONGTEXT NULL,
 	status ENUM( 'processing','abandoned','recovered','completed', 'lost' ) NOT NULL DEFAULT 'processing',
 	coupon_code VARCHAR(60) DEFAULT NULL,
-	last_sent_email int DEFAULT 0,
+	last_sent_email DATETIME DEFAULT NULL,
     time DATETIME DEFAULT NULL,
     unsubscribed boolean DEFAULT 0,
 	PRIMARY KEY  (`id`, `session_id`),
