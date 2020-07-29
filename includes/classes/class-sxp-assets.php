@@ -63,7 +63,7 @@ class SXP_Assets {
 	 */
 	private function __construct() {
 		$this->is_debugging = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
-		$this->file_suffix  = ''; // .min not on use.
+		$this->file_suffix  = ''; // .min not in use.
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ], 10, 1 );
 		add_action( 'admin_print_styles', [ $this, 'admin_styles' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'public_scripts' ], 10 );
@@ -170,13 +170,17 @@ class SXP_Assets {
 		return plugins_url( $this->get_path( $file ) . $file, SXP_PLUGIN_FILE );
 	}
 	
+	public function get_file_suffix() {
+		return $this->file_suffix;
+	}
+	
 	/**
 	 * Gets the path for the asset depending on file type.
 	 *
 	 * @param  string $file name.
 	 * @return string|bool Folder path of asset or false.
 	 */
-	private function get_path( $file ) {
+	public function get_path( $file ) {
 		$assets = 'assets/';
 		if ( '.css' === substr( $file, -4 ) ) {
 			return $assets . 'css/';
@@ -199,12 +203,12 @@ class SXP_Assets {
 	 *
 	 * @return bool|string
 	 */
-	private function get_full_path( $file ) {
+	public function get_full_path( $file ) {
 		$path = $this->get_path( $file );
 		if ( false !== $path ) {
 			$path = SXP_ABSPATH . $path;
 		}
-		return $path;
+		return $path . $file;
 	}
 }
 
