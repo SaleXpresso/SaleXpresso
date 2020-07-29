@@ -509,6 +509,10 @@ if ( ! function_exists( 'sxp_is_abundant_cart_enabled_for_user' ) ) {
 	 * @return bool
 	 */
 	function sxp_is_abundant_cart_enabled_for_user( $user = null ) {
+		if ( 'yes' !== get_option( 'salexpresso_ac_enable', 'yes' ) ) {
+			// cart tracking disabled.
+			return  true;
+		}
 		$ids  = sxp_csv_string_to_ids_array( get_option( 'salexpresso_ac_exclude_ids' ) );
 		$user = sxp_get_the_user( $user );
 		
@@ -534,6 +538,10 @@ if ( ! function_exists( 'sxp_exclude_user_from_session_tracking' ) ) {
 	 * @return bool
 	 */
 	function sxp_exclude_user_from_session_tracking( $user = null ) {
+		if ( 'yes' !== get_option( 'salexpresso_st_enable', 'yes' ) ) {
+			// session tracking disabled.
+			return  true;
+		}
 		$ids  = sxp_csv_string_to_ids_array( get_option( 'salexpresso_st_exclude_ids' ) );
 		$user = sxp_get_the_user( $user );
 		
@@ -549,6 +557,49 @@ if ( ! function_exists( 'sxp_exclude_user_from_session_tracking' ) ) {
 		}
 		
 		return $user->has_cap( 'disable_session_tracking' );
+	}
+}
+if ( ! function_exists( 'sxp_api_link' ) ) {
+	/**
+	 * Retrieves the URL for a api path (action).
+	 *
+	 * @see site_url()
+	 * @param string $path   Optional. Path relative to the site URL. Default empty.
+	 * @param string $scheme Optional. Scheme to give the site URL context. See set_url_scheme().
+	 * @return string|bool   Site URL link with optional path appended.
+	 */
+	function sxp_api_link( $path = '', $scheme = '' ) {
+		return sxp_get_api_link( null, $path, $scheme );
+	}
+}
+if ( ! function_exists( 'sxp_get_api_link' ) ) {
+	/**
+	 * Retrieves the URL for a api path (action).
+	 *
+	 * @see get_site_url()
+	 * @param int    $blog_id Optional. Site ID. Default null (current site).
+	 * @param string $path    Optional. Path relative to the site URL. Default empty.
+	 * @param string $scheme  Optional. Scheme to give the site URL context. Accepts
+	 *                        'http', 'https', 'login', 'login_post', 'admin', or
+	 *                        'relative'. Default null.
+	 * @return string|false   Site URL link with optional path appended.
+	 */
+	function sxp_get_api_link( $blog_id = null, $path = '', $scheme = '' ) {
+		$path = untrailingslashit( $path );
+		$path = sanitize_text_field( $path );
+		$path = str_replace( [ ' ' ], '-', $path );
+		if ( ! $path ) {
+			return false;
+		}
+		if ( get_option( 'permalink_structure' ) ) {
+			$path = 'sxp-api/' . $path;
+		} else {
+			$path = '?sxp-api=' . $path;
+		}
+		
+		$url = get_site_url( $blog_id, $path, $scheme );
+		
+		return trailingslashit( $url );
 	}
 }
 // End of file helper.php.
