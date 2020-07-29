@@ -61,6 +61,7 @@ module.exports = ( env, argv ) => {
 		entry: {
 			'./assets/js/scripts.js': ['./src/js/scripts.js', './src/scss/styles.scss'],
 			'./assets/js/admin.js': ['./src/js/admin.js', './src/scss/admin.scss'],
+			'./assets/js/tracker.js': ['./src/js/tracker.js'],
 			// styles: './src/scss/styles.scss',
 			// admin: './src/scss/admin.scss',
 		},
