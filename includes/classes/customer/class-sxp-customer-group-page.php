@@ -128,13 +128,13 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			
 			if ( $term_id ) {
 				if ( is_callable( 'sxp_update_' . $this->taxonomy_name ) ) {
-					// @see sxp_update_user_group
+					/** @see sxp_update_user_group */
 					$id = call_user_func( 'sxp_update_' . $this->taxonomy_name, $term_id, [ 'name' => $name ]);
 				}
 			} else {
 				if ( is_callable( 'sxp_add_' . $this->taxonomy_name ) ) {
-					// @see sxp_add_user_group
-					$id = call_user_func( 'sxp_add_' . $this->taxonomy_name, $term_id, [ 'name' => $name ]);
+					/** @see sxp_add_user_group */
+					$id = call_user_func( 'sxp_add_' . $this->taxonomy_name, $name );
 					if ( ! is_wp_error( $id ) ) {
 						$term_id = $id['term_id'];
 					}
