@@ -392,6 +392,9 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 											}
 										?>
 										<div class="sxp-rule-single rule_<?php echo esc_attr( $idx ); ?>">
+											<a href="#" class="sxp-btn sxp-btn-link sxp-remove-rule">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+											</a>
 											<label for="rule_compare_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
 											<select id="rule_compare_<?php echo esc_attr( $idx ); ?>" name="sxp_rule_group[<?php echo $g_idx; ?>][rules][<?php echo esc_attr( $idx ); ?>][condition]">
 												<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
