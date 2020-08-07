@@ -54,14 +54,16 @@ import { tabs } from './components/_tabs.js';
 	$( '[href="#"]' ).on( 'click', function( e ) {
 		e.preventDefault();
 	} );
-
+	
+	const sanitize_title = ( input ) => ( '' + input ).replace( /[^a-z0-9]+/gi, '-' ).replace( /(^-|-$)/g, '' ).toLowerCase();
+	
 	// Selectize
 	$( '.selectize' ).selectize( {
 		maxItems: 10,
 		create( input ) {
 			return {
-				value: input,
-				text: input,
+				value: ( '' + input ).trim(),
+				text: sanitize_title( input ),
 			};
 		},
 	} );
