@@ -69,6 +69,7 @@ if ( defined( 'SXP_REMOVE_ALL_DATA' ) && true === SXP_REMOVE_ALL_DATA ) {
 	
 	// Drop tables.
 	SXP_Install::drop_tables();
+	SXP_Install::delete_options();
 	
 	// Clear any cached data that has been removed.
 	wp_cache_flush();
