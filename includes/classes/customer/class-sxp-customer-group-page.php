@@ -147,6 +147,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				die();
 			}
 			
+			$term_id = $id;
+			
 			if ( isset( $_POST['sxp_rule_group'] ) && is_array( $_POST['sxp_rule_group'] ) ) {
 				$rules = [];
 				foreach ( $_POST['sxp_rule_group'] as $group ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -207,6 +209,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				/* translators: 1 Taxonomy term that just been created. */
 				$message = esc_html__( '%s Created.', 'salexpresso' );
 			}
+			
 			$this->set_flash_message( sprintf( $message, $this->taxonomy->labels->singular_name ), 'success', true );
 			
 			wp_safe_redirect( $page );
@@ -485,7 +488,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
 									</a>
 									<label for="rule_compare___IDX__" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?></label>
-									<select id="rule_compare___IDX__" name="sxp_rule_group[__GIDX__][rules][__IDX__][compare]">
+									<select id="rule_compare___IDX__" name="sxp_rule_group[__GIDX__][rules][__IDX__][condition]">
 										<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
 										<?php
 										foreach ( $conditions as $slug => $data ) {
