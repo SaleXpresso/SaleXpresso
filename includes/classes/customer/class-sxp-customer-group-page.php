@@ -511,7 +511,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 									</select>
 								</div><!-- end .sxp-rule-single -->
 							</script>
-							<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-group" style="margin-top: 20px;"><i data-feather="plus"></i> <?php esc_html_e( 'Add Group', 'salexpresso' ); ?></a>
+							<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-group" style="margin-top: 20px;"><i data-feather="plus"></i> <?php esc_html_e( 'Add Rules', 'salexpresso' ); ?></a>
 							<script>
 								( function( $ ) {
 									let group_template = $( '.rule_ui_group_template' ).text(),
