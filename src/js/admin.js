@@ -19,6 +19,7 @@ import 'vgnav/assets/js/vgnav';
 import { horizontalScrollBar } from './components/_horizontalScrollBar';
 import { inArray } from './util';
 import { tabs } from './components/_tabs.js';
+import { sxpRuleBuilder } from './components/rule-builder';
 
 // import './components/_accordion';
 // import { sprintf, _n } from '@wordpress/i18n';
@@ -28,13 +29,15 @@ import { tabs } from './components/_tabs.js';
 ( function( window, document, wp, pagenow, SaleXpresso ) {
 	const params = new URLSearchParams( location.search );
 	const sxpPage = 0 === pagenow.indexOf( 'salexpresso_page_' ) ? params.get( 'page' ) : false;
+	const pageWrapper = $( '.wrap' );
+	
 	//const sxpSubPage = sxpPage ? params.get( 'tab' ) : false;
 	// const netStatus = function( event ) {
 	// console.log( 'online offline ', navigator.onLine, { event } );
 	// };
 	// $( window ).on( 'online', netStatus ).on( 'offline', netStatus );
 	if ( SaleXpresso.hasOwnProperty( 'wrapClass' ) ) {
-		$( '.wrap' ).addClass( SaleXpresso.wrapClass );
+		pageWrapper.addClass( SaleXpresso.wrapClass );
 	}
 	// Init tag box for user.
 	if ( inArray( pagenow, [ 'user-edit', 'profile' ] ) ) {
@@ -221,6 +224,10 @@ import { tabs } from './components/_tabs.js';
 			$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
 			return false;
 		});
-		
+	}
+	
+	// Initalize the rule builder.
+	if ( $( '.sxp-rules' ).length ) {
+		sxpRuleBuilder();
 	}
 }( window, document, wp, pagenow, SaleXpresso ) );

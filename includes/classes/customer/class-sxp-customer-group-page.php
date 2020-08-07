@@ -304,9 +304,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				</nav>
 			</div><!-- end .sxp-filter-default -->
 			<div class="sxp-filter-date-range">
-				<div id="sxp-date-range" tabindex="0" aria-label="filter by date">
-					<span></span>
-				</div>
+				<div id="sxp-date-range" tabindex="0" aria-label="filter by date"><span></span></div>
 			</div><!-- end .sxp-filter-date-range-->
 			<div class="sxp-screen-options">
 				<a href="#">
@@ -357,7 +355,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 								/* translators: 1 Taxonomy Singular Name */
 								esc_html__( 'Customer %s Name', 'salexpresso' ),
 								esc_html( $this->taxonomy->labels->singular_name )
-							); ?> <i data-feather="info"></i></h4><!-- /.header -->
+							); ?> <i data-feather="info" aria-hidden="true"></i></h4><!-- /.header -->
 						<input type="text" class="title-edit" name="name" value="<?php echo esc_attr( $this->term->name ); ?>">
 						<!-- /.title-edit -->
 					</div>
@@ -517,68 +515,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 							<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-group" style="margin-top: 20px;"><i data-feather="plus"></i> <?php esc_html_e( 'Add Rules', 'salexpresso' ); ?></a>
 							<script>
 								( function( $ ) {
-									let group_template = $( '.rule_ui_group_template' ).text(),
-										condition_template = $( '.rule_ui_condition_template' ).text(),
-										wrapper = $( '.sxp-rules' ),
-										length = wrapper.find( '.sxp-rule-group' ).length || 0;
-									
-									if ( '' !== group_template ) {
-										group_template = group_template.trim();
-									}
-									if ( '' !== condition_template ) {
-										condition_template = condition_template.trim();
-									}
-									if ( '' === group_template || '' === condition_template ) {
-										return;
-									}
-									
-									$( document ).on( 'click', '.remove-group a', function ( event ) {
-										event.preventDefault();
-										const group = $( this ).closest( '.sxp-rule-group' );
-										if ( group.prev().length && ! group.next().length ) {
-											group.prev().find( '.sxp-group-relation' ).hide();
-										}
-										group.remove();
-									} );
-									
-									$( document ).on ( 'click', '.sxp-remove-rule', function ( event ) {
-										event.preventDefault();
-										const rule = $( this ).closest( '.sxp-rule-single' );
-										if ( rule.prev().length && ! rule.next().length ) {
-											rule.prev().find( '.rule-relation' ).hide();
-										}
-										rule.remove();
-									} );
-									
-									$( document ).on( 'click', '.sxp-add-rule-group', function ( event ) {
-										event.preventDefault();
-										length += 1;
-										wrapper.append( group_template.replace( /__IDX__/g, length ) );
-										const group = $( '.rule_group_' + length );
-										if ( group.prev().length ) {
-											group.prev().find( '.sxp-group-relation' ).show();
-										}
-										addCondition( group, length );
-									} );
-									$( document ).on( 'click', '.sxp-add-rule-condition', function ( event ) {
-										event.preventDefault();
-										addCondition( $( this ).closest( '.sxp-rule-group' ) );
-										
-									} );
-									const addCondition = function( group_wrapper, group_idx ) {
-										group_wrapper = 'string' === typeof group_wrapper ? $( group_wrapper ) : group_wrapper;
-										const group_condition_wrapper = group_wrapper.find( '.sxp-group-rules' );
-										group_idx = group_idx || group_wrapper.data( 'group_id' );
-										const group_conditions = group_condition_wrapper.find( '.sxp-rule-single' );
-										let group_condition_idx = group_condition_wrapper.data( 'index' ) || group_conditions.length;
-										group_condition_idx += 1;
-										
-										group_condition_wrapper.append( condition_template.replace( /__GIDX__/g, group_idx ).replace( /__IDX__/g, group_condition_idx ) );
-										const rule = $( '.rule_' + group_condition_idx );
-										rule.prev().find( '.rule-relation' ).show();
-										
-										group_condition_wrapper.data( 'index', group_condition_idx );
-									};
+								
 								} )( jQuery );
 							</script>
 						</div><!-- end .sxp-customer-rule-add-btn -->
