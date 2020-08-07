@@ -169,7 +169,7 @@ final class SaleXpresso {
 		SXP_Assets::get_instance();
 		SXP_Install::init();
 		SXP_Admin_Menus::get_instance();
-		$this->views = SXP_Views::get_instance( $this );
+//		$this->views = SXP_Views::get_instance( $this );
 		add_action( 'plugins_loaded', [ $this, 'on_load' ], -1 );
 		add_action( 'admin_notices', [ $this, 'dependencies_notice' ] );
 		add_action( 'init', [ $this, 'init' ], 0 );
