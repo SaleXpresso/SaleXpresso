@@ -45,18 +45,50 @@ class SXP_API {
 	}
 	
 	/**
-	 * WC API for payment gateway IPNs, etc.
+	 * Add Endpoints
 	 *
+	 * @return void
 	 */
 	public static function add_endpoint() {
 		add_rewrite_endpoint( 'sxp-api', EP_ALL );
+		add_action( 'wp_ajax_salexpresso_set_user_tag', [ __CLASS__, 'set_customer_tags' ] );
+	}
+	
+	public static function set_customer_tags() {
+		check_admin_referer( 'customer-profile-set-tag' );
+		if ( ! isset( $_REQUEST['user_id'], $_REQUEST['tags'] ) && ! empty( $_REQUEST['user_id'] ) && empty( $_REQUEST['tags'] ) ) {
+			wp_send_json_error( esc_html__( 'Invalid Request', 'salexpresso' ) );
+			die();
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( esc_html__( 'You do not have enough permission to set user tag.', 'salexpresso' ) );
+			die();
+		}
+		$data = wc_clean( $_REQUEST ); // phpcs:ignore
+		$tags = array_filter( $data['tags'] );
+		$tags = array_unique( $tags );
+		
+		if ( ! empty( $tags ) ) {
+			$set = sxp_set_user_tags( absint( $data['user_id'] ), $tags, false );
+			if ( false === $set ) {
+				wp_send_json_error( esc_html__( 'Unable to save tags.', 'salexpresso' ) );
+			} elseif ( is_wp_error( $set ) ) {
+				wp_send_json_error( sprintf(
+					esc_html__( 'Error while saving user tags. Error: %s', 'salexpresso' ),
+					$set->get_error_message()
+				) );
+			} else {
+				wp_send_json_success( esc_html__( 'Tags Saved. Click ok to reload.', 'salexpresso' ) );
+			}
+		} else {
+			wp_send_json_error( esc_html__( 'Invalid Or Empty Tags.', 'salexpresso' ) );
+		}
+		
+		die();
 	}
 	
 	/**
 	 * API request - Trigger any API requests.
-	 *
-	 * @since   2.0
-	 * @version 2.4
 	 */
 	public function handle_api_requests() {
 		global $wp;

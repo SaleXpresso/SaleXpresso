@@ -75,20 +75,21 @@ final class SXP_Expression {
 	 * SXP_Expression constructor.
 	 */
 	public function __construct() {
+		
+		if ( is_null( $this->engine ) ) {
+			$this->engine = new ExpressionLanguage();
+		}
+		
 		$this->get_engine();
 	}
 	
 	/**
 	 * ExpressionLanguage Instance.
 	 *
-	 * @return self
+	 * @return ExpressionLanguage
 	 */
 	public function get_engine() {
-		if ( is_null( $this->engine ) ) {
-			$this->engine = new ExpressionLanguage();
-		}
-		
-		return $this;
+		return $this->engine;
 	}
 	
 	/**
@@ -182,6 +183,7 @@ final class SXP_Expression {
 	 * @return self
 	 */
 	public function execute() {
+		$this->parse_expression();
 		$this->result = $this->engine->evaluate( $this->get_parsed(), $this->get_data() );
 		return $this;
 	}
@@ -192,6 +194,7 @@ final class SXP_Expression {
 	 * @return mixed
 	 */
 	public function get_result() {
+		$this->execute();
 		return $this->result;
 	}
 	
