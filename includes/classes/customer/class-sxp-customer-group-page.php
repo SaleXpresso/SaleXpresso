@@ -512,12 +512,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 									</select>
 								</div><!-- end .sxp-rule-single -->
 							</script>
-							<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-group" style="margin-top: 20px;"><i data-feather="plus"></i> <?php esc_html_e( 'Add Rules', 'salexpresso' ); ?></a>
-							<script>
-								( function( $ ) {
-								
-								} )( jQuery );
-							</script>
+							<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-group" style="margin-top: 20px;"><i data-feather="plus" aria-hidden="true"></i> <?php esc_html_e( 'Add Rules', 'salexpresso' ); ?></a>
 						</div><!-- end .sxp-customer-rule-add-btn -->
 					</div><!-- end .sxp-customer-rule-bottom -->
 					<div class="save-wrapper">
