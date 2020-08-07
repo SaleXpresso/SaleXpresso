@@ -57,8 +57,8 @@ class SXP_User_Group_Rules extends SXP_Action_Rules {
 			add_action( 'wp_ajax_user_group_get_conditions', [ $this, 'ajax_get_conditions' ] );
 		}
 		
+		// @XXX Should evaluate on woocommerce_order_status_changed ?.
 		add_action( 'woocommerce_thankyou', [ $this, 'evaluate_rules' ], 10, 1 );
-		add_action( 'woocommerce_order_status_changed', [ $this, 'evaluate_rules' ], 10, 1 );
 	}
 	
 	/**
@@ -73,10 +73,14 @@ class SXP_User_Group_Rules extends SXP_Action_Rules {
 			return;
 		}
 		$rules = $this->get_rules();
+		$rules = array_filter( $rules );
+		
 		if ( empty( $rules ) ) {
 			return;
 		}
+		
 		try {
+			// @XXX if hooked with woocommerce_order_status_changed action then check and handle WC_Order_Refund.
 			$order    = wc_get_order( $order_id );
 			$customer = new WC_Customer( $order->get_customer_id() );
 			$tags     = sxp_get_user_tags( $customer->get_id() );
@@ -93,9 +97,9 @@ class SXP_User_Group_Rules extends SXP_Action_Rules {
 			}
 			$coupons = $order->get_coupon_codes();
 			$e       = new SXP_Expression();
-			$e->get_engine()->set_data( [
+			$e->set_data( [
 				'order' => (object) [
-					'amount'   => $order->get_amount(),
+					'amount'   => $order->get_total(),
 					'quantity' => $qty,
 					'coupon'   => ! empty( $coupons ) ? $coupons[0] : '',
 					'items'    => $order->get_item_count(),
@@ -107,8 +111,9 @@ class SXP_User_Group_Rules extends SXP_Action_Rules {
 				],
 			] );
 			
-			foreach ( $rules as $term_id => $rule ) {
-				if ( $e->set_expression( $rules['compiled'] )->execute()->get_result() ) {
+			
+			foreach ( $rules as $term_id => $expression ) {
+				if ( $e->set_expression( $expression )->get_result() ) {
 					sxp_set_user_groups( $customer->get_id(), $term_id );
 				}
 			}
@@ -168,14 +173,12 @@ class SXP_User_Group_Rules extends SXP_Action_Rules {
 			if ( ! is_wp_error( $groups ) ) {
 				$rules = [];
 				foreach ( $groups as $group ) {
-					$_rules = sxp_get_term_rules( $group );
-					if ( ! isset( $_rules['compiled'] ) ) {
-						$_rules = $this->compile_rules( $_rules );
-						sxp_save_term_rules( $group, $_rules );
+					$compiled = sxp_get_compiled_term_rules( $group );
+					if ( empty( $compiled ) ) {
+						$compiled = $this->compile_rules( sxp_get_term_rules( $group ) );
+						sxp_save_compiled_term_rules( $group, $compiled );
 					}
-					if ( isset( $_rules['compiled'] ) ) {
-						$rules[ $group->term_id ] = $_rules;
-					}
+					$rules[ $group ] = $compiled;
 				}
 				return $rules;
 			}

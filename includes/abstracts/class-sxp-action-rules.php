@@ -191,51 +191,54 @@ abstract class SXP_Action_Rules {
 	/**
 	 * Compile rules to expression syntax.
 	 *
-	 * @param array $rules Rules.
+	 * @param array $groups Rules Groups.
 	 *
-	 * @return array Rules with compiled expression for evaluation.
+	 * @return string Compiled expression for evaluation.
 	 */
-	protected function compile_rules( $rules ) {
-		$parsed = [
-			'compiled' => '',
-			'relation' => '',
-			'rules'    => [],
-		];
-		if ( isset( $rules['rules'] ) && is_array( $rules['rules'] ) ) {
-			$temp = [];
-			$rel  = $this->get_relation_operator( $rules['relation'] );
-			foreach ( $rules['rules'] as $k => $chunk ) {
-				if ( empty( $chunk ) || ! isset( $chunk['relation'], $chunk['rules'] ) ) {
+	protected function compile_rules( $groups ) {
+		$expressions = '';
+		if ( is_array( $groups ) && ! empty( $groups ) ) {
+			$group_expression = '';
+			$group_relation   = '';
+			foreach ( $groups as $group ) {
+				if ( ! isset( $group['relation'], $group['rules'] ) ) {
+					continue;
+				}
+				// get the rules.
+				if ( empty( $group['rules'] ) || ! is_array( $group['rules'] ) ) {
 					continue;
 				}
 				
-				$chunk_rel = $this->get_relation_operator( $chunk['relation'], '&&' );
-				
-				$expressions  = [];
-				$parsed_rules = [];
-				foreach ( $chunk['rules'] as $rule ) {
-					$rule = $this->build_expression( $rule );
-					if ( ! $rule ) {
+				$rule_expressions = '';
+				$rule_relation    = '';
+				foreach ( $group['rules'] as $rule ) {
+					if ( ! isset( $rule['relation'], $rule['condition'], $rule['operator'], $rule['values'] ) ) {
 						continue;
 					}
-					$parsed_rules[] = $rule;
-					$expressions[]  = $rule['expression'];
+					$expression = $this->build_expression( $rule );
+					if ( ! $expression ) {
+						continue;
+					}
+					
+					$rule_expressions .= $expression;
+					$rule_relation    = ' ' . $this->get_relation_operator( $rule['relation'], '&&' ) . ' ';
+					$rule_expressions .= $rule_relation;
 				}
-				if ( empty( $expressions ) ) {
-					continue;
+				
+				$rule_expressions = rtrim( $rule_expressions, $rule_relation );
+				$rule_expressions = trim( $rule_expressions );
+				if ( ! empty( $rule_expressions ) ) {
+					$group_expression .= ' ( ' . $rule_expressions . ' ) ';
+					$group_relation   = ' ' . $this->get_relation_operator( $group['relation'], '&&' ) . ' ';
+					$group_expression .= $group_relation;
 				}
-				$temp[] = '( ' . implode( ' ' . $chunk_rel . ' ', $expressions ) . ' )';
-				// save.
-				$parsed['rules'][] = [
-					'relation' => '&&' === $chunk_rel ? 'AND' : 'OR',
-					'rules'    => $parsed_rules,
-				];
-				unset( $parsed_rules );
 			}
-			$parsed['compiled'] = implode( ' ' . $rel . ' ', $temp );
-			unset( $temp );
+			
+			$expressions = rtrim( $group_expression, $group_relation );
+			$expressions = trim( $expressions );
 		}
-		return $parsed;
+		
+		return $expressions;
 	}
 	
 	/**
@@ -268,7 +271,7 @@ abstract class SXP_Action_Rules {
 	 *
 	 * @param array $rule raw rule.
 	 *
-	 * @return array|false rule array with sanitized data and expression.
+	 * @return string|false rule array with sanitized data and expression.
 	 */
 	protected function build_expression( $rule ) {
 		if ( ! isset( $rule['operator'], $rule['condition'], $rule['values'] ) ) {
@@ -286,51 +289,63 @@ abstract class SXP_Action_Rules {
 		$types    = $operator['types'];
 		
 		$args_count = count( $types );
-		if ( count( $rule['values'] ) !== $args_count ) {
-			return false;
+		
+		if ( $args_count > 1 && ! is_array( $rule['values'] ) ) {
+			$rule['values'] = explode( ',', $rule['values'] );
+			if ( count( $rule['values'] ) !== $args_count ) {
+				return false;
+			}
 		}
+		
 		$parsed = [];
 		$search = [ 'pos_0' ]; // predefined for condition.
-		$count  = count( $rule['values'] );
-		for ( $i = 0; $i < $count; $i++ ) {
-			$value    = sanitize_text_field( $rule['values'][ $i ] );
-			$search[] = 'pos_' . ( $i + 1 );
-			if ( empty( $value ) ) {
-				$parsed[ $i ] = null;
-				continue;
+		if ( is_array( $rule['values'] ) ) {
+			for ( $i = 0; $i < count( $rule['values'] ); $i++ ) {
+				$value    = sanitize_text_field( $rule['values'][ $i ] );
+				$search[] = 'pos_' . ( $i + 1 );
+				if ( empty( $value ) ) {
+					$parsed[ $i ] = null;
+					continue;
+				}
+				$parsed[ $i ] = $this->type_cast( $value, $types[ $i ] );
 			}
-			
-			switch ( $types[ $i ] ) {
-				case 'int':
-					$parsed[ $i ] = is_numeric( $value ) ? (int) $value : null;
-					break;
-				case 'array':
-					$value        = array_map( 'trim', explode( ',', $value ) );
-					$value        = array_unique( $value );
-					$parsed[ $i ] = '"' . implode( '","', $value ) . '"';
-					break;
-				case 'any':
-				case 'string':
-				default:
-					// sanitized.
-					$parsed[ $i ] = $value;
-					break;
-			}
+		} else {
+			$parsed[0] = $this->type_cast( $rule['values'], $types[0] );
+			$search[] = 'pos_1';
 		}
+		
 		$parsed = array_filter( $parsed );
 		if ( count( $parsed ) !== $args_count ) {
 			return false;
 		}
-		$rule['values'] = $parsed;
+		
 		array_unshift( $parsed, $conditions[ $rule['condition'] ]['data'] );
+		
 		/**
 		 * The str_replace has issues with array.
 		 *
 		 * @see https://www.php.net/manual/en/function.str-replace.php#88569
 		 */
-		$rule['expression'] = strtr( $formula, array_combine( $search, $parsed ) );
-		
-		return $rule;
+		return strtr( $formula, array_combine( $search, $parsed ) );
+	}
+	
+	protected function type_cast( $value, $type ) {
+		switch ( $type ) {
+			case 'int':
+				return is_numeric( $value ) ? (int) $value : null;
+				break;
+			case 'array':
+				$value = array_map( 'trim', explode( ',', $value ) );
+				$value = array_unique( $value );
+				return '"' . implode( '","', $value ) . '"';
+				break;
+			case 'any':
+			case 'string':
+			default:
+				// sanitized escaped.
+				return esc_html( $value );
+				break;
+		}
 	}
 	
 	/**

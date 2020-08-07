@@ -147,23 +147,45 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				die();
 			}
 			
-			if ( isset( $_POST['sxp_rule'] ) && is_array( $_POST['sxp_rule'] ) ) {
+			if ( isset( $_POST['sxp_rule_group'] ) && is_array( $_POST['sxp_rule_group'] ) ) {
 				$rules = [];
-				foreach ( $_POST['sxp_rule'] as $rule ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-					if ( ! isset( $rule['compare'], $rule['operator'], $rule['values'] ) ) {
+				foreach ( $_POST['sxp_rule_group'] as $group ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+					if ( ! isset( $group['relation'], $group['rules'] ) ) {
 						continue;
 					}
-					
-					if ( empty( $rule['compare'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
+					if ( ! is_array( $group['rules'] ) || empty( $group['rules'] ) ) {
 						continue;
 					}
-					
-					$rules[] = [
-						'relation'  => 'AND',
-						'condition' => sanitize_text_field( $rule['condition'] ),
-						'operator'  => sanitize_text_field( $rule['operator'] ),
-						'values'    => sanitize_text_field( $rule['values'] ),
-					];
+					if ( ! in_array( $group['relation'], [ 'AND', 'OR' ], true ) ) {
+						continue;
+					}
+					$_rule = [];
+					foreach ( $group['rules'] as $rule ) {
+						if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'], $rule['relation'] ) ) {
+							continue;
+						}
+						
+						if ( ! in_array( $rule['relation'], [ 'AND', 'OR' ], true ) ) {
+							continue;
+						}
+						
+						if ( empty( $rule['condition'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
+							continue;
+						}
+						
+						$_rule[] = [
+							'relation'  => $rule['relation'],
+							'condition' => sanitize_text_field( $rule['condition'] ),
+							'operator'  => sanitize_text_field( $rule['operator'] ),
+							'values'    => sanitize_text_field( $rule['values'] ),
+						];
+					}
+					if ( ! empty( $_rule ) ) {
+						$rules[] = [
+							'relation' => $group['relation'],
+							'rules'    => $_rule,
+						];
+					}
 				}
 				
 				if ( $term_id && ! empty( $rules ) ) {
@@ -315,16 +337,10 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	 * @return void
 	 */
 	protected function render_form() {
-		$conditions = SXP_User_Group_Rules::get_instance()->get_conditions();
-		$operators  = SXP_User_Group_Rules::get_instance()->get_operators();
-		$rules      = sxp_get_term_rules( $this->term );
-		if ( empty( $rules ) ) {
-			$rules[] = [
-				'operator'  => '',
-				'condition' => '',
-				'values'    => [],
-			];
-		}
+		$conditions  = SXP_User_Group_Rules::get_instance()->get_conditions();
+		$operators   = SXP_User_Group_Rules::get_instance()->get_operators();
+		$rule_groups = sxp_get_term_rules( $this->term );
+		
 		$action = ( ! $this->term->term_id ? 'add-' : 'edit-' ) . $this->taxonomy_name;
 		?>
 		<div class="sxp-rule-wrapper">
@@ -348,46 +364,86 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				<div class="clearfix"></div>
 				<div class="form-body">
 					<div class="section sxp-rule-container">
-						<h4 class="header">Create Rule <i data-feather="info"></i></h4>
+						<h4 class="header"><?php esc_html_e( 'Build Rules', 'salexpresso' ); ?> <i data-feather="info" aria-hidden="true"></i></h4>
 						<div class="sxp-rules-wrapper">
 							<div class="sxp-rules">
 								<?php
-								$idx = 1;
-								foreach ( $rules as $rule ) {
-									if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'] ) ) {
+								$g_idx = 0;
+								$g_count = count( $rule_groups ) - 1;
+								foreach ( $rule_groups as $group ) {
+									if ( ! isset( $group['relation'], $group['rules'] ) ) {
 										continue;
 									}
-									?>
-								<div class="sxp-rule-single rule_<?php echo esc_attr( $idx ); ?>">
-									<label for="rule_compare_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
-									<select id="rule_compare_<?php echo esc_attr( $idx ); ?>" name="sxp_rule[<?php echo esc_attr( $idx ); ?>][condition]">
-										<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
+								?>
+								<div class="sxp-rule-group rule_group_<?php echo $g_idx; ?>" data-group_id="<?php echo $g_idx; ?>">
+									<div class="remove-group">
+										<a href="#" class="sxp-btn sxp-btn-link">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+										</a>
+									</div><!-- /.remove-group -->
+									<div class="sxp-group-rules">
 										<?php
-										foreach ( $conditions as $slug => $data ) {
-											printf( '<option value="%s"%s>%s</option>', esc_attr( $slug ), selected( $rule['condition'], $slug, false ), esc_html( $data['label'] ) );
-										}
+										$idx = 0;
+										$r_count = count( $group['rules'] ) - 1;
+										foreach ( $group['rules'] as $rule ) {
+											if ( ! isset( $rule['relation'], $rule['condition'], $rule['operator'], $rule['values'] ) ) {
+												continue;
+											}
 										?>
-									</select>
-									<label for="rule_operator_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php __('Select Comparison Operator', 'salexpresso'); ?> </label>
-									<select id="rule_operator_<?php echo esc_attr( $idx ); ?>" name="sxp_rule[<?php echo esc_attr( $idx ); ?>][operator]">
-										<option value=""><?php esc_html_e( 'Select Operator', 'salexpresso' ); ?></option>
+										<div class="sxp-rule-single rule_<?php echo esc_attr( $idx ); ?>">
+											<label for="rule_compare_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
+											<select id="rule_compare_<?php echo esc_attr( $idx ); ?>" name="sxp_rule_group[<?php echo $g_idx; ?>][rules][<?php echo esc_attr( $idx ); ?>][condition]">
+												<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
+												<?php
+												foreach ( $conditions as $slug => $data ) {
+													printf( '<option value="%s"%s>%s</option>', esc_attr( $slug ), selected( $rule['condition'], $slug, false ), esc_html( $data['label'] ) );
+												}
+												?>
+											</select>
+											<label for="rule_operator_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php __('Select Comparison Operator', 'salexpresso'); ?> </label>
+											<select id="rule_operator_<?php echo esc_attr( $idx ); ?>" name="sxp_rule_group[<?php echo $g_idx; ?>][rules][<?php echo esc_attr( $idx ); ?>][operator]">
+												<option value=""><?php esc_html_e( 'Select Operator', 'salexpresso' ); ?></option>
+												<?php
+												foreach ( $operators as $slug => $data ) {
+													printf( '<option value="%s"%s>%s</option>', esc_attr( $slug ), selected( $rule['operator'], $slug, false ), esc_html( $data['label'] ) );
+												}
+												?>
+											</select>
+											<label for="rule_values_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e( 'Value to compare', 'salexpresso' ); ?></label>
+											<input type="text" id="rule_values_<?php echo esc_attr( $idx ); ?>" name="sxp_rule_group[<?php echo $g_idx; ?>][rules][<?php echo esc_attr( $idx ); ?>][values]" placeholder="<?php esc_attr_e( 'Value to compare', 'salexpresso' ); ?>" value="<?php
+											if ( is_array( $rule['values'] ) ) {
+												echo esc_attr( implode( ',', $rule['values'] ) );
+											} else {
+												echo esc_attr( $rule['values'] );
+											}
+											?>">
+											<label for="rule_relation_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e( 'Select Condition Relation', 'salexpresso' ); ?></label>
+											<select class="rule-relation" name="sxp_rule_group[<?php echo $g_idx; ?>][rules][<?php echo esc_attr( $idx ); ?>][relation]" id="rule_relation_<?php echo esc_attr( $idx ); ?>" style="<?php echo $idx < $r_count? '' : 'display: none;'; ?>">
+												<option value="AND"<?php selected( $rule['relation'], 'OR' ); ?>><?php echo esc_html_x( 'AND', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+											<option value="OR"<?php selected( $rule['relation'], 'OR' ); ?>><?php echo esc_html_x( 'OR', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+											</select>
+										</div><!-- end .sxp-rule-single -->
 										<?php
-										foreach ( $operators as $slug => $data ) {
-											printf( '<option value="%s"%s>%s</option>', esc_attr( $slug ), selected( $rule['operator'], $slug, false ), esc_html( $data['label'] ) );
-										}
+											$idx++;
+											}
 										?>
-									</select>
-									<label for="rule_values_<?php echo esc_attr( $idx ); ?>" class="screen-reader-text"><?php esc_html_e( 'Value to compare', 'salexpresso' ); ?></label>
-									<input type="text" id="rule_values_<?php echo esc_attr( $idx ); ?>" name="sxp_rule[<?php echo esc_attr( $idx ); ?>][values]" placeholder="<?php esc_attr_e( 'Value to compare', 'salexpresso' ); ?>" value="<?php
-									if ( is_array( $rule['values'] ) ) {
-										echo esc_attr( implode( ',', $rule['values'] ) );
-									} else {
-										echo esc_attr( $rule['values'] );
-									}
-									?>">
-								</div><!-- end .sxp-rule-single -->
+									</div><!-- /.sxp-group-rules -->
+									<div class="sxp-group-rule-bottom">
+										<div class="sxp-rule-add-btn sxp-btn-link">
+											<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-condition"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> <?php esc_html_e( 'Add Condition', 'salexpresso' ); ?></a>
+										</div><!-- /.sxp-rule-add-btn sxp-btn-link -->
+									</div><!-- /.sxp-group-rule-bottom -->
+									<div class="clearfix"></div><!-- /.clearfix -->
+									<div class="sxp-group-relation" style="<?php echo $g_idx < $g_count? '' : 'display: none;'; ?>">
+										<label for="rule_group_relation_<?php echo $g_idx; ?>" class="screen-reader-text"><?php esc_html_e( 'Select Group Relation', 'salexpresso' ); ?></label>
+										<select name="sxp_rule_group[<?php echo $g_idx; ?>][relation]" id="rule_group_relation_<?php echo $g_idx; ?>">
+											<option value="AND"<?php selected( $group['relation'], 'OR' ); ?>><?php echo esc_html_x( 'AND', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+											<option value="OR"<?php selected( $group['relation'], 'OR' ); ?>><?php echo esc_html_x( 'OR', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+										</select>
+									</div><!-- /.sxp-group-relation -->
+								</div><!-- /.sxp-rule-group -->
 								<?php
-									$idx++;
+									$g_idx++;
 								}
 								?>
 							</div><!-- end .sxp-rules -->
@@ -400,10 +456,36 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				<div class="form-bottom">
 					<div class="sxp-rule-bottom">
 						<div class="sxp-rule-add-btn sxp-btn-link">
-							<script type="text/template" class="rule_ui_template">
+							<script type="text/template" class="rule_ui_group_template">
+								<div class="sxp-rule-group rule_group___IDX__" data-group_id="__IDX__">
+									<div class="remove-group">
+										<a href="#" class="sxp-btn sxp-btn-link">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+										</a>
+									</div><!-- /.remove-group -->
+									<div class="sxp-group-rules"></div><!-- /.sxp-group-rules -->
+									<div class="sxp-group-rule-bottom">
+										<div class="sxp-rule-add-btn sxp-btn-link">
+											<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-condition"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> <?php esc_html_e( 'Add Condition', 'salexpresso' ); ?></a>
+										</div><!-- /.sxp-rule-add-btn sxp-btn-link -->
+									</div><!-- /.sxp-group-rule-bottom -->
+									<div class="clearfix"></div><!-- /.clearfix -->
+									<div class="sxp-group-relation" style="display: none;">
+										<label for="rule_group_relation___IDX__" class="screen-reader-text"><?php esc_html_e( 'Select Group Relation', 'salexpresso' ); ?></label>
+										<select name="sxp_rule_group[__IDX__][relation]" id="rule_group_relation___IDX__">
+											<option value="AND"><?php echo esc_html_x( 'AND', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+											<option value="OR"><?php echo esc_html_x( 'OR', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+										</select>
+									</div><!-- /.sxp-group-relation -->
+								</div><!-- /.sxp-rule-group -->
+							</script>
+							<script type="text/template" class="rule_ui_condition_template">
 								<div class="sxp-rule-single rule___IDX__">
-									<label for="rule_compare___IDX__" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?> </label>
-									<select id="rule_compare___IDX__" name="sxp_rule[__IDX__][compare]">
+									<a href="#" class="sxp-btn sxp-btn-link sxp-remove-rule">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+									</a>
+									<label for="rule_compare___IDX__" class="screen-reader-text"><?php esc_html_e('Select Condition To Check', 'salexpresso'); ?></label>
+									<select id="rule_compare___IDX__" name="sxp_rule_group[__GIDX__][rules][__IDX__][compare]">
 										<option value=""><?php esc_html_e( 'Select Condition', 'salexpresso' ); ?></option>
 										<?php
 										foreach ( $conditions as $slug => $data ) {
@@ -411,8 +493,8 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 										}
 										?>
 									</select>
-									<label for="rule_operator___IDX__" class="screen-reader-text"><?php __('Select Comparison Operator', 'salexpresso'); ?> </label>
-									<select id="rule_operator___IDX__" name="sxp_rule[__IDX__][operator]">
+									<label for="rule_operator___IDX__" class="screen-reader-text"><?php __('Select Comparison Operator', 'salexpresso'); ?></label>
+									<select id="rule_operator___IDX__" name="sxp_rule_group[__GIDX__][rules][__IDX__][operator]">
 										<option value=""><?php esc_html_e( 'Select Operator', 'salexpresso' ); ?></option>
 										<?php
 										foreach ( $operators as $slug => $data ) {
@@ -421,27 +503,80 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 										?>
 									</select>
 									<label for="rule_values___IDX__" class="screen-reader-text"><?php esc_html_e( 'Value to compare', 'salexpresso' ); ?></label>
-									<input type="text" id="rule_values___IDX__" name="sxp_rule[__IDX__][values]" placeholder="<?php esc_attr_e( 'Value to compare', 'salexpresso' ); ?>" value="">
+									<input type="text" id="rule_values___IDX__" name="sxp_rule_group[__GIDX__][rules][__IDX__][values]" placeholder="<?php esc_attr_e( 'Value to compare', 'salexpresso' ); ?>" value="">
+									<label for="rule_relation___IDX__" class="screen-reader-text"><?php esc_html_e( 'Select Condition Relation', 'salexpresso' ); ?></label>
+									<select class="rule-relation" name="sxp_rule_group[__GIDX__][rules][__IDX__][relation]" id="rule_relation___IDX__" style="display: none;">
+										<option value="AND"><?php echo esc_html_x( 'AND', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+										<option value="OR"><?php echo esc_html_x( 'OR', 'Logic Relation For Rules', 'salexpresso' ); ?></option>
+									</select>
 								</div><!-- end .sxp-rule-single -->
 							</script>
-							<a href="#" class="sxp-btn sxp-btn-link"><i data-feather="plus"></i> <?php esc_html_e( 'Add Condition', 'salexpresso' ); ?></a>
+							<a href="#" class="sxp-btn sxp-btn-link sxp-add-rule-group" style="margin-top: 20px;"><i data-feather="plus"></i> <?php esc_html_e( 'Add Group', 'salexpresso' ); ?></a>
 							<script>
 								( function( $ ) {
-									let template = $( '.rule_ui_template' ).text(),
+									let group_template = $( '.rule_ui_group_template' ).text(),
+										condition_template = $( '.rule_ui_condition_template' ).text(),
 										wrapper = $( '.sxp-rules' ),
-										length = wrapper.find( '.sxp-rule-single' ).length || 1
-									if ( '' !== template ) {
-										template = template.trim()
+										length = wrapper.find( '.sxp-rule-group' ).length || 0;
+									
+									if ( '' !== group_template ) {
+										group_template = group_template.trim();
 									}
-									if ( '' === template ) {
-										return
+									if ( '' !== condition_template ) {
+										condition_template = condition_template.trim();
 									}
-									$( document ).on( 'click', '.sxp-rule-add-btn .sxp-btn-link', function( e ) {
-										e.preventDefault()
-										length += 1
-										wrapper.append( template.replace( /__IDX__/g, length ) )
-									} )
-								} )( jQuery )
+									if ( '' === group_template || '' === condition_template ) {
+										return;
+									}
+									
+									$( document ).on( 'click', '.remove-group a', function ( event ) {
+										event.preventDefault();
+										const group = $( this ).closest( '.sxp-rule-group' );
+										if ( group.prev().length && ! group.next().length ) {
+											group.prev().find( '.sxp-group-relation' ).hide();
+										}
+										group.remove();
+									} );
+									
+									$( document ).on ( 'click', '.sxp-remove-rule', function ( event ) {
+										event.preventDefault();
+										const rule = $( this ).closest( '.sxp-rule-single' );
+										if ( rule.prev().length && ! rule.next().length ) {
+											rule.prev().find( '.rule-relation' ).hide();
+										}
+										rule.remove();
+									} );
+									
+									$( document ).on( 'click', '.sxp-add-rule-group', function ( event ) {
+										event.preventDefault();
+										length += 1;
+										wrapper.append( group_template.replace( /__IDX__/g, length ) );
+										const group = $( '.rule_group_' + length );
+										if ( group.prev().length ) {
+											group.prev().find( '.sxp-group-relation' ).show();
+										}
+										addCondition( group, length );
+									} );
+									$( document ).on( 'click', '.sxp-add-rule-condition', function ( event ) {
+										event.preventDefault();
+										addCondition( $( this ).closest( '.sxp-rule-group' ) );
+										
+									} );
+									const addCondition = function( group_wrapper, group_idx ) {
+										group_wrapper = 'string' === typeof group_wrapper ? $( group_wrapper ) : group_wrapper;
+										const group_condition_wrapper = group_wrapper.find( '.sxp-group-rules' );
+										group_idx = group_idx || group_wrapper.data( 'group_id' );
+										const group_conditions = group_condition_wrapper.find( '.sxp-rule-single' );
+										let group_condition_idx = group_condition_wrapper.data( 'index' ) || group_conditions.length;
+										group_condition_idx += 1;
+										
+										group_condition_wrapper.append( condition_template.replace( /__GIDX__/g, group_idx ).replace( /__IDX__/g, group_condition_idx ) );
+										const rule = $( '.rule_' + group_condition_idx );
+										rule.prev().find( '.rule-relation' ).show();
+										
+										group_condition_wrapper.data( 'index', group_condition_idx );
+									};
+								} )( jQuery );
 							</script>
 						</div><!-- end .sxp-customer-rule-add-btn -->
 					</div><!-- end .sxp-customer-rule-bottom -->

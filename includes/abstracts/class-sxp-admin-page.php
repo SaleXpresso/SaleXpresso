@@ -295,7 +295,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			if ( isset( $_GET['tab'] ) && $this->has_tabs() && in_array( $_GET['tab'], $tabs ) ) {
 				$this->current_tab = sanitize_text_field( $_GET['tab'] );
 			} else {
-				$this->current_tab = $tabs[0];
+				$this->current_tab = isset( $tabs[0] ) ? $tabs[0] : '';
 			}
 		}
 		// phpcs:enable

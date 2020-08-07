@@ -577,7 +577,7 @@ if ( ! function_exists( 'sxp_set_user_groups' ) ) {
 	 * @return array|false|WP_Error
 	 */
 	function sxp_set_user_groups( $user_id, $groups, $append = false ) {
-		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
+		$sh = (int) get_user_taxonomy_post( (int) $user_id, true );
 		return wp_set_post_terms( $sh, $groups, 'user_group', $append );
 	}
 }
@@ -592,7 +592,7 @@ if ( ! function_exists( 'sxp_set_user_types' ) ) {
 	 * @return array|false|WP_Error
 	 */
 	function sxp_set_user_types( $user_id, $types = '', $append = false ) {
-		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
+		$sh = (int) get_user_taxonomy_post( (int) $user_id, true );
 		return wp_set_post_terms( $sh, $types, 'user_type', $append );
 	}
 }
@@ -607,8 +607,8 @@ if ( ! function_exists( 'sxp_set_user_tags' ) ) {
 	 * @return array|false|WP_Error
 	 */
 	function sxp_set_user_tags( $user_id, $tags = '', $append = false ) {
-		$sh = (int) get_user_taxonomy_post( (int) $user_id, false );
-		return wp_set_post_terms( $sh, $tags, 'user_type', $append );
+		$sh = (int) get_user_taxonomy_post( (int) $user_id, true );
+		return wp_set_post_terms( $sh, $tags, 'user_tag', $append );
 	}
 }
 
@@ -752,7 +752,7 @@ if ( ! function_exists( 'sxp_delete_user_tag' ) ) {
 // Term rules.
 if ( ! function_exists( 'sxp_get_term_rules' ) ) {
 	/**
-	 * Get Saved Rules for Term.
+	 * Get Saved Rules For Term.
 	 *
 	 * @param WP_Term|int $term Term.
 	 *
@@ -764,6 +764,21 @@ if ( ! function_exists( 'sxp_get_term_rules' ) ) {
 		}
 		$rules = get_term_meta( $term, '__sxp_term_rules', true );
 		return $rules ? (array) $rules : [];
+	}
+}
+if ( ! function_exists( 'sxp_get_compiled_term_rules' ) ) {
+	/**
+	 * Get Saved Compiled Rules For Term.
+	 *
+	 * @param WP_Term|int $term Term.
+	 *
+	 * @return string
+	 */
+	function sxp_get_compiled_term_rules( $term ) {
+		if ( $term instanceof WP_Term ) {
+			$term = $term->term_id;
+		}
+		return get_term_meta( $term, '__sxp_compiled_term_rules', true );
 	}
 }
 if ( ! function_exists( 'sxp_save_term_rules' ) ) {
@@ -780,6 +795,22 @@ if ( ! function_exists( 'sxp_save_term_rules' ) ) {
 			$term = $term->term_id;
 		}
 		return update_term_meta( $term, '__sxp_term_rules', $data );
+	}
+}
+if ( ! function_exists( 'sxp_save_compiled_term_rules' ) ) {
+	/**
+	 * Save Rules for Term.
+	 *
+	 * @param WP_Term|int $term Term.
+	 * @param string       $data Rule data.
+	 *
+	 * @return bool|int|WP_Error
+	 */
+	function sxp_save_compiled_term_rules( $term, $data ) {
+		if ( $term instanceof WP_Term ) {
+			$term = $term->term_id;
+		}
+		return update_term_meta( $term, '__sxp_compiled_term_rules', $data );
 	}
 }
 
