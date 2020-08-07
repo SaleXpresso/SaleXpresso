@@ -275,10 +275,11 @@ if ( ! function_exists( '_sxp_get_list_table' ) ) {
 	function _sxp_get_list_table( $class, $args = [] ) {
 		
 		$core_classes = [
-			'SaleXpresso\List_Table\SXP_Customer_List_Table'       => 'customer',
-			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table' => 'customer-group',
-			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'  => [ 'customer-group', 'customer-type' ],
-			'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table'   => [ 'customer-group', 'customer-tag' ],
+			'SaleXpresso\List_Table\SXP_Customer_List_Table'          => 'customer',
+			'SaleXpresso\List_Table\SXP_Customer_Activity_List_Table' => 'customer-activity',
+			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table'    => 'customer-group',
+			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'     => [ 'customer-group', 'customer-type', ],
+			'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table'      => [ 'customer-group', 'customer-tag', ],
 		];
 		if ( isset( $core_classes[ $class ] ) ) {
 			foreach ( (array) $core_classes[ $class ] as $required ) {
@@ -293,7 +294,6 @@ if ( ! function_exists( '_sxp_get_list_table' ) ) {
 				$args['screen'] = null;
 			}
 			
-			$class = $class;
 			return new $class( $args );
 		}
 		
@@ -416,17 +416,17 @@ if ( ! function_exists( 'sxp_help_tip' ) ) {
 		return '<span class="sxp-help-tip" data-tip="' . $tip . '"></span>';
 	}
 }
-if ( ! function_exists( 'sxp_sanitize_csv_ids' ) ) {
+if ( ! function_exists( 'sxp_sanitize_csv_field' ) ) {
 	/**
 	 * Sanitize Comma Separated Values with callback.
 	 *
-	 * @param string $input The Input.
-	 * @param string $sanitize_callback Optional. Sanitize Callback, default is absint
-	 * @param bool $unique Return Only Unique
+	 * @param string   $input             The Input.
+	 * @param callable $sanitize_callback Optional. Sanitize Callback, default is absint
+	 * @param bool     $unique            Return Only Unique
 	 *
 	 * @return string
 	 */
-	function sxp_sanitize_csv_ids( $input, $sanitize_callback = 'sanitize_text_field', $unique = true ) {
+	function sxp_sanitize_csv_field( $input, $sanitize_callback = null, $unique = true ) {
 		if ( ! empty( $input ) ) {
 			
 			if ( ! is_callable( $sanitize_callback ) ) {
@@ -435,7 +435,10 @@ if ( ! function_exists( 'sxp_sanitize_csv_ids' ) ) {
 			
 			$output = sanitize_text_field( $input );
 			
-			$output = str_replace( [ ' ' ], '', $output );
+			// Input might have extra (needed) white space (eg \t,\n,\r\n, etc).
+			// Don't remove them.
+			// Caller can use callback to trim the output or change individual item type.
+			
 			$output = explode( ',', $output );
 			$output = array_map( $sanitize_callback, $output );
 			$output = array_filter( $output );
@@ -449,21 +452,28 @@ if ( ! function_exists( 'sxp_sanitize_csv_ids' ) ) {
 		return '';
 	}
 }
-if ( ! function_exists( 'sxp_csv_string_to_ids_array' ) ) {
+if ( ! function_exists( 'sxp_csv_string_to_array' ) ) {
 	/**
 	 * Convert comma separated values to integer array
-	 * @param $input
 	 *
-	 * @return array|int[]
+	 * @param string $input String to convert.
+	 * @param callable $map_cb Optional. Map output array values.
+	 *
+	 * @return array|string[]|int[]
 	 */
-	function sxp_csv_string_to_ids_array( $input ) {
+	function sxp_csv_string_to_array( $input, $map_cb = null ) {
 		if ( empty( $input ) ) {
 			return [];
 		}
 		
-		$output = str_replace( [ ' ' ], '', $input );
-		$output = explode( ',', $output );
-		$output = array_map( 'absint', $output );
+		// Input might have extra (needed) white space (eg \t,\n,\r\n, etc).
+		// Don't remove them.
+		// Caller can use callback to trim the output or change individual item type.
+		
+		$output = explode( ',', $input );
+		if ( is_callable( $map_cb ) ) {
+			$output = array_map( $map_cb, $output );
+		}
 		$output = array_filter( $output );
 		
 		return array_unique( $output );
@@ -513,7 +523,7 @@ if ( ! function_exists( 'sxp_is_abundant_cart_enabled_for_user' ) ) {
 			// cart tracking disabled.
 			return  true;
 		}
-		$ids  = sxp_csv_string_to_ids_array( get_option( 'salexpresso_ac_exclude_ids' ) );
+		$ids  = sxp_csv_string_to_array( get_option( 'salexpresso_ac_exclude_ids' ), 'absint' );
 		$user = sxp_get_the_user( $user );
 		
 		if ( empty( $user ) ) {
@@ -542,7 +552,7 @@ if ( ! function_exists( 'sxp_exclude_user_from_session_tracking' ) ) {
 			// session tracking disabled.
 			return  true;
 		}
-		$ids  = sxp_csv_string_to_ids_array( get_option( 'salexpresso_st_exclude_ids' ) );
+		$ids  = sxp_csv_string_to_array( get_option( 'salexpresso_st_exclude_user_ids' ), 'absint' );
 		$user = sxp_get_the_user( $user );
 		
 		if ( empty( $user ) ) {
@@ -600,6 +610,211 @@ if ( ! function_exists( 'sxp_get_api_link' ) ) {
 		$url = get_site_url( $blog_id, $path, $scheme );
 		
 		return trailingslashit( $url );
+	}
+}
+if ( ! function_exists( 'sxp_get_host_name' ) ) {
+	/**
+	 * Get hostname from url.
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	function sxp_get_host_name( $url ) {
+		return wp_parse_url( $url, PHP_URL_HOST );
+	}
+}
+if ( ! function_exists( 'sxp_wp_unique_id' ) ) {
+	/**
+	 * Get unique ID.
+	 *
+	 * This is a PHP implementation of Underscore's uniqueId method. A static variable
+	 * contains an integer that is incremented with each call. This number is returned
+	 * with the optional prefix. As such the returned value is not universally unique,
+	 * but it is unique across the life of the PHP process.
+	 *
+	 * @see wp_unique_id() Themes requiring WordPress 5.0.3 and greater should use this instead.
+	 *
+	 * @staticvar int $id_counter
+	 *
+	 * @param string $prefix Prefix for the returned ID.
+	 * @return string Unique ID.
+	 */
+	function sxp_wp_unique_id( $prefix = '' ) {
+		static $id_counter = 0;
+		if ( function_exists( 'wp_unique_id' ) ) {
+			return wp_unique_id( $prefix );
+		}
+		return $prefix . (string) ++$id_counter;
+	}
+}
+if ( ! function_exists( 'sxp_get_random_bytes' ) ) {
+	/**
+	 * Generates a string of pseudo-random bytes.
+	 *
+	 * @param int $length Optional. Default is 16
+	 *
+	 * @return string
+	 */
+	function sxp_get_random_bytes( $length = 16 ) {
+		$data = '';
+		try {
+			if ( function_exists( 'random_bytes' ) ) {
+				$data = random_bytes( $length );
+			} else if ( function_exists( 'openssl_random_pseudo_bytes' ) ) {
+				$data = openssl_random_pseudo_bytes( $length );
+			}
+		} catch ( Exception $e ) {
+			// Do nothing.
+		}
+		
+		if ( $length !== strlen( $data ) ) {
+			global $wp_hasher;
+			
+			if ( empty( $wp_hasher ) ) {
+				require_once ABSPATH . WPINC . '/class-phpass.php';
+				$wp_hasher = new PasswordHash( 8, true );
+			}
+			
+			$data = $wp_hasher->get_random_bytes( $length );
+		}
+		return $data;
+	}
+}
+if ( ! function_exists( 'sxp_get_uuid_v4' ) ) {
+	function sxp_get_uuid_v4() {
+		$data = sxp_get_random_bytes( 16 );
+		$data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+		$data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+		
+		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+}
+if ( ! function_exists( 'sxp_array_multi_search' ) ) {
+	/**
+	 * Searches the (multidimensional) array for a given value and returns
+	 * the corresponding key/s if successful.
+	 * Max 2 dimension.
+	 *
+	 * @link https://stackoverflow.com/questions/6661530/php-multidimensional-array-search-by-value
+	 *
+	 * @param string       $search          the needle.
+	 * @param string       $field           the field/column to check.
+	 * @param array|object $data            the haystack.
+	 * @param bool         $return_multiple return the first match or all keys.
+	 * @param bool         $strict          user strict match. Optional. default null.
+	 *
+	 * @return int|int[]|string|string[]|false the key for needle if it is found in the
+	 *
+	 */
+	function sxp_array_multi_search( $search, $field, $data, $return_multiple = false, $strict = null ) {
+		$data = array_column( (array) $data, $field );
+		$args = false === $return_multiple? [ $search, $data ] : [ $data, $search ];
+		if ( ! is_null( $strict ) ) {
+			$args[] = ! ! $strict;
+		}
+		if ( false === $return_multiple ) {
+			return call_user_func_array( 'array_search', $args );
+		} else {
+			return call_user_func_array( 'array_keys', $args );
+		}
+	}
+}
+if ( ! function_exists( 'sxp_array_multi_search_assoc' ) ) {
+	/**
+	 * Searches the (multidimensional) associative array for a given value and returns
+	 * the corresponding key/s if successful.
+	 * Max 2 dimension.
+	 *
+	 * @param string       $search          the needle.
+	 * @param string       $field           the field/column to check.
+	 * @param array|object $data            the haystack.
+	 * @param bool         $return_multiple return the first match or all keys.
+	 * @param bool         $strict          user strict match. Optional. default null.
+	 *
+	 * @return int|int[]|string|string[]|false the key for needle if it is found in the
+	 *
+	 */
+	function sxp_array_multi_search_assoc( $search, $field, $data, $return_multiple = false, $strict = null ) {
+		$data = (array) $data;
+		$data = array_combine( array_keys( $data ), array_column( $data, $field ) );
+		$args = false === $return_multiple? [ $search, $data ] : [ $data, $search ];
+		if ( ! is_null( $strict ) ) {
+			$args[] = ! ! $strict;
+		}
+		
+		if ( false === $return_multiple ) {
+			return call_user_func_array( 'array_search', $args );
+		} else {
+			return call_user_func_array( 'array_keys', $args );
+		}
+		
+	}
+}
+if ( ! function_exists( 'sxp_deep_clean' ) ) {
+	/**
+	 * Sanitize Input Data.
+	 * Similar to wc_clean() but works with associative arrays and objects.
+	 *
+	 * @param mixed    $input             Data to sanitize
+	 * @param bool     $sanitize_keys     Optional. Sanitize array keys. Default true.
+	 * @param callable $sanitize_callback Optional. Sanitize function.
+	 *                                    Default is sanitize_text_field.
+	 *
+	 * @return array|string|object|bool
+	 * @see wc_clean()
+	 */
+	function sxp_deep_clean( $input, $sanitize_keys = true, $sanitize_callback = null ) {
+		if ( ! is_callable( $sanitize_callback ) ) {
+			$sanitize_callback = 'sanitize_text_field';
+		}
+		$input = wp_unslash( $input );
+		if ( is_array( $input ) ) {
+			$output = [];
+			foreach ( $input as $k => $v ) {
+				if ( $sanitize_keys ) {
+					$k = sanitize_text_field( $k );
+				}
+				$output[ $k ] = sxp_deep_clean( $v, $sanitize_keys, $sanitize_callback );
+			}
+			return $output;
+		} else if ( is_object( $input ) ) {
+			$output = new stdClass();
+			foreach ( get_object_vars( $input ) as $k => $v ) {
+				if ( $sanitize_keys ) {
+					$k = sanitize_text_field( $k );
+				}
+				$output->$k = sxp_deep_clean( $v, $sanitize_keys, $sanitize_callback );
+			}
+		} else {
+			return is_scalar( $input ) ? call_user_func( $sanitize_callback, $input ) : '';
+		}
+	}
+}
+if ( ! function_exists( 'sxp_get_wc_payment_gateways' ) ) {
+	/**
+	 * Get All Payment Gateway.
+	 *
+	 * @param string $id Gateway ID. Optional to get all.
+	 *
+	 *
+	 * @return array|false|WC_Payment_Gateway|WC_Payment_Gateway[]
+	 */
+	function sxp_get_wc_payment_gateways( $id = null ) {
+		if ( WC()->payment_gateways() ) {
+			$payment_gateways = WC()->payment_gateways()->payment_gateways();
+			// do not use get_available_payment_gateways method.
+		} else {
+			$payment_gateways = array();
+		}
+		if ( ! is_null( $id ) ) {
+			if ( isset( $payment_gateways[ $id ] ) ) {
+				return $payment_gateways[ $id ];
+			} else {
+				return false;
+			}
+		}
+		return $payment_gateways;
 	}
 }
 // End of file helper.php.
