@@ -8,7 +8,10 @@
 
 namespace SaleXpresso;
 
+use Exception;
 use SaleXpresso\Settings\SXP_Admin_Settings;
+use WC_Customer;
+use WC_Order;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -35,6 +38,8 @@ class SXP_Install {
 		add_filter( 'plugin_row_meta', [ __CLASS__, 'plugin_row_meta' ], 10, 2 );
 		
 		add_action( 'salexpresso_update_roles_and_caps', [ __CLASS__, 'create_roles_caps' ] );
+		
+		add_action( 'salexpresso_installer_update_user_order_dates_meta', [ __CLASS__, 'update_user_order_dates_meta' ] );
 	}
 	
 	/**
@@ -44,6 +49,9 @@ class SXP_Install {
 	 */
 	public static function check_version() {
 		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'salexpresso_version' ), SXP()->version, '<' ) ) {
+			if ( ! defined( 'SXP_UPDATING' ) ) {
+				define( 'SXP_UPDATING', true );
+			}
 			self::install();
 			do_action( 'salexpresso_updated' );
 		}
@@ -69,6 +77,7 @@ class SXP_Install {
 		if ( ! defined( 'SXP_INSTALLING' ) ) {
 			define( 'SXP_INSTALLING', true );
 		}
+		
 		SXP()->register_tables();
 		self::remove_admin_notices();
 		self::create_tables();
@@ -80,10 +89,93 @@ class SXP_Install {
 		self::maybe_enable_setup_wizard();
 		self::update_sxp_version();
 		self::maybe_update_db_version();
+		self::post_install();
 		
 		delete_transient( 'sxp_installing' );
-		do_action( 'salexpresso_flush_rewrite_rules' );
+		flush_rewrite_rules();
 		do_action( 'salexpresso_installed' );
+	}
+	
+	/**
+	 * Runs some post installation scripts.
+	 * @return void
+	 */
+	private static function post_install() {
+		// Schedule Action for updating user's first and last order metas.
+		if ( false === get_option( 'salexpresso_user_od_updated', false ) ) {
+			$query = new \WP_User_Query( [
+				'fields' => 'ID',
+				'meta_query' => [
+					'relation' => 'AND',
+					[
+						'key'     => '_first_order_date',
+						'compare' => 'NOT EXISTS',
+					],
+				],
+			] );
+			$batch = array_chunk( $query->get_results(), 200 );
+			foreach ( $batch as $i => $user_ids ) {
+				WC()->queue()->schedule_single( time() + $i, 'salexpresso_installer_update_user_order_dates_meta', [ $user_ids ], SXP_AC_GROUP );
+			}
+		}
+	}
+	
+	/**
+	 * Updates user order date metas.
+	 *
+	 * @param $user_ids
+	 * @return void
+	 */
+	public static function update_user_order_dates_meta( $user_ids ) {
+		global $wpdb;
+		if ( ! empty( $user_ids ) ) {
+			foreach ( $user_ids as $user_id ) {
+				$user = get_user_by( 'id', $user_id );
+				if ( ! $user ) {
+					continue;
+				}
+				unset( $user );
+				
+				// Get the first order.
+				$first_order = $wpdb->get_var(
+				// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+					"SELECT posts.ID
+			FROM $wpdb->posts AS posts
+			LEFT JOIN {$wpdb->postmeta} AS meta on posts.ID = meta.post_id
+			WHERE meta.meta_key = '_customer_user'
+			AND   meta.meta_value = '" . esc_sql( $user_id ) . "'
+			AND   posts.post_type = 'shop_order'
+			AND   posts.post_status IN ( '" . implode( "','", array_map( 'esc_sql', array_keys( wc_get_order_statuses() ) ) ) . "' )
+			ORDER BY posts.ID ASC"
+				// phpcs:enable
+				);
+				
+				if ( $first_order ) {
+					
+					$first_order = new WC_Order( $first_order );
+					$date = $first_order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
+					$id = $first_order->get_id();
+					
+					update_user_meta( $user_id, '_first_order_id', $id );
+					update_user_meta( $user_id, '_first_order_date', $date );
+					
+					try {
+						$customer = new WC_Customer( $user_id );
+						$last_order = $customer->get_last_order();
+					} catch ( Exception $e ) {
+						$last_order = false;
+					}
+					// User might has only one order.
+					if ( $last_order ) {
+						$date = $last_order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
+						$id = $last_order->get_id();
+					}
+					
+					update_user_meta( $user_id, '_last_order_id', $id );
+					update_user_meta( $user_id, '_last_order_date', $date );
+				}
+			}
+		}
 	}
 	
 	/**
@@ -113,6 +205,41 @@ class SXP_Install {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Delete settings & other options created by this plugin.
+	 *
+	 * @return void
+	 */
+	public static function delete_options() {
+		
+		// Delete Settings Options.
+		include_once dirname( __FILE__ ) . '/settings/class-sxp-admin-settings.php';
+		
+		$settings = SXP_Admin_Settings::get_settings_pages();
+		
+		foreach ( $settings as $section ) {
+			if ( ! method_exists( $section, 'get_settings' ) ) {
+				continue;
+			}
+			$subsections = array_unique( array_merge( array( '' ), array_keys( $section->get_sections() ) ) );
+			
+			foreach ( $subsections as $subsection ) {
+				foreach ( $section->get_settings( $subsection ) as $value ) {
+					if ( isset( $value['id'] ) ) {
+						delete_option( $value['id'] );
+					}
+				}
+			}
+		}
+		
+		// Delete Other Options.
+		delete_option( 'salexpresso_version' );
+		delete_option( 'salexpresso_db_version' );
+		delete_option( 'salexpresso_db_version' );
+		delete_option( 'salexpresso_updated_form' );
+		delete_option( 'salexpresso_user_od_updated' );
 	}
 	
 	/**
@@ -148,31 +275,48 @@ class SXP_Install {
 			$charset_collate = $wpdb->get_charset_collate();
 		}
 		
+		// @TODO get a dba to analysis this table.
+		// @TODO create a archive table with partition
+		// @TODO add scheduled task for archive analytics data to archive table and clean the data.
+		
 		return <<<SQL
 CREATE TABLE {$wpdb->prefix}sxp_analytics (
-    id BIGINT(20) NOT NULL AUTO_INCREMENT,
+    id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	session_id VARCHAR(60) NOT NULL,
-	page_id VARCHAR(36) NOT NULL,
+	user_id    VARCHAR(60) NOT NULL,
+	page_id VARCHAR(36) NULL,
 	duration int DEFAULT 0,
 	scrolled int DEFAULT 0,
-	hostname TEXT,
-	path TEXT,
+	path TEXT NULL,
 	viewport_width int DEFAULT 0,
 	viewport_height int DEFAULT 0,
 	screen_width int DEFAULT 0,
 	screen_height int DEFAULT 0,
-	language VARCHAR( 6 ),
-	country VARCHAR( 10 ),
-	city VARCHAR( 50 ),
+	language VARCHAR( 6 ) NULL,
+	country VARCHAR( 10 ) NULL,
+	city VARCHAR( 50 ) NULL,
+	timezone VARCHAR( 60 ) NULL,
 	is_unique int( 1 ) DEFAULT 0,
-	referrer TEXT,
-	timezone VARCHAR( 60 ),
+	is_organic int( 1 ) DEFAULT 0,
+	source VARCHAR( 50 ) NULL,
+	medium VARCHAR( 50 ) NULL,
+	campaign VARCHAR( 80 ) NULL,
+	term VARCHAR( 100 ) NULL,
+	content VARCHAR( 100 ) NULL,
+	referrer TEXT NULL,
 	type VARCHAR( 60 ),
+	event VARCHAR( 60 ) NULL,
+	session_meta LONGTEXT NULL,
+	https int( 1 ) DEFAULT 0,
 	bot int( 1 ) DEFAULT 0,
 	version VARCHAR( 10 ),
+	created DATETIME DEFAULT '0000-00-00 00:00:00',
+	created_gmt DATETIME DEFAULT '0000-00-00 00:00:00',
 	PRIMARY KEY  ( `id` ),
 	INDEX(`session_id`),
-	INDEX(`page_id`)
+	INDEX(`user_id`),
+	INDEX `campaign` ( `source`(50), `medium`(50), `campaign`(80), `term`(100), `content`(100) ),
+	INDEX `region` ( `language`, `country`, `city`, `timezone` )
 ) {$charset_collate};
 CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
 	id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -184,8 +328,8 @@ CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
 	cart_meta LONGTEXT NULL,
 	status ENUM( 'processing','abandoned','recovered','completed', 'lost' ) NOT NULL DEFAULT 'processing',
 	coupon_code VARCHAR(60) DEFAULT NULL,
-	last_sent_email DATETIME DEFAULT NULL,
-    time DATETIME DEFAULT NULL,
+	last_sent_email DATETIME DEFAULT '0000-00-00 00:00:00',
+    time DATETIME DEFAULT '0000-00-00 00:00:00',
     unsubscribed boolean DEFAULT 0,
 	PRIMARY KEY  (`id`, `session_id`),
 	UNIQUE KEY (`session_id`)
