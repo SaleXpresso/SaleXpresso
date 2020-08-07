@@ -156,12 +156,12 @@ class SXP_Tracker {
 	 */
 	private function __construct() {
 		
-		// Don't track wp-admin/
-		if ( is_admin() ) {
+		// Don't track dashboard or disabled role or user IDs.
+		if ( is_admin() || sxp_exclude_user_from_session_tracking() ) {
 			return;
 		}
 		
-		$this->_session_id_cookie = 'wp_sxp_session_id_' . COOKIEHASH;
+		$this->_session_id_cookie  = 'wp_sxp_session_id_' . COOKIEHASH;
 		$this->_customer_id_cookie = 'wp_sxp_customer_id_' . COOKIEHASH;
 		
 		$this->script_name  = 'sxp-session.js';
@@ -180,36 +180,33 @@ class SXP_Tracker {
 	 * @return void
 	 */
 	private function set_session() {
-
-		if( ! sxp_exclude_user_from_session_tracking() ) {
-			
-			if ( empty( $this->_session_id ) ) {
-				$this->_is_unique = true;
-				$this->_session_id = $this->generate_random_id();
-				sxp_setcookie( $this->_session_id_cookie, $this->_session_id, 0, $this->use_secure_cookie(), true );
-			}
-			
-			if( empty( $this->_customer_id ) ) {
-				$this->_customer_id = $this->generate_random_id();
-			}
-			
-			if ( is_user_logged_in() ) {
-				
-				$this->_user_id = get_current_user_id();
-				// Get saved cookie id.
-				$saved_cookie_id = get_user_meta( $this->_user_id, '_sxp_cookie_id', true );
-				
-				if ( ! empty( $saved_cookie_id ) && $saved_cookie_id !== $this->_customer_id ) {
-					$this->_customer_id = $saved_cookie_id;
-				}
-				
-				if ( empty( $saved_cookie_id ) ) {
-					update_user_meta( $this->_user_id, '_sxp_cookie_id', $this->_customer_id );
-				}
-			}
-			
-			sxp_setcookie( $this->_customer_id_cookie, $this->_customer_id, time() + $this->get_customer_id_expiration(), $this->use_secure_cookie(), true );
+		
+		if ( empty( $this->_session_id ) ) {
+			$this->_is_unique = true;
+			$this->_session_id = sxp_get_uuid_v4();
+			sxp_setcookie( $this->_session_id_cookie, $this->_session_id, 0, $this->use_secure_cookie(), true );
 		}
+		
+		if( empty( $this->_customer_id ) ) {
+			$this->_customer_id = sxp_get_uuid_v4();
+		}
+		
+		if ( is_user_logged_in() ) {
+			
+			$this->_user_id = get_current_user_id();
+			// Get saved cookie id.
+			$saved_cookie_id = get_user_meta( $this->_user_id, '_sxp_cookie_id', true );
+			
+			if ( ! empty( $saved_cookie_id ) && $saved_cookie_id !== $this->_customer_id ) {
+				$this->_customer_id = $saved_cookie_id;
+			}
+			
+			if ( empty( $saved_cookie_id ) ) {
+				update_user_meta( $this->_user_id, '_sxp_cookie_id', $this->_customer_id );
+			}
+		}
+		
+		sxp_setcookie( $this->_customer_id_cookie, $this->_customer_id, time() + $this->get_customer_id_expiration(), $this->use_secure_cookie(), true );
 	}
 	
 	/**
@@ -224,6 +221,13 @@ class SXP_Tracker {
 		$this->_session_id  = isset( $_COOKIE[ $this->_session_id_cookie ] ) ? $this->clean_cookie( $_COOKIE[ $this->_session_id_cookie ] ) : false; // phpcs:ignore
 	}
 	
+	/**
+	 * Clean Cookie.
+	 *
+	 * @param string $input Cookie.
+	 *
+	 * @return string
+	 */
 	private function clean_cookie( $input ) {
 		return sanitize_text_field( wp_unslash( $input ) );
 	}
@@ -265,12 +269,8 @@ class SXP_Tracker {
 		if ( empty( $expiration ) || ! isset( $expiration['number'], $expiration['unit'] ) ) {
 			$expiration = [ 'number' => 2, 'unit' => 'years' ];
 		}
-		//'days'   => __( 'Day(s)', 'woocommerce' ),
-		//							'weeks'  => __( 'Week(s)', 'woocommerce' ),
-		//							'months' => __( 'Month(s)', 'woocommerce' ),
-		//							'years'  => __( 'Year(s)', 'woocommerce' ),
 		
-		switch( $expiration['unit'] ) {
+		switch ( $expiration['unit'] ) {
 			case 'years':
 				$multiply = YEAR_IN_SECONDS;
 				break;
@@ -285,55 +285,103 @@ class SXP_Tracker {
 				$multiply = DAY_IN_SECONDS;
 				break;
 		}
+		
+		// if custom is positive.
 		if ( $multiply ) {
 			return ( $expiration['number'] * $multiply );
 		}
+		
+		// Return default.
 		return ( 2 * YEAR_IN_SECONDS );
 	}
 	
 	/**
-	 * Generate a unique customer ID for guests, or return user ID if logged in.
+	 * Setup the actions.
 	 *
-	 * Uses Portable PHP password hashing framework to generate a unique cryptographically strong ID.
-	 *
-	 * @return string
+	 * @return void
 	 */
-	public function generate_random_id() {
-		if ( ! class_exists( 'PasswordHash' ) ) {
-			require_once ABSPATH . 'wp-includes/class-phpass.php';
-		}
-		$pw_hash = new PasswordHash( 8, false );
-		return md5( $pw_hash->get_random_bytes( 32 ) );
-	}
-	
 	private function setup_tracking_script() {
-		
 		add_action( 'salexpresso_api_' . sanitize_key( $this->script_name ), [ $this, 'get_tracking_script' ] );
 		add_action( 'salexpresso_api_' . $this->track_action , [ $this, 'tracking_collect' ] );
-		add_action( 'wp_footer', [ $this, 'print_tracking_script' ] );
+		// Other plugin should not remove this.
+		// remove_filter fn needs correct priority value, only option is to use remove_all_filters.
+		add_action( 'wp_head', [ $this, 'print_tracking_script' ], ( mt_rand( 1, 0xffff ) * -1 ) );
+		// Using wp_body_open is risky. it's not a required action hook.
+		add_action( 'wp_footer', [ $this, 'print_tracking_noscript' ], mt_rand( 1, 0xffff ) );
+		
+		add_action( 'woocommerce_thankyou', function ( $order ) {
+			$order = wc_get_order( $order );
+			if ( ! $order || 'shop_order_refund' === $order->get_type() ) {
+				return;
+			}
+			
+			?>
+			<script>
+				if ( 'function' === typeof sxpEvent ) {
+					sxpEvent( 'order-received', [ {
+						label: 'order_id',
+						value: '<?php echo (int) $order->get_id(); ?>',
+					}, {
+						label: 'order_status',
+						value: '<?php echo esc_attr( $order->get_status() ); ?>'
+					} ] );
+				}
+			</script>
+			<?php
+		}, 10, 1 );
 	}
 	
+	/**
+	 * Prints the tracking script.
+	 * @return void
+	 */
 	public function print_tracking_script() {
 		$tracker_file = sxp_api_link( $this->script_name );
-		wp_register_script( 'sxp-analytics', $tracker_file, [], false, true );
+//		wp_register_script( 'sxp-analytics', $tracker_file, [], false, false );
+		$queried_object = $this->get_queried_object_data();
+		$data = [
+			'wp_object_type' => $queried_object['types'],
+			'wp_object_id'   => $queried_object['id'],
+		];
+		?>
+		<script>
+			var sxpSessionOnPageData = <?php echo wp_json_encode( $data ); ?>;
+		</script>
+		<script src="<?php echo esc_url( $tracker_file ); ?>?ver=<?php echo self::VERSION ?>"></script>
+		<?php
 		
-		wp_localize_script( 'sxp-analytics', 'sxpSessionOnPageData', [
-			'wp_object_type' => $this->get_object_types(),
-			'wp_object_id' => (int) get_queried_object_id(),
-		] );
-		wp_enqueue_script( 'sxp-analytics' );
-		$no_script = sxp_api_link( $this->track_action );
-		$no_script = add_query_arg(
+//		wp_enqueue_script( 'sxp-analytics' );
+	}
+	
+	/**
+	 * Prints the tracking script.
+	 * @return void
+	 */
+	public function print_tracking_noscript() {
+		$queried_object = $this->get_queried_object_data();
+		$no_script      = sxp_api_link( $this->track_action );
+		$queries        = array();
+		parse_str( $_SERVER['QUERY_STRING'], $queries );
+		$queries = sxp_deep_clean( $queries );
+		$queries = array_filter( $queries );
+		$queries = array_unique( $queries );
+		$queries = array_merge(
+			$queries,
 			[
 				'mode'     => 'standalone',
+				'type'     => 'page-view',
 				'referrer' => isset( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( $_SERVER['HTTP_REFERER'] ) : '',
 				'path'     => isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER['REQUEST_URI'] ) : '',
-			],
-			$no_script
+				'meta'     => [
+					'object_type' => $queried_object['types'],
+					'object_id'   => $queried_object['id'],
+				],
+			]
 		);
+		$no_script = add_query_arg( $queries, $no_script );
 		?>
 		<noscript>
-			<img src="<?php echo esc_url( $no_script ); ?>" alt="">
+			<img src="<?php echo esc_url( $no_script ); ?>" data-url_raw="<?php echo $no_script; ?>" alt="">
 		</noscript>
 		<?php
 	}
@@ -342,31 +390,31 @@ class SXP_Tracker {
 	 * Get WP Object Type
 	 * @return array
 	 */
-	private function get_object_types() {
-		$queried_object = get_queried_object();
-		$type = '';
+	private function get_queried_object_data() {
+		$queried = get_queried_object();
+		$type    = '';
 		$subtype = '';
+		$data    = [ 'id' => (int) get_queried_object_id() ];
 		
-		if ( $queried_object instanceof WP_Taxonomy ) {
-			$type = 'taxonomy-archive';
-			$subtype = $queried_object->name;
-		} else if ( $queried_object instanceof WP_Term ) {
-			$type = 'term';
-			$subtype = $queried_object->taxonomy;
-		} else if ( $queried_object instanceof WP_Post_Type ) {
-			$type = 'post-type-archive';
-			$subtype = $queried_object->name;
-		} else if ( $queried_object instanceof WP_Post ) {
-			$type = 'wp_post';
-			$subtype = $queried_object->post_type;
-		} else if ( $queried_object instanceof WP_User ) {
-			$type = 'wp_user';
+		if ( $queried instanceof WP_Taxonomy ) {
+			$type = 'wp-taxonomy';
+			$subtype = $queried->name;
+		} else if ( $queried instanceof WP_Term ) {
+			$type = 'wp-term';
+			$subtype = $queried->taxonomy;
+		} else if ( $queried instanceof WP_Post_Type ) {
+			$type = 'wp-archive';
+			$subtype = $queried->name;
+		} else if ( $queried instanceof WP_Post ) {
+			$type = 'wp-post';
+			$subtype = $queried->post_type;
+		} else if ( $queried instanceof WP_User ) {
+			$type = 'wp-user';
 		}
 		
-		return [
-			'type'    => $type,
-			'subtype' => $subtype,
-		];
+		$data['types'] = [ 'type' => $type, 'subtype' => $subtype ];
+		
+		return apply_filters( 'salexpresso_tracker_queried_object_data', $data );
 	}
 	
 	/**
@@ -391,11 +439,15 @@ class SXP_Tracker {
 		$file = SXP_Assets::get_instance()->get_full_path( 'tracker.js' );
 		$content = file_get_contents( $file );
 		$analytics_opts = [
-			'{{api_url}}'           => sxp_api_link( $this->track_action ),
 			'{{VERSION}}'           => self::VERSION,
+			'{{SITE_URL}}'          => site_url(),
+			'{{api_url}}'           => sxp_api_link( $this->track_action ),
 			'{{tracker}}'           => $this->script_name,
 			"'{{tracker_options}}'" => (object) [
-				'recordDnt' => true,
+				'mode'        => '',
+				'ignorePages' => sxp_csv_string_to_array( get_option( 'salexpresso_st_exclude_paths' ), 'trim' ),
+				'autoCollect' => true,
+				'recordDnt'   => true,
 			],
 		];
 		
@@ -445,8 +497,8 @@ class SXP_Tracker {
 			unset( $data['ref_host'] );
 			// insert the data into db.
 			$now = current_time( 'mysql' );
-			$data['created'] = $now;
-			$data['created_gmt'] = get_date_from_gmt( $now );
+			$data['created'] = get_date_from_gmt( $now );
+			$data['created_gmt'] = $now;
 			
 			if ( ! empty( $data['session_meta'] ) ) {
 				$data['session_meta'] = wp_json_encode( $data['session_meta'] );
@@ -510,14 +562,19 @@ class SXP_Tracker {
 			}
 		}
 		
+		$standalone = false;
+		
 		if ( isset( $_REQUEST['mode'] ) && 'standalone' === $_REQUEST['mode'] ) {
+			$standalone = true;
 			foreach ( [ 'source', 'medium', 'campaign', 'term', 'content' ] as $k ) {
 				if ( isset( $_REQUEST[ 'utm_' . $k ] ) ) {
 					$defaults[ $k ] = sanitize_text_field( $_REQUEST[ 'utm_' . $k ] );
 					unset( $_REQUEST[ 'utm_' . $k ] );
 				}
 			}
+			unset( $_REQUEST['mode'] );
 		}
+		
 		
 		// parse the request data.
 		$data = wp_parse_args( wc_clean( $_REQUEST ), $defaults );
@@ -543,6 +600,10 @@ class SXP_Tracker {
 		
 		// dont take any raw meta...
 		$data['session_meta'] = [];
+		
+		if ( $standalone ) {
+			$data['session_meta']['standalone'] = 1;
+		}
 		
 		// Type must be a valid collection type.
 		if ( ! in_array( $data['type'], $this->collect_types ) ) {
@@ -633,7 +694,7 @@ class SXP_Tracker {
 			$meta = [];
 			if ( isset( $data['meta']['object_type'] ) && is_array ( $data['meta']['object_type'] ) ) {
 				if ( isset( $data['meta']['object_type']['type'], $data['meta']['object_type']['subtype'] ) ) {
-					$allowed = [ 'taxonomy-archive', 'term', 'post-type-archive', 'wp_post', 'wp_user' ];
+					$allowed = [ 'wp-taxonomy', 'wp-term', 'wp-archive', 'wp-post', 'wp-user' ];
 					if ( in_array( $data['meta']['object_type']['type'], $allowed ) ) {
 						$meta['wp_object'] = [
 							'id'      => absint( $data['meta']['object_id'] ),
@@ -666,10 +727,10 @@ class SXP_Tracker {
 				}
 			}
 			
-			unset( $data['meta'] );
-			
 			$data['session_meta'] = $meta;
 		}
+		
+		unset( $data['meta'] );
 		
 		if ( 'error' === $data['type'] && isset( $data['url'] ) && ! empty( $data['url'] ) ) {
 			$error_url = esc_url_raw( $data['url'] );
@@ -758,7 +819,7 @@ class SXP_Tracker {
 					/** @noinspection SqlResolve */
 					$record = (array) $wpdb->get_row(
 						$wpdb->prepare(
-							"SELECT * FROM {$wpdb->sxp_analytics} WHERE user_id = %s ORDER BY created DESC LIMIT 1;",
+							"SELECT * FROM {$wpdb->sxp_analytics} WHERE user_id = %s ORDER BY created ASC LIMIT 1;",
 							$this->_customer_id
 						)
 					);
@@ -788,9 +849,18 @@ class SXP_Tracker {
 			// update user meta.
 			if ( ! empty( $acquired_via ) ) {
 				if ( has_filter( 'salexpresso_update_user_acquired_via' ) ) {
-					$_acquired_via = trim( apply_filters( 'salexpresso_update_user_acquired_via', $acquired_via, $data ) );
-					if ( ! empty( $_acquired_via ) ) {
-						$acquired_via = $_acquired_via;
+					/**
+					 * Filters User acquired via data before updating user meta.
+					 *
+					 * @param array $acquired_via_data {
+					 *      @type string $acquired_via Required.
+					 *      @type int $is_organic Required.
+					 * }
+					 */
+					$filtered = trim( apply_filters( 'salexpresso_update_user_acquired_via', [ $acquired_via, $is_organic ], $data ) );
+					if ( isset( $filtered[0], $filtered[1] ) && ! empty( $filtered[0] ) ) {
+						$acquired_via = $filtered[0];
+						$is_organic = (bool) $filtered[1];
 						unset( $_acquired_via );
 					}
 				}

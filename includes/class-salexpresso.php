@@ -75,9 +75,16 @@ final class SaleXpresso {
 	/**
 	 * Session Handler.
 	 *
-	 * @var SXP_Session
+	 * @var SXP_Tracker
 	 */
-	public $session;
+	public $tracker;
+	
+	/**
+	 * API Request Handler.
+	 *
+	 * @var SXP_API
+	 */
+	public $api;
 	
 	/**
 	 * Main SaleXpresso Instance.
@@ -158,6 +165,7 @@ final class SaleXpresso {
 		// the installer.
 		register_activation_hook( SXP_PLUGIN_FILE, [ 'SaleXpresso\SXP_Install', 'install' ] );
 		register_shutdown_function( [ $this, 'log_errors' ] );
+		$this->api = new SXP_API();
 		SXP_Assets::get_instance();
 		SXP_Install::init();
 		SXP_Admin_Menus::get_instance();
@@ -181,13 +189,15 @@ final class SaleXpresso {
 		// Pre initialization action.
 		do_action( 'before_salexpresso_init' );
 		
-		// Set up localisation.
+		// Setup localisation.
 		$this->load_plugin_textdomain();
-		$this->session = SXP_Session::get_instance();
+		$this->tracker = SXP_Tracker::get_instance();
+		
+		// Setup Admin Notices.
 		SXP_Admin_Notices::init();
 		SXP_Admin_Notices::reset_admin_notices();
 		
-		// Init action.
+		// Trigger Plugin Init.
 		do_action( 'salexpresso_init' );
 	}
 	
@@ -364,6 +374,14 @@ final class SaleXpresso {
 			 */
 			define( 'SXP_WC_MIN_REQUIREMENTS_NOTICE', 'sxp_min_wc_requirements_' . SXP_NOTICE_MIN_PHP_VERSION . '_' . SXP_NOTICE_MIN_WP_VERSION );
 		}
+		
+		if ( ! defined( 'SXP_MYSQL_DATE_FORMAT' ) ) {
+			define( 'SXP_MYSQL_DATE_FORMAT', 'Y-m-d H:i:s' );
+		}
+		
+		if ( ! defined( 'SXP_AC_GROUP' ) ) {
+			define( 'SXP_AC_GROUP', 'SaleXpresso' );
+		}
 	}
 	
 	/**
@@ -432,11 +450,6 @@ final class SaleXpresso {
 		
 		$this->load_file( 'vendor/autoload.php', true, true );
 		
-		require_once 'classes/class-sxp-ip.php';
-		require_once 'classes/class-sxp-session.php';
-		require_once 'classes/simple-analytics/class-sxp-simple-analytics.php';
-		require_once 'classes/simple-analytics/class-sxp-analytics-collects.php';
-		
 		require_once 'deprecated-functions.php';
 		require_once 'user-taxonomy-helper.php';
 		require_once 'helper.php';
@@ -446,9 +459,17 @@ final class SaleXpresso {
 		require_once 'abstracts/class-sxp-admin-page.php';
 		require_once 'abstracts/class-sxp-settings-tab.php';
 		require_once 'abstracts/class-sxp-action-rules.php';
+		
+		require_once 'classes/class-sxp-api.php';
+		require_once 'classes/class-sxp-ip.php';
+		require_once 'classes/class-sxp-tracker.php';
+		
 		require_once 'classes/class-sxp-admin-notices.php';
 		require_once 'classes/class-sxp-admin-menus.php';
 		require_once 'classes/class-sxp-assets.php';
+		
+		require_once 'classes/analytics/class-sxp-analytics-user-data.php';
+		require_once 'classes/analytics/class-sxp-simple-analytics.php';
 		
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';

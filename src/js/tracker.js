@@ -26,7 +26,9 @@
 	const slash = '/';
 	const nav = window.navigator;
 	const loc = window.location;
-	const locationHostname = loc.hostname;
+	const SITE_URL = '{{SITE_URL}}';
+	const path_replace = SITE_URL.replace( new RegExp( '.*' + location.hostname + '\/?' ), '' );
+	const PATH_NAME = loc.pathname.replace( path_replace, '' ).replace( /^\/\//, '/' );
 	const userAgent = nav.userAgent;
 	const notSending = 'Not sending request ';
 	const encodeURIComponentFunc = encodeURIComponent;
@@ -147,6 +149,9 @@
 	// Send data via image (pixel)
 	const sendData = function( data, callback ) {
 		data = assign( payload, data );
+		
+		callback = ( callback && 'function' === typeof callback ) ? callback : () => {};
+		
 		// data = assign( append, payload );
 		if ( ! ( sendBeaconText in nav ) ) {
 			const image = new Image();
@@ -157,6 +162,7 @@
 			image.src = api + ( api.indexOf( '?' ) > -1 ? '&' : '?' ) + 'payload=' + stringify( data );
 		} else {
 			nav[ sendBeaconText ]( api, stringify( data ) );
+			callback();
 		}
 	};
 	
@@ -171,7 +177,7 @@
 		sendData( {
 			type: TYPE_ERROR,
 			error: errorOrMessage,
-			url: locationHostname + loc.pathname,
+			url: SITE_URL + PATH_NAME,
 		} );
 	};
 	
@@ -333,7 +339,7 @@
 		//
 		
 		const getPath = function( overwrite ) {
-			let path = overwrite || decodeURIComponentFunc( loc.pathname );
+			let path = overwrite || decodeURIComponentFunc( PATH_NAME );
 			// Ignore pages specified in data-ignore-pages
 			if ( shouldIgnore( path ) ) {
 				warn( notSending + 'because ' + path + ' is ignored' );
@@ -357,7 +363,7 @@
 			lastPageId = uuid();
 			page.page_id = lastPageId;
 			
-			const currentPage = locationHostname + getPath();
+			const currentPage = SITE_URL + getPath();
 			
 			sendData(
 				assign(
@@ -407,7 +413,7 @@
 					: perf && perf[ navigation ] && [ 1, 2 ].indexOf( perf[ navigation ].type ) > -1; // Check if back, forward or reload buttons are being use in older browsers 1: TYPE_RELOAD, 2: TYPE_BACK_FORWARD
 			
 			// Check if referrer is the same as current hostname
-			const sameSite = referrer ? referrer.split( slash )[ 0 ] === locationHostname : false;
+			const sameSite = referrer ? referrer.split( slash )[ 0 ] === SITE_URL : false;
 			
 			// We set unique variable based on pushState or back navigation, if no match we check the referrer
 			data.is_unique = isPushState || userNavigated ? false : ! sameSite;
@@ -464,6 +470,8 @@
 			}, false );
 		}
 		
+		// This script should be loaded inside <head> tag.
+		// Collect page view soons as it loaded (if autoCollect enabled).
 		if ( autoCollect ) {
 			PageView();
 		} else {
@@ -490,7 +498,6 @@
 			
 			try {
 				if ( isFunction ) {
-					event = event();
 					if ( validTypes.indexOf( typeof event ) < 0 ) {
 						warn( 'event function output is not a string: ' + event );
 						return callback();

@@ -64,6 +64,24 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 					'id'    => 'salexpresso_st_advanced',
 				],
 				[
+					'title' => __( 'Referral Tracking', 'salexpresso' ),
+					'desc'     => __( 'Query parameter name for referral traffic tracking.', 'salexpresso' ),
+					'desc_tip'  => __( 'We can only track if referred user came with this parameter.', 'salexpresso' ),
+					'id'       => 'salexpresso_st_referral_parameter',
+					'default'  => '',
+					'type'     => 'text',
+					'autoload' => false,
+				],
+				[
+					'title' => __( 'Affiliate Tracking', 'salexpresso' ),
+					'desc'     => __( 'Query parameter name for affiliate traffic tracking.', 'salexpresso' ),
+					'desc_tip' => __( 'If affiliate & referral uses same parameter then tracker will recognize them as affiliate', 'salexpresso' ),
+					'id'       => 'salexpresso_st_affiliate_parameter',
+					'default'  => '',
+					'type'     => 'text',
+					'autoload' => false,
+				],
+				[
 					'title'    => __( 'Cart Expiration Time', 'salexpresso' ),
 					'desc'     => __( 'How long to keep the abandoned orders in database.', 'salexpresso' ),
 					'id'       => 'salexpresso_st_customer_id_expiration',
@@ -135,16 +153,24 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 					'type'     => 'checkbox',
 					'autoload' => false,
 				],
-			];
-			
-			$settings[] = [
-				'title'    => __( 'Exclude User IDs', 'salexpresso' ),
-				'desc'     => __( 'Exclude Users by ID, Multiple Id must be separated with comma', 'salexpresso' ),
-				'id'       => 'salexpresso_st_exclude_ids',
-				'type'     => 'text',
-				'default'  => '',
-				'autoload' => false,
-				'desc_tip' => true,
+				[
+					'title'    => __( 'Exclude User IDs', 'salexpresso' ),
+					'desc'     => __( 'Exclude Users by ID, Multiple Id must be separated with comma', 'salexpresso' ),
+					'id'       => 'salexpresso_st_exclude_user_ids',
+					'type'     => 'text',
+					'default'  => '',
+					'autoload' => false,
+					'desc_tip' => true,
+				],
+				[
+					'title'    => __( 'Exclude Path', 'salexpresso' ),
+					'desc'     => __( 'Exclude Path, Multiple path must be separated with comma', 'salexpresso' ),
+					'id'       => 'salexpresso_st_exclude_paths',
+					'type'     => 'text',
+					'default'  => '',
+					'autoload' => false,
+					'desc_tip' => true,
+				]
 			];
 			
 			$count = count( $wp_roles->roles );
@@ -207,8 +233,11 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 			}
 			$_POST['salexpresso_st_trusted_proxies'] = $trusted_proxies;
 		}
-		if ( isset( $_POST['salexpresso_st_exclude_ids'] ) ) {
-			$_POST['salexpresso_st_exclude_ids'] = sxp_sanitize_csv_ids( $_POST['salexpresso_st_exclude_ids'], 'absint' );
+		if ( isset( $_POST['salexpresso_st_exclude_user_ids'] ) ) {
+			$_POST['salexpresso_st_exclude_user_ids'] = sxp_sanitize_csv_field( $_POST['salexpresso_st_exclude_user_ids'], 'absint' );
+		}
+		if ( isset( $_POST['salexpresso_st_exclude_paths'] ) ) {
+			$_POST['salexpresso_st_exclude_paths'] = sxp_sanitize_csv_field( $_POST['salexpresso_st_exclude_paths'] );
 		}
 		// phpcs:enable
 		
