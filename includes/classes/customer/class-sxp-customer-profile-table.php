@@ -1132,7 +1132,7 @@ class SXP_Customer_Profile_Table {
 	 * @return string
 	 */
 	private function get_acquired_via() {
-		return get_user_meta( $this->user_id, 'acquired_via', true );
+		return get_user_meta( $this->user_id, '__acquired_via', true );
 	}
 	
 	/**
