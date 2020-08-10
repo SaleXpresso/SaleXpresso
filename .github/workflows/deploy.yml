@@ -3,7 +3,7 @@ on: [push]
 jobs:
   deploy_stage:
     if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-letest
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy To Staging
         uses: appleboy/ssh-action@master
