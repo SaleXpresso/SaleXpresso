@@ -110,10 +110,21 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		$order_by   = 'name';
 		$sort_order = 'ASC';
 		$search     = '';
+		$meta_key   = '';
+		$meta_value = '';
+		$meta_type  = '';
 		
 		// set sorting.
 		if ( isset( $_GET['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$order_by = sanitize_text_field( $_GET['orderby'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$_order_by = sanitize_text_field( $_GET['orderby'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( ! empty( $_order_by ) ) {
+				$order_by = esc_sql( $_order_by );
+				if ( 'level' === $order_by ) {
+					$order_by = 'meta_value_num';
+					$meta_key = '_sxp_group_level';
+					$meta_type = 'NUMERIC';
+				}
+			}
 		}
 		
 		if ( isset( $_GET['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -136,6 +147,9 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 			'search'     => $search,
 			'number'     => $per_page,
 			'offset'     => ( 1 - $this->get_pagenum() ) * $per_page,
+			'meta_key'   => $meta_key,
+			'meta_value' => $meta_value,
+			'meta_type'  => $meta_type,
 		];
 		
 		$data = new WP_Term_Query( $term_args );
@@ -199,6 +213,8 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 					sxp_get_term_background_color( $item ),
 					$item->name
 				);
+			case 'level':
+				return (int) get_term_meta( $item->term_id, '_sxp_group_level', true );
 			case 'assigned':
 				return $item->count;
 			default:
@@ -215,6 +231,7 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		return [
 			'cb'       => '<input type="checkbox" />',
 			'name'     => __( 'Customer Group', 'salexpresso' ),
+			'level'    => __( 'Level', 'salexpresso' ),
 			'assigned' => __( 'Assigned', 'salexpresso' ),
 		];
 	}
@@ -228,6 +245,7 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 		return [
 			'name'     => [ 'name', true ],
 			'assigned' => [ 'count' ],
+			'level'    => [ 'level' ],
 		];
 	}
 }
