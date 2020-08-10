@@ -12,7 +12,6 @@ namespace SaleXpresso\Customer;
 use SaleXpresso\SXP_Admin_Menus;
 use SaleXpresso\Abstracts\SXP_Admin_Page;
 use SaleXpresso\SXP_List_Table;
-use WP_User_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -68,52 +67,36 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 		);
 	}
 	
-	/**
-	 * Set Tabs and tab content.
-	 */
-	protected function set_tabs() {
-		$tabs = [
-			'customer-list'       => [
-				'label'   => __( 'Customers', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_list' ],
-			],
-			'customer-group'      => [
-				'label'   => __( 'Customer Groups', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_group' ],
-			],
-			'customer-group-rule' => [
-				'label'   => __( 'Customer Group Rules', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_group_rule' ],
-			],
-			'customer-type'       => [
-				'label'   => __( 'Customer Types', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_type' ],
-			],
-			'customer-type-rule'  => [
-				'label'   => __( 'Customer Type Rules', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_type_rule' ],
-			],
-			'customer-tag'        => [
-				'label'   => __( 'Customer Tags', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_tag' ],
-			],
-			'customer-tag-rule'   => [
-				'label'   => __( 'Customer Tag Rules', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_tag_rule' ],
-			],
-			'customer-profile'    => [
-				'label'   => __( 'Customer Profile', 'salexpresso' ),
-				'content' => [ $this, 'render_customer_profile' ],
-			],
-		];
+	public function render_page_content() {
 		
-		// This filter documented in  includes/abstracts/class-sxp-admin-page.php.
-		$this->tabs = apply_filters( "salexpresso_admin_{$this->hook_slug}_page_tabs", $tabs );
+		if ( isset( $_GET['customer'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			try {
+				$customer = new \WC_Customer( absint( $_GET['customer'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				if ( $customer->get_id() ) {
+					new SXP_Customer_Profile_Table( $customer );
+					die();
+				} else {
+					$customer = false;
+				}
+			} catch ( \Exception $e ) {
+				$customer = false;
+			}
+			if ( false === $customer ) {
+				$this->set_flash_message( esc_html__( 'Invalid Customer', 'salexpresso' ), 'error', true );
+				wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+				die();
+			}
+		}
+		
+		$this->list_table->prepare_items();
+		$this->list_table->display();
+		
 	}
 	
 	/**
 	 * Render Filter section
 	 */
+	/*
 	protected function render_page_filter() {
 		?>
 		<div class="sxp-filter-wrapper">
@@ -165,15 +148,7 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 		<div class="clearfix"></div>
 		<?php
 	}
-	
-	/**
-	 * Render the customer list
-	 */
-	protected function render_customer_list() {
-		$this->list_table->prepare_items();
-		$this->list_table->display();
-	}
-	
+	*/
 	/**
 	 * Render WC Customer Report List.
 	 * This is here for testing/debugging purpose only.
@@ -186,13 +161,6 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 		}
 		$this->list_table = new \WC_Report_Customer_List();
 		$this->list_table->output_report();
-	}
-	
-	/**
-	 * Render the customer Profile
-	 */
-	protected function render_customer_profile() {
-		$list = new SXP_Customer_Profile_Table();
 	}
 }
 

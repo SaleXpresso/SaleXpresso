@@ -236,7 +236,12 @@ svg.feather {
 	top: 3px;
 	position: relative;
 }
-
+.d-none {
+	display: none;
+}
+.d-block {
+	display: block;
+}
 @keyframes sxp_spin {
 	100% {
 		transform: rotate(360deg);

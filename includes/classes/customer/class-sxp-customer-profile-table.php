@@ -49,27 +49,14 @@ class SXP_Customer_Profile_Table {
 	
 	/**
 	 * SXP_Customer_List_Table constructor.
+	 *
+	 * @param WC_Customer $customer
 	 */
-	public function __construct() {
-		// @TODO Extend WP_List_Table.
-		if ( ! isset( $_REQUEST['customer'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-			die();
-		}
+	public function __construct( WC_Customer $customer ) {
 		
-		try {
-			$customer = new WC_Customer( absint( $_REQUEST['customer'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			if ( $customer->get_id() ) {
-				$this->customer    = $customer;
-				$this->user_id = $customer->get_id();
-				$this->analytics = new SXP_Analytics_User_Data( $this->user_id );
-			}
-		} catch ( Exception $e ) {
-			// This exception only get caught if the user id is wrong.
-			// @TODO use wc logger.
-			$this->customer    = null;
-			$this->user_id = null;
-		}
+		$this->customer    = $customer;
+		$this->user_id = $customer->get_id();
+		$this->analytics = new SXP_Analytics_User_Data( $this->user_id );
 		
 		$this->display();
 	}
@@ -316,7 +303,7 @@ class SXP_Customer_Profile_Table {
 					'notification' => '',
 					'priority'     => 10,
 				],
-				'orders'         => [
+				/*'orders'         => [
 					'label'        => __( 'Orders', 'salexpresso' ),
 					'content'      => [ $this, 'display_orders' ],
 					'notification' => '',
@@ -357,7 +344,7 @@ class SXP_Customer_Profile_Table {
 					'content'      => [ $this, 'display_campaign' ],
 					'notification' => '',
 					'priority'     => 80,
-				],
+				],*/
 			]
 		);
 		
@@ -369,74 +356,6 @@ class SXP_Customer_Profile_Table {
 		$activity->set_data( $this->user_id, $this->analytics );
 		$activity->prepare_items();
 		$activity->display();
-		?>
-		<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
-			<thead>
-			<tr>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">All Sessions</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Source</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Actions</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Timestamp</a></th>
-			</tr>
-			</thead>
-			<tbody id="the-list">
-			<tr class="has-fold">
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="All Sessions">
-					<div class="session-name">Session no. 15</div>
-					<ul class="sxp-tag-list">
-						<li><a href="#">6 items added to cart</a></li>
-					</ul>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="source">facebook</td>
-				<td data-colname="Actions">5</td>
-				<td data-colname="Timestamp">Jan 20, 2020</td>
-			</tr>
-			<tr class="fold">
-				<td colspan="8">
-					<div class="sxp-fold-content">
-						<div class="sxp-table-viewed">
-							<i data-feather="eye"></i>
-							<span class="serial">1.</span>Viewed
-							<a href="#" class="product">Fresh Refined Sugar</a> Product
-						</div>
-						<div>5s later</div>
-					</div><!-- end .sxp-fold-content -->
-					<div class="sxp-fold-content">
-						<div class="sxp-table-viewed">
-							<i data-feather="eye"></i>
-							<span class="serial">2.</span>Viewed
-							<a href="#" class="product">Fresh Refined Sugar</a> Product
-						</div>
-						<div>5s later</div>
-					</div><!-- end .sxp-fold-content -->
-					<div class="sxp-fold-content">
-						<div class="sxp-table-viewed">
-							<i data-feather="plus-circle"></i>
-							<span class="serial">3.</span>Added
-							<a href="#" class="product">Mum Drinking Wather</a> to cart
-						</div>
-						<div>5s later</div>
-					</div><!-- end .sxp-fold-content -->
-					<div class="sxp-fold-content">
-						<div class="sxp-table-viewed">
-							<i data-feather="x-octagon"></i>
-							<span class="serial">4.</span>Removed
-							<a href="#" class="product">Mum Drinking Wather</a> from cart
-						</div>
-						<div>5s later</div>
-					</div><!-- end .sxp-fold-content --><div class="sxp-fold-content">
-						<div class="sxp-table-viewed">
-							<i data-feather="shopping-cart"></i>
-							<span class="serial">5.</span>Completed checkout with American Express
-						</div>
-						<div>5s later</div>
-					</div><!-- end .sxp-fold-content -->
-				</td>
-			</tr>
-			</tbody>
-		</table>
-		<?php
 	}
 	
 	private function display_orders() {
