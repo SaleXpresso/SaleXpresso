@@ -149,55 +149,67 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			
 			$term_id = $id;
 			
-			if ( isset( $_POST['sxp_rule_group'] ) && is_array( $_POST['sxp_rule_group'] ) ) {
-				$rules = [];
-				foreach ( $_POST['sxp_rule_group'] as $group ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-					if ( ! isset( $group['relation'], $group['rules'] ) ) {
-						continue;
-					}
-					if ( ! is_array( $group['rules'] ) || empty( $group['rules'] ) ) {
-						continue;
-					}
-					if ( ! in_array( $group['relation'], [ 'AND', 'OR' ], true ) ) {
-						continue;
-					}
-					$_rule = [];
-					foreach ( $group['rules'] as $rule ) {
-						if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'], $rule['relation'] ) ) {
-							continue;
-						}
-						
-						if ( ! in_array( $rule['relation'], [ 'AND', 'OR' ], true ) ) {
-							continue;
-						}
-						
-						if ( empty( $rule['condition'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
-							continue;
-						}
-						
-						$_rule[] = [
-							'relation'  => $rule['relation'],
-							'condition' => sanitize_text_field( $rule['condition'] ),
-							'operator'  => sanitize_text_field( $rule['operator'] ),
-							'values'    => sanitize_text_field( $rule['values'] ),
-						];
-					}
-					if ( ! empty( $_rule ) ) {
-						$rules[] = [
-							'relation' => $group['relation'],
-							'rules'    => $_rule,
-						];
-					}
+			if (  $term_id ) {
+				if ( isset( $_POST['term_level'] ) ) {
+					update_term_meta( $term_id, '_sxp_group_level', absint( $_POST['term_level'] ) );
 				}
 				
-				if ( $term_id && ! empty( $rules ) ) {
-					$save = sxp_save_term_rules( $term_id, $rules );
-					if ( is_wp_error( $save ) ) {
-						$this->set_flash_message( sprintf(
+				$color = isset( $_POST['term_color'] ) ? sanitize_text_field( $_POST['term_color'] ) : '';
+				if ( 7 !== strlen( $color ) && 0 !== strpos( $color, '#' ) ) {
+					$color = '';
+				}
+				update_term_meta( $term_id, '__sxp_term_color', $color );
+				
+				if ( isset( $_POST['sxp_rule_group'] ) && is_array( $_POST['sxp_rule_group'] ) ) {
+					$rules = [];
+					foreach ( $_POST['sxp_rule_group'] as $group ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+						if ( ! isset( $group['relation'], $group['rules'] ) ) {
+							continue;
+						}
+						if ( ! is_array( $group['rules'] ) || empty( $group['rules'] ) ) {
+							continue;
+						}
+						if ( ! in_array( $group['relation'], [ 'AND', 'OR' ], true ) ) {
+							continue;
+						}
+						$_rule = [];
+						foreach ( $group['rules'] as $rule ) {
+							if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'], $rule['relation'] ) ) {
+								continue;
+							}
+							
+							if ( ! in_array( $rule['relation'], [ 'AND', 'OR' ], true ) ) {
+								continue;
+							}
+							
+							if ( empty( $rule['condition'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
+								continue;
+							}
+							
+							$_rule[] = [
+								'relation'  => $rule['relation'],
+								'condition' => sanitize_text_field( $rule['condition'] ),
+								'operator'  => sanitize_text_field( $rule['operator'] ),
+								'values'    => sanitize_text_field( $rule['values'] ),
+							];
+						}
+						if ( ! empty( $_rule ) ) {
+							$rules[] = [
+								'relation' => $group['relation'],
+								'rules'    => $_rule,
+							];
+						}
+					}
+					
+					if ( ! empty( $rules ) ) {
+						$save = sxp_save_term_rules( $term_id, $rules );
+						if ( is_wp_error( $save ) ) {
+							$this->set_flash_message( sprintf(
 							/* translators: 1 Error message while saving the term. */
-							esc_html__( 'Error Saving Rules. %s', 'salexpresso' ),
-							$save->get_error_message()
-						), 'error', true );
+								esc_html__( 'Error Saving Rules. %s', 'salexpresso' ),
+								$save->get_error_message()
+							), 'error', true );
+						}
 					}
 				}
 			}
@@ -255,18 +267,13 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 	}
 	
 	/**
-	 * Set Tabs and tab content.
-	 */
-	protected function set_tabs() {
-	}
-	
-	/**
 	 * Render Filter section
 	 */
 	protected function render_page_filter() {
 		if ( in_array( $this->current_action, [ 'edit', 'add-new' ] ) ) {
 			return;
 		}
+		return;
 		?>
 		<div class="sxp-filter-wrapper">
 			<div class="sxp-filter-default">
@@ -341,8 +348,9 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 		$conditions  = SXP_User_Group_Rules::get_instance()->get_conditions();
 		$operators   = SXP_User_Group_Rules::get_instance()->get_operators();
 		$rule_groups = sxp_get_term_rules( $this->term );
-		
-		$action = ( ! $this->term->term_id ? 'add-' : 'edit-' ) . $this->taxonomy_name;
+		$level       = (int) get_term_meta( $this->term->term_id, '_sxp_group_level', true );
+		$color       = get_term_meta( $this->term->term_id, '__sxp_term_color', true );
+		$action      = ( ! $this->term->term_id ? 'add-' : 'edit-' ) . $this->taxonomy_name;
 		?>
 		<div class="sxp-rule-wrapper">
 			<form action="<?php echo esc_url( admin_url( 'admin.php?page=' . $this->page_slug ) ); ?>" method="post" class="sxp-form">
@@ -351,12 +359,14 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				<?php wp_nonce_field( $action ); ?>
 				<div class="form-top">
 					<div class="section">
-						<h4 class="header"><?php printf(
+						<h4 class="header">
+							<label for="term_title"><?php printf(
 								/* translators: 1 Taxonomy Singular Name */
-								esc_html__( 'Customer %s Name', 'salexpresso' ),
-								esc_html( $this->taxonomy->labels->singular_name )
-							); ?> <i data-feather="info" aria-hidden="true"></i></h4><!-- /.header -->
-						<input type="text" class="title-edit" name="name" value="<?php echo esc_attr( $this->term->name ); ?>">
+									esc_html__( 'Customer %s Name', 'salexpresso' ),
+									esc_html( $this->taxonomy->labels->singular_name )
+								); ?> <i data-feather="info" aria-hidden="true"></i></label>
+						</h4><!-- /.header -->
+						<input type="text" class="title-edit" id="term_title" name="name" value="<?php echo esc_attr( $this->term->name ); ?>">
 						<!-- /.title-edit -->
 					</div>
 					<!-- /.section -->
@@ -364,6 +374,25 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				<!-- /.form-top -->
 				<div class="clearfix"></div>
 				<div class="form-body">
+					<?php if ( 'user_group' === $this->taxonomy->name ) {
+						$group_level_tip = esc_html__( 'Level will help to prevent assign lower group if user already assigned to an higher group.', 'salexpresso' );
+						?>
+						<div class="section sxp-rule-container">
+							<h4 class="header">
+								<label for="group_level"><?php esc_html_e( 'Group Level', 'salexpresso' ); ?> <?php echo sxp_help_tip( $group_level_tip ); // phpcs:ignore ?></label>
+							</h4><!-- /.header -->
+							<input type="number" id="group_level" class="level-edit" name="term_level" value="<?php echo esc_attr( $level ); ?>">
+							<!-- /.level-edit -->
+						</div>
+					<?php } ?>
+					<div class="section sxp-rule-container">
+						<h4 class="header">
+							<label for="term_color"><?php esc_html_e( 'Color', 'salexpresso' ); ?></label>
+						</h4><!-- /.header -->
+						<input type="text" id="term_color" class="term-color color-picker" name="term_color" value="<?php echo esc_attr( $color ); ?>">
+						<!-- /.level-edit -->
+					</div>
+					<!-- /.section -->
 					<div class="section sxp-rule-container">
 						<h4 class="header"><?php esc_html_e( 'Build Rules', 'salexpresso' ); ?> <i data-feather="info" aria-hidden="true"></i></h4>
 						<div class="sxp-rules-wrapper">
