@@ -550,7 +550,7 @@ abstract class SXP_Admin_Page implements SXP_Admin_Page_Interface {
 			$this->render_page_tab_contents();
 		} else {
 			$keys = array_keys( $this->tabs );
-			if ( is_array( $this->tabs ) && isset( $this->tabs[ $keys[0] ] ) ) {
+			if ( ! empty( $this->tabs ) && is_array( $this->tabs ) && isset( $this->tabs[ $keys[0] ] ) ) {
 				$this->exec_tab_cb( $this->tabs[ $keys[0] ], $keys[0] );
 			}
 		}
