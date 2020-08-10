@@ -91,11 +91,10 @@ class SXP_Assets {
 				'wp-util',
 				'jquery-ui-datepicker',
 				'jquery-ui-sortable',
-				'iris',
-				'selectWoo'
+				'selectWoo',
+				'wp-color-picker',
 			],
 			$this->get_file_version( 'admin' . $this->file_suffix . '.js' ),
-			true
 		);
 		wp_enqueue_media();
 		wp_enqueue_script( 'wp-color-picker' );
