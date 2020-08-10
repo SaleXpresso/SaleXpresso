@@ -913,14 +913,14 @@ class SXP_Tracker {
 						unset( $record );
 					}
 				}
-				$acquired_via = sxp_get_acquired_via( $data );
+				$acquired_via = sxp_get_acquired_via( $data, 'save' );
 				$is_organic = $data['is_organic'];
 			} else {
 				$_is_organic = (int) get_user_meta( $this->_user_id, '__is_organic', true );
 				$total_spent = (float) wc_get_customer_total_spent( $this->_user_id );
 				if ( $_is_organic && 0 == $total_spent && ! $data['is_organic'] ) {
 					// ony update organic user if new visits isn't organic & user hasn't purchased anything yet.
-					$acquired_via = sxp_get_acquired_via( $data );
+					$acquired_via = sxp_get_acquired_via( $data, 'save' );
 					$is_organic = $data['is_organic'];
 				}
 			}
