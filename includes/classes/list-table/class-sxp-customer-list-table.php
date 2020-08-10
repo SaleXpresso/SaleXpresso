@@ -57,51 +57,87 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 	 */
 	public function prepare_items() {
 		// using wc report api data store.
-		$report_store = new CustomerReportDataStore();
+		global $wpdb;
+		
 		$per_page     = $this->get_items_per_page( 'customers_per_page' );
 		$order_by     = 'date_last_order';
 		$sort_order   = 'DESC';
-		try {
-			$order_after  = new WC_DateTime( '0000-00-00 00:00:00' ); // @TODO use value from filter.
-			$order_before = TimeInterval::default_before(); // @TODO use value from filter.
-		} catch ( Exception $e ) {
-			// WC_DateTime might throw...
-			// @TODO use wc logger.
-			$order_after  = '';
-			$order_before = '';
-		}
 		
 		// Set sorting.
 		if ( isset( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$order_by = sanitize_text_field( $_REQUEST['orderby'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$_order_by = sanitize_text_field( $_REQUEST['orderby'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			if ( ! empty( $_order_by ) ) {
+				$order_by = esc_sql( $_order_by );
+			}
 		}
 		
 		if ( isset( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$sort_order = 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 		
-		$data = $report_store->get_data( [
-			'per_page'     => $per_page,
-			'page'         => $this->get_pagenum(),
-			'order'        => $sort_order,
-			'orderby'      => $order_by, // date_registered.
-			'order_before' => $order_before,
-			'order_after'  => $order_after,
-			'fields'       => '*',
-		] );
+		$count_query = "
+		SELECT
+		    COUNT(*) as total
+		FROM {$wpdb->prefix}wc_customer_lookup
+		    LEFT JOIN {$wpdb->prefix}wc_order_stats
+		        ON {$wpdb->prefix}wc_customer_lookup.customer_id = {$wpdb->prefix}wc_order_stats.customer_id
+	        AND (
+                {$wpdb->prefix}wc_order_stats.status NOT IN ( 'wc-trash','wc-pending','wc-cancelled','wc-failed' )
+            )
+		WHERE
+	      1=1
+		GROUP BY {$wpdb->prefix}wc_customer_lookup.customer_id
+		";
+		$sql = "
+		SELECT
+		       {$wpdb->prefix}wc_customer_lookup.customer_id as id,
+		       user_id,
+		       username,
+		       CONCAT_WS( ' ', first_name, last_name ) as name,
+		       email, country, city, state, postcode, date_registered,
+		       IF( date_last_active <= \"0000-00-00 00:00:00\", NULL, date_last_active ) AS date_last_active,
+		       MAX( wp_wc_order_stats.date_created ) as date_last_order,
+		       SUM( CASE WHEN parent_id = 0 THEN 1 ELSE 0 END ) as orders_count,
+		       SUM( total_sales ) as total_spend,
+		       CASE
+		           WHEN SUM( CASE WHEN parent_id = 0 THEN 1 ELSE 0 END ) = 0
+		               THEN NULL
+		           ELSE
+		               SUM( total_sales ) / SUM( CASE WHEN parent_id = 0 THEN 1 ELSE 0 END )
+		           END AS avg_order_value
+		FROM {$wpdb->prefix}wc_customer_lookup
+		    LEFT JOIN {$wpdb->prefix}wc_order_stats
+		        ON {$wpdb->prefix}wc_customer_lookup.customer_id = {$wpdb->prefix}wc_order_stats.customer_id
+	        AND (
+                {$wpdb->prefix}wc_order_stats.status NOT IN ( 'wc-trash','wc-pending','wc-cancelled','wc-failed' )
+            )
+		WHERE
+	      1=1
+		GROUP BY {$wpdb->prefix}wc_customer_lookup.customer_id
+		ORDER BY {$order_by} {$sort_order}
+		LIMIT 0, 10
+		";
+		
+		$db_records_count = (int) $wpdb->get_var(
+			$count_query // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
+		
+		$customer_data = $wpdb->get_results(
+			$sql, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			ARRAY_A
+		);
+		
+		
 		// Use status_is to filter by order status.
 		// Use status_is_not to filter out specific order by status.
 		// Valid order status are: trash, pending, failed, cancelled, etc.
-		if ( ! is_wp_error( $data ) ) {
-			/** @noinspection PhpUndefinedFieldInspection */ // phpcs:ignore
-			$this->items = $data->data;
-			/** @noinspection PhpUndefinedFieldInspection */ // phpcs:ignore
-			$this->set_pagination_args( [
-				'total_items' => $data->total,
-				'total_pages' => $data->pages,
-				'per_page'    => $per_page,
-			] );
-		}
+		
+		$this->items = $customer_data;
+		$this->set_pagination_args( [
+			'total_items' => $db_records_count,
+			'total_pages' => (int) ceil( $db_records_count / $per_page ),
+			'per_page'    => $per_page,
+		] );
 	}
 	
 	/**
@@ -158,6 +194,14 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 					$item['name'],
 					$address
 				);
+			case 'customers-group':
+				$group = sxp_get_user_group( $item['user_id'] );
+				if ( ! empty( $group ) && ! is_wp_error( $group ) ) {
+					$color = sxp_get_term_background_color( $group );
+					
+					return sprintf( '<a href="#%s"  style="background: %s">%s</a>', esc_url( $group->term_id ), esc_attr( $color ), esc_html( $group->name ) );
+				}
+				return '';
 			case 'customers-type':
 				$type = sxp_get_user_types( $item['user_id'] );
 				if ( ! empty( $type ) && ! is_wp_error( $type ) ) {
@@ -188,9 +232,9 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 			case 'total_spend':
 				return wc_price( $item['total_spend'], [ 'ex_tax_label' => false ] );
 			case 'date_last_order':
-				if ( '0000-00-00 00:00:00' === $item['date_last_order'] ) {
+				if ( '0000-00-00 00:00:00' === $item['date_last_order'] || is_null( $item['date_last_order'] ) ) {
 					$t_time = '';
-					$h_time = $t_time;
+					$h_time = '–';
 				} else {
 					$time      = wc_string_to_timestamp( $item['date_last_order'] );
 					$t_time    = gmdate( __( 'Y/m/d g:i:s a', 'salexpresso' ), $time );
@@ -219,6 +263,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		return [
 			'cb'              => '<input type="checkbox" />',
 			'name'            => __( 'Customers', 'salexpresso' ),
+			'customers-group'  => __( 'Customers Group', 'salexpresso' ),
 			'customers-type'  => __( 'Customers Type', 'salexpresso' ),
 			'customer-tag'    => __( 'Customers Tag', 'salexpresso' ),
 			'orders_count'    => __( 'Orders', 'salexpresso' ),
