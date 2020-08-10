@@ -655,7 +655,13 @@ if ( ! function_exists( 'sxp_get_acquired_via' ) ) {
 			);
 			$acquired_via = apply_filters( 'salexpresso_acquired_via_referral_id', $acquired_via, $data, $context );
 		} else if ( ! empty( $data['source'] ) && ! empty( $data['campaign'] ) ) {
-			$acquired_via = $data['campaign'] . ' (' . esc_attr( $data['source'] ) . ')';
+			$acquired_via = sprintf(
+				/* translator: 1. Marketing Campaign Name, 2. Marketing Campaign Source */
+				esc_html_x( 'Campaign:: %s (%s)', 'Set User Acquired Via Meta', 'salexpresso' ),
+				esc_attr( $data['campaign'] ),
+				esc_attr( $data['source'] )
+			);
+			
 			$acquired_via = apply_filters( 'salexpresso_acquired_via_campaign', $acquired_via, $data, $context );
 		} else if( isset( $data['referrer'] ) && ! empty( $data['referrer'] ) ) {
 			$acquired_via = apply_filters( 'salexpresso_acquired_via_referrer', sxp_get_host_name( $data['referrer'] ), $data, $context );
@@ -678,7 +684,7 @@ if ( ! function_exists( 'sxp_update_user_acquired_via' ) ) {
 	 * @return void
 	 */
 	function sxp_update_user_acquired_via( $user_id, $_is_unique = false, $data = array() ) {
-		if ( is_user_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 			return;
 		}
 		
@@ -688,7 +694,7 @@ if ( ! function_exists( 'sxp_update_user_acquired_via' ) ) {
 		$is_organic = 0;
 		$acquired_via = '';
 		if ( empty( $_acquired_via ) ) {
-			// doesn't have acquired_via.
+			// doesn't have acquired_via and current visit is not unique.
 			if ( ! $_is_unique ) {
 				global $wpdb;
 				// find the first visit.
