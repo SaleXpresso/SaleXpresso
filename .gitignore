@@ -46,5 +46,5 @@ Thumbs.db
 assets/js/*.LICENSE.txt
 
 # Composer
-vendor
+vendor/*
 !vendor/index.php
