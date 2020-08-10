@@ -175,11 +175,9 @@ class SXP_List_Table {
 				'tab'       => null,
 				'thead'     => true,
 				'tfoot'     => true,
-				'table_nav' => [
-					'top'        => true,
-					'pagination' => true,
-					'bottom'     => false,
-				],
+				'table_top' => true,
+				'table_pagination' => true,
+				'table_bottom' => false,
 			]
 		);
 		$this->screen = convert_to_screen( $args['screen'] );
@@ -372,7 +370,7 @@ class SXP_List_Table {
 	 * @param string $input_id ID attribute value for the search input field.
 	 */
 	public function search_box( $text = '', $input_id = '' ) {
-		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $_REQUEST['q'] ) && ! $this->has_items() ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 		
@@ -395,10 +393,6 @@ class SXP_List_Table {
 			<label for="sxp-admin-search" class="screen-reader-text"><?php esc_html_e('Search Customer', 'salexpresso'); ?></label>
 			<input type="search" id="sxp-admin-search" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php esc_html_e( 'Search', 'salexpresso' ); ?>">
 		</div><!-- end .sxp-customer-search -->
-		<p class="search-box">
-			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
-			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" />
-		</p>
 		<?php
 	}
 	
@@ -1114,13 +1108,15 @@ class SXP_List_Table {
 	 * Displays the table.
 	 */
 	public function display() {
+		global $plugin_page;
 		$singular = $this->_args['singular'];
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
 		<form action="<?php echo esc_url( $this->current_url ); ?>" method="get">
+			<input type="hidden" name="page" value="<?php echo esc_attr( $plugin_page ); ?>">
 			<div class="sxp-list-table">
 				<?php
-				if ( $this->_args['table_nav']['top'] ) {
+				if ( $this->_args['table_top'] ) {
 					$this->display_tablenav( 'top' );
 				}
 				?>
@@ -1146,10 +1142,10 @@ class SXP_List_Table {
 				</table>
 				<div class="clearfix"></div>
 				<?php
-				if ( $this->_args['table_nav']['pagination'] ) {
+				if ( $this->_args['table_pagination'] ) {
 					$this->display_tablenav( 'pagination' );
 				}
-				if ( $this->_args['table_nav']['bottom'] ) {
+				if ( $this->_args['table_bottom'] ) {
 					$this->display_tablenav( 'bottom' );
 				}
 				?>

@@ -43,6 +43,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 				'screen'   => isset( $args['screen'] ) ? $args['screen'] : null,
 				'tab'      => '',
 				'tfoot'    => false,
+				'table_top' => false,
 			]
 		);
 		

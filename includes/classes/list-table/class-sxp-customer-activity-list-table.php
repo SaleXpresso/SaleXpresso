@@ -63,11 +63,9 @@ class SXP_Customer_Activity_List_Table extends SXP_List_Table {
 				'screen'    => isset( $args['screen'] ) ? $args['screen'] : null,
 				'tab'       => '',
 				'tfoot'     => false,
-				'table_nav' => [
-					'top'        => false,
-					'pagination' => true,
-					'bottom'     => true,
-				],
+				'table_top' => false,
+				'table_pagination' => true,
+				'table_bottom' => true,
 			]
 		);
 		
@@ -128,7 +126,7 @@ class SXP_Customer_Activity_List_Table extends SXP_List_Table {
 	 * @param int $user_id User ID.
 	 * @param SXP_Analytics_User_Data $analytics Analytics Class.
 	 */
-	public function set_data( $user_id, $analytics ) {
+	public function set_data( $user_id, SXP_Analytics_User_Data $analytics ) {
 		$this->analytics = $analytics;
 		$this->user_id = $user_id;
 	}

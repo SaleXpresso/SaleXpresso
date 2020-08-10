@@ -65,11 +65,9 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 			'screen'    => isset( $args['screen'] ) ? $args['screen'] : null,
 			'tab'       => '',
 			'tfoot'     => false,
-			'table_nav' => [
-				'top'        => true,
-				'pagination' => true,
-				'bottom'     => true,
-			],
+			'table_top' => true,
+			'table_pagination' => true,
+			'table_bottom' => true,
 		] ) );
 		
 		$this->taxonomy = get_taxonomy( $this->taxonomy_name );
