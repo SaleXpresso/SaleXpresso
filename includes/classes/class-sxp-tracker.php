@@ -616,7 +616,9 @@ class SXP_Tracker {
 				do_action( "salexpresso_analytics_collect_event_{$data['event']}", $data );
 			}
 			
-			$this->update_user_acquired_via( $data );
+			if ( $this->_user_id ) {
+				sxp_update_user_acquired_via( $this->_user_id, $this->_is_unique, $data );
+			}
 			
 			// insert the data into db.
 			$now = current_time( 'mysql' );
@@ -879,73 +881,6 @@ class SXP_Tracker {
 		unset( $data['woocommerce-reset-password-nonce'] );
 		
 		return $data;
-	}
-	
-	/**
-	 * Update user's acquired_via meta.
-	 *
-	 * @param array $data Session tracking data.
-	 *
-	 * @return void
-	 */
-	private function update_user_acquired_via( $data ) {
-		if ( is_user_logged_in() ) {
-			$_acquired_via = get_user_meta( $this->_user_id, 'acquired_via', true );
-			$is_organic = 0;
-			$acquired_via = '';
-			if ( empty( $_acquired_via ) ) {
-				// doesn't have acquired_via.
-				if ( ! $this->_is_unique ) {
-					global $wpdb;
-					// find the first visit.
-					/** @noinspection SqlResolve */
-					$record = $wpdb->get_row(
-						$wpdb->prepare(
-							"SELECT * FROM {$wpdb->sxp_analytics} WHERE visitor_id = %s ORDER BY created ASC LIMIT 1;",
-							$this->_customer_id
-						),
-						ARRAY_A
-					);
-					
-					if ( ! empty( $record ) ) {
-						$record['session_meta'] = ! empty( $record['session_meta'] ) ? json_decode( $record['session_meta'], true ) : [];
-						$data = $record;
-						unset( $record );
-					}
-				}
-				$acquired_via = sxp_get_acquired_via( $data, 'save' );
-				$is_organic = $data['is_organic'];
-			} else {
-				$_is_organic = (int) get_user_meta( $this->_user_id, '__is_organic', true );
-				$total_spent = (float) wc_get_customer_total_spent( $this->_user_id );
-				if ( $_is_organic && 0 == $total_spent && ! $data['is_organic'] ) {
-					// ony update organic user if new visits isn't organic & user hasn't purchased anything yet.
-					$acquired_via = sxp_get_acquired_via( $data, 'save' );
-					$is_organic = $data['is_organic'];
-				}
-			}
-			// update user meta.
-			if ( ! empty( $acquired_via ) ) {
-				if ( has_filter( 'salexpresso_update_user_acquired_via' ) ) {
-					/**
-					 * Filters User acquired via data before updating user meta.
-					 *
-					 * @param array $acquired_via_data {
-					 *      @type string $acquired_via Required.
-					 *      @type int $is_organic Required.
-					 * }
-					 */
-					$filtered = trim( apply_filters( 'salexpresso_update_user_acquired_via', [ $acquired_via, $is_organic ], $data ) );
-					if ( isset( $filtered[0], $filtered[1] ) && ! empty( $filtered[0] ) ) {
-						$acquired_via = $filtered[0];
-						$is_organic = (bool) $filtered[1];
-						unset( $_acquired_via );
-					}
-				}
-				update_user_meta( $this->_user_id, '__acquired_via', $acquired_via );
-				update_user_meta( $this->_user_id, '__is_organic', $is_organic );
-			}
-		}
 	}
 }
 // End of file class-sxp-tracker.php.

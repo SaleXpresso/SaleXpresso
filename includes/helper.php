@@ -667,6 +667,80 @@ if ( ! function_exists( 'sxp_get_acquired_via' ) ) {
 		return apply_filters( 'salexpresso_acquired_via', $acquired_via, $data );;
 	}
 }
+if ( ! function_exists( 'sxp_update_user_acquired_via' ) ) {
+	/**
+	 * Update user's acquired_via meta.
+	 *
+	 * @param int   $user_id WP User ID
+	 * @param bool  $_is_unique Is unique visit.
+	 * @param array $data    Session tracking data.
+	 *
+	 * @return void
+	 */
+	function sxp_update_user_acquired_via( $user_id, $_is_unique = false, $data = array() ) {
+		if ( is_user_logged_in() ) {
+			return;
+		}
+		
+		$cc_id = get_user_meta( $user_id, '_sxp_cookie_id', true );
+		
+		$_acquired_via = get_user_meta( $user_id, 'acquired_via', true );
+		$is_organic = 0;
+		$acquired_via = '';
+		if ( empty( $_acquired_via ) ) {
+			// doesn't have acquired_via.
+			if ( ! $_is_unique ) {
+				global $wpdb;
+				// find the first visit.
+				/** @noinspection SqlResolve */
+				$record = $wpdb->get_row(
+					$wpdb->prepare(
+						"SELECT * FROM {$wpdb->sxp_analytics} WHERE visitor_id = %s ORDER BY created ASC LIMIT 1;",
+						$cc_id
+					),
+					ARRAY_A
+				);
+				
+				if ( ! empty( $record ) ) {
+					$record['session_meta'] = ! empty( $record['session_meta'] ) ? json_decode( $record['session_meta'], true ) : [];
+					$data = $record;
+					unset( $record );
+				}
+			}
+			$acquired_via = sxp_get_acquired_via( $data, 'save' );
+			$is_organic = $data['is_organic'];
+		} else {
+			$_is_organic = (int) get_user_meta( $user_id, '__is_organic', true );
+			$total_spent = (float) wc_get_customer_total_spent( $user_id );
+			if ( $_is_organic && 0 == $total_spent && ! $data['is_organic'] ) {
+				// ony update organic user if new visits isn't organic & user hasn't purchased anything yet.
+				$acquired_via = sxp_get_acquired_via( $data, 'save' );
+				$is_organic = $data['is_organic'];
+			}
+		}
+		// update user meta.
+		if ( ! empty( $acquired_via ) ) {
+			if ( has_filter( 'salexpresso_update_user_acquired_via' ) ) {
+				/**
+				 * Filters User acquired via data before updating user meta.
+				 *
+				 * @param array $acquired_via_data {
+				 *      @type string $acquired_via Required.
+				 *      @type int $is_organic Required.
+				 * }
+				 */
+				$filtered = trim( apply_filters( 'salexpresso_update_user_acquired_via', [ $acquired_via, $is_organic ], $data ) );
+				if ( isset( $filtered[0], $filtered[1] ) && ! empty( $filtered[0] ) ) {
+					$acquired_via = $filtered[0];
+					$is_organic = (bool) $filtered[1];
+					unset( $_acquired_via );
+				}
+			}
+			update_user_meta( $user_id, '__acquired_via', $acquired_via );
+			update_user_meta( $user_id, '__is_organic', $is_organic );
+		}
+	}
+}
 if ( ! function_exists( 'sxp_wp_unique_id' ) ) {
 	/**
 	 * Get unique ID.
