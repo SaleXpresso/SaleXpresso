@@ -296,7 +296,7 @@ class SXP_Admin_Settings {
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 						</th>
 						<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">&lrm;
-							<span class="color-pick-preview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
+							<?php /*<span class="color-pick-preview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>*/ ?>
 							<input
 								name="<?php echo esc_attr( $value['id'] ); ?>"
 								id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -304,11 +304,13 @@ class SXP_Admin_Settings {
 								dir="ltr"
 								style="<?php echo esc_attr( $value['css'] ); ?>"
 								value="<?php echo esc_attr( $option_value ); ?>"
-								class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
+								class="<?php echo esc_attr( $value['class'] ); ?>color-picker"
 								placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 								<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
 								/>&lrm; <?php echo $description; // WPCS: XSS ok. ?>
-								<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
+								<?php
+								/*<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv" style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>*/
+								?>
 						</td>
 					</tr>
 					<?php

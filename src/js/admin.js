@@ -52,6 +52,17 @@ import { sxpRuleBuilder } from './components/rule-builder';
 		if ( sxhWrapper.hasClass( 'sxp-has-tabs' ) ) {
 			tabs();
 		}
+		
+		// Selectize
+		$( '.selectize' ).selectize( {
+			maxItems: 10,
+			create( input ) {
+				return {
+					value: ( '' + input ).trim(),
+					text: sanitize_title( input ),
+				};
+			},
+		} );
 	} );
 
 	$( '[href="#"]' ).on( 'click', function( e ) {
@@ -60,22 +71,6 @@ import { sxpRuleBuilder } from './components/rule-builder';
 	
 	const sanitize_title = ( input ) => ( '' + input ).replace( /[^a-z0-9]+/gi, '-' ).replace( /(^-|-$)/g, '' ).toLowerCase();
 	
-	// Selectize
-	$( '.selectize' ).selectize( {
-		maxItems: 10,
-		create( input ) {
-			return {
-				value: ( '' + input ).trim(),
-				text: sanitize_title( input ),
-			};
-		},
-	} );
-
-	//Vegas Menu
-	$( document ).ready( function() {
-		$( '.vg-nav' ).vegasMenu();
-	} );
-
 	// date range picker
 	const reportRenge = $( '#sxp-date-range' );
 	const start = moment().subtract( 29, 'days' );
@@ -100,9 +95,32 @@ import { sxpRuleBuilder } from './components/rule-builder';
 		autoApply: true,
 	}, dateRangeRender );
 	dateRangeRender( start, end );
-
-	// Accordion Table
-	$( function() {
+	
+	$( document ).ready( function() {
+		feather.replace( {
+			'stroke-width': 2,
+			width: 16,
+			height: 16,
+		} );
+		//Vegas Menu
+		$( '.vg-nav' ).vegasMenu();
+		
+		$( '.sxp-help-tip' ).tipTip( {
+			'attribute': 'data-tip',
+			'fadeIn': 50,
+			'fadeOut': 50,
+			'delay': 200
+		} );
+		
+		// Initalize the rule builder.
+		if ( $( '.sxp-rules' ).length ) {
+			sxpRuleBuilder();
+		}
+		
+		// Scrollable Tab
+		horizontalScrollBar();
+		
+		// Accordion Table
 		$( '.sxp-table tr.has-fold' ).on( 'click', function() {
 			if ( $( this ).hasClass( 'open' ) ) {
 				$( this ).removeClass( 'open' ).next( '.fold' ).removeClass( 'open' );
@@ -111,8 +129,47 @@ import { sxpRuleBuilder } from './components/rule-builder';
 				$( this ).addClass( 'open' ).next( '.fold' ).addClass( 'open' );
 			}
 		} );
+		if ( sxpPage ) {
+			// Color picker
+			$('.color-picker').wpColorPicker();
+			// Edit prompt
+			$( function() {
+				var changed = false;
+				
+				$( 'input, textarea, select, checkbox' ).change( function() {
+					changed = true;
+				});
+				
+				$( '.sxp-nav-tab-wrapper a' ).click( function() {
+					if ( changed ) {
+						window.onbeforeunload = function() {
+							return SaleXpresso.i18n_nav_warning;
+						};
+					} else {
+						window.onbeforeunload = '';
+					}
+				});
+				
+				$( '.submit :input' ).click( function() {
+					window.onbeforeunload = '';
+				});
+			});
+			
+			// Select all/none
+			$( '.sxp-settings' ).on( 'click', '.select_all', function() {
+				$( this ).closest( 'td' ).find( 'select option' ).attr( 'selected', 'selected' );
+				$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
+				return false;
+			});
+			
+			$( '.sxp-settings' ).on( 'click', '.select_none', function() {
+				$( this ).closest( 'td' ).find( 'select option' ).removeAttr( 'selected' );
+				$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
+				return false;
+			});
+		}
 	} );
-
+	
 	// customer profile tab
 	$( 'ul.tabs li' ).click( function() {
 		const tabId = $( this ).attr( 'data-tab' );
@@ -122,15 +179,15 @@ import { sxpRuleBuilder } from './components/rule-builder';
 
 		$( this ).addClass( 'current' );
 		$( '#' + tabId ).addClass( 'current' );
+		
+		$( '.nav-bar a' ).on( 'click', function() {
+			const el = $( this ),
+				li = el.closest( '.item' );
+			$( '.nav-bar .item' ).removeClass( 'active' );
+			li.addClass( 'active' );
+		} );
 	} );
-
-	// Initiate Feather Icon
-	feather.replace( {
-		'stroke-width': 2,
-		width: 16,
-		height: 16,
-	} );
-
+	
 	// modal
 	$( '#sxp-tag-modal' ).hide();
 	$( '.sxp-tag-add a' ).on( 'click', 'tr', function() {
@@ -139,95 +196,5 @@ import { sxpRuleBuilder } from './components/rule-builder';
 			closeExisting: false,
 		} );
 	} );
-
-	// Scrollable Tab
-	horizontalScrollBar();
-
-	$( '.nav-bar a' ).on( 'click', function() {
-		const el = $( this ),
-			li = el.closest( '.item' );
-		$( '.nav-bar .item' ).removeClass( 'active' );
-		li.addClass( 'active' );
-	} );
-	$( '.sxp-help-tip' ).tipTip( {
-		'attribute': 'data-tip',
-		'fadeIn': 50,
-		'fadeOut': 50,
-		'delay': 200
-	} );
-	if ( sxpPage ) {
-		// Color picker
-		$( '.colorpick' )
-			
-			.iris({
-				change: function( event, ui ) {
-					$( this ).parent().find( '.color-pick-preview' ).css({ backgroundColor: ui.color.toString() });
-				},
-				hide: true,
-				border: true
-			})
-			
-			.on( 'click focus', function( event ) {
-				event.stopPropagation();
-				$( '.iris-picker' ).hide();
-				$( this ).closest( 'td' ).find( '.iris-picker' ).show();
-				$( this ).data( 'original-value', $( this ).val() );
-			})
-			
-			.on( 'change', function() {
-				if ( $( this ).is( '.iris-error' ) ) {
-					var original_value = $( this ).data( 'original-value' );
-					
-					if ( original_value.match( /^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/ ) ) {
-						$( this ).val( $( this ).data( 'original-value' ) ).change();
-					} else {
-						$( this ).val( '' ).change();
-					}
-				}
-			});
-		
-		$( 'body' ).on( 'click', function() {
-			$( '.iris-picker' ).hide();
-		});
-		// Edit prompt
-		$( function() {
-			var changed = false;
-			
-			$( 'input, textarea, select, checkbox' ).change( function() {
-				changed = true;
-			});
-			
-			$( '.sxp-nav-tab-wrapper a' ).click( function() {
-				if ( changed ) {
-					window.onbeforeunload = function() {
-						return SaleXpresso.i18n_nav_warning;
-					};
-				} else {
-					window.onbeforeunload = '';
-				}
-			});
-			
-			$( '.submit :input' ).click( function() {
-				window.onbeforeunload = '';
-			});
-		});
-
-		// Select all/none
-		$( '.sxp-settings' ).on( 'click', '.select_all', function() {
-			$( this ).closest( 'td' ).find( 'select option' ).attr( 'selected', 'selected' );
-			$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
-			return false;
-		});
-		
-		$( '.sxp-settings' ).on( 'click', '.select_none', function() {
-			$( this ).closest( 'td' ).find( 'select option' ).removeAttr( 'selected' );
-			$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
-			return false;
-		});
-	}
 	
-	// Initalize the rule builder.
-	if ( $( '.sxp-rules' ).length ) {
-		sxpRuleBuilder();
-	}
 }( window, document, wp, pagenow, SaleXpresso ) );
