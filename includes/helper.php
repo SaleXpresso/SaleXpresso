@@ -624,6 +624,38 @@ if ( ! function_exists( 'sxp_get_host_name' ) ) {
 		return wp_parse_url( $url, PHP_URL_HOST );
 	}
 }
+if ( ! function_exists( 'sxp_get_acquired_via' ) ) {
+	function sxp_get_acquired_via( $data ) {
+		if ( isset( $data['session_meta']['ip'] ) ) {
+			unset( $data['session_meta']['ip'] );
+		}
+		
+		if ( isset( $data['session_meta']['affiliate'] ) && ! empty( $data['session_meta']['affiliate'] ) ) {
+			$acquired_via = sprintf(
+				/* translator: 1. Affiliate Name or ID */
+				esc_html_x( 'Affiliate:: %s', 'Set User Acquired Via Meta', 'salexpresso' ),
+				esc_attr( $data['session_meta']['affiliate'] )
+			);
+			$acquired_via = apply_filters( 'salexpresso_acquired_via_affiliate_id', $acquired_via, $data );
+		} else if ( isset( $data['session_meta']['referral'] ) && ! empty( $data['session_meta']['referral'] ) ) {
+			$acquired_via = sprintf(
+				/* translator: 1. Referral Name or ID */
+				esc_html_x( 'Referral:: %s', 'Set User Acquired Via Meta', 'salexpresso' ),
+				esc_attr( $data['session_meta']['referral'] )
+			);
+			$acquired_via = apply_filters( 'salexpresso_acquired_via_referral_id', $acquired_via, $data );
+		} else if ( ! empty( $data['source'] ) && ! empty( $data['campaign'] ) ) {
+			$acquired_via = $data['campaign'] . ' (' . esc_attr( $data['source'] ) . ')';
+			$acquired_via = apply_filters( 'salexpresso_acquired_via_campaign', $acquired_via, $data );
+		} else if( isset( $data['referrer'] ) && ! empty( $data['referrer'] ) ) {
+			$acquired_via = apply_filters( 'salexpresso_acquired_via_referrer', sxp_get_host_name( $data['referrer'] ), $data );
+		} else {
+			$acquired_via = apply_filters( 'salexpresso_acquired_via_bookmark', esc_html_x( 'Direct Visit', 'User Acquired Via Direct Visit', 'salexpresso' ) );
+		}
+		
+		return apply_filters( 'salexpresso_acquired_via', $acquired_via, $data );;
+	}
+}
 if ( ! function_exists( 'sxp_wp_unique_id' ) ) {
 	/**
 	 * Get unique ID.
