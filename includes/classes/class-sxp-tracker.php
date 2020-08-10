@@ -167,6 +167,26 @@ class SXP_Tracker {
 		$this->script_name  = 'sxp-session.js';
 		$this->track_action = 'collect';
 		
+		/**
+		 * new request Random session and identification generated.
+		 * browse .. browse .. browse ..
+		 * User logged in.
+		 *  * update the session id if identification is changed.
+		 *  * current session will be owned by this user (identification updated).
+		 * and the session id will have this new identification.
+		 * if user logged out. keep the same session and identification ..
+		 * but expire the session id only.
+		 *
+		 * SO...
+		 *
+		 * on logout expire the session id cookie only.
+		 *
+		 */
+		
+		// clear session & customer id cookie on logout.
+		add_action( 'wp_logout', [ $this, 'forget_session' ], -1 );
+		// nonce_user_logged_out
+		
 		$this->get_session_cookie();
 		
 		$this->set_session();
@@ -175,18 +195,71 @@ class SXP_Tracker {
 	}
 	
 	/**
+	 * Return true if the current user has an active session, i.e. a cookie to retrieve values.
+	 *
+	 * @return bool
+	 */
+	public function has_session() {
+		return ! empty( $this->_session_id ) || ! empty( $this->_customer_id ) || is_user_logged_in();
+	}
+	
+	/**
+	 * Forget Session Cookies
+	 * @return void
+	 */
+	public function forget_session() {
+		if ( $this->has_session() ) {
+			
+			$_past = time() -YEAR_IN_SECONDS;
+			
+			sxp_setcookie( $this->_session_id_cookie, '', $_past, $this->use_secure_cookie(), true );
+//			sxp_setcookie( $this->_customer_id_cookie, '', $_past, $this->use_secure_cookie(), true );
+			
+			$this->_session_id  = '';
+//			$this->_customer_id = '';
+		}
+	}
+	
+	/**
 	 * Set Session.
 	 *
 	 * @return void
 	 */
 	private function set_session() {
-		
+		$this->set_session_id();
+		$this->set_customer_id();
+	}
+	
+	/**
+	 * Set Session ID Cookie.
+	 *
+	 * @param bool $reset Optional. Reset current session id if set to true.
+	 *
+	 * @return void
+	 */
+	private function set_session_id( $reset = false ) {
+		if ( $reset ) {
+			$this->_session_id = '';
+		}
 		if ( empty( $this->_session_id ) ) {
 			$this->_is_unique = true;
 			$this->_session_id = sxp_get_uuid_v4();
-			sxp_setcookie( $this->_session_id_cookie, $this->_session_id, 0, $this->use_secure_cookie(), true );
+			// set cookie.
+			sxp_setcookie( $this->_session_id_cookie, $this->encode_cookie_value( $this->_session_id ), 0, $this->use_secure_cookie(), true );
 		}
+	}
+	
+	/**
+	 * Set Customer ID cookie.
+	 * @return void
+	 */
+	private function set_customer_id() {
 		
+		// Flag if session_id needs to be changed.
+		
+		$is_customer_id_changed = false;
+		
+		// Cookie empty. Generate New one.
 		if( empty( $this->_customer_id ) ) {
 			$this->_customer_id = sxp_get_uuid_v4();
 		}
@@ -197,16 +270,23 @@ class SXP_Tracker {
 			// Get saved cookie id.
 			$saved_cookie_id = get_user_meta( $this->_user_id, '_sxp_cookie_id', true );
 			
+			// User already have cookie and browser cookie doesn't match
 			if ( ! empty( $saved_cookie_id ) && $saved_cookie_id !== $this->_customer_id ) {
 				$this->_customer_id = $saved_cookie_id;
+				$is_customer_id_changed = true;
 			}
 			
-			if ( empty( $saved_cookie_id ) ) {
+			// User doesn't have cookie id, set current browser cookie id as user's cookie id.
+			if ( empty( $saved_cookie_id ) || ! is_string( $saved_cookie_id ) ) {
 				update_user_meta( $this->_user_id, '_sxp_cookie_id', $this->_customer_id );
 			}
 		}
 		
-		sxp_setcookie( $this->_customer_id_cookie, $this->_customer_id, time() + $this->get_customer_id_expiration(), $this->use_secure_cookie(), true );
+		if ( $is_customer_id_changed ) {
+			$this->set_session_id( true );
+		}
+		
+		sxp_setcookie( $this->_customer_id_cookie, $this->encode_cookie_value( $this->_customer_id ), time() + $this->get_customer_id_expiration(), $this->use_secure_cookie(), true );
 	}
 	
 	/**
@@ -217,8 +297,52 @@ class SXP_Tracker {
 	 * @return void
 	 */
 	public function get_session_cookie() {
-		$this->_customer_id = isset( $_COOKIE[ $this->_customer_id_cookie ] ) ? $this->clean_cookie( $_COOKIE[ $this->_customer_id_cookie ] ) : false; // phpcs:ignore
-		$this->_session_id  = isset( $_COOKIE[ $this->_session_id_cookie ] ) ? $this->clean_cookie( $_COOKIE[ $this->_session_id_cookie ] ) : false; // phpcs:ignore
+		$cc_value = isset( $_COOKIE[ $this->_customer_id_cookie ] ) ? $this->clean_cookie( $_COOKIE[ $this->_customer_id_cookie ] ) : false; // phpcs:ignore
+		$cc_value = $this->decode_cookie_value( $cc_value );
+		if ( $cc_value ) {
+			$this->_customer_id = $cc_value;
+		}
+		
+		
+		$sc_value  = isset( $_COOKIE[ $this->_session_id_cookie ] ) ? $this->clean_cookie( $_COOKIE[ $this->_session_id_cookie ] ) : false; // phpcs:ignore
+		$sc_value = $this->decode_cookie_value( $sc_value );
+		if ( $sc_value ) {
+			$this->_session_id = $sc_value;
+		}
+	}
+	
+	/**
+	 * Encode cookie value with as string with hmac validation hash.
+	 *
+	 * @param string $value Value to encode.
+	 *
+	 * @return string
+	 */
+	private function encode_cookie_value( $value ) {
+		$secret = sxp_get_uuid_v4();
+		$hash = $value . '|' . $secret;
+		$hash = hash_hmac( 'md5', $hash, wp_hash( $hash ) );
+		return $value . '||' . $secret . '||' . $hash;
+	}
+	
+	/**
+	 * Validate Cookie with hMac Hash and return the value..
+	 *
+	 * @param string $cookie cookie value to validate.
+	 *
+	 * @return bool|mixed
+	 */
+	private function decode_cookie_value( $cookie ) {
+		if ( ! empty( $cookie ) || is_string( $cookie ) ) {
+			list( $value, $secret, $cookie_hash ) = explode( '||', $cookie );
+			// Validate hash.
+			$cc_hash = $value .  '|' . $secret;
+			$cc_hash = hash_hmac( 'md5', $cc_hash, wp_hash( $cc_hash ) );
+			if ( ! empty( $cookie_hash ) && hash_equals( $cc_hash, $cookie_hash ) ) {
+				return $value;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -494,7 +618,6 @@ class SXP_Tracker {
 			
 			$this->update_user_acquired_via( $data );
 			
-			unset( $data['ref_host'] );
 			// insert the data into db.
 			$now = current_time( 'mysql' );
 			$data['created'] = get_date_from_gmt( $now );
@@ -545,7 +668,6 @@ class SXP_Tracker {
 			'term'            => '', // utm_term.
 			'content'         => '', // utm_content.
 			'referrer'        => '', // the referrer.
-			'ref_host'        => '', // the referrer hostname.
 			'type'            => '', // collection type.
 			'event'           => '', // event category.
 			'session_meta'    => '', // extra meta.
@@ -677,7 +799,6 @@ class SXP_Tracker {
 		);
 		$data['is_unique']  = (int) $this->_is_unique;
 		$data['bot']        = (int) $data['bot'];
-		$data['ref_host']   = $ref_host;
 		
 		unset( $self_host );
 		unset( $ref_host );
@@ -761,44 +882,6 @@ class SXP_Tracker {
 	}
 	
 	/**
-	 * Get User Acquired Via Info from raw data.
-	 *
-	 * @param array $data Raw Session Tracking Data.
-	 *
-	 * @return string
-	 */
-	private function get_acquired_via( $data ) {
-		$acquired_via = esc_html_x( 'Direct Visit', 'Set User Acquired Via Meta', 'salexpresso' );
-		if ( isset( $data['session_meta']['affiliate'] ) && ! empty( $data['session_meta']['affiliate'] ) ) {
-			$acquired_via = $data['session_meta']['affiliate'];
-			if( has_filter( 'salexpresso_acquired_via_affiliate_id' ) ) {
-				$ref_host = apply_filters( 'salexpresso_acquired_via_affiliate_id', $acquired_via );
-			} else {
-				$acquired_via = sprintf(
-					esc_html_x( 'Affiliate::%s', 'Set User Acquired Via Meta', 'salexpresso' ),
-					$acquired_via
-				);
-			}
-		} else if ( isset( $data['session_meta']['referral'] ) && ! empty( $data['session_meta']['referral'] ) ) {
-			$acquired_via = $data['session_meta']['referral'];
-			if( has_filter( 'salexpresso_acquired_via_referral_id' ) ) {
-				$acquired_via = apply_filters( 'salexpresso_acquired_via_referral_id', $acquired_via );
-			} else {
-				$acquired_via = sprintf(
-					esc_html_x( 'Referral::%s', 'Set User Acquired Via Meta', 'salexpresso' ),
-					$acquired_via
-				);
-			}
-		} else if ( ! empty( $data['source'] ) && ! empty( $data['campaign'] ) ) {
-			$acquired_via = $data['campaign'] . '(' . $data['source'] . ')';
-		} else if( isset( $data['ref_host'] ) && ! empty( $data['ref_host'] ) ) {
-			$acquired_via = $data['ref_host'];
-		}
-		
-		return $acquired_via;
-	}
-	
-	/**
 	 * Update user's acquired_via meta.
 	 *
 	 * @param array $data Session tracking data.
@@ -810,39 +893,34 @@ class SXP_Tracker {
 			$_acquired_via = get_user_meta( $this->_user_id, 'acquired_via', true );
 			$is_organic = 0;
 			$acquired_via = '';
-			if ( ! $_acquired_via ) {
+			if ( empty( $_acquired_via ) ) {
 				// doesn't have acquired_via.
 				if ( ! $this->_is_unique ) {
 					global $wpdb;
-					// not unique.
 					// find the first visit.
 					/** @noinspection SqlResolve */
-					$record = (array) $wpdb->get_row(
+					$record = $wpdb->get_row(
 						$wpdb->prepare(
-							"SELECT * FROM {$wpdb->sxp_analytics} WHERE user_id = %s ORDER BY created ASC LIMIT 1;",
+							"SELECT * FROM {$wpdb->sxp_analytics} WHERE visitor_id = %s ORDER BY created ASC LIMIT 1;",
 							$this->_customer_id
-						)
+						),
+						ARRAY_A
 					);
 					
 					if ( ! empty( $record ) ) {
-						$record['ref_host'] = isset( $record['referrer'] ) && ! empty( $record['referrer'] ) ? wp_parse_url( $record['referrer'], PHP_URL_HOST ) : '';
-						$is_organic = isset( $record['is_organic'] ) ? $record['is_organic'] : 0;
 						$record['session_meta'] = ! empty( $record['session_meta'] ) ? json_decode( $record['session_meta'], true ) : [];
-						$acquired_via = $this->get_acquired_via( $record );
-					} else {
-						$acquired_via = $this->get_acquired_via( $data );
-						$is_organic = $data['is_organic'];
+						$data = $record;
+						unset( $record );
 					}
-				} else {
-					$acquired_via = $this->get_acquired_via( $data );
-					$is_organic = $data['is_organic'];
 				}
+				$acquired_via = sxp_get_acquired_via( $data );
+				$is_organic = $data['is_organic'];
 			} else {
-				$_is_organic = (int) get_user_meta( $this->_user_id, 'is_organic', true );
+				$_is_organic = (int) get_user_meta( $this->_user_id, '__is_organic', true );
 				$total_spent = (float) wc_get_customer_total_spent( $this->_user_id );
 				if ( $_is_organic && 0 == $total_spent && ! $data['is_organic'] ) {
 					// ony update organic user if new visits isn't organic & user hasn't purchased anything yet.
-					$acquired_via = $this->get_acquired_via( $data );
+					$acquired_via = sxp_get_acquired_via( $data );
 					$is_organic = $data['is_organic'];
 				}
 			}
@@ -864,8 +942,8 @@ class SXP_Tracker {
 						unset( $_acquired_via );
 					}
 				}
-				update_user_meta( $this->_user_id, 'acquired_via', $acquired_via );
-				update_user_meta( $this->_user_id, 'is_organic', $is_organic );
+				update_user_meta( $this->_user_id, '__acquired_via', $acquired_via );
+				update_user_meta( $this->_user_id, '__is_organic', $is_organic );
 			}
 		}
 	}
