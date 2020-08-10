@@ -621,6 +621,9 @@ if ( ! function_exists( 'sxp_get_host_name' ) ) {
 	 * @return string
 	 */
 	function sxp_get_host_name( $url ) {
+		if ( false === strpos( $url, '://' ) ) {
+			$url = 'http://' . $url;
+		}
 		return wp_parse_url( $url, PHP_URL_HOST );
 	}
 }
