@@ -283,7 +283,7 @@ class SXP_Install {
 CREATE TABLE {$wpdb->prefix}sxp_analytics (
     id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	session_id VARCHAR(60) NOT NULL,
-	user_id    VARCHAR(60) NOT NULL,
+	visitor_id VARCHAR(60) NOT NULL,
 	page_id VARCHAR(36) NULL,
 	duration int DEFAULT 0,
 	scrolled int DEFAULT 0,
