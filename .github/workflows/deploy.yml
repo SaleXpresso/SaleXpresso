@@ -15,6 +15,6 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull
-            composer update
+            composer update --no-progress --ignore-platform-reqs
             composer dump-autoload
             git status
