@@ -14,6 +14,7 @@ jobs:
           key: ${{ secrets.SERVER_PRIVATE }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
+            git checkout .
             git pull
             composer update --no-progress --ignore-platform-reqs
             composer dump-autoload
