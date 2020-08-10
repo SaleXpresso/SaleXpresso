@@ -165,19 +165,7 @@ class SXP_Customer_Activity_List_Table extends SXP_List_Table {
 				return sprintf( esc_html__( 'Session ID: %s', 'salexpresso' ), $item->session_id );
 				break;
 			case 'referrer':
-				$ref = sxp_get_host_name( $item->referrer );
-				if ( $this->host === $ref || empty( $ref ) ) {
-					$out = esc_html_x( 'Direct Visit', 'Session Tracking No Referrer Status.', 'salexpresso' );
-					if ( ! empty( $item->campaign ) ) {
-						$out .= esc_html( $item->campaign );
-						if ( ! empty( $item->source ) ) {
-							$out .= ' (' . esc_html( $item->source ) . ')';
-						}
-					}
-					return $out;
-				} else {
-					return $ref;
-				}
+				return sxp_get_acquired_via( (array) $item );
 				break;
 			case 'action_count' :
 				return isset( $item->total ) ? $item->total : 0;
