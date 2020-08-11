@@ -24,4 +24,9 @@
 
 # Datasource local storage ignored files
 /dataSources/
+
+# User defined
 /dictionaries/
+misc.xml
+php.xml
+watcherTasks.xml
