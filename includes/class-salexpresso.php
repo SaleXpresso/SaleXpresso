@@ -436,9 +436,9 @@ final class SaleXpresso {
 		require_once 'abstracts/class-sxp-admin-page.php';
 		require_once 'abstracts/class-sxp-settings-tab.php';
 		require_once 'abstracts/class-sxp-action-rules.php';
+		require_once 'classes/class-sxp-ip.php';
 		
 		require_once 'classes/class-sxp-api.php';
-		require_once 'classes/class-sxp-ip.php';
 		require_once 'classes/class-sxp-tracker.php';
 		
 		require_once 'classes/class-sxp-admin-notices.php';
@@ -447,6 +447,8 @@ final class SaleXpresso {
 		
 		require_once 'classes/analytics/class-sxp-analytics-user-data.php';
 		require_once 'classes/analytics/class-sxp-simple-analytics.php';
+		
+		require_once 'classes/abundant-cart/class-sxp-abundant-cart.php';
 		
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';
@@ -462,6 +464,7 @@ final class SaleXpresso {
 		// Admin pages.
 		require_once 'classes/dashboard/class-sxp-dashboard-page.php';
 		require_once 'classes/customer/class-sxp-customers-page.php';
+		require_once 'classes/abundant-cart/class-sxp-abundant-cart-page.php';
 		require_once 'classes/customer/class-sxp-customer-group-page.php';
 		require_once 'classes/customer/class-sxp-customer-type-page.php';
 		require_once 'classes/customer/class-sxp-customer-tag-page.php';
