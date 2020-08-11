@@ -85,10 +85,10 @@ class SXP_Assets {
 				'wp-api-fetch',
 				'wp-html-entities',
 				'wp-i18n',
-				'wp-keycodes',
 				'jquery-blockui',
-				'jquery-tiptip',
 				'wp-util',
+				'jquery-tiptip',
+				'wp-keycodes',
 				'jquery-ui-datepicker',
 				'jquery-ui-sortable',
 				'selectWoo',
@@ -127,7 +127,16 @@ class SXP_Assets {
 		wp_register_script(
 			'sxp-scripts',
 			$this->get_url( 'scripts' . $this->file_suffix . '.js' ),
-			[ 'jquery', 'lodash', ],
+			[
+				'jquery',
+				'moment',
+				'lodash',
+				'wp-api-fetch',
+				'wp-html-entities',
+				'wp-i18n',
+				'jquery-blockui',
+				'wp-util',
+			],
 			$this->get_file_version( 'scripts' . $this->file_suffix . '.js' ),
 			true
 		);
