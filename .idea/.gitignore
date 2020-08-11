@@ -27,6 +27,6 @@
 
 # User defined
 /dictionaries/
-misc.xml
-php.xml
-watcherTasks.xml
+/misc.xml
+/php.xml
+/watcherTasks.xml
