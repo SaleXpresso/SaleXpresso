@@ -894,4 +894,38 @@ if ( ! function_exists( 'sxp_get_wc_payment_gateways' ) ) {
 		return $payment_gateways;
 	}
 }
+if ( ! function_exists( 'sxp_get_expiration_time_of' ) ) {
+	/**
+	 * Get value for relative_date_selector field in seconds.
+	 *
+	 * @param string   $which   Option name to get the data.
+	 * @param int|bool $default Default Time to return if option is not set or invalid..
+	 *
+	 * @return float|int
+	 */
+	function sxp_get_expiration_time_of( $which, $default ) {
+		$expiration = get_option( $which );
+		if ( empty( $expiration ) || ! isset( $expiration['number'], $expiration['unit'] ) ) {
+			return $default;
+		}
+		
+		switch ( $expiration['unit'] ) {
+			case 'years':
+				$multiply = YEAR_IN_SECONDS;
+				break;
+			case 'months':
+				$multiply = MONTH_IN_SECONDS;
+				break;
+			case 'weeks':
+				$multiply = WEEK_IN_SECONDS;
+				break;
+			case 'days':
+			default:
+				$multiply = DAY_IN_SECONDS;
+				break;
+		}
+		
+		return $expiration['number'] ? ( $expiration['number'] * $multiply ) : $default;
+	}
+}
 // End of file helper.php.

@@ -389,34 +389,7 @@ class SXP_Tracker {
 	 * @return int
 	 */
 	private function get_customer_id_expiration() {
-		$expiration = get_option( 'salexpresso_st_customer_id_expiration' );
-		if ( empty( $expiration ) || ! isset( $expiration['number'], $expiration['unit'] ) ) {
-			$expiration = [ 'number' => 2, 'unit' => 'years' ];
-		}
-		
-		switch ( $expiration['unit'] ) {
-			case 'years':
-				$multiply = YEAR_IN_SECONDS;
-				break;
-			case 'months':
-				$multiply = MONTH_IN_SECONDS;
-				break;
-			case 'weeks':
-				$multiply = WEEK_IN_SECONDS;
-				break;
-			case 'days':
-			default:
-				$multiply = DAY_IN_SECONDS;
-				break;
-		}
-		
-		// if custom is positive.
-		if ( $multiply ) {
-			return ( $expiration['number'] * $multiply );
-		}
-		
-		// Return default.
-		return ( 2 * YEAR_IN_SECONDS );
+		return sxp_get_expiration_time_of( 'salexpresso_st_customer_id_expiration', ( 2 * YEAR_IN_SECONDS ) );
 	}
 	
 	/**
