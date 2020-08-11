@@ -299,7 +299,7 @@ class SXP_List_Table {
 	 * @abstract
 	 */
 	public function prepare_items() {
-		die( 'function WP_List_Table::prepare_items() must be overridden in a subclass.' );
+		die( 'function SaleXpresso\SXP_List_Table::prepare_items() must be overridden in a subclass.' );
 	}
 	
 	/**
