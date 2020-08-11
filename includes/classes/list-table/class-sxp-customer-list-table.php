@@ -9,10 +9,10 @@
 
 namespace SaleXpresso\List_Table;
 
-use Exception;
 use SaleXpresso\SXP_List_Table;
 use Automattic\WooCommerce\Admin\API\Reports\TimeInterval;
 use Automattic\WooCommerce\Admin\API\Reports\Customers\DataStore as CustomerReportDataStore;
+use Exception;
 use WC_DateTime;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -58,8 +58,8 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 	public function prepare_items() {
 		// using wc report api data store.
 		global $wpdb;
-		
 		$per_page     = $this->get_items_per_page( 'customers_per_page' );
+		$offset       = absint( ( 1 - $this->get_pagenum() ) * $per_page );
 		$order_by     = 'date_last_order';
 		$sort_order   = 'DESC';
 		
@@ -75,19 +75,9 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 			$sort_order = 'asc' === strtolower( $_REQUEST['order'] ) ? 'ASC' : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 		
-		$count_query = "
-		SELECT
-		    COUNT(*) as total
-		FROM {$wpdb->prefix}wc_customer_lookup
-		    LEFT JOIN {$wpdb->prefix}wc_order_stats
-		        ON {$wpdb->prefix}wc_customer_lookup.customer_id = {$wpdb->prefix}wc_order_stats.customer_id
-	        AND (
-                {$wpdb->prefix}wc_order_stats.status NOT IN ( 'wc-trash','wc-pending','wc-cancelled','wc-failed' )
-            )
-		WHERE
-	      1=1
-		GROUP BY {$wpdb->prefix}wc_customer_lookup.customer_id
-		";
+		$where = '';
+		// filter by date: -> AND ( wp_wc_order_stats.date_created <= '2020-08-11 05:39:15' AND wp_wc_order_stats.date_created >= '2020-08-04 05:39:15' )
+		
 		$sql = "
 		SELECT
 		       {$wpdb->prefix}wc_customer_lookup.customer_id as id,
@@ -96,7 +86,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		       CONCAT_WS( ' ', first_name, last_name ) as name,
 		       email, country, city, state, postcode, date_registered,
 		       IF( date_last_active <= \"0000-00-00 00:00:00\", NULL, date_last_active ) AS date_last_active,
-		       MAX( wp_wc_order_stats.date_created ) as date_last_order,
+		       MAX( {$wpdb->prefix}wc_order_stats.date_created ) as date_last_order,
 		       SUM( CASE WHEN parent_id = 0 THEN 1 ELSE 0 END ) as orders_count,
 		       SUM( total_sales ) as total_spend,
 		       CASE
@@ -107,15 +97,33 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		           END AS avg_order_value
 		FROM {$wpdb->prefix}wc_customer_lookup
 		    LEFT JOIN {$wpdb->prefix}wc_order_stats
-		        ON {$wpdb->prefix}wc_customer_lookup.customer_id = {$wpdb->prefix}wc_order_stats.customer_id
+	            ON {$wpdb->prefix}wc_customer_lookup.customer_id = {$wpdb->prefix}wc_order_stats.customer_id
 	        AND (
                 {$wpdb->prefix}wc_order_stats.status NOT IN ( 'wc-trash','wc-pending','wc-cancelled','wc-failed' )
             )
 		WHERE
-	      1=1
+	        1=1
+			{$where}
 		GROUP BY {$wpdb->prefix}wc_customer_lookup.customer_id
 		ORDER BY {$order_by} {$sort_order}
-		LIMIT 0, 10
+		LIMIT {$offset}, {$per_page}
+		";
+		
+		$count_query = "
+		SELECT COUNT(*) FROM (
+		    SELECT
+		        {$wpdb->prefix}wc_customer_lookup.customer_id
+		    FROM {$wpdb->prefix}wc_customer_lookup
+		        LEFT JOIN {$wpdb->prefix}wc_order_stats
+		            ON {$wpdb->prefix}wc_customer_lookup.customer_id = {$wpdb->prefix}wc_order_stats.customer_id
+		        AND (
+	                {$wpdb->prefix}wc_order_stats.status NOT IN ( 'wc-trash','wc-pending','wc-cancelled','wc-failed' )
+	            )
+		    WHERE
+		        1=1
+				{$where}
+		    GROUP BY {$wpdb->prefix}wc_customer_lookup.customer_id
+        ) as tt
 		";
 		
 		$db_records_count = (int) $wpdb->get_var(
@@ -126,7 +134,6 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 			$sql, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			ARRAY_A
 		);
-		
 		
 		// Use status_is to filter by order status.
 		// Use status_is_not to filter out specific order by status.
@@ -559,4 +566,88 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 	}
 }
 
+
+class sxp_cr extends CustomerReportDataStore {
+	public function get_data( $query_args = [] ) {
+		global $wpdb;
+		
+		$customers_table_name   = self::get_db_table_name();
+		$order_stats_table_name = $wpdb->prefix . 'wc_order_stats';
+		
+		// These defaults are only partially applied when used via REST API, as that has its own defaults.
+		$defaults   = array(
+			'per_page'     => get_option( 'posts_per_page' ),
+			'page'         => 1,
+			'order'        => 'DESC',
+			'orderby'      => 'date_registered',
+			'order_before' => TimeInterval::default_before(),
+			'order_after'  => TimeInterval::default_after(),
+			'fields'       => '*',
+		);
+		$query_args = wp_parse_args( $query_args, $defaults );
+		$this->normalize_timezones( $query_args, $defaults );
+		
+		/*
+		 * We need to get the cache key here because
+		 * parent::update_intervals_sql_params() modifies $query_args.
+		 */
+		$cache_key = $this->get_cache_key( $query_args );
+		$data      = $this->get_cached_data( $cache_key );
+		
+		if ( false === $data ) {
+			$this->initialize_queries();
+			
+			$data = (object) array(
+				'data'    => array(),
+				'total'   => 0,
+				'pages'   => 0,
+				'page_no' => 0,
+			);
+			
+			$selections       = $this->selected_columns( $query_args );
+			$sql_query_params = $this->add_sql_query_params( $query_args );
+			$count_query      = "SELECT COUNT(*) FROM (
+					{$this->subquery->get_query_statement()}
+				) as tt
+				";
+			echo $count_query;
+			die();
+			$db_records_count = (int) $wpdb->get_var(
+				$count_query // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			);
+			
+			$params      = $this->get_limit_params( $query_args );
+			$total_pages = (int) ceil( $db_records_count / $params['per_page'] );
+			if ( $query_args['page'] < 1 || $query_args['page'] > $total_pages ) {
+				return $data;
+			}
+			
+			$this->subquery->clear_sql_clause( 'select' );
+			$this->subquery->add_sql_clause( 'select', $selections );
+			$this->subquery->add_sql_clause( 'order_by', $this->get_sql_clause( 'order_by' ) );
+			$this->subquery->add_sql_clause( 'limit', $this->get_sql_clause( 'limit' ) );
+			
+			$customer_data = $wpdb->get_results(
+				$this->subquery->get_query_statement(), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				ARRAY_A
+			);
+			
+			if ( null === $customer_data ) {
+				return $data;
+			}
+			
+			$customer_data = array_map( array( $this, 'cast_numbers' ), $customer_data );
+			$data          = (object) array(
+				'data'    => $customer_data,
+				'total'   => $db_records_count,
+				'pages'   => $total_pages,
+				'page_no' => (int) $query_args['page'],
+			);
+			
+			$this->set_cached_data( $cache_key, $data );
+		}
+		
+		return $data;
+	}
+}
 // End of file class-sxp-customer-list-table.php.

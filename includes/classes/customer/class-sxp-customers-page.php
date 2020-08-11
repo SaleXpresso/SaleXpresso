@@ -36,7 +36,7 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 	/**
 	 * Holds the list table instance for this class (page).
 	 *
-	 * @var SXP_List_Table
+	 * @var SXP_Customer_List_Table
 	 */
 	private $list_table;
 	
@@ -67,6 +67,11 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 		);
 	}
 	
+	/**
+	 * Render page content
+	 *
+	 * @return void
+	 */
 	public function render_page_content() {
 		
 		if ( isset( $_GET['customer'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
