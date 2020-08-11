@@ -371,7 +371,7 @@ final class SaleXpresso {
 		
 		$tables = [
 			'sxp_analytics'       => 'sxp_analytics',
-			'sxp_abandon_cart'    => 'sxp_abandon_cart',
+			'sxp_abundant_cart'    => 'sxp_abundant_cart',
 		];
 		
 		foreach ( $tables as $k => $v ) {

@@ -314,14 +314,14 @@ CREATE TABLE {$wpdb->prefix}sxp_analytics (
 	created_gmt DATETIME DEFAULT '0000-00-00 00:00:00',
 	PRIMARY KEY  ( `id` ),
 	INDEX(`session_id`),
-	INDEX(`user_id`),
+	INDEX(`visitor_id`),
 	INDEX `campaign` ( `source`(50), `medium`(50), `campaign`(80), `term`(100), `content`(100) ),
 	INDEX `region` ( `language`, `country`, `city`, `timezone` )
 ) {$charset_collate};
-CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
+CREATE TABLE {$wpdb->prefix}sxp_abundant_cart (
 	id BIGINT(20) NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100),
-	session_id VARCHAR(60) NOT NULL,
+	visitor_id VARCHAR(60) NOT NULL,
 	cart_contents LONGTEXT,
 	order_id BIGINT(20),
 	cart_total DECIMAL(10,2),
@@ -331,8 +331,8 @@ CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
 	last_sent_email DATETIME DEFAULT '0000-00-00 00:00:00',
     time DATETIME DEFAULT '0000-00-00 00:00:00',
     unsubscribed boolean DEFAULT 0,
-	PRIMARY KEY  (`id`, `session_id`),
-	UNIQUE KEY (`session_id`)
+	PRIMARY KEY  (`id`, `visitor_id`),
+	UNIQUE KEY (`visitor_id`)
 ) {$charset_collate};
 SQL;
 	}
@@ -348,7 +348,7 @@ SQL;
 		
 		$tables = [
 			"{$wpdb->prefix}sxp_analytics",
-			"{$wpdb->prefix}sxp_abandon_cart",
+			"{$wpdb->prefix}sxp_abundant_cart",
 		];
 		
 		/**
