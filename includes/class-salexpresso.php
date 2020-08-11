@@ -66,13 +66,6 @@ final class SaleXpresso {
 	protected static $instance = null;
 	
 	/**
-	 * Single instance of SXP_Views class.
-	 *
-	 * @var SXP_Views
-	 */
-	protected $views;
-	
-	/**
 	 * Session Handler.
 	 *
 	 * @var SXP_Tracker
@@ -169,7 +162,6 @@ final class SaleXpresso {
 		SXP_Assets::get_instance();
 		SXP_Install::init();
 		SXP_Admin_Menus::get_instance();
-//		$this->views = SXP_Views::get_instance( $this );
 		add_action( 'plugins_loaded', [ $this, 'on_load' ], -1 );
 		add_action( 'admin_notices', [ $this, 'dependencies_notice' ] );
 		add_action( 'init', [ $this, 'init' ], 0 );
@@ -199,21 +191,6 @@ final class SaleXpresso {
 		
 		// Trigger Plugin Init.
 		do_action( 'salexpresso_init' );
-	}
-	
-	/**
-	 * Get the view instance.
-	 *
-	 * @return SXP_Views
-	 */
-	public function views() {
-		if ( is_null( $this->views ) ) {
-			if ( $this->debug_log ) {
-				error_log( sprintf( 'Calling %s too early. This should be called after `salexpresso_loaded` or `salexpresso_init`', __METHOD__ ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			}
-			return null;
-		}
-		return $this->views;
 	}
 	
 	/**
@@ -476,7 +453,6 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-user-taxonomy.php';
 		require_once 'classes/class-sxp-expression.php';
 		require_once 'classes/class-sxp-list-table.php';
-		require_once 'classes/class-sxp-views.php';
 		
 		// Core.
 		require_once 'classes/rules/class-sxp-user-group-rules.php';
