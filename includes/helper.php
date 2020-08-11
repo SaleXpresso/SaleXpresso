@@ -261,6 +261,7 @@ if ( ! function_exists( '_sxp_get_list_table' ) ) {
 			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table'    => 'customer-group',
 			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'     => [ 'customer-group', 'customer-type', ],
 			'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table'      => [ 'customer-group', 'customer-tag', ],
+			'SaleXpresso\List_Table\SXP_Abundant_Cart_List_Table'     => 'abundant-cart',
 		];
 		if ( isset( $core_classes[ $class ] ) ) {
 			foreach ( (array) $core_classes[ $class ] as $required ) {
