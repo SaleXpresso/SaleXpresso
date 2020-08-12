@@ -96,16 +96,18 @@
 	 * Abandon Cart.
 	 * Save Cart Data in case of user didn't complete the checkout.
 	 * 
-	 * @class SaleXpressoCaptureUserData
+	 * @class SaleXpressoAbandonCart
 	 */
-	class SaleXpressoCaptureUserData {
+	class SaleXpressoAbandonCart {
 		/**
 		 * Constructor
 		 */
 		constructor () {
 			this._gdpr = gdpr;
 			this._typingTimer;
+			this._input_ids = 'email,first_name,last_name,company,country,address_1,address_2,city,state,postcode,phone,comments'.split( ',' );
 			this._doneTypingInterval = 500;
+			this._billing = 'billing';
 			// this._oldData = "";
 			this._init();
 		}
@@ -117,11 +119,26 @@
 		 */
 		_init() {
 			const self = this;
-			$(document).on( 'keyup keypress change blur', 'input', self._saveData.bind( self ) );
-			$(document).on( 'keydown', 'input', self._clearTheCountDown.bind( self ) );
+			const selectors = 'input, select, textarea';
+			$(document).on( 'keyup keypress change blur', selectors, self._saveData.bind( self ) );
+			$(document).on( 'keydown', selectors, self._clearTheCountDown.bind( self ) );
+			$(document).on( 'ready', self._autofil_checkout.bind( self ) );
 			setTimeout( () => {
 				self._saveData();
 			}, 750 );
+		}
+		
+		_autofil_checkout() {
+			const self = this;
+			for ( const k of self._input_ids ) {
+				if ( k ) {
+					let id = `${self._billing}_${k}`;
+					if ( 'comments' === k ) {
+						id = `order_${k}`;
+					}
+					$(`#${id}`).val( Cookies.get( `sxp_ac_${k}` ) );
+				}
+			}
 		}
 		
 		/**
@@ -136,42 +153,21 @@
 			const self = this;
 			self._clearTheCountDown();
 			self._typingTimer = setTimeout( () => {
-				const email = $( '#billing_email' ).val() || '';
+				const email = $( `#${self._billing}_email` ).val() || '';
 				if ( isEmail( email ) ) {
-					
-					const first_name = $("#billing_first_name").val() || '';
-					const last_name = $("#billing_last_name").val() || '';
-					const company = $("#billing_company").val() || '';
-					const country = $("#billing_country").val() || '';
-					const address_1 = $("#billing_address_1").val() || '';
-					const address_2 = $("#billing_address_2").val() || '';
-					const city = $("#billing_city").val() || '';
-					const state = $("#billing_state").val() || '';
-					const postcode = $("#billing_postcode").val() || '';
-					const phone = $("#billing_phone").val() || '';
-					const comments = $("#order_comments").val() || '';
-					
-					const data = {
-						_wpnonce,
-						email,
-						first_name,
-						last_name,
-						company,
-						country,
-						address_1,
-						address_2,
-						city,
-						state,
-						postcode,
-						phone,
-						comments,
-					};
-					for ( const k of Object.keys( data ) ) {
-						if ( '_wpnonce' === k ) {
-							continue;
+					let data = { _wpnonce, email };
+					for ( const k of this._input_ids ) {
+						if ( k ) {
+							let id = `billing_${k}`;
+							if ( 'comments' === k ) {
+								id = `order_${k}`;
+							}
+							const __VALUE__ = $(`#${id}`).val() || '';
+							data[k] = __VALUE__;
+							Cookies.set( `sxp_ac_${k}`, __VALUE__, { expires: parseInt( ac_timeout ) } );
 						}
-						Cookies.set( `sxp_ac_${k}`, data[k], { expires: parseInt( ac_timeout ) } );
 					}
+					console.log( {data, event} );
 					// const hash = JSON.stringify( data );
 					// if ( self._oldData !== hash ) {
 					// 	self._oldData = hash; // reduce backend call.
@@ -194,10 +190,9 @@
 		}
 	}
 	
-	new SaleXpressoCaptureUserData();
+	new SaleXpressoAbandonCart();
 	
 	$( document ).on( 'ready', function() {
-		
 		$( document )
 			// Add to cat on single product page.
 			.on( 'click', '.single_add_to_cart_button', function () {
@@ -245,18 +240,5 @@
 			} ];
 			sxpEvent( 'checkout-completed', data );
 		} );
-		if ( checkoutForm.length ) {
-		
-		}
-		const keys = 'email,first_name,last_name,company,country,address_1,address_2,city,state,postcode,phone,comments';
-		for ( const k of keys.split( ',' ) ) {
-			if ( k ) {
-				let id = `billing_${k}`;
-				if ( 'comments' === k ) {
-					id = `order_${k}`;
-				}
-				$(`#${id}`).val( Cookies.get( `sxp_ac_${k}` ) );
-			}
-		}
 	} );
 }( jQuery, window, document, SaleXpresso, Cookies ) );
