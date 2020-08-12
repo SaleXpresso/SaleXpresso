@@ -28,16 +28,12 @@
 						padding: 0;
 
 						&:first-child {
-							a {
-								padding-left: 1.5rem;
-							}
+							padding-left: 1.5rem;
 						}
 						&:last-child {
 							width: 11%;
 							text-align: center;
-							a {
-								padding-right: 1.5rem;
-							}
+							padding-right: 1.5rem;
 						}
 
 						a {
@@ -45,7 +41,7 @@
 							position: relative;
 							text-decoration: none;
 							height: 56px;
-							padding: 18px 4px;
+							padding: 18px 0;
 
 							&::after {
 								margin-left: 0.5rem;
@@ -104,14 +100,15 @@
 							color: $dark-purple;
 						}
 					}
-					.name {
+					.name,
+					.column-customers-group {
 						a {
 							padding: 4px 6px;
 							border-radius: 4px;
 							color: $text-color;
 						}
 					}
-					
+
 					// has-fold segment
 					> tr.has-fold {
 						transition: all 0.3s ease;
