@@ -6,8 +6,8 @@
  * @version 1.0.0
  * @since 1.0.0
  */
-import _ from 'lodash';
-( function( $, window, document, SaleXpresso ) {
+// import _ from 'lodash';
+( function( $, window, document, SaleXpresso, Cookies ) {
 	"use strict";
 	
 	// Helper Functions.
@@ -85,13 +85,15 @@ import _ from 'lodash';
 	
 	// Dyamic Options.
 	const {
+		_wpnonce,
 		gdpr,
+		ac_timeout,
 		messages: { cart_email_gdpr, no_thanks },
 	} = SaleXpresso;
 	// @TODO handle GDPR.
 	
 	/**
-	 * Abundant Cart.
+	 * Abandon Cart.
 	 * Save Cart Data in case of user didn't complete the checkout.
 	 * 
 	 * @class SaleXpressoCaptureUserData
@@ -104,7 +106,7 @@ import _ from 'lodash';
 			this._gdpr = gdpr;
 			this._typingTimer;
 			this._doneTypingInterval = 500;
-			this._oldData = {};
+			// this._oldData = "";
 			this._init();
 		}
 		
@@ -136,14 +138,46 @@ import _ from 'lodash';
 			self._typingTimer = setTimeout( () => {
 				const email = $( '#billing_email' ).val() || '';
 				if ( isEmail( email ) ) {
-					const firstName = $("#billing_first_name").val() || '';
-					const lastName = $("#billing_last_name").val() || '';
+					
+					const first_name = $("#billing_first_name").val() || '';
+					const last_name = $("#billing_last_name").val() || '';
+					const company = $("#billing_company").val() || '';
+					const country = $("#billing_country").val() || '';
+					const address_1 = $("#billing_address_1").val() || '';
+					const address_2 = $("#billing_address_2").val() || '';
+					const city = $("#billing_city").val() || '';
+					const state = $("#billing_state").val() || '';
+					const postcode = $("#billing_postcode").val() || '';
 					const phone = $("#billing_phone").val() || '';
-					const data = { email, firstName, lastName, phone };
-					if ( ! _.isEqual( data, self._oldData ) ) {
-						self._oldData = data; // reduce backend call.
-						wp.ajax.post( 'sxp_save_checkout', { email, firstName, lastName } );
+					const comments = $("#order_comments").val() || '';
+					
+					const data = {
+						_wpnonce,
+						email,
+						first_name,
+						last_name,
+						company,
+						country,
+						address_1,
+						address_2,
+						city,
+						state,
+						postcode,
+						phone,
+						comments,
+					};
+					for ( const k of Object.keys( data ) ) {
+						if ( '_wpnonce' === k ) {
+							continue;
+						}
+						Cookies.set( `sxp_ac_${k}`, data[k], { expires: parseInt( ac_timeout ) } );
 					}
+					// const hash = JSON.stringify( data );
+					// if ( self._oldData !== hash ) {
+					// 	self._oldData = hash; // reduce backend call.
+					// 	wp.ajax.post( 'sxp_save_abandon_cart_data', data );
+					// }
+					wp.ajax.post( 'sxp_save_abandon_cart_data', data );
 				}
 			}, this._doneTypingInterval );
 		}
@@ -165,8 +199,8 @@ import _ from 'lodash';
 	$( document ).on( 'ready', function() {
 		
 		$( document )
-				// Add to cat on single product page.
-				.on( 'click', '.single_add_to_cart_button', function () {
+			// Add to cat on single product page.
+			.on( 'click', '.single_add_to_cart_button', function () {
 				const el = $( this );
 				const form = $( this ).closest( 'form.cart' );
 				const qtyEl = $( '[name="quantity"]' );
@@ -200,7 +234,8 @@ import _ from 'lodash';
 				sxpEvent( 'undo-remove-from-cart' );
 			} );
 		// Capture successfull checkout.
-		$( 'form.checkout' ).on( 'checkout_place_order_success', function () {
+		const checkoutForm = $( 'form.checkout' );
+		checkoutForm.on( 'checkout_place_order_success', function () {
 			const data = [ {
 				label: 'gateway_id',
 				value: elVal( '[name="payment_method"]:checked' ),
@@ -210,5 +245,18 @@ import _ from 'lodash';
 			} ];
 			sxpEvent( 'checkout-completed', data );
 		} );
+		if ( checkoutForm.length ) {
+		
+		}
+		const keys = 'email,first_name,last_name,company,country,address_1,address_2,city,state,postcode,phone,comments';
+		for ( const k of keys.split( ',' ) ) {
+			if ( k ) {
+				let id = `billing_${k}`;
+				if ( 'comments' === k ) {
+					id = `order_${k}`;
+				}
+				$(`#${id}`).val( Cookies.get( `sxp_ac_${k}` ) );
+			}
+		}
 	} );
-}( jQuery, window, document, SaleXpresso ) );
+}( jQuery, window, document, SaleXpresso, Cookies ) );

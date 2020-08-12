@@ -142,7 +142,7 @@ class SXP_Customer_Activity_List_Table extends SXP_List_Table {
 		$order_by    = 'ID';
 		$sort_order  = 'ASC';
 		$per_page    = 20;
-		$offset      = ( 1 - $this->get_pagenum() ) * $per_page;
+		$offset      = absint( ( 1 - $this->get_pagenum() ) * $per_page );
 		$sessions    = $this->analytics->get_sessions_for_list_table( $order_by, $sort_order, $per_page, $offset );
 		$this->items = $sessions['result'];
 		$this->set_pagination_args( [
@@ -154,7 +154,7 @@ class SXP_Customer_Activity_List_Table extends SXP_List_Table {
 	/**
 	 * Default Column Callback.
 	 *
-	 * @param array  $item Term.
+	 * @param object $item Session Data.
 	 * @param string $column_name Column Slug.
 	 *
 	 * @return string

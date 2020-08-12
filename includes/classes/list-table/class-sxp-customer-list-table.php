@@ -185,7 +185,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 				);
 				$profile_tab = '#';
 				if ( $item['user_id'] ) {
-					$profile_tab = esc_url_raw( admin_url( 'admin.php?page=sxp-customer&tab=customer-profile&customer=' . $item['user_id'] ) );
+					$profile_tab = esc_url_raw( admin_url( 'admin.php?page=sxp-customer&customer=' . $item['user_id'] ) );
 				}
 				
 				return sprintf(

@@ -156,10 +156,21 @@ class SXP_Tracker {
 	 */
 	private function __construct() {
 		
-		// Don't track dashboard or disabled role or user IDs.
-		if ( is_admin() || sxp_exclude_user_from_session_tracking() ) {
+		// session id and customer id required by other modules.
+		// just don't fire-up the script. if only session tracking is disabled.
+		// Plant the cookies :)
+		
+		if (
+			'yes' !== get_option( 'salexpresso_ac_enable', 'yes' )
+			&&
+			'yes' !== get_option( 'salexpresso_st_enable', 'yes' )
+		) {
+			// completely disabled.
 			return;
 		}
+		
+		// Set current User.
+		$this->_user_id = get_current_user_id();
 		
 		$this->_session_id_cookie  = 'wp_sxp_session_id_' . COOKIEHASH;
 		$this->_customer_id_cookie = 'wp_sxp_customer_id_' . COOKIEHASH;
@@ -191,7 +202,9 @@ class SXP_Tracker {
 		
 		$this->set_session();
 		
-		$this->setup_tracking_script();
+		if ( ! sxp_exclude_user_from_session_tracking() ) {
+			$this->setup_tracking_script();
+		}
 	}
 	
 	/**
@@ -213,10 +226,8 @@ class SXP_Tracker {
 			$_past = time() -YEAR_IN_SECONDS;
 			
 			sxp_setcookie( $this->_session_id_cookie, '', $_past, $this->use_secure_cookie(), true );
-//			sxp_setcookie( $this->_customer_id_cookie, '', $_past, $this->use_secure_cookie(), true );
 			
 			$this->_session_id  = '';
-//			$this->_customer_id = '';
 		}
 	}
 	
@@ -266,9 +277,8 @@ class SXP_Tracker {
 		
 		if ( is_user_logged_in() ) {
 			
-			$this->_user_id = get_current_user_id();
 			// Get saved cookie id.
-			$saved_cookie_id = get_user_meta( $this->_user_id, '_sxp_cookie_id', true );
+			$saved_cookie_id = $this->get_user_cookie_id( $this->_user_id );
 			
 			// User already have cookie and browser cookie doesn't match
 			if ( ! empty( $saved_cookie_id ) && $saved_cookie_id !== $this->_customer_id ) {
@@ -287,6 +297,31 @@ class SXP_Tracker {
 		}
 		
 		sxp_setcookie( $this->_customer_id_cookie, $this->encode_cookie_value( $this->_customer_id ), time() + $this->get_customer_id_expiration(), $this->use_secure_cookie(), true );
+	}
+	
+	/**
+	 * Get User's Cookie ID.
+	 *
+	 * @param int|string $id_or_email
+	 *
+	 * @return string
+	 */
+	public function get_user_cookie_id( $id_or_email = null ) {
+		if ( ! $id_or_email ) {
+			$user = is_user_logged_in() ? wp_get_current_user() : false;
+		} else {
+			if ( is_email( $id_or_email ) ) {
+				$user = get_user_by( 'email', $id_or_email );
+			} else {
+				$user = get_user_by( 'id', $id_or_email );
+			}
+		}
+		
+		if ( $user && $user->ID ) {
+			return get_user_meta( $user->ID, '_sxp_cookie_id', true );
+		}
+		
+		return '';
 	}
 	
 	/**
@@ -837,7 +872,13 @@ class SXP_Tracker {
 			unset( $error_url );
 		}
 		
-		$data['session_meta']['ip'] = SXP_IP::get_ip();
+		$data['session_meta']['user_agent'] = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
+		$user_ip = SXP_IP::get_ip();
+		if ( 'yes' === get_option( 'salexpresso_st_track_ip', 'no' ) ) {
+			$data['session_meta']['ip'] = $user_ip;
+		}
+		
+		// @TODO use the geo lite db with $user_ip for location data.
 		
 		if ( false !== $affiliate ) {
 			$data['session_meta']['affiliate'] = $affiliate;

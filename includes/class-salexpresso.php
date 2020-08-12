@@ -136,17 +136,13 @@ final class SaleXpresso {
 		$this->debug_display = $this->debug && ( defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY );
 		$this->define_constants();
 		$this->register_tables();
-		$this->includes();
-		$this->init_hooks();
+		// run after wc loaded.
+		add_action( 'woocommerce_loaded', [ $this, 'run' ], -1 );
 	}
 	
-	/**
-	 * Trigger SXP Loaded once WP finished loading all plugins
-	 *
-	 * @return void
-	 */
-	public function on_load() {
-		do_action( 'salexpresso_loaded' );
+	public function run() {
+		$this->includes();
+		$this->init_hooks();
 	}
 	
 	/**
@@ -162,7 +158,8 @@ final class SaleXpresso {
 		SXP_Assets::get_instance();
 		SXP_Install::init();
 		SXP_Admin_Menus::get_instance();
-		add_action( 'plugins_loaded', [ $this, 'on_load' ], -1 );
+		// Trigger SXP Loaded.
+		do_action( 'salexpresso_loaded' );
 		add_action( 'admin_notices', [ $this, 'dependencies_notice' ] );
 		add_action( 'init', [ $this, 'init' ], 0 );
 		// Fix table names on blog switch.
@@ -371,7 +368,7 @@ final class SaleXpresso {
 		
 		$tables = [
 			'sxp_analytics'       => 'sxp_analytics',
-			'sxp_abundant_cart'    => 'sxp_abundant_cart',
+			'sxp_abandon_cart'    => 'sxp_abandon_cart',
 		];
 		
 		foreach ( $tables as $k => $v ) {
@@ -448,7 +445,7 @@ final class SaleXpresso {
 		require_once 'classes/analytics/class-sxp-analytics-user-data.php';
 		require_once 'classes/analytics/class-sxp-simple-analytics.php';
 		
-		require_once 'classes/abundant-cart/class-sxp-abundant-cart.php';
+		require_once 'classes/abandon-cart/class-sxp-abandon-cart.php';
 		
 		require_once 'classes/class-sxp-install.php';
 		require_once 'classes/class-sxp-post-types.php';
@@ -464,7 +461,7 @@ final class SaleXpresso {
 		// Admin pages.
 		require_once 'classes/dashboard/class-sxp-dashboard-page.php';
 		require_once 'classes/customer/class-sxp-customers-page.php';
-		require_once 'classes/abundant-cart/class-sxp-abundant-cart-page.php';
+		require_once 'classes/abandon-cart/class-sxp-abandon-cart-page.php';
 		require_once 'classes/customer/class-sxp-customer-group-page.php';
 		require_once 'classes/customer/class-sxp-customer-type-page.php';
 		require_once 'classes/customer/class-sxp-customer-tag-page.php';

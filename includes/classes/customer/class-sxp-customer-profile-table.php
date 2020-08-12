@@ -10,6 +10,7 @@
 namespace SaleXpresso\Customer;
 
 use Exception;
+use SaleXpresso\AbandonCart\SXP_Abandon_Cart;
 use SaleXpresso\Analytics\SXP_Analytics_User_Data;
 use WC_Customer;
 
@@ -78,6 +79,8 @@ class SXP_Customer_Profile_Table {
 			<?php
 			return;
 		}
+		
+		$tabs           = $this->get_profile_tabs();
 		$tags           = sxp_get_user_tags( $this->customer->get_id() );
 		$group          = sxp_get_user_group( $this->customer->get_id() );
 		$histories      = $this->get_histories();
@@ -104,7 +107,6 @@ class SXP_Customer_Profile_Table {
 				<li><a><?php esc_html_e( 'No Tag', 'salexpresso' ); ?></a></li>
 				<?php
 			}
-			$tabs = $this->get_profile_tabs();
 			?>
 			</ul>
 			<div class="sxp-tag-add">
@@ -184,7 +186,7 @@ class SXP_Customer_Profile_Table {
 								}
 								?>
 								<li class="tab-link item<?php echo ( $tab_id === $current_tab ) ? ' current' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
-									<a href="#"><?php
+									<a href="<?php echo esc_url( admin_url( 'admin.php?page=sxp-customer&customer=' . $this->customer->get_id() . '&tab=' . $tab_id ) ); ?>"><?php
 										echo esc_html( $tab['label'] );
 										if ( isset( $tab['notification'] ) ) {
 											?>
@@ -197,23 +199,20 @@ class SXP_Customer_Profile_Table {
 						</ul>
 					</nav>
 					<?php
-					
-					foreach ( $tabs as $tab_id => $tab ) {
-						if ( ! isset( $tab['label'] ) ) {
-							continue;
-						}
-						?>
-				<div id="<?php echo esc_attr( $tab_id ); ?>" class="tab-content<?php echo ( $tab_id === $current_tab ) ? ' current' : ''; ?>">
-						<?php
-						if( isset( $tab['content'] ) && is_callable( $tab['content'] ) ) {
-							call_user_func( $tab['content'], $this->customer );
-						} else if ( has_action( "salexpresso_customer_profile_tab_{$tab_id}" ) ) {
-							do_action( "salexpresso_customer_profile_tab_{$tab_id}", $this->customer );
-						} else {
-							esc_html_e( 'No Data', 'salexpresso' );
-						}
-						?>
-				</div><!-- end .tab-content -->
+					if( $current_tab && $tabs[ $current_tab ] ) {
+						$tab = $tabs[ $current_tab ];
+					?>
+					<div id="<?php echo esc_attr( $current_tab ); ?>" class="tab-content current">
+							<?php
+							if( isset( $tab['content'] ) && is_callable( $tab['content'] ) ) {
+								call_user_func( $tab['content'], $this->customer );
+							} else if ( has_action( "salexpresso_customer_profile_tab_{$current_tab}" ) ) {
+								do_action( "salexpresso_customer_profile_tab_{$current_tab}", $this->customer );
+							} else {
+								esc_html_e( 'No Data', 'salexpresso' );
+							}
+							?>
+						</div><!-- end .tab-content -->
 					<?php
 					}
 					?>
@@ -303,7 +302,7 @@ class SXP_Customer_Profile_Table {
 					'notification' => '',
 					'priority'     => 10,
 				],
-				/*'orders'         => [
+				'orders'         => [
 					'label'        => __( 'Orders', 'salexpresso' ),
 					'content'      => [ $this, 'display_orders' ],
 					'notification' => '',
@@ -321,17 +320,18 @@ class SXP_Customer_Profile_Table {
 					'notification' => '',
 					'priority'     => 40,
 				],
-				'searches'       => [
-					'label'        => __( 'Searches', 'salexpresso' ),
-					'content'      => [ $this, 'display_searches' ],
-					'notification' => '',
-					'priority'     => 50,
-				],
+				/*
 				'recommendation' => [
 					'label'        => __( 'Recommendation', 'salexpresso' ),
 					'content'      => [ $this, 'display_recommendation' ],
 					'notification' => '',
 					'priority'     => 60,
+				],
+				'searches'       => [
+					'label'        => __( 'Searches', 'salexpresso' ),
+					'content'      => [ $this, 'display_searches' ],
+					'notification' => '',
+					'priority'     => 50,
 				],
 				'discount'       => [
 					'label'        => __( 'Discount', 'salexpresso' ),
@@ -359,276 +359,142 @@ class SXP_Customer_Profile_Table {
 	}
 	
 	private function display_orders() {
-		?>
-		<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
-			<thead>
-			<tr>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Order Id</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">products</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Date</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Revenue</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Net Profit</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Status</a></th>
-			</tr>
-			</thead>
-			<tbody id="the-list">
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
-					<a href="#" class="order-number">200083726</a>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Products">
-					<ul class="product-list multiple">
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-					</ul>
-					<div class="product-number">9 Items</div>
-				</td>
-				<td data-colname="Date">Jan 20, 2020</td>
-				<td data-colname="Revenue">$5739.2</td>
-				<td data-colname="Net Profit">$87.03</td>
-				<td data-colname="status">
-					<div class="sxp-status sxp-status-success">Completed</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
-					<a href="#" class="order-number">200083726</a>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Products">
-					<ul class="product-list multiple">
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-					</ul>
-					<div class="product-number">9 Items</div>
-				</td>
-				<td data-colname="Date">Jan 20, 2020</td>
-				<td data-colname="Revenue">$5739.2</td>
-				<td data-colname="Net Profit">$87.03</td>
-				<td data-colname="status">
-					<div class="sxp-status sxp-status-info">Refunded</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
-					<a href="#" class="order-number">200083726</a>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Products">
-					<ul class="product-list multiple">
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-					</ul>
-					<div class="product-number">9 Items</div>
-				</td>
-				<td data-colname="Date">Jan 20, 2020</td>
-				<td data-colname="Revenue">$5739.2</td>
-				<td data-colname="Net Profit">$87.03</td>
-				<td data-colname="status">
-					<div class="sxp-status sxp-status-success">Completed</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Order Id">
-					<a href="#" class="order-number">200083726</a>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Products">
-					<ul class="product-list">
-						<li><a href="#"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product thumb"></a></li>
-					</ul>
-					<div class="product-number">9 Items</div>
-				</td>
-				<td data-colname="Date">Jan 20, 2020</td>
-				<td data-colname="Revenue">$5739.2</td>
-				<td data-colname="Net Profit">$87.03</td>
-				<td data-colname="status">
-					<div class="sxp-status sxp-status-danger">Canceled</div>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-		<?php
+		$list = _sxp_get_list_table( 'SaleXpresso\List_Table\SXP_Customer_Orders_List_Table' );
+		$list->set_data( $this->user_id );
+		$list->prepare_items();
+		$list->display();
 	}
 	
 	private function display_products() {
-		?>
-		<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
-			<thead>
-			<tr>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Products</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Quantity</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Revenue</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Net Profit</a></th>
-			</tr>
-			</thead>
-			<tbody id="the-list">
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-name">Premium Miniket Rice</div>
-					</div><!--product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="quantity">66</td>
-				<td data-colname="revenue">$806.87</td>
-				<td data-colname="net-profit">$67.34</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-name">Premium Miniket Rice</div>
-					</div><!--product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="quantity">66</td>
-				<td data-colname="revenue">$806.87</td>
-				<td data-colname="net-profit">$67.34</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-name">Premium Miniket Rice</div>
-					</div><!--product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="quantity">66</td>
-				<td data-colname="revenue">$806.87</td>
-				<td data-colname="net-profit">$67.34</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-name">Premium Miniket Rice</div>
-					</div><!--product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="quantity">66</td>
-				<td data-colname="revenue">$806.87</td>
-				<td data-colname="net-profit">$67.34</td>
-			</tr>
-			<tr>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-name">Premium Miniket Rice</div>
-					</div><!--product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="quantity">66</td>
-				<td data-colname="revenue">$806.87</td>
-				<td data-colname="net-profit">$67.34</td>
-			</tr>
-			</tbody>
-		</table>
-		<?php
+		$list = _sxp_get_list_table( 'SaleXpresso\List_Table\SXP_Customer_Ordered_Product_List_Table' );
+		$list->set_data( $this->user_id );
+		$list->prepare_items();
+		$list->display();
 	}
 	
 	private function display_active_cart() {
+		$active_cart = SXP_Abandon_Cart::get_instance()->get_active_abandon_cart( $this->customer->get_billing_email() );
+		
+		if ( $active_cart ) {
+			$active_cart['cart_contents'] = maybe_unserialize( $active_cart['cart_contents'] );
+			$active_cart['cart_meta'] = maybe_unserialize( $active_cart['cart_meta'] );
+		}
+		
 		?>
 		<table class="wp-list-table widefat sxp-table sxp-customer-profile-table sxp-active-cart-table">
 			<thead>
 			<tr>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Sl.</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">All Products</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Unit Price</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">QTY</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Amount</a></th>
+				<th scope="col" class="manage-column column-sl"><?php esc_html_e( 'Sl.', 'salexpresso' ); ?></th>
+				<th scope="col" class="manage-column column-title column-primary"><?php esc_html_e( 'All Products', 'salexpresso' ); ?></th>
+				<th scope="col" class="manage-column column-unit-price"><?php esc_html_e( 'Unit Price', 'salexpresso' ); ?></th>
+				<th scope="col" class="manage-column column-qty"><?php esc_html_e( 'QTY', 'salexpresso' ); ?></th>
+				<th scope="col" class="manage-column column-price"><?php esc_html_e( 'Amount', 'salexpresso' ); ?></th>
 			</tr>
 			</thead>
 			<tbody id="the-list">
-			<tr>
-				<td>1.</td>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-details">
-							<div class="product-name">Premium Miniket Rice</div>
-							<div class="product-sku">OC063-0001</div>
-						</div>
-					</div><!-- end .product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Unit Price">$61.87</td>
-				<td data-colname="QTY">x 2</td>
-				<td data-colname="Amount">$123.74</td>
-			</tr>
-			<tr>
-				<td>2.</td>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-details">
-							<div class="product-name">Premium Miniket Rice</div>
-							<div class="product-sku">OC063-0001</div>
-						</div>
-					</div><!-- end .product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Unit Price">$61.87</td>
-				<td data-colname="QTY">x 2</td>
-				<td data-colname="Amount">$123.74</td>
-			</tr>
-			<tr>
-				<td>3.</td>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="All Products">
-					<div class="product-wrap">
-						<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-						<div class="product-details">
-							<div class="product-name">Premium Miniket Rice</div>
-							<div class="product-sku">OC063-0001</div>
-						</div>
-					</div><!-- end .product-wrap -->
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Unit Price">$61.87</td>
-				<td data-colname="QTY">x 2</td>
-				<td data-colname="Amount">$123.74</td>
-			</tr>
+			<?php if ( ! empty( $active_cart ) && isset( $active_cart['cart_contents'] ) ) { ?>
+				<?php
+				$i = 1;
+				foreach ( $active_cart['cart_contents'] as $cart_item ) {
+					$pid = $cart_item['product_id'];
+					$vid = $cart_item['variation_id'];
+					$_product = false;
+					if ( $vid ) {
+						$_product = wc_get_product( $vid );
+					} else if ( $pid ) {
+						$_product = wc_get_product( $pid );
+						//$_product->get_image()
+					}
+					if ( ! $_product ) {
+						continue;
+					}
+				?>
+					<tr>
+						<td data-colname="<?php esc_attr_e( 'Sl.', 'salexpresso' ); ?>"><?php echo $i; ?>.</td>
+						<td class="title column-title column-primary item-title" data-colname="<?php esc_attr_e( 'Product Name', 'salexpresso' ); ?>">
+							<div class="product-wrap">
+								<div class="product-thumb">
+									<?php echo $_product->get_image(); // PHPCS: XSS ok. ?>
+								</div>
+								<div class="product-details">
+									<div class="product-name"><?php echo $_product->get_name(); // PHPCS: XSS ok. ?></div>
+									<div class="product-sku"><?php echo $_product->get_sku(); // PHPCS: XSS ok. ?></div>
+									<div class="product-extr">
+										<?php
+										
+										// Backorder notification.
+										if ( $_product->backorders_require_notification() && $_product->is_on_backorder( $cart_item['quantity'] ) ) {
+											echo '<p class="backorder_notification">' . esc_html__( 'Available on backorder', 'woocommerce' ) . '</p>';
+										}
+										?>
+									</div>
+									<!-- /.product-extr -->
+								</div>
+							</div><!-- end .product-wrap -->
+							<button type="button" class="toggle-row"><span class="screen-reader-text"><?php esc_html_e( 'Show more details', 'salexpresso' ); ?></span></button>
+						</td>
+						<td data-colname="<?php esc_attr_e( 'Unit Price', 'salexpresso' ); ?>"><?php echo wc_price( $cart_item['line_subtotal'] ); // PHPCS: XSS ok. ?></td>
+						<td data-colname="<?php esc_attr_e( 'QTY', 'salexpresso' ); ?>"><?php printf(
+								esc_html_x( 'x %s', 'Active Cart Qty', 'salexpresso' ),
+								$cart_item['quantity']
+							); ?></td>
+						<td data-colname="<?php esc_attr_e( 'Amount', 'salexpresso' ); ?>"><?php echo wc_price( $cart_item['line_total'] ); // PHPCS: XSS ok. ?></td>
+					</tr>
+				<?php $i++;
+				} ?>
+			<?php } else { ?>
+				<tr>
+					<td colspan="5">
+						<p><?php esc_html_e( 'No Active Cart.', 'salexpresso' );  ?></p>
+					</td>
+				</tr>
+			<?php } ?>
 			</tbody>
 			<tfoot>
+			<?php if( isset( $active_cart['cart_meta']['subtotal'] ) ) { ?>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><?php esc_html_e( 'Sub Total', 'salexpresso' ); ?></td>
+					<td><?php echo wc_price( $active_cart['cart_meta']['subtotal'] ); // PHPCS: XSS ok. ?></td>
+				</tr>
+			<?php } ?>
+			<?php if( isset( $active_cart['cart_meta']['discount'] ) ) { ?>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><?php esc_html_e( 'Discount Received', 'salexpresso' ); ?></td>
+					<td>-<?php echo wc_price( $active_cart['cart_meta']['discount'] ); // PHPCS: XSS ok. ?></td>
+				</tr>
+			<?php } ?>
+			<?php if( isset( $active_cart['cart_meta']['shipping'] ) ) { ?>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><?php esc_html_e( 'Shipping', 'salexpresso' ); ?></td>
+					<td>+<?php echo wc_price( $active_cart['cart_meta']['shipping'] ); // PHPCS: XSS ok. ?></td>
+				</tr>
+			<?php } ?>
+			<?php if( isset( $active_cart['cart_meta']['tax'] ) ) { ?>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><?php esc_html_e( 'Tax Included', 'salexpresso' ); ?></td>
+					<td><?php echo wc_price( $active_cart['cart_meta']['tax'] ); // PHPCS: XSS ok. ?></td>
+				</tr>
+			<?php } ?>
 			<tr>
+				<?php /*<td><i data-feather="file-text"></i> Place Order</td>
+				<td><i data-feather="mail"></i> Send Mail</td>*/ ?>
 				<td></td>
 				<td></td>
 				<td></td>
-				<td>Sub Total</td>
-				<td>$5,641.01</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>Tax Included</td>
-				<td>+$550.00</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>Shipping Charge</td>
-				<td>+$250.00</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>Discount Received</td>
-				<td>-$1,500.00</td>
-			</tr>
-			<tr>
-				<td><i data-feather="file-text"></i> Place Order</td>
-				<td><i data-feather="mail"></i> Send Mail</td>
-				<td></td>
-				<td>Grand Total</td>
-				<td>$4,941.01‬</td>
+				<td><?php esc_html_e( 'Grand Total', 'salexpresso' ); ?></td>
+				<td><?php echo $active_cart ? wc_price( $active_cart['cart_total'] ) : wc_price( 0 ); ?></td>
 			</tr>
 			</tfoot>
 		</table>
@@ -1142,6 +1008,11 @@ class SXP_Customer_Profile_Table {
 	 */
 	private function get_first_order_date() {
 		$date = get_user_meta( $this->user_id, '_first_order_date', true );
+		if ( ! $date ) {
+			sxp_update_user_first_last_order_dates( $this->user_id );
+			$date = get_user_meta( $this->user_id, '_first_order_date', true );
+		}
+		
 		return $date ? gmdate( 'd M, Y', strtotime( $date ) ) : '';
 	}
 	
@@ -1165,5 +1036,4 @@ class SXP_Customer_Profile_Table {
 		return $last_active ? gmdate( 'd M, Y', $last_active ) : '';
 	}
 }
-
 // End of file class-sxp-profile-list-table.php.

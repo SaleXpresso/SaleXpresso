@@ -96,7 +96,7 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 					'title'    => __( 'Track User IP', 'salexpresso' ),
 					'desc'     => __( 'Store user IP address with tracking data.', 'salexpresso' ),
 					'id'       => 'salexpresso_st_track_ip',
-					'default'  => 'yes',
+					'default'  => 'no',
 					'type'     => 'checkbox',
 					'autoload' => false,
 				],

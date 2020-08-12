@@ -57,7 +57,7 @@ class SXP_Admin_Settings {
 			$settings = array();
 			
 			$settings[] = include 'tabs/class-sxp-general-settings.php';
-			$settings[] = include 'tabs/class-sxp-abundant-cart-settings.php';
+			$settings[] = include 'tabs/class-sxp-abandon-cart-settings.php';
 			$settings[] = include 'tabs/class-sxp-session-tracking-settings.php';
 			
 			self::$settings = apply_filters( 'salexpresso_get_settings_pages', $settings );

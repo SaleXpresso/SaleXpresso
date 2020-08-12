@@ -7,7 +7,7 @@
  * @since   1.0.0
  */
 
-namespace SaleXpresso\AbundantCart;
+namespace SaleXpresso\AbandonCart;
 
 use SaleXpresso\Abstracts\SXP_Admin_Page;
 use SaleXpresso\SXP_Admin_Menus;
@@ -20,11 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class SXP_Abundant_Cart
+ * Class SXP_Abandon_Cart
  *
- * @package SaleXpresso\AbundantCart
+ * @package SaleXpresso\AbandonCart
  */
-class SXP_Abundant_Cart_Page extends SXP_Admin_Page {
+class SXP_Abandon_Cart_Page extends SXP_Admin_Page {
 	
 	/**
 	 * Holds the list table instance for this class (page).
@@ -34,7 +34,7 @@ class SXP_Abundant_Cart_Page extends SXP_Admin_Page {
 	private $list_table;
 	
 	/**
-	 * SXP_Abundant_Cart_Page constructor.
+	 * SXP_Abandon_Cart_Page constructor.
 	 *
 	 * @param string $plugin_page Current page slug.
 	 */
@@ -53,7 +53,7 @@ class SXP_Abundant_Cart_Page extends SXP_Admin_Page {
 			'per_page',
 			[
 				'label'  => 'Number of items per page:',
-				'option' => 'abundant_cart_per_page',
+				'option' => 'abandon_cart_per_page',
 			]
 		);
 	}
@@ -73,4 +73,4 @@ class SXP_Abundant_Cart_Page extends SXP_Admin_Page {
 	
 }
 
-// End of file class-sxp-abundant-cart.php.
+// End of file class-sxp-abandon-cart.php.

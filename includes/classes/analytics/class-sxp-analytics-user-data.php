@@ -77,9 +77,9 @@ class SXP_Analytics_User_Data {
 	public function get_sessions_for_list_table( $order_by = 'ID', $order = 'ASC', $limit = 20, $offset = 0 ) {
 		global $wpdb;
 		
-		$order = $this->sql_order_by( $order_by, $order );
-		$limit = $this->sql_limit_offset( $limit, $offset );
-		$type = $this->where_session_type( [ 'page-view', 'event' ], 'AND' );
+		$order = sxp_sql_order_by( $order_by, $order );
+		$limit = sxp_sql_limit_offset( $limit, $offset );
+		$type = sxp_sql_where_in( 'type', [ 'page-view', 'event' ], 'AND' );
 		
 		$total = $wpdb->get_var(
 			$wpdb->prepare(
@@ -103,7 +103,7 @@ class SXP_Analytics_User_Data {
 	
 	public function get_session( $session_id, $type = 'page-leave', $include = false ) {
 		global $wpdb;
-		$type = $this->where_session_type( $type, 'AND', $include );
+		$type = sxp_sql_where_in( 'type', $type, 'AND', $include );
 		
 		return $wpdb->get_row(
 			$wpdb->prepare(
@@ -116,9 +116,9 @@ class SXP_Analytics_User_Data {
 	public function get_sessions( $session_id, $type = 'all', $order_by = 'ID', $order = 'ASC', $limit = 20, $offset = 0 ) {
 		global $wpdb;
 		
-		$type  = $this->where_session_type( $type, 'AND' );
-		$order = $this->sql_order_by( $order_by, $order );
-		$limit = $this->sql_limit_offset( $limit, $offset );
+		$type  = sxp_sql_where_in( 'type', $type, 'AND' );
+		$order = sxp_sql_order_by( $order_by, $order );
+		$limit = sxp_sql_limit_offset( $limit, $offset );
 		return $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->sxp_analytics} WHERE 1=1 {$type} AND session_id = %s {$order} {$limit}",
@@ -139,6 +139,16 @@ class SXP_Analytics_User_Data {
 		return $duration ? absint( $duration ) : false;
 	}
 	
+	/**
+	 * Get Page Leave time.
+	 *
+	 * @param string $session_id
+	 * @param string $page_id
+	 * @param string $type
+	 * @param bool   $gmt
+	 *
+	 * @return false|int|string|null
+	 */
 	public function get_page_leave_time( $session_id, $page_id, $type = 'timestamp', $gmt = false ) {
 		global $wpdb;
 		$field = $gmt ? 'created_gmt' : 'created';
@@ -174,40 +184,6 @@ class SXP_Analytics_User_Data {
 		return absint( $result );
 	}
 	
-	private function where_session_type( $type, $relation = 'AND', $include = true ) {
-		$sql = '';
-		if ( 'all' !== $type ) {
-			$relation = 'AND' === strtoupper( $relation ) ? 'AND' : 'OR';
-			$type = (array) $type;
-			$type = "'" . implode( "','", $type ) . "'";
-			if ( false === $include ) {
-				$include = 'NOT';
-			} else {
-				$include = '';
-			}
-			$sql .= " {$relation} type {$include} IN({$type})";
-		}
-		return $sql;
-	}
-	
-	private function sql_order_by( $column, $order ) {
-		$column = esc_sql( strtolower( $column ) );
-		$order = 'ASC' === strtoupper( $order ) ? 'ASC' : 'DESC';
-		return "ORDER BY {$column} {$order}";
-	}
-	
-	private function sql_limit_offset( $limit, $offset ) {
-		global $wpdb;
-		if ( -1 !== $limit ) {
-			return $wpdb->prepare(
-				'LIMIT %d OFFSET %d',
-				$limit,
-				$offset
-			);
-		}
-		return '';
-	}
-	
 	/**
 	 * Get User's Event Count.
 	 *
@@ -219,7 +195,7 @@ class SXP_Analytics_User_Data {
 	public function get_user_action_count( $type = 'all', $include = true ) {
 		global $wpdb;
 		
-		$type = $this->where_session_type( $type, 'AND', $include );
+		$type = sxp_sql_where_in( 'type', $type, 'AND', $include );
 		
 		$result = $wpdb->get_var(
 			$wpdb->prepare(

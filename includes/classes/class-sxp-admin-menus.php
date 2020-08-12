@@ -44,7 +44,7 @@ final class SXP_Admin_Menus {
 		'sxp-customer-tag'   => 'SaleXpresso\Customer\SXP_Customer_Tag_Page',
 		'sxp-settings'       => 'SaleXpresso\Settings\SXP_Settings_Page',
 		'sxp-status'         => 'SaleXpresso\Settings\SXP_Status_Page',
-		'sxp-abundant-cart'  => 'SaleXpresso\AbundantCart\SXP_Abundant_Cart_Page',
+		'sxp-abandon-cart'  => 'SaleXpresso\AbandonCart\SXP_Abandon_Cart_Page',
 	];
 	
 	/**
@@ -65,7 +65,7 @@ final class SXP_Admin_Menus {
 		'sxp-customer-group' => 'SaleXpresso\List_Table\SXP_Customer_Group_List_Table',
 		'sxp-customer-type'  => 'SaleXpresso\List_Table\SXP_Customer_Type_List_Table',
 		'sxp-customer-tag'   => 'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table',
-		'sxp-abundant-cart'  => 'SaleXpresso\List_Table\SXP_Abundant_Cart_List_Table',
+		'sxp-abandon-cart'  => 'SaleXpresso\List_Table\SXP_Abandon_Cart_List_Table',
 	];
 	
 	/**
@@ -210,7 +210,7 @@ final class SXP_Admin_Menus {
 		$submenu_items = [
 			[ __( 'Dashboard', 'salexpresso' ), __( 'Dashboard', 'salexpresso' ), 'manage_woocommerce', 'sxp-dashboard', -1, ],
 			[ __( 'Customer List', 'salexpresso' ), __( 'Customer', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer', 10, ],
-			[ __( 'Abundant Cart', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-abundant-cart', 15, ],
+			[ __( 'Abandon Cart', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-abandon-cart', 15, ],
 			[ __( 'Customer Group', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-customer-group', 20, ],
 			[ __( 'Customer Type', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-customer-type', 25, ],
 			[ __( 'Customer Tag', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-customer-tag', 30, ],

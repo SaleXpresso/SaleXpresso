@@ -83,6 +83,7 @@
 				&-thumb {
 					img {
 						max-width: 40px;
+						height: auto;
 						padding: 0;
 						margin: 0;
 						border-radius: 20px;
@@ -110,6 +111,8 @@
 						img {
 							border-radius: 20px;
 							width: 100%;
+							max-width: 100%;
+							height: auto;
 							border: $border-width solid $light-purple;
 						}
 					}

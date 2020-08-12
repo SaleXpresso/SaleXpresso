@@ -94,7 +94,7 @@ class SXP_Assets {
 				'selectWoo',
 				'wp-color-picker',
 			],
-			$this->get_file_version( 'admin' . $this->file_suffix . '.js' ),
+			$this->get_file_version( 'admin' . $this->file_suffix . '.js' )
 		);
 		wp_enqueue_media();
 		wp_enqueue_script( 'wp-color-picker' );
@@ -130,7 +130,8 @@ class SXP_Assets {
 			[
 				'jquery',
 				'moment',
-				'lodash',
+//				'lodash',
+				'js-cookie',
 				'wp-api-fetch',
 				'wp-html-entities',
 				'wp-i18n',
@@ -140,9 +141,12 @@ class SXP_Assets {
 			$this->get_file_version( 'scripts' . $this->file_suffix . '.js' ),
 			true
 		);
+		
 		$js_opts = apply_filters( 'salexpresso_js_opts', [
-			'gdpr'     => true,
-			'messages' => [
+			'gdpr'       => true,
+			'_wpnonce'   => wp_create_nonce( 'sxp-front-request' ),
+			'ac_timeout' => sxp_get_expiration_time_of( 'salexpresso_ac_timeout', ( 15 * MINUTE_IN_SECONDS ) ),
+			'messages'   => [
 				'cart_email_gdpr' => esc_html__( 'Your email address will help us support your shopping experience throughout the site. Please check our Privacy Policy to see how we use your personal data.', 'salexpresso' ),
 				'no_thanks'       => esc_html__( 'No Thanks.', 'salexpresso' ),
 			],

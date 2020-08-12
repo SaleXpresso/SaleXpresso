@@ -23,13 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package SaleXpresso\Settings
  * @see \WC_Settings_General
  */
-class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
+class SXP_Abandon_Cart_Settings extends SXP_Settings_Tab {
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'abundant-cart';
-		$this->label = __( 'Abundant Cart', 'salexpresso' );
+		$this->id    = 'abandon-cart';
+		$this->label = __( 'Abandon Cart', 'salexpresso' );
 		parent::__construct();
 	}
 	
@@ -118,8 +118,8 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 					'autoload' => false,
 				],
 				[
-					'title'    => __( 'Use Abundant Cart For Recommendation', 'salexpresso' ),
-					'desc'     => __( 'User abundant cart item data for recommendation engine (AI).', 'salexpresso' ),
+					'title'    => __( 'Use Abandon Cart For Recommendation', 'salexpresso' ),
+					'desc'     => __( 'User abandon cart item data for recommendation engine (AI).', 'salexpresso' ),
 					'id'       => 'salexpresso_ac_recommendation',
 					'default'  => 'no',
 					'type'     => 'checkbox',
@@ -133,23 +133,23 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 					'type'     => 'checkbox',
 					'autoload' => false,
 				],
-				[
-					'title'         => __( 'Notify Admin', 'salexpresso' ),
-					'desc'          => __( 'Admin will get an email notification when cart is abandoned.', 'salexpresso' ),
-					'id'            => 'salexpresso_ac_notify_new',
-					'default'       => 'no',
-					'type'          => 'checkbox',
-					'autoload'      => false,
-					'checkboxgroup' => 'start',
-				],
-				[
-					'desc'          => __( 'Admin will get an email notification when cart is recovered.', 'salexpresso' ),
-					'id'            => 'salexpresso_ac_notify_recovered',
-					'default'       => 'no',
-					'type'          => 'checkbox',
-					'autoload'      => false,
-					'checkboxgroup' => 'end',
-				],
+//				[
+//					'title'         => __( 'Notify Admin', 'salexpresso' ),
+//					'desc'          => __( 'Admin will get an email notification when cart is abandoned.', 'salexpresso' ),
+//					'id'            => 'salexpresso_ac_notify_new',
+//					'default'       => 'no',
+//					'type'          => 'checkbox',
+//					'autoload'      => false,
+//					'checkboxgroup' => 'start',
+//				],
+//				[
+//					'desc'          => __( 'Admin will get an email notification when cart is recovered.', 'salexpresso' ),
+//					'id'            => 'salexpresso_ac_notify_recovered',
+//					'default'       => 'no',
+//					'type'          => 'checkbox',
+//					'autoload'      => false,
+//					'checkboxgroup' => 'end',
+//				],
 				[
 					'title'    => __( 'Cart Expiration Time', 'salexpresso' ),
 					'desc'     => __( 'How long to keep the abandoned orders in database.', 'salexpresso' ),
@@ -179,7 +179,7 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 			];
 		}
 		
-		$settings = apply_filters( 'salexpresso_abundant_cart_settings', $settings );
+		$settings = apply_filters( 'salexpresso_abandon_cart_settings', $settings );
 		
 		return apply_filters( 'salexpresso_get_settings_' . $this->id, $settings );
 	}
@@ -202,5 +202,5 @@ class SXP_Abundant_Cart_Settings extends SXP_Settings_Tab {
 		do_action( 'salexpresso_update_roles_and_caps' );
 	}
 }
-new SXP_Abundant_Cart_Settings();
-// End of file class-sxp-abundant-cart-settings.php.
+new SXP_Abandon_Cart_Settings();
+// End of file class-sxp-abandon-cart-settings.php.

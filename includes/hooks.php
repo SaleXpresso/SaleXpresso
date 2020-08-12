@@ -55,4 +55,6 @@ if ( ! function_exists( 'sxp_set_screen_options' ) ) {
 		return $keep;
 	}
 }
+
+add_action( 'woocommerce_new_order', 'sxp_update_user_order_date_on_new_order', 10, 1 );
 // End of file hooks.php.

@@ -247,21 +247,26 @@ if ( ! function_exists( '_sxp_get_list_table' ) ) {
 	 *
 	 * @access private
 	 *
+	 * @param string  $class The type of the list table, which is the class name.
+	 * @param array   $args  Optional. Arguments to pass to the class. Accepts 'screen'.
+	 *
+	 * @return SaleXpresso\SXP_List_Table|bool List table object on success, false if the class does not exist.
 	 * @global string $hook_suffix
 	 *
-	 * @param string $class The type of the list table, which is the class name.
-	 * @param array  $args  Optional. Arguments to pass to the class. Accepts 'screen'.
-	 * @return SaleXpresso\SXP_List_Table|bool List table object on success, false if the class does not exist.
 	 */
 	function _sxp_get_list_table( $class, $args = [] ) {
-		
+		if ( false  === strpos( $class, 'SaleXpresso\List_Table' ) ) {
+			$class = 'SaleXpresso\List_Table\\' . $class;
+		}
 		$core_classes = [
-			'SaleXpresso\List_Table\SXP_Customer_List_Table'          => 'customer',
-			'SaleXpresso\List_Table\SXP_Customer_Activity_List_Table' => 'customer-activity',
-			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table'    => 'customer-group',
-			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'     => [ 'customer-group', 'customer-type', ],
-			'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table'      => [ 'customer-group', 'customer-tag', ],
-			'SaleXpresso\List_Table\SXP_Abundant_Cart_List_Table'     => 'abundant-cart',
+			'SaleXpresso\List_Table\SXP_Customer_List_Table'                 => 'customer',
+			'SaleXpresso\List_Table\SXP_Customer_Activity_List_Table'        => 'customer-activity',
+			'SaleXpresso\List_Table\SXP_Customer_Orders_List_Table'          => 'customer-orders',
+			'SaleXpresso\List_Table\SXP_Customer_Ordered_Product_List_Table' => 'customer-ordered-products',
+			'SaleXpresso\List_Table\SXP_Abandon_Cart_List_Table'             => 'abandon-cart',
+			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table'           => 'customer-group',
+			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'            => [ 'customer-group', 'customer-type', ],
+			'SaleXpresso\List_Table\SXP_Customer_Tag_List_Table'             => [ 'customer-group', 'customer-tag', ],
 		];
 		if ( isset( $core_classes[ $class ] ) ) {
 			foreach ( (array) $core_classes[ $class ] as $required ) {
@@ -462,23 +467,24 @@ if ( ! function_exists( 'sxp_get_the_user' ) ) {
 		return false;
 	}
 }
-if ( ! function_exists( 'sxp_is_abundant_cart_enabled_for_user' ) ) {
+if ( ! function_exists( 'sxp_is_abandon_cart_disabled_for_user' ) ) {
 	/**
-	 * Check if abundant cart is enabled for current user.
+	 * Check if abandon cart is disabled for current user.
 	 *
 	 * @param int $user Optional. Default to current user id.
 	 * @return bool
 	 */
-	function sxp_is_abundant_cart_enabled_for_user( $user = null ) {
+	function sxp_is_abandon_cart_disabled_for_user( $user = null ) {
 		if ( 'yes' !== get_option( 'salexpresso_ac_enable', 'yes' ) ) {
 			// cart tracking disabled.
 			return  true;
 		}
+		
 		$ids  = sxp_csv_string_to_array( get_option( 'salexpresso_ac_exclude_ids' ), 'absint' );
 		$user = sxp_get_the_user( $user );
 		
 		if ( empty( $user ) ) {
-			return false;
+			return false; // not disabled.
 		}
 		
 		if ( ! empty( $ids ) ) {
@@ -487,8 +493,8 @@ if ( ! function_exists( 'sxp_is_abundant_cart_enabled_for_user' ) ) {
 				return true;
 			}
 		}
-		
-		return $user->has_cap( 'disable_abundant_cart' );
+		// check for the user role cap.
+		return $user->has_cap( 'disable_abandon_cart' );
 	}
 }
 if ( ! function_exists( 'sxp_exclude_user_from_session_tracking' ) ) {
@@ -926,6 +932,228 @@ if ( ! function_exists( 'sxp_get_expiration_time_of' ) ) {
 		}
 		
 		return $expiration['number'] ? ( $expiration['number'] * $multiply ) : $default;
+	}
+}
+if ( ! function_exists( 'sxp_sql_where_in' ) ) {
+	/**
+	 * SQL WHERE IN.
+	 *
+	 * @param string $field Field.
+	 * @param string|string[] $data Data.
+	 * @param string $relation Relation.
+	 * @param bool   $include IN or Not IN.
+	 *
+	 * @return string
+	 */
+	function sxp_sql_where_in( $field, $data, $relation = 'AND', $include = true ) {
+		$sql = '';
+		$field = esc_sql( $field );
+		
+		if ( 'all' !== $data ) {
+			$relation = 'AND' === strtoupper( $relation ) ? 'AND' : 'OR';
+			$data = (array) $data;
+			$data = array_map( 'esc_sql', $data );
+			$data = "'" . implode( "','", $data ) . "'";
+			if ( false === $include ) {
+				$include = 'NOT';
+			} else {
+				$include = '';
+			}
+			$sql .= " {$relation} {$field} {$include} IN({$data})";
+		}
+		return $sql;
+	}
+}
+if ( ! function_exists( 'sxp_sql_order_by' ) ) {
+	/**
+	 * Sql ORDER BY.
+	 * @param string $column Column name.
+	 * @param string $order Sort order.
+	 *
+	 * @return string
+	 */
+	function sxp_sql_order_by( $column, $order ) {
+		$column = esc_sql( strtolower( $column ) );
+		$order = 'ASC' === strtoupper( $order ) ? 'ASC' : 'DESC';
+		return "ORDER BY {$column} {$order}";
+	}
+}
+if ( ! function_exists( 'sxp_sql_limit_offset' ) ) {
+	/**
+	 * Sql Limit Offset.
+	 *
+	 * @param int $limit Limit.
+	 * @param int $offset Offset.
+	 *
+	 * @return string
+	 */
+	function sxp_sql_limit_offset( $limit, $offset ) {
+		global $wpdb;
+		if ( -1 !== $limit ) {
+			return $wpdb->prepare(
+				'LIMIT %d OFFSET %d',
+				absint( $limit ),
+				abs( $offset )
+			);
+		}
+		return '';
+	}
+}
+if ( ! function_exists( 'sxp_get_object_by_meta_value' ) ) {
+	/**
+	 * Get Object (id) by meta key and value.
+	 *
+	 * @global wpdb  $wpdb     WordPress database abstraction object.
+	 *
+	 * @param string $type     Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
+	 *                         or any other object type with an associated meta table.
+	 * @param string $meta_key Meta key.
+	 * @param mixed  $value    Meta value.
+	 * @param bool   $single   Single or array.
+	 *
+	 * @return array|bool|mixed|object|string|null
+	 */
+	function sxp_get_object_by_meta_value( $type, $meta_key, $value, $single = false ) {
+		$table = _get_meta_table( $type );
+		if ( ! $table ) {
+			return false;
+		}
+		$meta_key  = esc_sql( wp_unslash( $meta_key ) );
+		$id_column = $type . '_id';
+		if ( is_array( $value ) || is_object( $value ) ) {
+			$value = serialize( $value );
+		} else {
+			$value = esc_sql( $value );
+		}
+		$key = md5( $table . $meta_key . $value );
+		$object = wp_cache_get( $key, 'meta-object' );
+		if ( ! $object ) {
+			global $wpdb;
+			$object = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT {$id_column} as id FROM {$table} WHERE meta_key = %s AND meta_value = %s",
+					$meta_key,
+					$value
+				),
+				ARRAY_A
+			);
+			if ( ! empty( $object ) ) {
+				var_dump( $object );
+				$object = array_map( function( $item ) {
+					return $item['id'];
+				}, $object );
+			}
+			wp_cache_add( $key, $object, 'meta-object' );
+		}
+		if ( $object ) {
+			if ( $single && is_array( $object ) ) {
+				return $object[0];
+			}
+			
+			return $object;
+		}
+		
+		if ( $single ) {
+			return '';
+		} else {
+			return [];
+		}
+	}
+}
+if ( ! function_exists( 'sxp_get_user_by_meta' ) ) {
+	function sxp_get_user_by_meta( $meta_key, $meta_value, $single = false ) {
+		return sxp_get_object_by_meta_value( 'user', $meta_key, $meta_value, $single );
+	}
+}
+if ( ! function_exists( 'sxp_get_customer_first_order' ) ) {
+	/**
+	 * Get customer's first order.
+	 * @param int $user_id User ID.
+	 *
+	 * @return bool|WC_Order
+	 */
+	function sxp_get_customer_first_order( $user_id = null ) {
+		if ( ! $user_id ) {
+			$user_id = get_current_user_id();
+		}
+		$user_id = absint( $user_id );
+		global $wpdb;
+		// Get the first order.
+		$first_order = $wpdb->get_var(
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT posts.ID
+			FROM $wpdb->posts AS posts
+			LEFT JOIN {$wpdb->postmeta} AS meta on posts.ID = meta.post_id
+			WHERE meta.meta_key = '_customer_user'
+			AND   meta.meta_value = '" . esc_sql( $user_id ) . "'
+			AND   posts.post_type = 'shop_order'
+			AND   posts.post_status IN ( '" . implode( "','", array_map( 'esc_sql', array_keys( wc_get_order_statuses() ) ) ) . "' )
+			ORDER BY posts.ID ASC"
+		// phpcs:enable
+		);
+		if ( $first_order ) {
+			return new WC_Order( $first_order );
+		}
+		return false;
+	}
+}
+if ( ! function_exists( 'sxp_update_user_first_last_order_dates' ) ) {
+	function sxp_update_user_first_last_order_dates( $user_id = null ) {
+		if ( ! $user_id ) {
+			$user_id = get_current_user_id();
+		}
+		$user_id = absint( $user_id );
+		$first_order = sxp_get_customer_first_order( $user_id );
+		if ( $first_order ) {
+			$date = $first_order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
+			$id = $first_order->get_id();
+			
+			update_user_meta( $user_id, '_first_order_id', $id );
+			update_user_meta( $user_id, '_first_order_date', $date );
+			
+			try {
+				$customer = new WC_Customer( $user_id );
+				$last_order = $customer->get_last_order();
+			} catch ( Exception $e ) {
+				$last_order = false;
+			}
+			// User might has only one order.
+			if ( $last_order ) {
+				$date = $last_order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
+				$id = $last_order->get_id();
+			}
+			
+			update_user_meta( $user_id, '_last_order_id', $id );
+			update_user_meta( $user_id, '_last_order_date', $date );
+		}
+	}
+}
+if ( ! function_exists( 'sxp_update_user_order_date_on_new_order' ) ) {
+	function sxp_update_user_order_date_on_new_order( $order_id ) {
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			return;
+		}
+		if ( 'shop_order_refund' === $order->get_type() ) {
+			return;
+		}
+		
+		$order_user = $order->get_user();
+		
+		if ( ! $order_user || ! $order_user->ID ) {
+			return;
+		}
+		
+		// Always update the last order date.
+		$date = $order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
+		update_user_meta( $order_user->ID, '_last_order_id', $order->get_id() );
+		update_user_meta( $order_user->ID, '_last_order_date', $date );
+		
+		// Check for fast date, update if empty.
+		if ( ! get_user_meta( $order_user->ID, '_first_order_date', true ) ) {
+			update_user_meta( $order_user->ID, '_first_order_id', $order->get_id() );
+			update_user_meta( $order_user->ID, '_first_order_date', $date );
+		}
 	}
 }
 // End of file helper.php.

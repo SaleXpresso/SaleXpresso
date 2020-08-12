@@ -11,7 +11,9 @@ namespace SaleXpresso\Customer;
 
 use SaleXpresso\SXP_Admin_Menus;
 use SaleXpresso\Abstracts\SXP_Admin_Page;
-use SaleXpresso\SXP_List_Table;
+use SaleXpresso\List_Table\SXP_Customer_List_Table;
+use Exception;
+use WC_Customer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -76,14 +78,14 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 		
 		if ( isset( $_GET['customer'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			try {
-				$customer = new \WC_Customer( absint( $_GET['customer'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$customer = new WC_Customer( absint( $_GET['customer'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if ( $customer->get_id() ) {
 					new SXP_Customer_Profile_Table( $customer );
 					die();
 				} else {
 					$customer = false;
 				}
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$customer = false;
 			}
 			if ( false === $customer ) {
@@ -91,11 +93,10 @@ class SXP_Customers_Page extends SXP_Admin_Page {
 				wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 				die();
 			}
+		} else {
+			$this->list_table->prepare_items();
+			$this->list_table->display();
 		}
-		
-		$this->list_table->prepare_items();
-		$this->list_table->display();
-		
 	}
 	
 	/**

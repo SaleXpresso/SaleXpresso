@@ -106,9 +106,13 @@ class SXP_Install {
 			$query = new \WP_User_Query( [
 				'fields' => 'ID',
 				'meta_query' => [
-					'relation' => 'AND',
+					'relation' => 'OR',
 					[
 						'key'     => '_first_order_date',
+						'compare' => 'NOT EXISTS',
+					],
+					[
+						'key'     => '_last_order_date',
 						'compare' => 'NOT EXISTS',
 					],
 				],
@@ -127,53 +131,9 @@ class SXP_Install {
 	 * @return void
 	 */
 	public static function update_user_order_dates_meta( $user_ids ) {
-		global $wpdb;
 		if ( ! empty( $user_ids ) ) {
 			foreach ( $user_ids as $user_id ) {
-				$user = get_user_by( 'id', $user_id );
-				if ( ! $user ) {
-					continue;
-				}
-				unset( $user );
-				
-				// Get the first order.
-				$first_order = $wpdb->get_var(
-				// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
-					"SELECT posts.ID
-			FROM $wpdb->posts AS posts
-			LEFT JOIN {$wpdb->postmeta} AS meta on posts.ID = meta.post_id
-			WHERE meta.meta_key = '_customer_user'
-			AND   meta.meta_value = '" . esc_sql( $user_id ) . "'
-			AND   posts.post_type = 'shop_order'
-			AND   posts.post_status IN ( '" . implode( "','", array_map( 'esc_sql', array_keys( wc_get_order_statuses() ) ) ) . "' )
-			ORDER BY posts.ID ASC"
-				// phpcs:enable
-				);
-				
-				if ( $first_order ) {
-					
-					$first_order = new WC_Order( $first_order );
-					$date = $first_order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
-					$id = $first_order->get_id();
-					
-					update_user_meta( $user_id, '_first_order_id', $id );
-					update_user_meta( $user_id, '_first_order_date', $date );
-					
-					try {
-						$customer = new WC_Customer( $user_id );
-						$last_order = $customer->get_last_order();
-					} catch ( Exception $e ) {
-						$last_order = false;
-					}
-					// User might has only one order.
-					if ( $last_order ) {
-						$date = $last_order->get_date_created()->format( SXP_MYSQL_DATE_FORMAT );
-						$id = $last_order->get_id();
-					}
-					
-					update_user_meta( $user_id, '_last_order_id', $id );
-					update_user_meta( $user_id, '_last_order_date', $date );
-				}
+				sp_update_user_first_last_order_dates( $user_id );
 			}
 		}
 	}
@@ -296,8 +256,8 @@ CREATE TABLE {$wpdb->prefix}sxp_analytics (
 	country VARCHAR( 10 ) NULL,
 	city VARCHAR( 50 ) NULL,
 	timezone VARCHAR( 60 ) NULL,
-	is_unique int( 1 ) DEFAULT 0,
-	is_organic int( 1 ) DEFAULT 0,
+	is_unique tinyint( 1 ) DEFAULT 0,
+	is_organic tinyint( 1 ) DEFAULT 0,
 	source VARCHAR( 50 ) NULL,
 	medium VARCHAR( 50 ) NULL,
 	campaign VARCHAR( 80 ) NULL,
@@ -307,8 +267,8 @@ CREATE TABLE {$wpdb->prefix}sxp_analytics (
 	type VARCHAR( 60 ),
 	event VARCHAR( 60 ) NULL,
 	session_meta LONGTEXT NULL,
-	https int( 1 ) DEFAULT 0,
-	bot int( 1 ) DEFAULT 0,
+	https tinyint( 1 ) DEFAULT 0,
+	bot tinyint( 1 ) DEFAULT 0,
 	version VARCHAR( 10 ),
 	created DATETIME DEFAULT '0000-00-00 00:00:00',
 	created_gmt DATETIME DEFAULT '0000-00-00 00:00:00',
@@ -318,21 +278,26 @@ CREATE TABLE {$wpdb->prefix}sxp_analytics (
 	INDEX `campaign` ( `source`(50), `medium`(50), `campaign`(80), `term`(100), `content`(100) ),
 	INDEX `region` ( `language`, `country`, `city`, `timezone` )
 ) {$charset_collate};
-CREATE TABLE {$wpdb->prefix}sxp_abundant_cart (
+CREATE TABLE {$wpdb->prefix}sxp_abandon_cart (
 	id BIGINT(20) NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100),
 	visitor_id VARCHAR(60) NOT NULL,
+	session_id VARCHAR(60) NOT NULL,
 	cart_contents LONGTEXT,
+	cart_count INT,
 	order_id BIGINT(20),
 	cart_total DECIMAL(10,2),
 	cart_meta LONGTEXT NULL,
 	status ENUM( 'processing','abandoned','recovered','completed', 'lost' ) NOT NULL DEFAULT 'processing',
 	coupon_code VARCHAR(60) DEFAULT NULL,
-	last_sent_email DATETIME DEFAULT '0000-00-00 00:00:00',
-    time DATETIME DEFAULT '0000-00-00 00:00:00',
-    unsubscribed boolean DEFAULT 0,
-	PRIMARY KEY  (`id`, `visitor_id`),
-	UNIQUE KEY (`visitor_id`)
+	last_campaign BIGINT(20),
+    created DATETIME DEFAULT '0000-00-00 00:00:00',
+    updated DATETIME DEFAULT '0000-00-00 00:00:00',
+    unsubscribed tinyint(1) DEFAULT 0,
+	PRIMARY KEY  (`id`),
+	INDEX(`email`),
+	INDEX(`session_id`),
+	INDEX(`visitor_id`)
 ) {$charset_collate};
 SQL;
 	}
@@ -348,7 +313,7 @@ SQL;
 		
 		$tables = [
 			"{$wpdb->prefix}sxp_analytics",
-			"{$wpdb->prefix}sxp_abundant_cart",
+			"{$wpdb->prefix}sxp_abandon_cart",
 		];
 		
 		/**
@@ -407,7 +372,7 @@ SQL;
 	public static function create_roles_caps() {
 		
 		$exclude_session_tracking = get_option( 'salexpresso_st_exclude_role' );
-		$exclude_abundant_cart    = get_option( 'salexpresso_ac_exclude_role' );
+		$exclude_abandon_cart    = get_option( 'salexpresso_ac_exclude_role' );
 		
 		$roles = wp_roles();
 		if ( ! empty( $exclude_session_tracking ) ) {
@@ -416,9 +381,9 @@ SQL;
 			}
 		}
 		
-		if ( ! empty( $exclude_abundant_cart ) ) {
-			foreach ( $exclude_abundant_cart as $role => $exclude ) {
-				$roles->add_cap( $role, 'disable_abundant_cart', $exclude === 'yes' );
+		if ( ! empty( $exclude_abandon_cart ) ) {
+			foreach ( $exclude_abandon_cart as $role => $exclude ) {
+				$roles->add_cap( $role, 'disable_abandon_cart', $exclude === 'yes' );
 			}
 		}
 	}
@@ -433,7 +398,7 @@ SQL;
 		
 		foreach ( $roles->roles as $role_key => $role_value ) {
 			$roles->remove_cap( $role_key, 'track_session' );
-			$roles->remove_cap( $role_key, 'track_abundant_cart' );
+			$roles->remove_cap( $role_key, 'track_abandon_cart' );
 		}
 	}
 	
