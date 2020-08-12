@@ -208,7 +208,7 @@ final class SXP_Admin_Menus {
 		
 		// page_title, menu_title, capability, menu_slug, position
 		$submenu_items = [
-			[ __( 'Dashboard', 'salexpresso' ), __( 'Dashboard', 'salexpresso' ), 'manage_woocommerce', 'sxp-dashboard', -1, ],
+			[ __( 'Dashboard', 'salexpresso' ), __( 'Dashboard', 'salexpresso' ), 'manage_woocommerce', 'sxp-dashboard', 1, ],
 			[ __( 'Customer List', 'salexpresso' ), __( 'Customer', 'salexpresso' ), 'manage_woocommerce', 'sxp-customer', 10, ],
 			[ __( 'Abandon Cart', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-abandon-cart', 15, ],
 			[ __( 'Customer Group', 'salexpresso' ), '', 'manage_woocommerce', 'sxp-customer-group', 20, ],
