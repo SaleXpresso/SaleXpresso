@@ -599,7 +599,6 @@ if ( ! function_exists( 'sxp_get_acquired_via' ) ) {
 		if ( isset( $data['session_meta']['ip'] ) ) {
 			unset( $data['session_meta']['ip'] );
 		}
-		
 		if ( isset( $data['session_meta']['affiliate'] ) && ! empty( $data['session_meta']['affiliate'] ) ) {
 			$acquired_via = sprintf(
 				/* translator: 1. Affiliate Name or ID */
@@ -621,16 +620,16 @@ if ( ! function_exists( 'sxp_get_acquired_via' ) ) {
 				esc_attr( $data['campaign'] ),
 				esc_attr( $data['source'] )
 			);
-			
 			$acquired_via = apply_filters( 'salexpresso_acquired_via_campaign', $acquired_via, $data, $context );
 		} else if( isset( $data['referrer'] ) && ! empty( $data['referrer'] ) ) {
-			$acquired_via = apply_filters( 'salexpresso_acquired_via_referrer', sxp_get_host_name( $data['referrer'] ), $data, $context );
+			$acquired_via = sxp_get_host_name( $data['referrer'] );
+			$acquired_via = apply_filters( 'salexpresso_acquired_via_referrer', $acquired_via, $data, $context );
 		} else {
 			$acquired_via = esc_html_x( 'Direct Visit', 'User Acquired Via Direct Visit', 'salexpresso' );
 			$acquired_via = apply_filters( 'salexpresso_acquired_via_bookmark', $acquired_via, $data, $context );
 		}
 		
-		return apply_filters( 'salexpresso_acquired_via', $acquired_via, $data );;
+		return apply_filters( 'salexpresso_acquired_via', $acquired_via, $data, $context );
 	}
 }
 if ( ! function_exists( 'sxp_update_user_acquired_via' ) ) {
@@ -650,7 +649,7 @@ if ( ! function_exists( 'sxp_update_user_acquired_via' ) ) {
 		
 		$cc_id = get_user_meta( $user_id, '_sxp_cookie_id', true );
 		
-		$_acquired_via = get_user_meta( $user_id, 'acquired_via', true );
+		$_acquired_via = get_user_meta( $user_id, '__acquired_via', true );
 		$is_organic = 0;
 		$acquired_via = '';
 		if ( empty( $_acquired_via ) ) {
