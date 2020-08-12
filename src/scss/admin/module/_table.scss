@@ -104,6 +104,14 @@
 							color: $dark-purple;
 						}
 					}
+					.name {
+						a {
+							padding: 4px 6px;
+							border-radius: 4px;
+							color: $text-color;
+						}
+					}
+					
 					// has-fold segment
 					> tr.has-fold {
 						transition: all 0.3s ease;
