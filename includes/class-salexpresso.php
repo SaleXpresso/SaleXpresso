@@ -468,7 +468,10 @@ final class SaleXpresso {
 		require_once 'classes/settings/class-sxp-admin-settings.php';
 		require_once 'classes/settings/class-sxp-settings-page.php';
 		require_once 'classes/settings/class-sxp-status-page.php';
-		
+
+		// Dashboard Product Meta Tab
+		require_once 'views/admin/sxp-product-meta-tab.php';
+
 	}
 	
 	/**
