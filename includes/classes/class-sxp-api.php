@@ -52,17 +52,56 @@ class SXP_API {
 	public static function add_endpoint() {
 		add_rewrite_endpoint( 'sxp-api', EP_ALL );
 		add_action( 'wp_ajax_salexpresso_set_user_tag', [ __CLASS__, 'set_customer_tags' ] );
+		add_action( 'wp_ajax_salexpresso_remove_user_tag', [ __CLASS__, 'remove_customer_tags' ] );
+	}
+	
+	public static function remove_customer_tags() {
+		check_admin_referer( 'customer-profile-remove-tag' );
+		if ( ! isset( $_REQUEST['user_id'], $_REQUEST['tag'] ) && ! empty( $_REQUEST['user_id'] ) && empty( $_REQUEST['tag'] ) ) {
+			wp_send_json_error( esc_html__( 'Invalid Request', 'salexpresso' ) );
+			wp_die();
+		}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( esc_html__( 'You do not have enough permission to set user tag.', 'salexpresso' ) );
+			wp_die();
+		}
+		
+		$data = sxp_deep_clean( $_REQUEST ); // phpcs:ignore
+//		$tag = absint( $data['tag'] );
+		$user = absint( $data['user_id'] );
+		$tag = get_term_by( 'id', absint( $data['tag'] ), 'user_tag' );
+		if ( $tag && $user ) {
+			$tags = sxp_get_user_tags( $user, [ 'fields' => 'ids' ] );
+			$key = array_search( $tag->term_id, $tags );
+			if ( false !== $key ) {
+				unset( $tags[ $key ] );
+				$set = sxp_set_user_tags( absint( $data['user_id'] ), $tags, false );
+				if ( false === $set ) {
+					wp_send_json_error( esc_html__( 'Unable to save tags.', 'salexpresso' ) );
+				} elseif ( is_wp_error( $set ) ) {
+					wp_send_json_error( sprintf(
+						esc_html__( 'Error while saving user tags. Error: %s', 'salexpresso' ),
+						$set->get_error_message()
+					) );
+				} else {
+					wp_send_json_success( esc_html__( 'Tags Saved. Click ok to reload.', 'salexpresso' ) );
+				}
+				wp_die();
+			}
+		}
+		wp_send_json_error( esc_html__( 'Invalid Or Empty Tag.', 'salexpresso' ) );
+		wp_die();
 	}
 	
 	public static function set_customer_tags() {
 		check_admin_referer( 'customer-profile-set-tag' );
 		if ( ! isset( $_REQUEST['user_id'], $_REQUEST['tags'] ) && ! empty( $_REQUEST['user_id'] ) && empty( $_REQUEST['tags'] ) ) {
 			wp_send_json_error( esc_html__( 'Invalid Request', 'salexpresso' ) );
-			die();
+			wp_die();
 		}
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( esc_html__( 'You do not have enough permission to set user tag.', 'salexpresso' ) );
-			die();
+			wp_die();
 		}
 		$data = wc_clean( $_REQUEST ); // phpcs:ignore
 		$tags = array_filter( $data['tags'] );
@@ -83,8 +122,7 @@ class SXP_API {
 		} else {
 			wp_send_json_error( esc_html__( 'Invalid Or Empty Tags.', 'salexpresso' ) );
 		}
-		
-		die();
+		wp_die();
 	}
 	
 	/**

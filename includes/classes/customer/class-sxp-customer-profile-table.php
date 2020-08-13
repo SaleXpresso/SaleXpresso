@@ -139,10 +139,49 @@ class SXP_Customer_Profile_Table {
 		</div>
 		<script>
 			( function( $ ) {
+				
+				const commonAjax = ( action, data, resolve ) => {
+					return wp.ajax.post( action, data )
+						.then( r => {
+							if ( resolve && resolve.hasOwnProperty('success') && 'function' === typeof resolve.success ) {
+								resolve.success( r );
+							} else {
+								if ( r ) {
+									if ( r.hasOwnProperty( 'message' ) ) {
+										alert( r.message );
+									} else if ( 'string' === typeof r ) {
+										alert( r );
+									}
+								}
+								if ( ( resolve && resolve.hasOwnProperty( 'reloadOnSuccess' ) ? resolve.reloadOnSuccess : true ) ) {
+									window.location.reload();
+								}
+							}
+						} )
+						.fail( e => {
+							if ( resolve && resolve.hasOwnProperty('fail') && 'function' === typeof resolve.fail ) {
+								resolve.fail( e );
+							} else {
+								if ( e.hasOwnProperty( 'statusText' ) ) {
+									alert( e.hasOwnProperty( 'statusText' ) );
+								} else if ( 'string' === typeof e ) {
+									alert( e );
+								} else {
+									alert( 'UNKNOWN ERROR' );
+								}
+								if ( ( resolve && resolve.hasOwnProperty( 'reloadOnFail' ) ? resolve.reloadOnFail : false ) ) {
+									window.location.reload();
+								}
+							}
+						} );
+				};
 				$(document).on( 'click', '.sxp-tag .remove-tag', function ( event ) {
 					event.preventDefault();
-					const self = $(this);
-					wp.ajax.post( 'sxp_remove_user_tag', { id: $( this ).data( 'id' ) } );
+					commonAjax( 'salexpresso_remove_user_tag', {
+						_wpnonce: '<?php echo wp_create_nonce( 'customer-profile-remove-tag' ); ?>',
+						user_id: '<?php echo $this->user_id; ?>',
+						tag: $( this ).data( 'id' )
+					} );
 				} );
 				$(document).on( 'click', '#sxp-tag-modal a.sxp-btn', function ( event ) {
 					event.preventDefault();
@@ -157,30 +196,11 @@ class SXP_Customer_Profile_Table {
 								data.push( opt.val() );
 							}
 						} );
-						wp.ajax.post( 'salexpresso_set_user_tag', {
+						commonAjax( 'salexpresso_set_user_tag', {
 							_wpnonce: '<?php echo wp_create_nonce( 'customer-profile-set-tag' ); ?>',
 							user_id: '<?php echo $this->user_id; ?>',
 							tags: data
-						} )
-							.then( r => {
-								if ( r ) {
-									if ( r.hasOwnProperty( 'message' ) ) {
-										alert( r.message );
-									} else if ( 'string' === typeof r ) {
-										alert( r );
-									}
-								}
-								window.location.reload();
-							} )
-							.fail( e => {
-								if ( e.hasOwnProperty( 'statusText' ) ) {
-									alert( e.hasOwnProperty( 'statusText' ) );
-								} else if ( 'string' === typeof e ) {
-									alert( e );
-								} else {
-									alert( 'UNKNOWN ERROR' );
-								}
-							} );
+						} );
 					}
 				} );
 			} )( jQuery );
