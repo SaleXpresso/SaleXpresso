@@ -12,6 +12,7 @@
 			img {
 				width: 4.5rem;
 				height: 4.5rem;
+				border-radius: 2.25rem;
 			}
 		}
 		&-wrapper {
@@ -50,10 +51,18 @@
 
 					&:first-child {
 						padding-left: 0;
+
+						a {
+							padding-left: 0;
+						}
 					}
 
 					&:last-child {
 						padding-right: 0;
+
+						a {
+							padding-right: 0;
+						}
 					}
 
 					.number-bubble {
@@ -81,6 +90,10 @@
 
 			.product {
 				&-thumb {
+					a {
+						height: 40px;
+						display: block;
+					}
 					img {
 						max-width: 40px;
 						height: auto;
@@ -103,6 +116,7 @@
 				}
 				&-list {
 					max-width: 40px;
+					height: 40px;
 					padding: 0;
 					margin: 0;
 
@@ -121,7 +135,7 @@
 							width: 50%;
 							margin: 0;
 
-							a {
+							img {
 								padding: 0;
 								margin: 0;
 								line-height: 0.6;
@@ -159,7 +173,11 @@
 			max-width: 23%;
 			margin-right: 1rem;
 			border-radius: 0.5rem;
-			padding: 1.5rem;
+			padding: 3rem 1.5rem;
+
+			a {
+				text-decoration: none;
+			}
 
 			h3,
 			p {
@@ -221,14 +239,10 @@
 		thead {
 			th {
 				&:first-child {
-					a {
-						padding-left: 1.5rem;
-					}
+					padding-left: 1.5rem;
 				}
 				&:last-child {
-					a {
-						padding-right: 1.5rem;
-					}
+					padding-right: 1.5rem;
 				}
 			}
 		}
