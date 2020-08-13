@@ -100,15 +100,6 @@
 							color: $dark-purple;
 						}
 					}
-					//.name,
-					.column-customers-group {
-						a {
-							padding: 4px 6px;
-							border-radius: 4px;
-							color: $text-color;
-						}
-					}
-
 					// has-fold segment
 					> tr.has-fold {
 						transition: all 0.3s ease;
@@ -138,7 +129,6 @@
 							}
 						}
 					}
-
 					// fold segment
 					> tr.fold {
 						display: none;
@@ -222,6 +212,17 @@
 
 					}
 				}
+				&.taxonomy-table {
+					tbody {
+						.column-name {
+							a {
+								padding: 4px 6px;
+								border-radius: 4px;
+								color: $text-color;
+							}
+						}
+					}
+				}
 			}
 			&-list-table {
 				&-top {
@@ -256,7 +257,6 @@
 				padding: 1rem;
 				overflow: hidden;
 			}
-
 			&-remove-selected {
 				height: 2.25rem;
 			}
@@ -271,7 +271,6 @@
 					color: $text-color;
 				}
 			}
-
 			&-bulk-actions {
 				float: right;
 				a {

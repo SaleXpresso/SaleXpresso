@@ -223,6 +223,17 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 	}
 	
 	/**
+	 * Table classes.
+	 *
+	 * @return array|string[]
+	 */
+	protected function get_table_classes() {
+		$parent_classes = parent::get_table_classes();
+		$parent_classes[] = 'taxonomy-table';
+		return $parent_classes;
+	}
+	
+	/**
 	 * Get Default Columns.
 	 *
 	 * @return array

@@ -210,8 +210,10 @@ class SXP_Customer_Ordered_Product_List_Table extends SXP_List_Table {
 	 *
 	 * @return array|string[]
 	 */
-	public function get_table_classes() {
-		return [ 'sxp-table', 'widefat', 'sxp-customer-profile-table', $this->_args['plural'], $this->_args['tab'], $this->screen_id ];
+	protected function get_table_classes() {
+		$parent_classes = parent::get_table_classes();
+		$parent_classes[] = 'sxp-customer-profile-table';
+		return $parent_classes;
 	}
 	
 	/**
