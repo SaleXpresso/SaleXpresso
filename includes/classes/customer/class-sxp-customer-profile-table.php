@@ -80,12 +80,8 @@ class SXP_Customer_Profile_Table {
 			return;
 		}
 		
-		$tabs           = $this->get_profile_tabs();
-		$tags           = sxp_get_user_tags( $this->customer->get_id() );
-		$group          = sxp_get_user_group( $this->customer->get_id() );
-		$histories      = $this->get_histories();
-		$tag_selected   = [];
-		$group_selected = [];
+		$tags         = sxp_get_user_tags( $this->customer->get_id() );
+		$tag_selected = [];
 		?>
 		<div class="sxp-tag-wrapper">
 			<ul class="sxp-tag">
@@ -94,11 +90,10 @@ class SXP_Customer_Profile_Table {
 				foreach ( $tags as $tag ) {
 					$tag_selected[] = $tag->term_id;
 					printf(
-						'<li data-id="%s" data-taxonomy="%s"><a href="#%s">%s</a> <!-- <i data-feather="x"></i> --></li>',
-						esc_attr( $tag->term_id ),
+						'<li><a href="#" class="remove-tag" data-taxonomy="%s" data-id="%s">%s <i data-feather="x"></i></a></li>',
 					'user_tag',
-					esc_url( $tag->term_id ),
-					esc_html( $tag->name )
+						esc_attr( $tag->term_id ),
+						esc_html( $tag->name )
 					);
 					?>
 				<?php }
@@ -114,110 +109,10 @@ class SXP_Customer_Profile_Table {
 			</div>
 		</div><!-- end .sxp-profile-tag -->
 		<div class="sxp-profile-wrapper">
-			<div class="sxp-profile-info">
-				<div class="sxp-profile-profile">
-					<?php
-					if ( ! empty( $group ) && ! is_wp_error( $group ) ) {
-						$color = sxp_get_term_background_color( $group );
-						$group_selected[] = $group->term_id;
-						?>
-						<div class="sxp-profile-type" style="background: <?php echo esc_attr( $color ); ?>;"><?php echo esc_html( $group->name ); ?></div>
-						<?php
-					}
-					?>
-					<div class="sxp-profile-info-wrapper">
-						<div class="sxp-profile-thumb">
-							<a href="<?php echo esc_url( get_edit_profile_url( $this->user_id ) ); ?>">
-								<?php echo get_avatar( $this->customer->get_email(), 72, '', $this->customer->get_display_name() ); ?>
-							</a>
-						</div>
-						<h3><a href="<?php echo esc_url( get_edit_profile_url( $this->user_id ) ); ?>"><?php echo esc_html( $this->customer->get_display_name() ); ?></a></h3>
-						<p><a href="mailto:<?php echo esc_url( $this->customer->get_email() ); ?>"><?php echo esc_html( $this->customer->get_email() ); ?></a></p>
-						<p><?php echo esc_html( $this->customer->get_billing_address_1() ); ?></p>
-					</div><!-- end .sxp-profile-info-wrapper -->
-					<div class="sxp-profile-info-history">
-						<?php
-						if ( ! empty( $histories ) ) {
-							foreach ( $histories as $history ) {
-								if ( ! isset( $history['label'], $history['data'] ) ) {
-									continue;
-								}
-								printf(
-									'<div class="history"><p>%s</p><p>%s</p></div><!-- end .history -->',
-									esc_html( $history['label'] ),
-									esc_html( $history['data'] )
-								);
-							}
-						}
-						?>
-					</div><!-- end .profile-info-history -->
-				</div>
-			</div><!-- end .sxp-profile-info -->
-			<div class="sxp-profile-details">
-				<?php if ( is_array( $tabs ) ) {
-					$tab_ids = array_keys( $tabs );
-					if ( isset( $_GET['tab'] ) && in_array( $_GET['tab'], $tab_ids ) ) {
-						$current_tab = sanitize_text_field( $_GET['tab'] );
-					} else {
-						$current_tab = $tab_ids[0];
-					}
-				?>
-					<nav class="nav-bar horizontal-scroll-bar">
-						<span class="scroll scroll-backward">
-							<a href="#" class="d-none">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" class="icon ">
-								<path d="M21.5265 8.77171C22.1578 8.13764 22.1578 7.10962 21.5265 6.47555C20.8951 5.84148 19.8714 5.84148 19.24 6.47555L11.9999 13.7465L4.75996 6.47573C4.12858 5.84166 3.10492 5.84166 2.47354 6.47573C1.84215 7.10979 1.84215 8.13782 2.47354 8.77188L10.8332 17.1671C10.8408 17.1751 10.8486 17.183 10.8565 17.1909C11.0636 17.399 11.313 17.5388 11.577 17.6103C11.5834 17.6121 11.5899 17.6138 11.5964 17.6154C12.132 17.7536 12.7242 17.6122 13.1435 17.1911C13.1539 17.1807 13.1641 17.1702 13.1742 17.1596L21.5265 8.77171Z"></path>
-								</svg>
-							</a>
-						</span>
-						<span class="scroll scroll-forward">
-							<a href="#" class="d-none">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" class="icon ">
-								<path d="M21.5265 8.77171C22.1578 8.13764 22.1578 7.10962 21.5265 6.47555C20.8951 5.84148 19.8714 5.84148 19.24 6.47555L11.9999 13.7465L4.75996 6.47573C4.12858 5.84166 3.10492 5.84166 2.47354 6.47573C1.84215 7.10979 1.84215 8.13782 2.47354 8.77188L10.8332 17.1671C10.8408 17.1751 10.8486 17.183 10.8565 17.1909C11.0636 17.399 11.313 17.5388 11.577 17.6103C11.5834 17.6121 11.5899 17.6138 11.5964 17.6154C12.132 17.7536 12.7242 17.6122 13.1435 17.1911C13.1539 17.1807 13.1641 17.1702 13.1742 17.1596L21.5265 8.77171Z"></path>
-								</svg>
-							</a>
-						</span>
-						
-						<ul class="tabs">
-							<?php
-							foreach ( $tabs as $tab_id => $tab ) {
-								if ( ! isset( $tab['label'] ) ) {
-									continue;
-								}
-								?>
-								<li class="tab-link item<?php echo ( $tab_id === $current_tab ) ? ' current' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
-									<a href="<?php echo esc_url( admin_url( 'admin.php?page=sxp-customer&customer=' . $this->customer->get_id() . '&tab=' . $tab_id ) ); ?>"><?php
-										echo esc_html( $tab['label'] );
-										if ( isset( $tab['notification'] ) ) {
-											?>
-											<span class="number-bubble"><?php echo esc_html( $tab['notification'] ); ?></span>
-											<?php
-										}
-									?></a>
-								</li>
-							<?php } ?>
-						</ul>
-					</nav>
-					<?php
-					if( $current_tab && $tabs[ $current_tab ] ) {
-						$tab = $tabs[ $current_tab ];
-					?>
-					<div id="<?php echo esc_attr( $current_tab ); ?>" class="tab-content current">
-							<?php
-							if( isset( $tab['content'] ) && is_callable( $tab['content'] ) ) {
-								call_user_func( $tab['content'], $this->customer );
-							} else if ( has_action( "salexpresso_customer_profile_tab_{$current_tab}" ) ) {
-								do_action( "salexpresso_customer_profile_tab_{$current_tab}", $this->customer );
-							} else {
-								esc_html_e( 'No Data', 'salexpresso' );
-							}
-							?>
-						</div><!-- end .tab-content -->
-					<?php
-					}
-					?>
-				<?php } ?>
-			</div><!-- end .sxp-profile-details -->
+			<?php
+			$this->get_profile_infos();
+			$this->get_profile_details_tabs();
+			?>
 		</div><!-- end .sxp-profile-wrapper -->
 		<div id="sxp-tag-modal" class="modal">
 			<div class="sxp-modal-content">
@@ -244,6 +139,11 @@ class SXP_Customer_Profile_Table {
 		</div>
 		<script>
 			( function( $ ) {
+				$(document).on( 'click', '.sxp-tag .remove-tag', function ( event ) {
+					event.preventDefault();
+					const self = $(this);
+					wp.ajax.post( 'sxp_remove_user_tag', { id: $( this ).data( 'id' ) } );
+				} );
 				$(document).on( 'click', '#sxp-tag-modal a.sxp-btn', function ( event ) {
 					event.preventDefault();
 					const selected = $('#sxp-tag-select option:selected');
@@ -285,6 +185,136 @@ class SXP_Customer_Profile_Table {
 				} );
 			} )( jQuery );
 		</script>
+		<?php
+	}
+	
+	/**
+	 * Render Profile lnfos
+	 *
+	 * @return void
+	 */
+	private function get_profile_infos() {
+		?>
+		<div class="sxp-profile-info">
+			<div class="sxp-profile-profile">
+				<?php
+				$group = sxp_get_user_group( $this->customer->get_id() );
+				if ( ! empty( $group ) && ! is_wp_error( $group ) ) {
+					$color = sxp_get_term_background_color( $group );
+					?>
+					<div class="sxp-profile-type" style="background: <?php echo esc_attr( $color ); ?>;"><?php echo esc_html( $group->name ); ?></div>
+					<?php
+				}
+				?>
+				<div class="sxp-profile-info-wrapper">
+					<div class="sxp-profile-thumb">
+						<a href="<?php echo esc_url( get_edit_profile_url( $this->user_id ) ); ?>">
+							<?php echo get_avatar( $this->customer->get_email(), 72, '', $this->customer->get_display_name() ); ?>
+						</a>
+					</div>
+					<h3><a href="<?php echo esc_url( get_edit_profile_url( $this->user_id ) ); ?>"><?php echo esc_html( $this->customer->get_display_name() ); ?></a></h3>
+					<p><a href="mailto:<?php echo esc_url( $this->customer->get_email() ); ?>"><?php echo esc_html( $this->customer->get_email() ); ?></a></p>
+					<p><?php echo esc_html( $this->customer->get_billing_address_1() ); ?></p>
+				</div><!-- end .sxp-profile-info-wrapper -->
+				<div class="sxp-profile-info-history">
+					<?php
+					foreach ( $this->get_histories() as $history ) {
+						if ( ! isset( $history['label'], $history['data'] ) ) {
+							continue;
+						}
+						printf(
+							'<div class="history"><p>%s</p><p>%s</p></div><!-- end .history -->',
+							esc_html( $history['label'] ),
+							esc_html( $history['data'] )
+						);
+					}
+					?>
+				</div><!-- end .profile-info-history -->
+			</div>
+		</div><!-- end .sxp-profile-info -->
+		<?php
+	}
+	
+	/**
+	 * Render profile tabs.
+	 *
+	 * @return void
+	 */
+	private function get_profile_details_tabs() {
+		$this->tabs = $this->get_profile_tabs();
+		$tab_ids = array_keys( $this->tabs );
+		if ( isset( $_GET['tab'] ) && in_array( $_GET['tab'], $tab_ids ) ) {
+			$this->current_tab = sanitize_text_field( $_GET['tab'] );
+		} else {
+			$this->current_tab = $tab_ids[0];
+		}
+		?>
+		<div class="sxp-profile-details">
+			<?php
+			$this->get_tab_navs();
+			if ( is_array( $this->tabs ) ) {
+				
+				if( $this->current_tab && $this->tabs[ $this->current_tab ] ) {
+					$tab = $this->tabs[ $this->current_tab ];
+					?>
+					<div id="<?php echo esc_attr( $this->current_tab ); ?>" class="tab-content current">
+						<?php
+						if( isset( $tab['content'] ) && is_callable( $tab['content'] ) ) {
+							call_user_func( $tab['content'], $this->customer );
+						} else {
+							esc_html_e( 'No Data', 'salexpresso' );
+						}
+						?>
+					</div><!-- end .tab-content -->
+					<?php
+				}
+				?>
+			<?php } ?>
+		</div><!-- end .sxp-profile-details -->
+		<?php
+	}
+	
+	/**
+	 * Get profile tab navigations
+	 * @return void
+	 */
+	private function get_tab_navs() {
+		?>
+		<nav class="nav-bar horizontal-scroll-bar">
+			<span class="scroll scroll-backward">
+							<a href="#" class="d-none">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" class="icon ">
+								<path d="M21.5265 8.77171C22.1578 8.13764 22.1578 7.10962 21.5265 6.47555C20.8951 5.84148 19.8714 5.84148 19.24 6.47555L11.9999 13.7465L4.75996 6.47573C4.12858 5.84166 3.10492 5.84166 2.47354 6.47573C1.84215 7.10979 1.84215 8.13782 2.47354 8.77188L10.8332 17.1671C10.8408 17.1751 10.8486 17.183 10.8565 17.1909C11.0636 17.399 11.313 17.5388 11.577 17.6103C11.5834 17.6121 11.5899 17.6138 11.5964 17.6154C12.132 17.7536 12.7242 17.6122 13.1435 17.1911C13.1539 17.1807 13.1641 17.1702 13.1742 17.1596L21.5265 8.77171Z"></path>
+								</svg>
+							</a>
+						</span>
+			<span class="scroll scroll-forward">
+							<a href="#" class="d-none">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img" class="icon ">
+								<path d="M21.5265 8.77171C22.1578 8.13764 22.1578 7.10962 21.5265 6.47555C20.8951 5.84148 19.8714 5.84148 19.24 6.47555L11.9999 13.7465L4.75996 6.47573C4.12858 5.84166 3.10492 5.84166 2.47354 6.47573C1.84215 7.10979 1.84215 8.13782 2.47354 8.77188L10.8332 17.1671C10.8408 17.1751 10.8486 17.183 10.8565 17.1909C11.0636 17.399 11.313 17.5388 11.577 17.6103C11.5834 17.6121 11.5899 17.6138 11.5964 17.6154C12.132 17.7536 12.7242 17.6122 13.1435 17.1911C13.1539 17.1807 13.1641 17.1702 13.1742 17.1596L21.5265 8.77171Z"></path>
+								</svg>
+							</a>
+						</span>
+			<ul class="tabs">
+				<?php
+				foreach ( $this->tabs as $tab_id => $tab ) {
+					if ( ! isset( $tab['label'] ) ) {
+						continue;
+					}
+					?>
+					<li class="tab-link item<?php echo ( $tab_id === $this->current_tab ) ? ' current' : ''; ?>" data-tab="<?php echo esc_attr( $tab_id ); ?>">
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=sxp-customer&customer=' . $this->customer->get_id() . '&tab=' . $tab_id ) ); ?>"><?php
+							echo esc_html( $tab['label'] );
+							if ( isset( $tab['notification'] ) ) {
+								?>
+								<span class="number-bubble"><?php echo esc_html( $tab['notification'] ); ?></span>
+								<?php
+							}
+							?></a>
+					</li>
+				<?php } ?>
+			</ul>
+		</nav>
 		<?php
 	}
 	
@@ -959,7 +989,7 @@ class SXP_Customer_Profile_Table {
 		return [
 			'acquired_via' => [
 				'label' => __( 'Acquired via', 'salexpresso' ),
-				'data'  => $this->get_acquired_via(),
+				'data'  => get_user_meta( $this->user_id, '__acquired_via', true ),
 			],
 			'revenue'      => [
 				'label' => __( 'Revenue', 'salexpresso' ),
@@ -990,15 +1020,6 @@ class SXP_Customer_Profile_Table {
 				'data'  => $this->get_last_active(),
 			],
 		];
-	}
-	
-	/**
-	 * Get Acquired via.
-	 *
-	 * @return string
-	 */
-	private function get_acquired_via() {
-		return get_user_meta( $this->user_id, '__acquired_via', true );
 	}
 	
 	/**
