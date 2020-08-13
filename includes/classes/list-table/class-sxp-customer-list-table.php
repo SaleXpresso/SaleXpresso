@@ -165,6 +165,28 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		);
 	}
 	
+	protected function _column_customer_group( $item, $classes, $data, $primary ) {
+		$classes.= ' user-term';
+		$attributes = "class='$classes' $data";
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo "<td $attributes>";
+		echo $this->column_default( $item, 'customer_group' );
+		echo $this->handle_row_actions( $item, 'customer_group', $primary );
+		echo '</td>';
+		// phpcs:enable
+	}
+	
+	protected function _column_customer_type( $item, $classes, $data, $primary ) {
+		$classes.= ' user-term';
+		$attributes = "class='$classes' $data";
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo "<td $attributes>";
+		echo $this->column_default( $item, 'customer_type' );
+		echo $this->handle_row_actions( $item, 'customer_type', $primary );
+		echo '</td>';
+		// phpcs:enable
+	}
+	
 	/**
 	 * Default Column Callback.
 	 *
@@ -201,7 +223,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 					$item['name'],
 					$address
 				);
-			case 'customers-group':
+			case 'customer_group':
 				$group = sxp_get_user_group( $item['user_id'] );
 				if ( ! empty( $group ) && ! is_wp_error( $group ) ) {
 					$color = sxp_get_term_background_color( $group );
@@ -209,7 +231,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 					return sprintf( '<a href="#%s"  style="background: %s">%s</a>', esc_url( $group->term_id ), esc_attr( $color ), esc_html( $group->name ) );
 				}
 				return '';
-			case 'customers-type':
+			case 'customer_type':
 				$type = sxp_get_user_types( $item['user_id'] );
 				if ( ! empty( $type ) && ! is_wp_error( $type ) ) {
 					$type  = $type[0];
@@ -218,7 +240,7 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 					return sprintf( '<a href="#%s"  style="background: %s">%s</a>', esc_url( $type->term_id ), esc_attr( $color ), esc_html( $type->name ) );
 				}
 				return '';
-			case 'customer-tag':
+			case 'customer_tag':
 				$output = '<ul class="sxp-tag-list">';
 				if ( $item['user_id'] ) {
 					$tags = sxp_get_user_tags( $item['user_id'] );
@@ -270,9 +292,9 @@ class SXP_Customer_List_Table extends SXP_List_Table {
 		return [
 			'cb'              => '<input type="checkbox" />',
 			'name'            => __( 'Customers', 'salexpresso' ),
-			'customers-group'  => __( 'Customers Group', 'salexpresso' ),
-			'customers-type'  => __( 'Customers Type', 'salexpresso' ),
-			'customer-tag'    => __( 'Customers Tag', 'salexpresso' ),
+			'customer_group'  => __( 'Customers Group', 'salexpresso' ),
+			'customer_type'   => __( 'Customers Type', 'salexpresso' ),
+			'customer_tag'    => __( 'Customers Tag', 'salexpresso' ),
 			'orders_count'    => __( 'Orders', 'salexpresso' ),
 			'total_spend'     => __( 'Revenue', 'salexpresso' ),
 			'date_last_order' => __( 'Last Order', 'salexpresso' ),

@@ -152,14 +152,12 @@ class SXP_Customer_Group_List_Table extends SXP_List_Table {
 			'meta_type'  => $meta_type,
 		];
 		
-		$data = new WP_Term_Query( $term_args );
-		global $wpdb;
-		$sql         = preg_replace( '/SELECT .+ FROM(.*)LIMIT.*/i', 'SELECT  COUNT(*) as total FROM$1', $data->request );
-		$total       = (array) $wpdb->get_row( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-		$this->items = $data->get_terms();
+//		$data = new WP_Term_Query( $term_args );
+//		$this->items = $data->get_terms();
+		$this->items = get_terms( $term_args );
 		
 		$this->set_pagination_args( [
-			'total_items' => reset( $total ),
+			'total_items' => wp_count_terms( $this->taxonomy_name, [ 'search' => $search ] ),
 			'per_page'    => $per_page,
 		] );
 	}
