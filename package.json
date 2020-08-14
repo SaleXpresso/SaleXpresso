@@ -60,7 +60,6 @@
     "eslint-plugin-prettier": "^3.1.4",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.0.0",
-    "gulp": "^4.0.0",
     "gulp-rename": "^1.4.0",
     "gulp-wp-pot": "^2.4.3",
     "gulp-zip": "^5.0.2",
