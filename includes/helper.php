@@ -258,11 +258,15 @@ if ( ! function_exists( '_sxp_get_list_table' ) ) {
 		if ( false  === strpos( $class, 'SaleXpresso\List_Table' ) ) {
 			$class = 'SaleXpresso\List_Table\\' . $class;
 		}
+		/**
+		 * @var \SaleXpresso\SXP_List_Table
+		 */
 		$core_classes = [
 			'SaleXpresso\List_Table\SXP_Customer_List_Table'                 => 'customer',
 			'SaleXpresso\List_Table\SXP_Customer_Activity_List_Table'        => 'customer-activity',
 			'SaleXpresso\List_Table\SXP_Customer_Orders_List_Table'          => 'customer-orders',
 			'SaleXpresso\List_Table\SXP_Customer_Ordered_Product_List_Table' => 'customer-ordered-products',
+			'SaleXpresso\List_Table\SXP_Customer_Recommendations_List_Table' => 'customer-recommendations',
 			'SaleXpresso\List_Table\SXP_Abandon_Cart_List_Table'             => 'abandon-cart',
 			'SaleXpresso\List_Table\SXP_Customer_Group_List_Table'           => 'customer-group',
 			'SaleXpresso\List_Table\SXP_Customer_Type_List_Table'            => [ 'customer-group', 'customer-type', ],
@@ -1153,6 +1157,58 @@ if ( ! function_exists( 'sxp_update_user_order_date_on_new_order' ) ) {
 			update_user_meta( $order_user->ID, '_first_order_id', $order->get_id() );
 			update_user_meta( $order_user->ID, '_first_order_date', $date );
 		}
+	}
+}
+if ( ! function_exists( 'sxp_get_user' ) ) {
+	/**
+	 * Get user.
+	 *
+	 * @param int|string|WP_User $user User object or email or id.
+	 *
+	 * @return bool|WP_User
+	 */
+	function sxp_get_user( $user ) {
+		$_user = false;
+		
+		if ( $user instanceof WP_User && $user->exists() ) {
+			$_user = $user;
+		} else if ( is_numeric( $user ) ) {
+			$_user = get_user_by( 'id', $user );
+		} else if ( is_email( $user ) ) {
+			$_user = get_user_by( 'email', $user );
+		}
+		
+		return $_user;
+	}
+}
+if ( ! function_exists( 'sxp_get_user_customer_id' ) ) {
+	/**
+	 * Get User's Customer ID (customer_lookup_table ID)
+	 *
+	 * @param int|string|WP_User $user WP User.
+	 *
+	 * @return bool|int
+	 */
+	function sxp_get_user_customer_id( $user ) {
+		$user = sxp_get_user( $user );
+		if ( ! $user ) {
+			return false;
+		}
+		$customer_id = get_user_meta( $user->ID, '_sxp_user_customer_id', true );
+		if ( ! $customer_id ) {
+			global $wpdb;
+			$customer_id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT customer_id FROM {$wpdb->prefix}wc_customer_lookup WHERE user_id = %d;",
+					$user->ID
+				)
+			);
+			if ( $customer_id ) {
+				update_user_meta( $user->ID, '_sxp_user_customer_id', $customer_id );
+			}
+		}
+		
+		return $customer_id ? (int) $customer_id : false;
 	}
 }
 // End of file helper.php.

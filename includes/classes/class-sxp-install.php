@@ -122,6 +122,7 @@ class SXP_Install {
 				WC()->queue()->schedule_single( time() + $i, 'salexpresso_installer_update_user_order_dates_meta', [ $user_ids ], SXP_AC_GROUP );
 			}
 		}
+		// @TODO check for existing user and create shadow copy if not exists.
 	}
 	
 	/**
@@ -133,7 +134,7 @@ class SXP_Install {
 	public static function update_user_order_dates_meta( $user_ids ) {
 		if ( ! empty( $user_ids ) ) {
 			foreach ( $user_ids as $user_id ) {
-				sp_update_user_first_last_order_dates( $user_id );
+				sxp_update_user_first_last_order_dates( $user_id );
 			}
 		}
 	}

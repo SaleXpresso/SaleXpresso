@@ -59,6 +59,7 @@ class SXP_Admin_Settings {
 			$settings[] = include 'tabs/class-sxp-general-settings.php';
 			$settings[] = include 'tabs/class-sxp-abandon-cart-settings.php';
 			$settings[] = include 'tabs/class-sxp-session-tracking-settings.php';
+			// $settings[] = include 'tabs/class-sxp-recommendation-engine-settings.php';
 			
 			self::$settings = apply_filters( 'salexpresso_get_settings_pages', $settings );
 		}
@@ -265,7 +266,6 @@ class SXP_Admin_Settings {
 				case 'url':
 				case 'tel':
 					$option_value = $value['value'];
-
 					?><tr>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>

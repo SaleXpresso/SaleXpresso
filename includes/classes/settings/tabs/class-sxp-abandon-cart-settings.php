@@ -117,14 +117,14 @@ class SXP_Abandon_Cart_Settings extends SXP_Settings_Tab {
 					'type'     => 'checkbox',
 					'autoload' => false,
 				],
-				[
-					'title'    => __( 'Use Abandon Cart For Recommendation', 'salexpresso' ),
-					'desc'     => __( 'User abandon cart item data for recommendation engine (AI).', 'salexpresso' ),
-					'id'       => 'salexpresso_ac_recommendation',
-					'default'  => 'no',
-					'type'     => 'checkbox',
-					'autoload' => false,
-				],
+//				[
+//					'title'    => __( 'Use Abandon Cart For Recommendation', 'salexpresso' ),
+//					'desc'     => __( 'User abandon cart item data for recommendation engine (AI).', 'salexpresso' ),
+//					'id'       => 'salexpresso_ac_recommendation',
+//					'default'  => 'no',
+//					'type'     => 'checkbox',
+//					'autoload' => false,
+//				],
 				[
 					'title'    => __( 'Keep Cart Without Email', 'salexpresso' ),
 					'desc'     => __( 'Keep abandon cart information if no email is captured.', 'salexpresso' ),

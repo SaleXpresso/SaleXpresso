@@ -455,7 +455,8 @@ final class SaleXpresso {
 		
 		// Core.
 		require_once 'classes/rules/class-sxp-user-group-rules.php';
-		
+		require_once 'classes/recommendation-engine/class-sxp-recommendation-engine-cache.php';
+		require_once 'classes/recommendation-engine/class-sxp-recommendation-engine.php';
 		require_once 'classes/customer/class-sxp-customer-profile-table.php';
 		
 		// Admin pages.
@@ -468,6 +469,8 @@ final class SaleXpresso {
 		require_once 'classes/settings/class-sxp-admin-settings.php';
 		require_once 'classes/settings/class-sxp-settings-page.php';
 		require_once 'classes/settings/class-sxp-status-page.php';
+		
+		// Product Meta.
 		
 	}
 	

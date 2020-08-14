@@ -370,14 +370,14 @@ class SXP_Customer_Profile_Table {
 					'notification' => '',
 					'priority'     => 40,
 				],
-				/*
+				
 				'recommendation' => [
 					'label'        => __( 'Recommendation', 'salexpresso' ),
 					'content'      => [ $this, 'display_recommendation' ],
 					'notification' => '',
 					'priority'     => 60,
 				],
-				'searches'       => [
+				/*'searches'       => [
 					'label'        => __( 'Searches', 'salexpresso' ),
 					'content'      => [ $this, 'display_searches' ],
 					'notification' => '',
@@ -664,110 +664,10 @@ class SXP_Customer_Profile_Table {
 	}
 	
 	private function display_recommendation() {
-		?>
-		<table class="wp-list-table widefat sxp-table sxp-customer-profile-table">
-			<thead>
-			<tr>
-				<td id="cb" class="manage-column column-cb check-column">
-					<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
-					<input id="cb-select-all-1" type="checkbox">
-				</td>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Product</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Regular Price</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Discount Price</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Created</a></th>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="#">Status</a></th>
-			</tr>
-			</thead>
-			<tbody id="the-list">
-			<tr>
-				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="cb-select-1"></label>
-					<input id="cb-select-1" type="checkbox" name="post[]" value="1">
-				</th>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-					<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-					<div class="product-name">Premium Miniket Rice</div>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Regular Price">$61</td>
-				<td data-colname="Discount Price">$29</td>
-				<td data-colname="Created">May 2, 2019</td>
-				<td data-colname="Status">
-					<div class="sxp-status sxp-status-success">Seen</div>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="cb-select-1"></label>
-					<input id="cb-select-1" type="checkbox" name="post[]" value="1">
-				</th>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-					<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-					<div class="product-name">Premium Miniket Rice</div>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Regular Price">$61</td>
-				<td data-colname="Discount Price">$29</td>
-				<td data-colname="Created">May 2, 2019</td>
-				<td data-colname="Status">
-					<div class="sxp-status sxp-status-success">Seen</div>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="cb-select-1"></label>
-					<input id="cb-select-1" type="checkbox" name="post[]" value="1">
-				</th>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-					<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-					<div class="product-name">Premium Miniket Rice</div>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Regular Price">$61</td>
-				<td data-colname="Discount Price">$29</td>
-				<td data-colname="Created">May 2, 2019</td>
-				<td data-colname="Status">
-					<div class="sxp-status sxp-status-success">Seen</div>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="cb-select-1"></label>
-					<input id="cb-select-1" type="checkbox" name="post[]" value="1">
-				</th>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-					<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-					<div class="product-name">Premium Miniket Rice</div>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Regular Price">$61</td>
-				<td data-colname="Discount Price">$29</td>
-				<td data-colname="Created">May 2, 2019</td>
-				<td data-colname="Status">
-					<div class="sxp-status sxp-status-danger">Not Seen</div>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" class="check-column">
-					<label class="screen-reader-text" for="cb-select-1"></label>
-					<input id="cb-select-1" type="checkbox" name="post[]" value="1">
-				</th>
-				<td class="title column-title has-row-actions column-primary page-title" data-colname="Product">
-					<div class="product-thumb"><img src="<?php echo esc_url( sxp_get_plugin_uri( 'assets/images/egg.png' ) ); ?>" alt="Product"></div>
-					<div class="product-name">Premium Miniket Rice</div>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-				</td>
-				<td data-colname="Regular Price">$61</td>
-				<td data-colname="Discount Price">$29</td>
-				<td data-colname="Created">May 2, 2019</td>
-				<td data-colname="Status">
-					<div class="sxp-status sxp-status-success">Seen</div>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-		<?php
+		$activity = _sxp_get_list_table( 'SaleXpresso\List_Table\SXP_Customer_Recommendations_List_Table' );
+		$activity->set_data( $this->user_id );
+		$activity->prepare_items();
+		$activity->display();
 	}
 	
 	private function display_discount() {

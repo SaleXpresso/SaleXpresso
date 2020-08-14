@@ -165,6 +165,24 @@ class SXP_Abandon_Cart_List_Table extends SXP_List_Table {
 	}
 	
 	/**
+	 * CB Column Renderer.
+	 *
+	 * @param Object $item Data.
+	 *
+	 * @return string
+	 */
+	public function column_cb( $item ) {
+		return sprintf(
+			'<label class="screen-reader-text" for="abandon_cart_%1$s">%2$s</label>' .
+			'<input type="checkbox" name="abandon_carts[]" id="abandon_cart_%1$s" class="%3$s" value="%1$s" />',
+			$item->id,
+			/* translators: %s: Abandon Cart ID. */
+			sprintf( __( 'Select %s', 'salexpresso' ), $item->id ),
+			'select-abandon-cart'
+		);
+	}
+	
+	/**
 	 * Get Default Columns.
 	 *
 	 * @return array
