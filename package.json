@@ -43,7 +43,7 @@
     "jquery-modal": "^0.9.2",
     "selectize": "^0.12.6",
     "url-search-params-polyfill": "^8.1.0",
-    "vgnav": "^1.1.4"
+    "vgnav": "^1.1.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -66,16 +66,18 @@
     "husky": "^4.2.5",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
+    "minimist": "^1.2.5",
     "pixrem": "^5.0.0",
     "postcss-loader": "^3.0.0",
     "prettier": "2.0.5",
     "sass": "^1.26.10",
     "sass-loader": "^8.0.2",
+    "serialize-javascript": "^4.0.0",
     "stylelint": "13.6.0",
     "stylelint-config-wordpress": "^17.0.0",
     "stylelint-scss": "^3.18.0",
-    "terser-webpack-plugin": "^2.3.7",
-    "webpack": "^4.43.0",
+    "terser-webpack-plugin": "^2.3.8",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
   "homepage": "https://salexpresso.com",
