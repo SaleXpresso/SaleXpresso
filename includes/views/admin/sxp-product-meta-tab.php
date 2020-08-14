@@ -2,69 +2,97 @@
 
 if ( ! function_exists( 'sxp_product_write_panel_tab' ) ) {
 	function sxp_product_write_panel_tab () {
-		echo '<li class="product_tabs_lite_tab"><a href="#salexpresso_product_tab"><span>' . __( 'SaleXpresso Tab', 'salexpresso' ) . '</span></a></li>';
+		echo '<li class="product_tabs_lite_tab hide_if_grouped hide_if_external"><a href="#salexpresso_product_tab"><span>' . __( 'SaleXpresso Tab', 'salexpresso' ) . '</span></a></li>';
 	}
 }
 
 if ( ! function_exists( 'sxp_product_write_panel' ) ) {
 	function sxp_product_write_panel () {
-		echo '<div id="salexpresso_product_tab" class="panel wc-metaboxes-wrapper woocommerce_options_panel">';
+		echo '<div id="salexpresso_product_tab" class="panel wc-metaboxes-wrapper woocommerce_options_panel hide_if_grouped hide_if_external">';
 		global $post;
 		$product = wc_get_product( $post );
 
 		$groups = sxp_get_all_user_groups();
+		$cb_ids = [];
 		foreach ( $groups as $group ) {
-			$group_name = $group->name;
-			$group_ID   = $group->term_id;
-
-			woocommerce_wp_checkbox( array(
-				'id'          => '_sxp_usergroup_purchase_ability_' . $group_ID,
-				'label'       => __( $group_name, 'salexpresso' ),
-				'description' => __( 'If checked this user group does not purchase the product', 'salexpresso' ),
-			));
-
-			$usergroup_purchase_ability = $product->get_meta( '_sxp_usergroup_purchase_ability_' . $group_ID, true, 'view' );
-
-			if ( $usergroup_purchase_ability === '' ) {
-				woocommerce_wp_text_input( array(
-					'id'          => '_sxp_usergroup_quantity_' . $group_ID,
-					'label'       => __( 'Purchase Quantity', 'salexpresso' ),
-					'description' => __( 'Rules', 'salexpresso' ),
-					'value'       => ''
-				));
-
-				woocommerce_wp_text_input( array(
-					'id'          => '_sxp_usergroup_amount_' . $group_ID,
-					'label'       => __( 'Purchase Amount', 'salexpresso' ),
-					'description' => __( 'Rules', 'salexpresso' ),
-					'value'       => ''
-				));
-			}
+			$cb_id = sprintf( '_sxp_%s_no_purchase', $group->slug );
+			$cb_ids[] = $cb_id;
+			woocommerce_wp_checkbox( [
+				'id'          => $cb_id,
+				'label'       => $group->name,
+				'description' => sprintf(
+					/* translators: 1. User Group Name */
+					__( 'Check to disallow %s from purchasing this product.', 'salexpresso' ),
+					$group->name
+				),
+				'value'       => $product->get_meta( $cb_id, true, 'view' ),
+				'cbvalue'     => 'yes',
+			] );
+			
+			echo sprintf( '<div class="hide_if_%s">', $cb_id );
+			woocommerce_wp_text_input( [
+				'id'          => sprintf( '_sxp_%s_purchase_quantity', $group->slug ),
+				'label'       => __( 'Purchase Quantity', 'salexpresso' ),
+				'description' => __( 'Minimum Quantity To Purchase.', 'salexpresso' ),
+				'value'       => '',
+			] );
+			
+			woocommerce_wp_text_input( [
+				'id'          => sprintf( '_sxp_%s_purchase_amount', $group->slug ),
+				'label'       => __( 'Purchase Amount', 'salexpresso' ),
+				'description' => __( 'Minimum Purchase Amount.', 'salexpresso' ),
+				'value'       => '',
+			] );
+			echo '</div>';
 		}
-
+		if ( ! empty( $cb_ids ) ) {
+			?>
+			<script>
+				(function($) {
+					var ids = '<?php echo implode( ',', $cb_ids ); ?>'.split(',');
+					
+					function show_hide_fn() {
+						for( var id of ids ) {
+							var _id = $('#' + id + ':checked' ).length;
+							if ( _id ) {
+								$('.show_if_' + id ).show();
+								$('.hide_if_' + id ).hide();
+							} else {
+								$('.show_if_' + id ).hide();
+								$('.hide_if_' + id ).show();
+							}
+						}
+					}
+					if ( ids && ids.length ) {
+						show_hide_fn();
+						$(document).on( 'change', ids.map( function ( id ) { return '#' + id } ).join(','), function () {
+							show_hide_fn();
+						} );
+					}
+				})(jQuery);
+			</script>
+			<?php
+		}
 		echo '</div>';
 	}
 }
 
 if ( ! function_exists( 'sxp_product_save_data' ) ) {
 	function sxp_product_save_data ( $post_id, $post ) {
-		$product = wc_get_product( $post_id );
-
 		$groups = sxp_get_all_user_groups();
+		$product = wc_get_product( $post_id );
 		foreach ( $groups as $group ) {
-			$group_ID   = $group-> term_id;
-			$sxp_usergroup_purchase_ability   = stripslashes( $_POST['_sxp_usergroup_purchase_ability_' . $group_ID] );
-
-			if ( empty( $sxp_usergroup_purchase_ability ) ) {
-				// clean up if the meta are removed
-				$product->delete_meta_data( '_sxp_usergroup_purchase_ability_' . $group_ID );
-				$product->save();
-			} elseif ( ! empty( $sxp_usergroup_purchase_ability ) ) {
+			$_no_purchase = sprintf( '_sxp_%s_no_purchase', $group->slug );
+			$no_purchase = stripslashes( $_POST[ $_no_purchase ] );
+			var_dump( $no_purchase );
+			if ( 'yes' == $no_purchase ) {
 				// save the meta to the database
-				$product->update_meta_data( '_sxp_usergroup_purchase_ability_' . $group_ID, $sxp_usergroup_purchase_ability );
-				$product->save();
+				$product->update_meta_data( $_no_purchase, $no_purchase );
+			} else {
+				// clean up if the meta are removed
+				$product->delete_meta_data( $_no_purchase );
 			}
-
+			$product->save();
 		}
 
 	}
