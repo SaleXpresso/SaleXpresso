@@ -154,18 +154,25 @@ final class SXP_Customer extends WC_Customer {
 	 * @return array
 	 */
 	public function get_purchase_restrictions( $product ) {
+		$product = wc_get_product( $product );
+
+		// @TODO get product min/max set by WC as default value
 		$restrictions = [
 			'min_qty' => 0,
 			'max_qty' => 0,
 		];
-		
+
+		if ( ! $product ) {
+			return $restrictions;
+		}
+
 		if ( $this->can_buy( $product ) ) {
-			$min = sprintf( '_sxp_%s_purchase_min_quantity', $this->get_group()->term_id );
-			$max = sprintf( '_sxp_%s_purchase_max_quantity', $this->get_group()->term_id );
+			$min = sprintf( '_sxp_group_%s_purchase_min_quantity', $this->get_group()->term_id );
+			$max = sprintf( '_sxp_group_%s_purchase_max_quantity', $this->get_group()->term_id );
 			
 			$restrictions = [
-				'min_qty' => absint( $this->get_meta( $min, true ) ),
-				'max_qty' => absint( $this->get_meta( $max, true ) ),
+				'min_qty' => absint( $product->get_meta( $min, true ) ),
+				'max_qty' => absint( $product->get_meta( $max, true ) ),
 			];
 		}
 		

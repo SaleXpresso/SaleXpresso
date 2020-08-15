@@ -2,7 +2,7 @@
 
 if ( ! function_exists( 'sxp_product_write_panel_tab' ) ) {
 	function sxp_product_write_panel_tab () {
-		echo '<li class="product_tabs_lite_tab hide_if_grouped hide_if_external"><a href="#salexpresso_product_tab"><span>' . __( 'SaleXpresso Tab', 'salexpresso' ) . '</span></a></li>';
+		echo '<li class="product_tabs_lite_tab hide_if_grouped hide_if_external"><a href="#salexpresso_product_tab"><span>' . __( 'Group Settings', 'salexpresso' ) . '</span></a></li>';
 	}
 }
 
@@ -35,14 +35,14 @@ if ( ! function_exists( 'sxp_product_write_panel' ) ) {
 				'id'          => sprintf( '_sxp_group_%s_purchase_min_quantity', $group->term_id ),
 				'label'       => __( 'Minimum Purchase Quantity', 'salexpresso' ),
 				'description' => '',
-				'value'       => '',
+				'value'       => $product->get_meta( sprintf( '_sxp_group_%s_purchase_min_quantity', $group->term_id ), true, 'view' ),
 			] );
 			
 			woocommerce_wp_text_input( [
 				'id'          => sprintf( '_sxp_group_%s_purchase_max_quantity', $group->term_id ),
 				'label'       => __( 'Maximum Purchase Quantity', 'salexpresso' ),
 				'description' => '',
-				'value'       => '',
+				'value'       => $product->get_meta( sprintf( '_sxp_group_%s_purchase_max_quantity', $group->term_id ), true, 'view' ),
 			] );
 			
 			echo '</div>';
