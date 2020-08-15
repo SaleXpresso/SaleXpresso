@@ -77,39 +77,40 @@ if ( ! function_exists( 'sxp_loop_restrict_add_to_cart' ) ) {
 			return $button;
 		}
 		
-		
-
 		try {
-			$customer   = new SXP_Customer( sxp_get_the_user() );
+			$customer = new SXP_Customer( sxp_get_the_user() );
 			if ( $customer->can_buy( $product ) ) {
 				$qty = $customer->get_purchase_restrictions( $product );
+				
 				return sprintf(
 					'<a href="%s" data-quantity="%s" class="%s" %s>%s</a>',
 					esc_url( $product->add_to_cart_url() ),
 					esc_attr( $qty['min_qty'] ),
 					esc_attr( isset( $args['class'] ) ? $args['class'] : 'button' ),
-					isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
+					isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] )
+						: '',
 					esc_html( $product->add_to_cart_text() )
 				);
 			} else {
 				if ( ! isset( $args['class'] ) ) {
 					$args['class'] = '';
 				}
-				$args['class'] .= 'sxp-tooltip';
-				$message = sprintf(
-					/* translators: 1. Customer Group Name. */
+				$args['class'] .= ' sxp-tooltip';
+				$message       = sprintf(
+				/* translators: 1. Customer Group Name. */
 					__( 'Customer of %s group can not buy this item.', 'salexpresso' ),
 					$customer->get_group()->name
 				);
 				
 				return sprintf(
-					'<a href="#" class="%s" data-tooltip="%s">%s</a>',
+					'<a href="#" class="%s" data-tooltip="%s" onClick="alert( this.dataset.tooltip ); return false;">%s</a>',
 					esc_attr( $args['class'] ),
 					esc_attr( $message ),
 					esc_html( $product->add_to_cart_text() )
 				);
 			}
-		} catch ( Exception $e ) {
+		}
+		catch ( Exception $e ) {
 			return $button;
 		}
 	}
@@ -132,12 +133,58 @@ if ( ! function_exists( 'sxp_set_product_min_quantity' ) ) {
 		
 		try {
 			$customer = new SXP_Customer( sxp_get_the_user() );
-			$min_qty  = $customer->get_purchase_restrictions( $product );
+			$qty      = $customer->get_purchase_restrictions( $product );
 			
-			return $min_qty['min_qty'] ? $min_qty['min_qty'] : $quantity;
+			return $qty['min_qty'] ? $qty['min_qty'] : $quantity;
 		}
 		catch ( Exception $e ) {
 			return $quantity;
+		}
+	}
+}
+
+add_action( 'woocommerce_quantity_input_args', 'sxp_restrict_customer_purchase_quantity', 10, 2 );
+if ( ! function_exists( 'sxp_restrict_customer_purchase_quantity' ) ) {
+	/**
+	 * Filter Args of Quantity input field.
+	 *
+	 * @param array $args {
+	 *      @type string $input_id unique id for input field.
+	 *      @type string $input_name input field name.
+	 *      @type int $input_value input field value.
+	 *      @type string[] $classes input field classes.
+	 *      @type int $max_value input field max attribute value.
+	 *      @type int $min_value input field min attribute value.
+	 *      @type int $step input field step attribute value.
+	 *      @type string $pattern input field pattern attribute value.
+	 *      @type string $inputmode input field inputmode attribute value.
+	 *      @type string $product_name input field title attribute value.
+	 *      @type string $placeholder input field placeholder attribute value.
+	 * }
+	 *
+	 * @param WC_Product $product
+	 *
+	 * @return array
+	 */
+	function sxp_restrict_customer_purchase_quantity( $args, $product ) {
+		if ( ! is_user_logged_in() ) {
+			return $args;
+		}
+		
+		try {
+			$customer = new SXP_Customer( sxp_get_the_user() );
+			$qty      = $customer->get_purchase_restrictions( $product );
+			if ( $qty['min_qty'] > 0 ) {
+				$args['min_value'] = $qty['min_qty'];
+			}
+			if ( $qty['max_qty'] > 0 ) {
+				$args['max_value'] = $qty['max_qty'];
+			}
+			
+			return $args;
+		}
+		catch ( Exception $e ) {
+			return $args;
 		}
 	}
 }
@@ -250,6 +297,65 @@ if ( ! function_exists( 'sxp_restrict_customer_add_to_cart' ) ) {
 			}
 			
 			return $quantity;
+		}
+	}
+}
+
+add_filter( 'woocommerce_update_cart_validation', 'sxp_restrict_customer_update_cart', 10, 4 );
+if ( ! function_exists( 'sxp_restrict_customer_update_cart' ) ) {
+	/**
+	 * @param bool $status Current Cart Validation Status.
+	 * @param string $cart_item_key Cart item key.
+	 * @param array $values Item data. Represents a single cart item.
+	 * @param int $quantity new quantity set by the customer.
+	 *
+	 * @return mixed
+	 */
+	function sxp_restrict_customer_update_cart( $status, $cart_item_key, $values, $quantity ) {
+		if ( ! is_user_logged_in() ) {
+			return $status;
+		}
+		
+		$_product = $values['data'];
+		if ( ! ( $_product instanceof WC_Product ) ) {
+			return $status;
+		}
+		
+		try {
+			$customer = new SXP_Customer( sxp_get_the_user() );
+			if ( ! $customer->can_buy( $_product ) ) {
+				// user can't buy.
+				wc_add_notice( esc_html__( 'If you can not buy', 'salexpresso' ) );
+				$status = false;
+			}
+			
+			$qty = $customer->get_purchase_restrictions( $_product );
+			if ( $qty['min_qty'] > 0 && $quantity < $qty['min_qty'] ) {
+				wc_add_notice(
+					sprintf(
+						/* translators: 1. User Group Name, 2. Minimum purchase Quantity */
+						esc_html__( 'Sorry, minimum quantity is %d to buy this product by a customer of %s group.', 'salexpresso' ),
+						$qty['min_qty'],
+						'<strong><em>' . $customer->get_group()->name . '</strong></em>'
+					)
+				);
+				$status = false;
+			}
+			if ( $qty['max_qty'] > 0 && $quantity > $qty['max_qty'] ) {
+				wc_add_notice(
+					sprintf(
+						/* translators: 1. User Group Name, 2. Minimum purchase Quantity */
+						esc_html__( 'Sorry, maximum quantity %d exceed for a customer of %s group.', 'salexpresso' ),
+						$qty['max_qty'],
+						'<strong><em>' . $customer->get_group()->name . '</strong></em>'
+					)
+				);
+				$status = false;
+			}
+			
+			return $status;
+		} catch ( Exception $e ) {
+			return $status;
 		}
 	}
 }
