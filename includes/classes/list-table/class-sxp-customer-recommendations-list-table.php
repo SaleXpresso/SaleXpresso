@@ -62,19 +62,26 @@ class SXP_Customer_Recommendations_List_Table extends SXP_List_Table {
 	public function prepare_items() {
 		$per_page   = 20;
 		$sort_order = 'DESC';
-		$order_by   = 'date';
+		// order by the post id sequence return from the recommendation engine.
+		$order_by   = 'include';
 		$meta_key = '';
+		$meta_type = '';
 		
 		if ( isset( $_GET['orderby'] ) && ! empty( $_GET['orderby'] ) ) {
 			$order_by = sanitize_text_field( $_GET['orderby'] );
 			if ( 'regular-price' === $order_by ) {
 				$order_by = 'meta_value_num';
 				$meta_key = '_regular_price';
+				$meta_type = 'NUMERIC';
 			}
+			
+			// WC doesn't keep the _sale_price meta in some product that doesn't have the sale price.
+			// So sorting by sale price in sql doesn't work all the time.
 			
 			if ( 'sale-price' === $order_by ) {
 				$order_by = 'meta_value_num';
 				$meta_key = '_sale_price';
+				$meta_type = 'NUMERIC';
 			}
 			
 			if ( 'status' === $order_by ) {
@@ -93,12 +100,13 @@ class SXP_Customer_Recommendations_List_Table extends SXP_List_Table {
 			if ( ! empty( $this->items ) ) {
 				$total = count( $this->items );
 				$query = new \WC_Product_Query( [
-					'limit'    => $per_page,
-					'page'     => $this->get_pagenum(),
-					'include'  => $this->items,
-					'meta_key' => $meta_key,
-					'orderby'  => $order_by,
-					'order'    => $sort_order,
+					'limit'      => $per_page,
+					'page'       => $this->get_pagenum(),
+					'include'    => $this->items,
+					'meta_key'   => $meta_key,
+					'meta_type'  => $meta_type,
+					'orderby'    => $order_by,
+					'order'      => $sort_order,
 				] );
 				$this->items = $query->get_products();
 				
@@ -286,8 +294,7 @@ class SXP_Customer_Recommendations_List_Table extends SXP_List_Table {
 		return [
 			'product'       => [ 'title' ],
 			'regular-price' => [ 'regular-price' ],
-//			'sale-price'    => [ 'sale-price' ],
-			'date'          => [ 'date', false ],
+			'date'          => [ 'date' ],
 			'status'        => [ 'status' ],
 		];
 	}
