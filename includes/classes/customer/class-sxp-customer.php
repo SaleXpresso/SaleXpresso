@@ -97,6 +97,14 @@ final class SXP_Customer extends WC_Customer {
 	}
 	
 	/**
+	 * Check if customer already has a group assigned.
+	 * @return bool
+	 */
+	public function has_group() {
+		return ! empty( $this->group );
+	}
+	
+	/**
 	 * Get User's Tags.
 	 *
 	 * @return WP_Term[]
@@ -131,11 +139,11 @@ final class SXP_Customer extends WC_Customer {
 	 */
 	public function can_buy( $product ) {
 		$product = wc_get_product( $product );
-		if (! $product ) {
+		if ( ! $product ) {
 			return false;
 		}
 		$can_buy = true;
-		if ( $this->get_group() ) {
+		if ( $this->has_group() ) {
 			$no_purchase = sprintf( '_sxp_group_%s_no_purchase', $this->get_group()->term_id );
 			$no_purchase = $product->get_meta( $no_purchase, true );
 			$can_buy = ! ( $no_purchase && 'yes' === $no_purchase );
@@ -151,12 +159,14 @@ final class SXP_Customer extends WC_Customer {
 	 *
 	 * @param int|WC_Product $product
 	 *
-	 * @return array
+	 * @return array {
+	 *      @type int $min_qty Minimum Purchase Quantity.
+	 *      @type int $max_qty Maximum Purchase Quantity or -1 if unlimited.
+	 * }
 	 */
 	public function get_purchase_restrictions( $product ) {
 		$product = wc_get_product( $product );
-
-		// @TODO get product min/max set by WC as default value
+		
 		$restrictions = [
 			'min_qty' => 0,
 			'max_qty' => 0,
@@ -165,14 +175,21 @@ final class SXP_Customer extends WC_Customer {
 		if ( ! $product ) {
 			return $restrictions;
 		}
-
-		if ( $this->can_buy( $product ) ) {
+		
+		$restrictions = [
+			'min_qty' => $product->get_min_purchase_quantity(),
+			'max_qty' => $product->get_max_purchase_quantity(),
+		];
+		
+		if ( $this->can_buy( $product ) && $this->has_group() ) {
 			$min = sprintf( '_sxp_group_%s_purchase_min_quantity', $this->get_group()->term_id );
+			$min = absint( $product->get_meta( $min, true ) );
 			$max = sprintf( '_sxp_group_%s_purchase_max_quantity', $this->get_group()->term_id );
+			$max = absint( $product->get_meta( $max, true ) );
 			
 			$restrictions = [
-				'min_qty' => absint( $product->get_meta( $min, true ) ),
-				'max_qty' => absint( $product->get_meta( $max, true ) ),
+				'min_qty' => $min ? $min : 1,
+				'max_qty' => $max ? $max : - 1,
 			];
 		}
 		
