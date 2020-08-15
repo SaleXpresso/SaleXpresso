@@ -67,16 +67,30 @@ class SXP_Recommendation_Engine {
 //		add_action( 'salexpresso_recommendation_engine_schedule_training', [ $this, 'schedule_training' ] );
 //		add_action( 'salexpresso_installed', [ $this, 'schedule_training' ] );
 //		add_action( 'salexpresso_train_the_ai', [ $this, 'train_the_ai' ] );
-		add_action( 'woocommerce_new_order', [ $this, 'invalidate_all_caches' ], 10, 1 );
+		add_action( 'woocommerce_new_order', [ $this, 'on_new_order' ], 10, 1 );
 	}
 	
-	public function invalidate_all_caches( $order_id ) {
+	public function on_new_order( $order_id ) {
+		
 		$order = wc_get_order( $order_id );
 		if ( 'shop_order_refund' === $order->get_type() ) {
 			return;
 		}
 		$user = $order->get_user();
+		$this->invalidate_user_cached( $user );
+	}
+	
+	/**
+	 * Invalidate User Cache.
+	 * This forces to retrain the ai for user/customer.
+	 *
+	 * @param int|WP_User $user
+	 */
+	private function invalidate_user_cached( $user ) {
+		$user = sxp_get_user( $user );
 		if ( $user ) {
+			$cache = 'customer_ai_' . sxp_get_user_customer_id( $user->ID );
+			$this->cache->removeDBCache( $cache );
 			update_user_meta( $user->ID, '__sxp_retrain_ai', 'yes' );
 		}
 	}
@@ -161,6 +175,7 @@ class SXP_Recommendation_Engine {
 		}
 		if ( ! $ai ) {
 			$data = $this->get_training_data_for_customer( $customer_id );
+			$data = array_map( 'array_filter', $data );
 			if ( count( $data ) >= apply_filters( 'salexpresso_customer_minimum_order_count_for_recommendation', 5 ) ) {
 				$this->cache->removeDBCache( $cache );
 				$ai = $this->get_trained_apriori(
@@ -170,6 +185,7 @@ class SXP_Recommendation_Engine {
 					$cache,
 					( 30 * DAY_IN_SECONDS )
 				);
+				update_user_meta( $user_id, '__sxp_retrain_ai', 'no' );
 			} else {
 				throw new RecommendationEngineException( __( 'Not enough data to train the AI.', 'salexpresso' ) );
 			}
@@ -319,7 +335,7 @@ class SXP_Recommendation_Engine {
 		
 		$data_freq = array_count_values( $data );
 		arsort( $data_freq );
-		// $sorted_data contains the keys of sorted array
+		// sorted data contains the keys of sorted array
 		return array_keys( $data_freq );
 	}
 	
