@@ -454,6 +454,7 @@ final class SaleXpresso {
 		require_once 'classes/class-sxp-list-table.php';
 		
 		// Core.
+		require_once 'classes/customer/class-sxp-customer.php';
 		require_once 'classes/rules/class-sxp-user-group-rules.php';
 		require_once 'classes/recommendation-engine/class-sxp-recommendation-engine-cache.php';
 		require_once 'classes/recommendation-engine/class-sxp-recommendation-engine.php';
