@@ -31,16 +31,15 @@ if ( ! function_exists( 'sxp_product_write_panel' ) ) {
 			
 			echo sprintf( '<div class="hide_if_%s">', $cb_id );
 			woocommerce_wp_text_input( [
-				'id'          => sprintf( '_sxp_%s_purchase_quantity', $group->slug ),
-				'label'       => __( 'Purchase Quantity', 'salexpresso' ),
-				'description' => __( 'Minimum Quantity To Purchase.', 'salexpresso' ),
+				'id'          => sprintf( '_sxp_%s_purchase_min_quantity', $group->slug ),
+				'label'       => __( 'Minimum Purchase Quantity', 'salexpresso' ),
+				'description' => '',
 				'value'       => '',
 			] );
-			
 			woocommerce_wp_text_input( [
-				'id'          => sprintf( '_sxp_%s_purchase_amount', $group->slug ),
-				'label'       => __( 'Purchase Amount', 'salexpresso' ),
-				'description' => __( 'Minimum Purchase Amount.', 'salexpresso' ),
+				'id'          => sprintf( '_sxp_%s_purchase_max_quantity', $group->slug ),
+				'label'       => __( 'Maximum Purchase Quantity', 'salexpresso' ),
+				'description' => '',
 				'value'       => '',
 			] );
 			echo '</div>';
@@ -83,14 +82,29 @@ if ( ! function_exists( 'sxp_product_save_data' ) ) {
 		$product = wc_get_product( $post_id );
 		foreach ( $groups as $group ) {
 			$_no_purchase = sprintf( '_sxp_%s_no_purchase', $group->slug );
+			$min = sprintf( '_sxp_%s_purchase_min_quantity', $group->slug );
+			$max = sprintf( '_sxp_%s_purchase_min_quantity', $group->slug );
 			$no_purchase = stripslashes( $_POST[ $_no_purchase ] );
-			var_dump( $no_purchase );
 			if ( 'yes' == $no_purchase ) {
 				// save the meta to the database
 				$product->update_meta_data( $_no_purchase, $no_purchase );
+				$product->delete_meta_data( $min );
+				$product->delete_meta_data( $max );
 			} else {
 				// clean up if the meta are removed
 				$product->delete_meta_data( $_no_purchase );
+				if ( isset( $_POST[ $min ] ) && ! empty( $_POST[ $min ] ) ) {
+					$min_qty = absint( $_POST[ $min ] );
+					if ( $min_qty ) {
+						$product->update_meta_data( $min, $min_qty );
+					}
+				}
+				if ( isset( $_POST[ $max ] ) && ! empty( $_POST[ $max ] ) ) {
+					$max_qty = absint( $_POST[ $max ] );
+					if ( $max_qty ) {
+						$product->update_meta_data( $max, $max_qty );
+					}
+				}
 			}
 			$product->save();
 		}
