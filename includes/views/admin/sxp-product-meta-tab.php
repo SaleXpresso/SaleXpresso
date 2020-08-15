@@ -15,7 +15,7 @@ if ( ! function_exists( 'sxp_product_write_panel' ) ) {
 		$groups = sxp_get_all_user_groups();
 		$cb_ids = [];
 		foreach ( $groups as $group ) {
-			$cb_id = sprintf( '_sxp_%s_no_purchase', $group->slug );
+			$cb_id = sprintf( '_sxp_group_%s_no_purchase', $group->term_id );
 			$cb_ids[] = $cb_id;
 			woocommerce_wp_checkbox( [
 				'id'          => $cb_id,
@@ -30,18 +30,21 @@ if ( ! function_exists( 'sxp_product_write_panel' ) ) {
 			] );
 			
 			echo sprintf( '<div class="hide_if_%s">', $cb_id );
+			
 			woocommerce_wp_text_input( [
-				'id'          => sprintf( '_sxp_%s_purchase_min_quantity', $group->slug ),
+				'id'          => sprintf( '_sxp_group_%s_purchase_min_quantity', $group->term_id ),
 				'label'       => __( 'Minimum Purchase Quantity', 'salexpresso' ),
 				'description' => '',
 				'value'       => '',
 			] );
+			
 			woocommerce_wp_text_input( [
-				'id'          => sprintf( '_sxp_%s_purchase_max_quantity', $group->slug ),
+				'id'          => sprintf( '_sxp_group_%s_purchase_max_quantity', $group->term_id ),
 				'label'       => __( 'Maximum Purchase Quantity', 'salexpresso' ),
 				'description' => '',
 				'value'       => '',
 			] );
+			
 			echo '</div>';
 		}
 		if ( ! empty( $cb_ids ) ) {
@@ -81,10 +84,10 @@ if ( ! function_exists( 'sxp_product_save_data' ) ) {
 		$groups = sxp_get_all_user_groups();
 		$product = wc_get_product( $post_id );
 		foreach ( $groups as $group ) {
-			$_no_purchase = sprintf( '_sxp_%s_no_purchase', $group->slug );
-			$min = sprintf( '_sxp_%s_purchase_min_quantity', $group->slug );
-			$max = sprintf( '_sxp_%s_purchase_min_quantity', $group->slug );
-			$no_purchase = stripslashes( $_POST[ $_no_purchase ] );
+			$_no_purchase = sprintf( '_sxp_group_%s_no_purchase', $group->term_id );
+			$min          = sprintf( '_sxp_group_%s_purchase_min_quantity', $group->term_id );
+			$max          = sprintf( '_sxp_group_%s_purchase_max_quantity', $group->term_id );
+			$no_purchase  = stripslashes( $_POST[ $_no_purchase ] );
 			if ( 'yes' == $no_purchase ) {
 				// save the meta to the database
 				$product->update_meta_data( $_no_purchase, $no_purchase );
