@@ -1,5 +1,7 @@
 # SaleXpresso 
 
+![Development Workflow](https://github.com/SaleXpresso/SaleXpresso/workflows/Development%20Workflow/badge.svg?branch=develop)
+
 SaleXpresso is a flexible, open-source eCommerce accelerator built on WooCommerce. Organize, sales data, build campaign, dynamic discount, custom user group and many more.
 
 SaleXpresso is a flexible, open-source eCommerce accelerator built on WooCommerce. ...
