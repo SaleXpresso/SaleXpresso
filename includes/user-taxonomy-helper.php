@@ -794,6 +794,7 @@ if ( ! function_exists( 'sxp_save_term_rules' ) ) {
 		if ( $term instanceof WP_Term ) {
 			$term = $term->term_id;
 		}
+		sxp_save_compiled_term_rules( $term, '' );
 		return update_term_meta( $term, '__sxp_term_rules', $data );
 	}
 }

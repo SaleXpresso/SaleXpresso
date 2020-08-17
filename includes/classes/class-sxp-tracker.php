@@ -193,11 +193,13 @@ class SXP_Tracker {
 		 * on logout expire the session id cookie only.
 		 *
 		 */
-		
+
+		// @TODO update database of previous browser histry while user not was not logged in
+		//add_action( 'wp_login', [ $this, '' ] );
+
 		// clear session & customer id cookie on logout.
 		add_action( 'wp_logout', [ $this, 'forget_session' ], -1 );
 		// nonce_user_logged_out
-		
 		$this->get_session_cookie();
 		
 		$this->set_session();
@@ -368,7 +370,7 @@ class SXP_Tracker {
 	 * @return bool|mixed
 	 */
 	private function decode_cookie_value( $cookie ) {
-		if ( ! empty( $cookie ) || is_string( $cookie ) ) {
+		if ( ! empty( $cookie ) && is_string( $cookie ) && false !== strpos( $cookie, '||' ) ) {
 			list( $value, $secret, $cookie_hash ) = explode( '||', $cookie );
 			// Validate hash.
 			$cc_hash = $value .  '|' . $secret;

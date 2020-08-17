@@ -161,46 +161,7 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 				update_term_meta( $term_id, '__sxp_term_color', $color );
 				
 				if ( isset( $_POST['sxp_rule_group'] ) && is_array( $_POST['sxp_rule_group'] ) ) {
-					$rules = [];
-					foreach ( $_POST['sxp_rule_group'] as $group ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-						if ( ! isset( $group['relation'], $group['rules'] ) ) {
-							continue;
-						}
-						if ( ! is_array( $group['rules'] ) || empty( $group['rules'] ) ) {
-							continue;
-						}
-						if ( ! in_array( $group['relation'], [ 'AND', 'OR' ], true ) ) {
-							continue;
-						}
-						$_rule = [];
-						foreach ( $group['rules'] as $rule ) {
-							if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'], $rule['relation'] ) ) {
-								continue;
-							}
-							
-							if ( ! in_array( $rule['relation'], [ 'AND', 'OR' ], true ) ) {
-								continue;
-							}
-							
-							if ( empty( $rule['condition'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
-								continue;
-							}
-							
-							$_rule[] = [
-								'relation'  => $rule['relation'],
-								'condition' => sanitize_text_field( $rule['condition'] ),
-								'operator'  => sanitize_text_field( $rule['operator'] ),
-								'values'    => sanitize_text_field( $rule['values'] ),
-							];
-						}
-						if ( ! empty( $_rule ) ) {
-							$rules[] = [
-								'relation' => $group['relation'],
-								'rules'    => $_rule,
-							];
-						}
-					}
-					
+					$rules = $this->sanitize_rules( $_POST['sxp_rule_group'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 					if ( ! empty( $rules ) ) {
 						$save = sxp_save_term_rules( $term_id, $rules );
 						if ( is_wp_error( $save ) ) {
@@ -210,7 +171,13 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 								$save->get_error_message()
 							), 'error', true );
 						}
-					}
+					} else {
+						$this->set_flash_message(
+							esc_html__( 'Invalid Rules.', 'salexpresso' ),
+							'error', true );
+                    }
+				} else {
+					sxp_save_term_rules( $term_id, [] );
 				}
 			}
 			
@@ -228,7 +195,71 @@ class SXP_Customer_Group_Page extends SXP_Admin_Page {
 			die();
 		}
 	}
-	
+
+	/**
+     * Sanitize Rules Before Saving.
+     *
+	 * @param array $rules Raw rules.
+	 *
+	 * @return array
+	 */
+	protected function sanitize_rules( $rules ) {
+		$_rules = [];
+
+		foreach ( $rules as $group ) {
+			if ( ! isset( $group['relation'], $group['rules'] ) ) {
+				continue;
+			}
+			if ( ! is_array( $group['rules'] ) || empty( $group['rules'] ) ) {
+				continue;
+			}
+			if ( ! in_array( $group['relation'], [ 'AND', 'OR' ], true ) ) {
+				continue;
+			}
+			$_rule = [];
+			foreach ( $group['rules'] as $rule ) {
+				if ( ! isset( $rule['condition'], $rule['operator'], $rule['values'], $rule['relation'] ) ) {
+					continue;
+				}
+
+				if ( ! in_array( $rule['relation'], [ 'AND', 'OR' ], true ) ) {
+					continue;
+				}
+
+				if ( empty( $rule['condition'] ) || empty( $rule['operator'] ) || empty( $rule['values'] ) ) {
+					continue;
+				}
+
+				$operator = sanitize_text_field( $rule['operator'] );
+
+				if( '&lt;'== $operator ) {
+					$operator = '<';
+                } elseif ( '&gt;'== $operator ) {
+					$operator = '>';
+                } elseif ( '&lt;='== $operator ) {
+					$operator = '<=';
+                } elseif ( '&gt;='== $operator ) {
+					$operator = '>=';
+                }
+
+				$_rule[] = [
+					'relation'  => $rule['relation'],
+					'condition' => sanitize_text_field( $rule['condition'] ),
+					'operator'  => $operator,
+					'values'    => sanitize_text_field( $rule['values'] ),
+				];
+			}
+			if ( ! empty( $_rule ) ) {
+				$_rules[] = [
+					'relation' => $group['relation'],
+					'rules'    => $_rule,
+				];
+			}
+		}
+
+		return $_rules;
+	}
+
 	/**
 	 * Set the flash error message.
 	 *

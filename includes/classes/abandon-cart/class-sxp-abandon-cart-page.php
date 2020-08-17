@@ -65,7 +65,6 @@ class SXP_Abandon_Cart_Page extends SXP_Admin_Page {
 	 */
 	public function render_page_content() {
 		if ( isset( $_GET['cart'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			var_dump( $_GET );
 		}
 		$this->list_table->prepare_items();
 		$this->list_table->display();
