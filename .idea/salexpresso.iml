@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/includes/interfaces" isTestSource="false" packagePrefix="SaleXpresso\Interfaces" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/includes/abstracts" isTestSource="false" packagePrefix="SaleXpresso\Abstracts" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/includes" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../wootomation" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
