@@ -249,7 +249,11 @@ class SXP_Customer_Activity_List_Table extends SXP_List_Table {
 							if ( isset( $meta->event[ $pos ], $meta->event[ $pos ]->value ) ) {
 								$gateway = sxp_get_wc_payment_gateways( $meta->event[ $pos ]->value );
 								if ( $gateway ) {
-									printf( esc_html__( 'Completed checkout with %s', 'salexpresso' ), esc_html( $gateway->get_title() ) );
+									printf(
+										/* translators: 1. Payment Method Name */
+										esc_html__( 'Completed checkout with %s', 'salexpresso' ),
+										sprintf( '<strong>%s</strong>', esc_html( $gateway->get_title() ) )
+									);
 								}
 							}
 							if ( ! $gateway ) {
