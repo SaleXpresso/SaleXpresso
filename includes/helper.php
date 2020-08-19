@@ -1041,7 +1041,6 @@ if ( ! function_exists( 'sxp_get_object_by_meta_value' ) ) {
 				ARRAY_A
 			);
 			if ( ! empty( $object ) ) {
-				var_dump( $object );
 				$object = array_map( function( $item ) {
 					return $item['id'];
 				}, $object );
