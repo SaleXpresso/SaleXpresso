@@ -87,7 +87,7 @@ class SXP_Abandon_Cart {
 		add_action( 'sxp_delete_abandoned', [ $this, 'delete_abandoned' ], -1, 1 );
 		
 		// Restore abandon car.
-		add_action( 'init', [ $this, 'maybe_restore_abandon_cart' ], -1 );
+		add_action( 'wp_loaded', [ $this, 'maybe_restore_abandon_cart' ], PHP_INT_MAX );
 	}
 	
 	/**
