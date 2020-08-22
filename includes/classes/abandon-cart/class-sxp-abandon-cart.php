@@ -50,13 +50,32 @@ class SXP_Abandon_Cart {
 	 * SXP_Abandon_Cart constructor.
 	 */
 	private function __construct() {
-	
-//		add_action( 'woocommerce_add_to_cart', [ $this, 'on_cart_action' ], 999 );
-//		add_action( 'woocommerce_cart_item_removed', [ $this, 'on_cart_action' ], 9999 );
-//		add_action( 'woocommerce_cart_item_restored', [ $this, 'on_cart_action' ], 9999 );
-//		add_action( 'woocommerce_cart_item_set_quantity', [ $this, 'on_cart_action' ], 9999 );
-//		add_action( 'woocommerce_calculate_totals', [ $this, 'on_cart_action' ], 9999 );
-		add_action( 'woocommerce_after_calculate_totals', [ $this, 'on_cart_action' ], 9999 );
+		
+		/**
+		 * Order.
+		 * @link https://docs.woocommerce.com/document/managing-orders/
+		 *
+		 * For Order Status
+		 * @see wc_get_order_statuses()
+		 *
+		 */
+		
+		/**
+		 * Most of the plugin hookup multiple action-hooks (given below) to record the cart-items,
+		 * which is totally overkill. WooCommerce always fires 'woocommerce_after_calculate_totals'
+		 * after finalizing all things and store the data in current user's session.
+		 * We should hook ours after all possible hooks executed so we can grab the final
+		 * output of the cart data.
+		 *
+		 * woocommerce_add_to_cart,
+		 * woocommerce_cart_item_removed,
+		 * woocommerce_cart_item_restored,
+		 * woocommerce_cart_item_set_quantity,
+		 * woocommerce_calculate_totals,
+		 *
+		 */
+		
+		add_action( 'woocommerce_after_calculate_totals', [ $this, 'on_add_to_cart_action' ], PHP_INT_MAX );
 		add_action( 'woocommerce_new_order', [ $this, 'on_new_order' ], 99999 );
 		add_action( 'woocommerce_order_status_changed', [ $this, 'on_order_status_changed' ], 99999, 3 );
 		
@@ -66,6 +85,7 @@ class SXP_Abandon_Cart {
 		add_action( 'salexpresso_abandon_cart_saved', [ $this, 'schedule_abandonment' ], 1, 1 );
 		add_action( 'sxp_mark_abandoned', [ $this, 'mark_cart_as_abandoned' ], -1, 1 );
 		add_action( 'sxp_delete_abandoned', [ $this, 'delete_abandoned' ], -1, 1 );
+		
 	}
 	
 	/**
@@ -175,15 +195,16 @@ class SXP_Abandon_Cart {
 	}
 	
 	/**
-	 * Handle add to cart remove from cart, undo remove from cart etc.
+	 * Handle add to cart, update cart item qty, remove from cart and undo remove from cart etc.
 	 *
 	 * @return void
 	 */
-	public function on_cart_action() {
+	public function on_add_to_cart_action() {
 		
 		$tracker = SXP_Tracker::get_instance();
 		$visitor_id = $tracker->get_customer_id();
-		if ( sxp_is_abandon_cart_disabled_for_user() && $visitor_id && ! is_admin() ) {
+		// don't capture if disabled of user or any cart calculation request from the admin (only run on frontend).
+		if ( sxp_is_abandon_cart_disabled_for_user() || empty( $visitor_id ) || is_admin() ) {
 			return;
 		}
 		
@@ -200,6 +221,7 @@ class SXP_Abandon_Cart {
 			'cart_count'    => count( $cart['items'] ),
 			'cart_total'    => $cart['total'],
 			'cart_meta'     => $cart['meta'],
+			'status'        => 'processing',
 		];
 		
 		$customer_meta = [];
@@ -249,14 +271,24 @@ class SXP_Abandon_Cart {
 		
 		$data['cart_meta'] = wp_parse_args( $customer_meta, $data['cart_meta'] );
 		
-		$active_id = $this->get_active_abandon_cart( $tracker->get_customer_id(), 'id' );
-		if ( $active_id ) {
-			$data['id'] = $active_id;
-			$this->clear_countdown( $active_id );
+		$active_abandon = $this->get_active_abandon_cart( $tracker->get_customer_id(), [ 'id', 'status', 'email', 'cart_meta' ] );
+		if ( $active_abandon ) {
+			// Set Refs.
+			$data['id']     = $active_abandon['id'];
+			$data['status'] = $active_abandon['status'];
+			
+			// Set missing data from previous capture.
+			if ( ! isset( $data['email'] ) || ( isset( $data['email'] ) && empty( $data['email'] ) ) ) {
+				$data['email'] = $active_abandon['email'];
+			}
+			if ( ! isset( $data['cart_meta'] ) || ( isset( $data['cart_meta'] ) && empty( $data['cart_meta'] ) ) ) {
+				$data['cart_meta'] = maybe_unserialize( $active_abandon['cart_meta'] );
+			}
+			if ( 'processing' === $active_abandon['status'] ) {
+				// Reset Countdown
+				$this->clear_countdown( $active_abandon['id'] );
+			}
 		}
-		
-		// update status
-		$data['status'] = 'processing';
 		
 		$this->maybe_update_cart( $data );
 	}
@@ -273,12 +305,23 @@ class SXP_Abandon_Cart {
 		if ( isset( WC()->session ) && $tracker->get_customer_id() && ! is_admin() ) {
 			$order = wc_get_order( $order_id );
 			$active_abandon = $this->get_active_abandon_cart( $tracker->get_customer_id() );
+			// no abandon cart data don't continue.
 			if ( $active_abandon ) {
+				// if the cart isn't abandoned (active) just delete it.
+				if ( 'abandoned' !== $active_abandon['status'] ) {
+					$this->delete_abandon_cart( $active_abandon['id'] );
+				}
 				// reference abandon cart id for later use.
 				update_post_meta( $order_id, '__sxp_abandon_id', $active_abandon['id'] );
 				update_post_meta( $order_id, '__sxp_abandon_status', $active_abandon['status'] );
-				if( $order->get_status() == 'completed' || $order->get_status() == 'processing') {
-					$this->handle_order_update( $order, $active_abandon );
+				// on new order order status can be completed, processing, on-hold
+				// cod and other online payment method sets order status to 'processing' and
+				// check payment-method sets order status to 'on-hold'.
+				if(
+					( 'completed' === $order->get_status() || 'processing' === $order->get_status() ) ||
+					'check' === $order->get_payment_method() && 'on-hold' === $order->get_status()
+				) {
+					$this->handle_order_update( $order, $active_abandon, 'recovered' );
 				}
 			}
 		}
@@ -294,32 +337,37 @@ class SXP_Abandon_Cart {
 	 * @return void
 	 */
 	public function on_order_status_changed( $order_id, $old_status, $new_status ) {
-		if( $new_status == 'completed' || $new_status == 'processing') {
+		if( 'completed' === $new_status || 'processing' === $new_status) {
 			$order = wc_get_order( $order_id );
 			$abandon_id = get_post_meta( $order_id, '__sxp_abandon_id', true );
 			$abandon_cart = $this->get_abandon_cart_by_id( $abandon_id );
 			if ( $abandon_cart ) {
-				$this->handle_order_update( $order, $abandon_cart );
+				$this->handle_order_update( $order, $abandon_cart, 'completed' );
 			}
 		}
 	}
 	
 	/**
+	 * Change Abandon cart Status on order update.
+	 *
 	 * @param WC_Order $order
-	 * @param array $abandon_cart
+	 * @param array    $abandon_cart
+	 * @param string   $status
+	 *
+	 * @return bool
 	 */
-	private function handle_order_update( $order, $abandon_cart ) {
-		// if the cart isn't abandoned (active) just delete it.
-		if ( 'abandoned' !== $abandon_cart['status'] ) {
-			$this->delete_abandon_cart( $abandon_cart['id'] );
-		} else {
-			// update data so we can show some fancy chart for the recovered cart.
-			$abandon_cart['order_id'] = $order->get_id();
-			$abandon_cart['cart_total'] = $order->get_total();
-			$abandon_cart['status'] = 'completed';
-			update_post_meta( $order->get_id(), '__sxp_abandon_status', $abandon_cart['status'] );
-			$this->maybe_update_cart( $abandon_cart );
+	private function handle_order_update( $order, $abandon_cart, $status ) {
+		if ( ! in_array( $status, array_keys( $this->get_cart_statuses() ), true ) ) {
+			return false;
 		}
+		
+		// update data so we can show some fancy chart for the recovered cart.
+		$abandon_cart['order_id']   = $order->get_id();
+		$abandon_cart['cart_total'] = $order->get_total();
+		$abandon_cart['status']     = $status;
+		update_post_meta( $order->get_id(), '__sxp_abandon_status', $abandon_cart['status'] );
+		
+		return false !== $this->maybe_update_cart( $abandon_cart );
 	}
 	
 	/**
@@ -418,6 +466,7 @@ class SXP_Abandon_Cart {
 	 */
 	public function get_active_abandon_cart( $visitor_id_or_email, $fields = '' ) {
 		global $wpdb;
+		
 		$visitor = $this->get_where_user( $visitor_id_or_email );
 		$status  = sxp_sql_where_in( 'status', [ 'processing', 'abandoned' ] );
 		
@@ -453,7 +502,7 @@ class SXP_Abandon_Cart {
 	/**
 	 * Generate column list for select query.
 	 *
-	 * @param string $fields Column names.
+	 * @param string|string[] $fields Column names.
 	 *
 	 * @return array
 	 */
