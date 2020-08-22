@@ -86,6 +86,8 @@ class SXP_Abandon_Cart {
 		add_action( 'sxp_mark_abandoned', [ $this, 'mark_cart_as_abandoned' ], -1, 1 );
 		add_action( 'sxp_delete_abandoned', [ $this, 'delete_abandoned' ], -1, 1 );
 		
+		// Restore abandon car.
+		add_action( 'init', [ $this, 'maybe_restore_abandon_cart' ], -1 );
 	}
 	
 	/**
@@ -271,7 +273,7 @@ class SXP_Abandon_Cart {
 		
 		$data['cart_meta'] = wp_parse_args( $customer_meta, $data['cart_meta'] );
 		
-		$active_abandon = $this->get_active_abandon_cart( $tracker->get_customer_id(), [ 'id', 'status', 'email', 'cart_meta' ] );
+		$active_abandon = $this->get_active_abandon_cart( $visitor_id, [ 'id', 'status', 'email', 'cart_meta' ] );
 		if ( $active_abandon ) {
 			// Set Refs.
 			$data['id']     = $active_abandon['id'];
@@ -291,6 +293,28 @@ class SXP_Abandon_Cart {
 		}
 		
 		$this->maybe_update_cart( $data );
+	}
+	
+	public function maybe_restore_abandon_cart() {
+		if ( is_admin() ) {
+			return;
+		}
+		
+		if ( isset( $_REQUEST['sxp_restore_ac'] ) ) {
+			// @TODO decode restore token and get cart by the token
+		} else {
+			$tracker = SXP_Tracker::get_instance();
+			$visitor_id = $tracker->get_customer_id();
+			// don't capture if disabled of user or any cart calculation request from the admin (only run on frontend).
+			if ( sxp_is_abandon_cart_disabled_for_user() || empty( $visitor_id ) ) {
+				return;
+			}
+			$active_abandon = $this->get_active_abandon_cart( $visitor_id, '' );
+			if ( $active_abandon && $active_abandon['cart_contents'] ) {
+				$active_abandon['cart_contents'] = maybe_unserialize( $active_abandon['cart_contents'] );
+				$this->restore_abandon_cart( $active_abandon['cart_contents'] );
+			}
+		}
 	}
 	
 	/**
@@ -596,7 +620,7 @@ class SXP_Abandon_Cart {
 					'key'               => $key,
 					'product_id'        => $item['product_id'],
 					'variation_id'      => $item['variation_id'],
-					'variation'         => $item['variation'],
+					'variation'         => $item['variation'], // do we really need to keep variation array???
 					'quantity'          => $item['quantity'],
 					'data_hash'         => $item['data_hash'],
 					'line_subtotal'     => $item['line_subtotal'],
@@ -630,6 +654,35 @@ class SXP_Abandon_Cart {
 			];
 		}
 		return  null;
+	}
+	
+	/**
+	 * Restore Cart data.
+	 *
+	 * @param array  $cart_items    Cart Items.
+	 * @param string $coupon        Coupon code to apply.
+	 * @param bool   $empty_current Empty current Cart.
+	 *
+	 * @return void
+	 * @see SXP_Abandon_Cart::get_cart_data() for available cart item data.
+	 */
+	private function restore_abandon_cart( $cart_items = [], $coupon = '', $empty_current = true ) {
+		global $woocommerce;
+		if ( $empty_current ) {
+			$woocommerce->cart->empty_cart();
+		}
+		wc_clear_notices();
+		try {
+			foreach ( $cart_items as $item ) {
+				// WC_Cart doing necessary validation.
+				WC()->cart->add_to_cart( $item['product_id'], $item['quantity'], $item['variation_id'], $item['variation'], $item['extra_data'] );
+			}
+			
+			if ( ! empty( $coupon ) ) {
+				WC()->cart->add_discount( $coupon );
+			}
+		} catch ( Exception $e ) {}
+		
 	}
 }
 SXP_Abandon_Cart::get_instance();
