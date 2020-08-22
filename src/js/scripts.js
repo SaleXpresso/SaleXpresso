@@ -130,6 +130,9 @@
 		
 		_autofil_checkout() {
 			const self = this;
+			if ( $('body').hasClass('logged-in') ) {
+				return;
+			}
 			for ( const k of self._input_ids ) {
 				if ( k ) {
 					let id = `${self._billing}_${k}`;
