@@ -82,8 +82,8 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 					'autoload' => false,
 				],
 				[
-					'title'    => __( 'Cart Expiration Time', 'salexpresso' ),
-					'desc'     => __( 'How long to keep the abandoned orders in database.', 'salexpresso' ),
+					'title'    => __( 'Cookie Expiration Time', 'salexpresso' ),
+					'desc'     => __( 'Customer Identification Cookie Expiration.', 'salexpresso' ),
 					'id'       => 'salexpresso_st_customer_id_expiration',
 					'default'  => [
 						'number' => 2,
@@ -110,10 +110,10 @@ class SXP_Session_Tracking_Settings extends SXP_Settings_Tab {
 					'id'       => 'salexpresso_st_ip_request_field',
 					'default'  => '',
 					'options'  => [
-						'' => esc_html__('Let SaleXpresso use the most secure method to get visitor IP addresses. Prevents spoofing and works with most sites (Recommended).', 'salexpresso'),
-						'REMOTE_ADDR' => esc_html__('Use PHP\'s built in REMOTE_ADDR and don\'t use anything else. Very secure if this is compatible with your site.', 'salexpresso'),
-						'HTTP_X_FORWARDED_FOR' => esc_html__('Use the X-Forwarded-For HTTP header. Only use if you have a front-end proxy or spoofing may result.', 'salexpresso'),
-						'HTTP_X_REAL_IP' => esc_html__('Use the X-Real-IP HTTP header. Only use if you have a front-end proxy or spoofing may result.', 'salexpresso'),
+						''                      => esc_html__('Let SaleXpresso use the most secure method to get visitor IP addresses. Prevents spoofing and works with most sites (Recommended).', 'salexpresso'),
+						'REMOTE_ADDR'           => esc_html__('Use PHP\'s built in REMOTE_ADDR and don\'t use anything else. Very secure if this is compatible with your site.', 'salexpresso'),
+						'HTTP_X_FORWARDED_FOR'  => esc_html__('Use the X-Forwarded-For HTTP header. Only use if you have a front-end proxy or spoofing may result.', 'salexpresso'),
+						'HTTP_X_REAL_IP'        => esc_html__('Use the X-Real-IP HTTP header. Only use if you have a front-end proxy or spoofing may result.', 'salexpresso'),
 						'HTTP_CF_CONNECTING_IP' => esc_html__('Use the Cloudflare "CF-Connecting-IP" HTTP header to get a visitor IP. Only use if you\'re using Cloudflare.', 'salexpresso'),
 					],
 					'type'     => 'select',

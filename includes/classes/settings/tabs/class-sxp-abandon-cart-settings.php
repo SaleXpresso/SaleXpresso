@@ -162,7 +162,7 @@ class SXP_Abandon_Cart_Settings extends SXP_Settings_Tab {
 					'autoload' => false,
 				],
 				[
-					'title'             => __( 'Cart Abandonment Countdown', 'salexpresso' ),
+					'title'             => __( 'Mark Cart As Abandon After', 'salexpresso' ),
 					'desc'              => __( 'Minimum time to consider a cart as abandoned. Minimum time limit 15 minutes.', 'salexpresso' ),
 					'id'                => 'salexpresso_ac_timeout',
 					'default'           => 15,
