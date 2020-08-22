@@ -303,6 +303,7 @@ class SXP_Abandon_Cart {
 		if ( isset( $_REQUEST['sxp_restore_ac'] ) ) {
 			// @TODO decode restore token and get cart by the token
 		} else {
+			// restore in-case-of wc session cleared cart for the user due to inactivity but the user has abandon cart.
 			$tracker = SXP_Tracker::get_instance();
 			$visitor_id = $tracker->get_customer_id();
 			// don't capture if disabled of user or any cart calculation request from the admin (only run on frontend).
@@ -310,7 +311,7 @@ class SXP_Abandon_Cart {
 				return;
 			}
 			$active_abandon = $this->get_active_abandon_cart( $visitor_id, '' );
-			if ( $active_abandon && $active_abandon['cart_contents'] ) {
+			if ( WC()->cart->is_empty() && $active_abandon && 'abandoned' === $active_abandon['status'] && $active_abandon['cart_contents'] ) {
 				$active_abandon['cart_contents'] = maybe_unserialize( $active_abandon['cart_contents'] );
 				$this->restore_abandon_cart( $active_abandon['cart_contents'] );
 			}
