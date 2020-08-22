@@ -8,6 +8,8 @@
  * @version  1.0.0
  */
 
+use SaleXpresso\SXP_List_Table;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -29,6 +31,7 @@ if ( ! function_exists( 'sxp_load_file' ) ) {
 	 * @return bool|mixed
 	 */
 	function sxp_load_file( $file, $if_exists = true, $required = false, $once = false ) {
+		/** @noinspection PhpUndefinedFunctionInspection */
 		return SXP()->load_file( $file, $if_exists, $required, $once );
 	}
 }
@@ -42,6 +45,7 @@ if ( ! function_exists( 'sxp_get_plugin_uri' ) ) {
 	 */
 	function sxp_get_plugin_uri( $file = '' ) {
 		$file = ltrim( $file, '/' );
+		/** @noinspection PhpUndefinedFunctionInspection */
 		return SXP()->plugin_url() . '/' . $file;
 	}
 }
@@ -259,7 +263,7 @@ if ( ! function_exists( '_sxp_get_list_table' ) ) {
 			$class = 'SaleXpresso\List_Table\\' . $class;
 		}
 		/**
-		 * @var \SaleXpresso\SXP_List_Table
+		 * @var SXP_List_Table
 		 */
 		$core_classes = [
 			'SaleXpresso\List_Table\SXP_Customer_List_Table'                 => 'customer',
@@ -373,7 +377,7 @@ if ( ! function_exists( 'sxp_help_tip' ) ) {
 			$tip = esc_attr( $tip );
 		}
 		
-		return '<span class="sxp-help-tip" data-tip="' . $tip . '"></span>';
+		return sprintf( '<span class="sxp-help-tip" data-tip="%s"></span>', $tip );
 	}
 }
 if ( ! function_exists( 'sxp_sanitize_csv_field' ) ) {
@@ -672,7 +676,7 @@ if ( ! function_exists( 'sxp_update_user_acquired_via' ) ) {
 				
 				if ( ! empty( $record ) ) {
 					$record['session_meta'] = ! empty( $record['session_meta'] ) ? json_decode( $record['session_meta'], true ) : [];
-					$data = $record;
+					$data                   = $record;
 					unset( $record );
 				}
 			}
@@ -872,6 +876,7 @@ if ( ! function_exists( 'sxp_deep_clean' ) ) {
 				}
 				$output->$k = sxp_deep_clean( $v, $sanitize_keys, $sanitize_callback );
 			}
+			return $output;
 		} else {
 			return is_scalar( $input ) ? call_user_func( $sanitize_callback, $input ) : '';
 		}
