@@ -192,6 +192,7 @@ class SXP_Admin_Settings {
 			'desc_tip'    => false,
 			'placeholder' => false,
 			'suffix'      => false,
+			'prefix'      => false,
 		];
 		foreach ( $options as $value ) {
 			if ( ! isset( $value['type'] ) ) {
@@ -210,21 +211,20 @@ class SXP_Admin_Settings {
 
 			// Custom attribute handling.
 			$custom_attributes = array();
-
+			
 			if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 				foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
 					$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
 				}
 			}
-
+			
 			// Description handling.
 			$field_description = self::get_field_description( $value );
 			$description       = $field_description['description'];
 			$tooltip_html      = $field_description['tooltip_html'];
-
+			
 			// Switch based on type.
 			switch ( $value['type'] ) {
-
 				// Section Titles.
 				case 'title':
 					if ( ! empty( $value['title'] ) ) {
@@ -251,7 +251,6 @@ class SXP_Admin_Settings {
 						do_action( 'salexpresso_settings_' . sanitize_title( $value['id'] ) . '_after' );
 					}
 					break;
-
 				// Standard text inputs and subtypes like 'number'.
 				case 'text':
 				case 'password':
@@ -271,16 +270,21 @@ class SXP_Admin_Settings {
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
 						</th>
 						<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-							<input
-								name="<?php echo esc_attr( $value['id'] ); ?>"
-								id="<?php echo esc_attr( $value['id'] ); ?>"
-								type="<?php echo esc_attr( $value['type'] ); ?>"
-								style="<?php echo esc_attr( $value['css'] ); ?>"
-								value="<?php echo esc_attr( $option_value ); ?>"
-								class="<?php echo esc_attr( $value['class'] ); ?>"
-								placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-								<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
-								/><?php echo esc_html( $value['suffix'] ); ?> <?php echo $description; // WPCS: XSS ok. ?>
+							<span class="prefix"><?php echo esc_html( $value['prefix'] ); ?></span><!-- /.prefix -->
+							<span class="input">
+								<input
+									name="<?php echo esc_attr( $value['id'] ); ?>"
+									id="<?php echo esc_attr( $value['id'] ); ?>"
+									type="<?php echo esc_attr( $value['type'] ); ?>"
+									style="<?php echo esc_attr( $value['css'] ); ?>"
+									value="<?php echo esc_attr( $option_value ); ?>"
+									class="<?php echo esc_attr( $value['class'] ); ?>"
+									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
+									<?php echo implode( ' ', $custom_attributes ); // WPCS: XSS ok. ?>
+								/>
+							</span><!-- /.input -->
+							<span class="suffix"><?php echo esc_html( $value['suffix'] ); ?></span><!-- /.suffix -->
+							<?php echo $description; // WPCS: XSS ok. ?>
 						</td>
 					</tr>
 					<?php
@@ -289,7 +293,6 @@ class SXP_Admin_Settings {
 				// Color picker.
 				case 'color':
 					$option_value = $value['value'];
-
 					?>
 					<tr>
 						<th scope="row" class="titledesc">
@@ -319,7 +322,6 @@ class SXP_Admin_Settings {
 				// Textarea.
 				case 'textarea':
 					$option_value = $value['value'];
-
 					?>
 					<tr>
 						<th scope="row" class="titledesc">
@@ -327,7 +329,6 @@ class SXP_Admin_Settings {
 						</th>
 						<td class="forminp forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
 							<?php echo $description; // WPCS: XSS ok. ?>
-
 							<textarea
 								name="<?php echo esc_attr( $value['id'] ); ?>"
 								id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -345,7 +346,6 @@ class SXP_Admin_Settings {
 				case 'select':
 				case 'multiselect':
 					$option_value = $value['value'];
-
 					?>
 					<tr>
 						<th scope="row" class="titledesc">
@@ -386,7 +386,6 @@ class SXP_Admin_Settings {
 				// Radio inputs.
 				case 'radio':
 					$option_value = $value['value'];
-
 					?>
 					<tr>
 						<th scope="row" class="titledesc">
@@ -419,7 +418,6 @@ class SXP_Admin_Settings {
 					</tr>
 					<?php
 					break;
-
 				// Checkbox input.
 				case 'checkbox':
 					$option_value     = $value['value'];
