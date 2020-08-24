@@ -168,7 +168,7 @@ class SXP_Abandon_Cart_List_Table extends SXP_List_Table {
 				return isset( $this->statuses[ $item->status ] ) ? $this->statuses[ $item->status ] : ucfirst( $item->status );
 				break;
 			case 'created' :
-				return gmdate( 'm D, Y', strtotime( $item->created ) );
+				return gmdate( 'M d, Y', strtotime( $item->created ) );
 				break;
 			default:
 				return $this->column_default_filtered( $item, $column_name );
