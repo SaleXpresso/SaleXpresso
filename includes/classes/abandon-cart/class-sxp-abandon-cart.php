@@ -512,7 +512,7 @@ class SXP_Abandon_Cart {
 	 *
 	 * @return array|null
 	 */
-	private function get_abandon_cart_by_id( $id ) {
+	public function get_abandon_cart_by_id( $id ) {
 		global $wpdb;
 		/** @noinspection SqlResolve */
 		return $wpdb->get_row(
