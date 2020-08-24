@@ -57,13 +57,21 @@ class SXP_Abandon_Cart_List_Table extends SXP_List_Table {
 			$sort_order = sanitize_text_field( $_GET['order'] );
 		}
 		
+		$where = '';
 		$limit = sxp_sql_limit_offset( $per_page, $offset );
 		$order = sxp_sql_order_by( $order_by, $sort_order );
+		
+		if ( 'yes' !== get_option( 'salexpresso_ac_keep_no_email', 'yes' ) ) {
+			$where = " AND email <> ''";
+		}
 		
 		$total = $wpdb->get_var( "SELECT count( * ) FROM {$wpdb->sxp_abandon_cart}" );
 		$this->items = $wpdb->get_results(
 			"
 			SELECT * FROM {$wpdb->sxp_abandon_cart}
+		    WHERE
+		          1=1
+	        {$where}
 			{$order}
 			{$limit}
 			"
@@ -114,10 +122,6 @@ class SXP_Abandon_Cart_List_Table extends SXP_List_Table {
 						],
 						admin_url( 'admin.php' )
 					);
-				} else {
-//					if ( $item->email ) {
-//						$url = 'mailto:' . $item->email;
-//					}
 				}
 				if ( ! empty( $state ) && ! empty( $country ) ) {
 					$address = WC()->countries->get_formatted_address(
@@ -155,7 +159,7 @@ class SXP_Abandon_Cart_List_Table extends SXP_List_Table {
 				);
 				break;
 			case 'email':
-				return $item->email;
+				return ( $item->email ) ? $item->email : '–';
 				break;
 			case 'count':
 				$item->cart_contents = maybe_unserialize( $item->cart_contents );
